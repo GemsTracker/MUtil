@@ -221,7 +221,7 @@ abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_
             $this->_marker = new \MUtil_Html_Marker($model->getTextSearches($searchText), 'strong', 'UTF-8');
 
             foreach ($model->getItemNames() as $name) {
-                if ($model->get($name, 'label')) {
+                if ($model->get($name, 'label') && (!$model->is($name, 'no_text_search', true))) {
                     $model->set($name, 'markCallback', array($this->_marker, 'mark'));
                 }
             }
