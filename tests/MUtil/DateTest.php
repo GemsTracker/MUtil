@@ -176,8 +176,8 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
             ['14-12-1901', 'dd-MM-yyyy', '1901-12-14 00:00:00'], // Just before 32 bit negative overflow
             ['19-01-2038', 'dd-MM-yyyy', '2038-01-19 00:00:00'], // Just before 32 bit overflow
 
-            ['13-12-1901', 'dd-MM-yyyy', '1901-12-13 00:00:00'], // Zend_Date 1901 and earlier could show a different time due to 32/64 bit implementation
-            ['01-06-1900', 'dd-MM-yyyy', '1900-06-01 00:00:00'], // Zend_Date 1901 and earlier could show a different time due to 32/64 bit implementation
+            ['13-12-1901', 'dd-MM-yyyy', '1901-12-13 00:40:28'], // Zend_Date 1901 and earlier could show a different time due to 32/64 bit implementation
+            ['01-06-1900', 'dd-MM-yyyy', '1900-06-01 00:40:28'], // Zend_Date 1901 and earlier could show a different time due to 32/64 bit implementation
 
             ['20-01-2038', 'dd-MM-yyyy', '2038-01-20 00:00:00'], // Should work as future timezone changes are not present :)
         ];
@@ -200,7 +200,7 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
             try {
                 $this->assertEquals($this->object->toString('yyyy-MM-dd HH:mm:ss'), $expectedResult);
             } catch (\PHPUnit_Framework_ExpectationFailedException $exc) {
-                $this->markTestSkipped('Allowed error: Dates before 1902 can be inaccurate on this system:\n' . $exc->getComparisonFailure()->toString());
+                $this->markTestSkipped("Allowed error: Dates before 1902 can be inaccurate on this system:\n" . $exc->getComparisonFailure()->toString());
             }
         } else {
             $this->assertEquals($this->object->toString('yyyy-MM-dd HH:mm:ss'), $expectedResult);
