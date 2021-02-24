@@ -194,6 +194,7 @@ abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_Translate
             //\MUtil_Echo::track($url);
 
             $router = $this->getRedirector();
+            $router->setExit(! (\MUtil_Console::isConsole() || \Zend_Session::$_unitTestEnabled));
             $router->gotoRoute($url, null, $this->resetRoute);
         }
     }
