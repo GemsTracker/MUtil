@@ -39,6 +39,7 @@ class MUtil_Model_Bridge_FormBridge implements \MUtil_Model_Bridge_FormBridgeInt
     const TAB_OPTIONS        = 'tab';
     const TEXT_OPTIONS       = 'text';
     const TEXTAREA_OPTIONS   = 'textarea';
+    const TOGGLE_OPTIONS     = 'toggleDisplay';
 
     /**
      * The key to use in the \Zend_Registry to store global fixed options
@@ -73,6 +74,7 @@ class MUtil_Model_Bridge_FormBridge implements \MUtil_Model_Bridge_FormBridgeInt
         self::TAB_OPTIONS        => array('value'),
         self::TEXT_OPTIONS       => array('maxlength', 'minlength', 'onblur', 'onchange', 'onfocus', 'onselect', 'size'),
         self::TEXTAREA_OPTIONS   => array('cols', 'rows', 'wrap', 'decorators'),
+        self::TOGGLE_OPTIONS     => array('selector', 'selectorName'),
         );
 
     /**
@@ -869,13 +871,19 @@ class MUtil_Model_Bridge_FormBridge implements \MUtil_Model_Bridge_FormBridgeInt
         return $this->_addToForm($name, 'Textarea', $options);
     }
 
+    /**
+     * @param string $name
+     * @param mixed $arrayOrKey1 \MUtil_Ra::pairs() name => value array
+     * @return \MUtil_Bootstrap_Form_Element_ToggleCheckboxes
+     * @throws \Zend_Form_Exception
+     */
     public function addToggleCheckboxes($name, $arrayOrKey1 = null, $value1 = null, $key2 = null, $value2 = null)
     {
         $options = $this->_mergeOptions(
                 $name,
                 \MUtil_Ra::pairs(func_get_args(), 1),
                 self::DISPLAY_OPTIONS,
-                array('selector', 'selectorName')
+                self::TOGGLE_OPTIONS
                 );
 
         if (! isset($options['label'])) {
