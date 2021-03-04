@@ -171,6 +171,52 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
     }
 
     /**
+     * Sort items according to their order
+     *
+     * @throws Zend_Form_Exception
+     * @return void
+     */
+    protected function _sort()
+    {
+        if ($this->_orderUpdated) {
+            $hidden = [];
+            $items  = [];
+            $index  = 0;
+            foreach ($this->_order as $key => $order) {
+                if (isset($this->_elements[$key]) && ($this->_elements[$key] instanceof \Zend_Form_Element_Hidden)) {
+                    $hidden[] = $key;
+                } elseif (null === $order) {
+                    if (null === ($order = $this->{$key}->getOrder())) {
+                        while (array_search($index, $this->_order, true)) {
+                            ++$index;
+                        }
+                        $items[$index] = $key;
+                        $order = ++$index;
+                    } else {
+                        $items[$order] = $key;
+                    }
+                } elseif (isset($items[$order]) && $items[$order] !== $key) {
+                    throw new \Zend_Form_Exception('Form elements ' .
+                                                  $items[$order] . ' and ' . $key .
+                                                  ' have the same order (' .
+                                                  $order . ') - ' .
+                                                  'this would result in only the last added element to be rendered'
+                    );
+                } else {
+                    $items[$order] = $key;
+                }
+            }
+
+            // Hidden last, because otherwise extra hidden elements might
+            // effect the Nth position of the first element
+            $items = array_flip(array_merge($items, $hidden));
+            asort($items);
+            $this->_order = $items;
+            $this->_orderUpdated = false;
+        }
+    }
+
+    /**
      * Activate Bootstrap for this form
      *
      * @return \MUtil_Form (continuation pattern)
