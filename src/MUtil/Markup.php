@@ -131,7 +131,10 @@ class MUtil_Markup extends \Zend_Markup
 
     public static function render($content, $parser, $renderer = 'Html', array $options = array())
     {
-        $renderer = \MUtil_Markup::factory($parser, $renderer, $options);
-        return $renderer->render($content ? $content : '');
+        if ($content) {
+            $renderer = \MUtil_Markup::factory($parser, $renderer, $options);
+            return $renderer->render($content);
+        }
+        return '';
     }
 }
