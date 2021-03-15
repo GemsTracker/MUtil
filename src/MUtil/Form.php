@@ -46,6 +46,11 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
     protected $_displayOrder = array('element', 'errors', 'description');
 
     /**
+     * @var string When true an extra hidden element with this name is added when the number of hidden elements is odd 
+     */
+    protected $_hiddenAlwaysEven = '__tmpEvenOut';
+    
+    /**
      * $var \MUtil_HtmlElement
      */
     protected $_html_element;
@@ -205,6 +210,15 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
                 } else {
                     $items[$order] = $key;
                 }
+            }
+            
+            if ($this->_hiddenAlwaysEven && (1 == (count($hidden) % 2))) {
+                if (\MUtil_Bootstrap::enabled()) {
+                    $this->_elements[$this->_hiddenAlwaysEven] = new \MUtil\Bootstrap\Form\Element\Hidden($this->_hiddenAlwaysEven);
+                } else {
+                    $this->_elements[$this->_hiddenAlwaysEven] = new \MUtil\Form\Element\Hidden($this->_hiddenAlwaysEven);
+                }
+                $hidden[] = $this->_hiddenAlwaysEven;
             }
 
             // Hidden last, because otherwise extra hidden elements might
