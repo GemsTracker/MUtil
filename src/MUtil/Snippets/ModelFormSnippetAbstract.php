@@ -297,7 +297,7 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
                 $this->cache->clean(\Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG, (array) $this->cacheTags);
             }
 
-            $this->addMessage(sprintf($this->_('%2$u %1$s saved'), $this->getTopic($changed), $changed));
+            $this->addMessage($this->getChangedMessage($changed));
         } else {
             $this->addMessage($this->_('No changes to save!'));
         }
@@ -354,6 +354,15 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
         return $form;
     }
 
+    /**
+     * @param int $changed
+     * @return string
+     */
+    public function getChangedMessage($changed)
+    {
+        return sprintf($this->_('%2$u %1$s saved'), $this->getTopic($changed), $changed);
+    }
+    
     /**
      * Create the snippets content
      *
