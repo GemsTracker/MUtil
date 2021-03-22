@@ -34,7 +34,7 @@ trait NoTagsElementTrait
      */
     public function addNoTagsValidator()
     {
-        if (!$this->getValidator('NoTags')) {
+        if (!$this->getValidator('MUtil_Validate_NoTags')) {
             $this->addValidator('NoTags');
         }
 
