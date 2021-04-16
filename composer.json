@@ -1,5 +1,6 @@
 {
     "name": "magnafacta/mutil",
+    "description": "MagnaFacta Utilities for site development",
     "license": "BSD-3-Clause",
     "type": "library",
     "homepage": "http://magnafacta.info/",
