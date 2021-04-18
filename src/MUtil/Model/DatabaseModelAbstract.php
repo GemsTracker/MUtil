@@ -158,42 +158,6 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
         if ($where) {
             $select->where($where);
         }
-        /*
-        foreach ($filter as $name => $value) {
-            if (is_int($name)) {
-                $select->where($value);
-            } else {
-                if ($expression = $this->get($name, 'column_expression')) {
-                    //The brackets tell \Zend_Db_Select that this is an epression in a sort.
-                    $name = '(' . $expression . ')';
-                } elseif ('limit' === strtolower($name)) {
-                    if (is_array($value)) {
-                        $count  = array_shift($value);
-                        $offset = reset($value);
-                    } else {
-                        $count  = $value;
-                        $offset = null;
-                    }
-                    $select->limit($count, $offset);
-                    continue;
-
-                } else {
-                    $name = $adapter->quoteIdentifier($name);
-                }
-                if (null === $value) {
-                    $select->where($name . ' IS NULL');
-                } elseif (is_array($value)) {
-                    if ($value) {
-                        $select->where($name . ' IN (' . $adapter->quote($value) . ')');
-                    } else {
-                        // Never a result when a value should be one of an empty set.
-                        $select->where('1=0');
-                    }
-                } else {
-                    $select->where($name . ' = ?', $value);
-                }
-            }
-        } // */
 
         // Sort
         foreach ($sort as $key => $order) {
@@ -1189,7 +1153,11 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
      */
     public function setOnTextFilter($name, $callableOrConstant)
     {
-        $this->set($name, self::TEXTFILTER_TRANSFORMER, $callableOrConstant);
+        if (false === $callableOrConstant) {
+            $this->set($name, 'no_text_search', true);
+        } else {
+            $this->set($name, self::TEXTFILTER_TRANSFORMER, $callableOrConstant);
+        }
         return $this;
     }
 }
