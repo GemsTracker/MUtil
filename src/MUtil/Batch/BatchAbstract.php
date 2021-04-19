@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @package    MUtil
@@ -193,6 +194,11 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
      */
     public $initialPushPaddingKb = 0;
 
+    /**
+     * @var \Zend_Locale
+     */
+    protected $locale;
+    
     /**
      *
      * @var \Zend_Log
@@ -721,7 +727,10 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
      */
     public function getProgressPercentage()
     {
-        return round($this->_session->processed / max($this->_session->count, 1) * 100, 2);
+        // Use number format to correctly round the number without floating number precision errors
+        // Output is json so always use digital dot!
+        $value = $this->_session->processed / max($this->_session->count, 1) * 100;
+        return number_format($value, 2, '.','');
     }
 
     /**

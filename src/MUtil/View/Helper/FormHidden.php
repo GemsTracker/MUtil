@@ -20,6 +20,19 @@
  */
 class MUtil_View_Helper_FormHidden extends \Zend_View_Helper_FormElement
 {
+    private function _arrayHidden($name, array $value, array $attribs)
+    {
+        $output = '';
+        foreach ($value as $key => $val) {
+            if (is_array($val)) {
+                $output .= $this->_arrayHidden($name . '[' . $key . ']', $val, $attribs);
+            } else {
+                $output .= $this->_hidden($name . '[' . $key . ']', $val, $attribs);
+            }
+        }
+        return $output;
+    }
+    
     /**
      * Generates a 'hidden' element.
      *
@@ -53,10 +66,6 @@ class MUtil_View_Helper_FormHidden extends \Zend_View_Helper_FormElement
             return $this->_hidden($name, $value, $attribs);
         }
 
-        $output = '';
-        foreach ($value as $key => $val) {
-            $output .= $this->_hidden($name . '[' . $key . ']', $val, $attribs);
-        }
-        return $output;
+        return $this->_arrayHidden($name, $value, $attribs);
     }
 }
