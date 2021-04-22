@@ -44,7 +44,7 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.3.9",
-        "shardj/zf1-future": "^1.14",
+        "shardj/zf1-future": "^1.18",
         "shardj/zf1-extras-future": "^1.12",
         "oyejorge/less.php": "~1.7.0.9"        
     },
