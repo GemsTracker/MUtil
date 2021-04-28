@@ -543,7 +543,7 @@ class MUtil_Ra
             return $targetArray + $newArray;
         }
 
-        array_splice($targetArray, $pos, 0, $newArray);
+        array_splice($targetArray, $pos + 1, 0, $newArray);
         
         return $targetArray;
     }
@@ -569,8 +569,6 @@ class MUtil_Ra
         if (false === $pos) {
             return $newArray + $targetArray;
         }
-        
-        $pos--;
         
         array_splice($targetArray, $pos, 0, $newArray);
 
