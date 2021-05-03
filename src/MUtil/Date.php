@@ -21,6 +21,7 @@
 class MUtil_Date extends \Zend_Date
 {
     const DAY_SECONDS = 86400;      // 24 * 60 * 60
+    const HOUR_SECONDS = 3600;      // 60 * 60
     const WEEK_SECONDS = 604800;    // 7 * 24 * 60 * 60
 
     /**
@@ -113,7 +114,7 @@ class MUtil_Date extends \Zend_Date
      *
      * @param \Zend_Date $date
      * @param \Zend_Locale $locale optional (not used)
-     * @return type
+     * @return int
      */
     public function diffDays(\Zend_Date $date = null, $locale = null)
     {
@@ -131,6 +132,68 @@ class MUtil_Date extends \Zend_Date
     }
 
     /**
+     * The number of hours in $date subtracted from $this.
+     *
+     * Zero when both date/times occur on the same day.
+     * POSITIVE when $date is YOUNGER than $this
+     * Negative when $date is older than $this
+     *
+     * This function ignores the Timezone and is only concerned with
+     * the actual display date of the date: 2 timestamps in different
+     * timezones can be the same GMT second, but can still occur on
+     * different days.
+     *
+     * @param \Zend_Date $date
+     * @param \Zend_Locale $locale optional (not used)
+     * @return int
+     */
+    public function diffHours(\Zend_Date $date = null, $locale = null)
+    {
+        $val1 = (int) (($this->getUnixTimestamp() - $this->getGmtOffset()) / self::HOUR_SECONDS);
+
+        if (null === $date) {
+            // We must use date objects as unix timestamps do not take
+            // account of leap seconds.
+            $val2 = (int) ((time() - $this->getGmtOffset()) / self::HOUR_SECONDS);
+        } else {
+            $val2 = (int) (($date->getUnixTimestamp() - $date->getGmtOffset()) / self::HOUR_SECONDS);
+        }
+        
+        return $val1 - $val2;
+    }
+
+    /**
+     * The number of minutes in $date subtracted from $this.
+     *
+     * Zero when both date/times occur on the same day.
+     * POSITIVE when $date is YOUNGER than $this
+     * Negative when $date is older than $this
+     *
+     * This function ignores the Timezone and is only concerned with
+     * the actual display date of the date: 2 timestamps in different
+     * timezones can be the same GMT second, but can still occur on
+     * different days.
+     *
+     * @param \Zend_Date $date
+     * @param \Zend_Locale $locale optional (not used)
+     * @return int
+     */
+    public function diffMinutes(\Zend_Date $date = null, $locale = null)
+    {
+        $val1 = (int) (($this->getUnixTimestamp() - $this->getGmtOffset()) / 60);
+
+        if (null === $date) {
+            // We must use date objects as unix timestamps do not take
+            // account of leap seconds.
+            $val2 = (int) ((time() - $this->getGmtOffset()) / 60);
+        } else {
+            $val2 = (int) (($date->getUnixTimestamp() - $date->getGmtOffset()) / 60);
+        }
+
+        return $val1 - $val2;
+    }
+
+    /**
      * The number of months in $date subtracted from $this.
      *
      * Zero when both date/times occur in the same month.
@@ -139,7 +202,7 @@ class MUtil_Date extends \Zend_Date
      *
      * @param \Zend_Date $date
      * @param \Zend_Locale $locale optional
-     * @return type
+     * @return int
      */
     public function diffMonths(\Zend_Date $date, $locale = null)
     {
@@ -223,7 +286,7 @@ class MUtil_Date extends \Zend_Date
      *
      * @param \Zend_Date $date Date or now
      * @param \Zend_Locale $locale optional (not used)
-     * @return type
+     * @return int
      */
     public function diffSeconds(\Zend_Date $date = null, $locale = null)
     {
@@ -246,7 +309,7 @@ class MUtil_Date extends \Zend_Date
      *
      * @param \Zend_Date $date
      * @param \Zend_Locale $locale optional (not used)
-     * @return type
+     * @return int
      */
     public function diffWeeks(\Zend_Date $date, $locale = null)
     {
@@ -270,7 +333,7 @@ class MUtil_Date extends \Zend_Date
      *
      * @param \Zend_Date $date
      * @param \Zend_Locale $locale optional
-     * @return type
+     * @return int
      */
     public function diffYears(\Zend_Date $date, $locale = null)
     {
