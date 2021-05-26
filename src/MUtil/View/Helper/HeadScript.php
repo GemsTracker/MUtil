@@ -1,7 +1,24 @@
 <?php
 
+/**
+ *
+ * @package    MUtil
+ * @subpackage View\Helper
+ * @author     Jasper van Gestel <jvangestel@gmail.com>
+ * @copyright  Copyright (c) 2021, Erasmus MC and MagnaFacta B.V.
+ * @license    No free license, do not copy
+ */
+
 use MUtil\Javascript;
 
+/**
+ *
+ * @package    MUtil
+ * @subpackage View\Helper
+ * @copyright  Copyright (c) 2021, Erasmus MC and MagnaFacta B.V.
+ * @license    No free license, do not copy
+ * @since      Class available since version 1.9.1
+ */
 class MUtil_View_Helper_HeadScript extends \Zend_View_Helper_HeadScript
 {
     /**
