@@ -251,7 +251,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
                     $output[] = $adapter->quoteInto($name . ' = ?', $value);
                 }
             } else {
-                throw new \Zend_Exception("Unknown of forbidden column $name used in query.");
+                throw new \Zend_Exception("Unknown or forbidden column '$name' used in query.");
             }
         }
         if (! $output) {
