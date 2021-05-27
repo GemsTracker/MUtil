@@ -231,7 +231,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
                 } else {
                     $output[] = $value;
                 }
-            } else {
+            } elseif ($this->has($name)) {
                 if ($expression = $this->get($name, 'column_expression')) {
                     //The brackets tell \Zend_Db_Select that this is an epression in a sort.
                     $name = '(' . $expression . ')';
@@ -250,6 +250,8 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
                 } else {
                     $output[] = $adapter->quoteInto($name . ' = ?', $value);
                 }
+            } else {
+                throw new \Zend_Exception("Unknown of forbidden column $name used in query.");
             }
         }
         if (! $output) {
