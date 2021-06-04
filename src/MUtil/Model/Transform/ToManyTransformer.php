@@ -23,7 +23,7 @@ class ToManyTransformer extends \MUtil_Model_Transform_NestedTransformer
         if (isset($filter[\MUtil_Model::TEXT_FILTER])) {
             $subFilter += $sub->getTextSearchFilter($filter[\MUtil_Model::TEXT_FILTER]);
             $mainFilter = $model->getTextSearchFilter($filter[\Mutil_model::TEXT_FILTER]);
-            unset($filter[\MUtil_Model::TEXT_FILTER]);
+            
         }
 
         if (count($subFilter)) {
@@ -31,6 +31,7 @@ class ToManyTransformer extends \MUtil_Model_Transform_NestedTransformer
             if ($results) {
                 $subFilterValues = array_column($results, $child);
                 $addFilter = ' OR ' . $parent . ' IN ('.join(',', $subFilterValues).')';
+                unset($filter[\MUtil_Model::TEXT_FILTER]);
                 foreach($mainFilter as $mainFilterSub) {
                     $filter[] = $mainFilterSub . $addFilter;
                 }
