@@ -382,9 +382,9 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      * be undone in the addElement method. To fix this we add the current translation status
      * of the form to the options
      *
-     * @param type $type
-     * @param type $name
-     * @param type $options
+     * @param string $type
+     * @param string $name
+     * @param array|null $options
      */
     public function createElement($type, $name, $options = null)
     {
