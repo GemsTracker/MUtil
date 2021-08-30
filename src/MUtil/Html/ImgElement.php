@@ -93,16 +93,16 @@ class MUtil_Html_ImgElement extends \MUtil_Html_HtmlElement
     {
         if (isset($attribs['src'])) {
             $filename = \MUtil_Lazy::rise($attribs['src']);
-
+            
             if ($dir = self::getImageDir($filename)) {
                 if (! isset($attribs['width'], $attribs['height'])) {
                     try {
                         $info = getimagesize(self::getWebRoot() . $dir . $filename);
 
-                        if (! isset($attribs['width'])) {
+                        if ($info && ! isset($attribs['width'])) {
                             $attribs['width'] = $info[0];
                         }
-                        if (! isset($attribs['height'])) {
+                        if ($info && ! isset($attribs['height'])) {
                             $attribs['height'] = $info[1];
                         }
                     } catch (\Exception $e) {
