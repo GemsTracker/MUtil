@@ -25,7 +25,7 @@ class MUtil_Date extends \Zend_Date
     const WEEK_SECONDS = 604800;    // 7 * 24 * 60 * 60
 
     /**
-     * You can add your project specfic dates to this array
+     * You can add your project specific dates to this array
      *
      * @var array Zend DateTime Format => PHP DateTime Format
      */
