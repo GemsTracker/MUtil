@@ -24,6 +24,47 @@ use MUtil\Form\Element\Hidden as BaseHidden;
 class MUtil_Form_Decorator_AutoFocus extends \Zend_Form_Decorator_Abstract
 {
     /**
+     * @param mixed $element
+     * @param array $allowedElements
+     */
+    private function _getAllowed($element, array &$allowedElements)
+    {
+        // \MUtil_Echo::r(get_class($element));
+        if ($element instanceof \MUtil_Form_Element_SubFocusInterface) {
+            foreach ($element->getSubFocusElements() as $subElement) {
+                $this->_getAllowed($subElement, $allowedElements);
+            }
+        } elseif ($element instanceof \Zend_Form_Element) {
+            if (($element instanceof \Zend_Form_Element_Hidden) ||
+                ($element instanceof \MUtil_Form_Element_NoFocusInterface) ||
+                ($element->getAttrib('readonly')) ||
+                ($element->helper == 'Button') ||
+                ($element->helper == 'formSubmit') ||
+                ($element->helper == 'SubmitButton')) {
+                // Do nothing
+            } else {
+                $id = $element->getId();
+                if ($id === null) {
+                    $id = $element->getName();
+                }
+                $allowedElements[] = $id;
+                
+                if ($element instanceof \Zend_Form_Element_MultiCheckbox) {
+                    foreach ($element->getMultiOptions() as $key => $label) {
+                        $allowedElements[] = $id . '-' . $key;
+                    }
+                }
+            }
+
+        } elseif (($element instanceof \Zend_Form) ||
+            ($element instanceof \Zend_Form_DisplayGroup)) {
+            foreach ($element as $subElement) {
+                $this->_getAllowed($subElement, $allowedElements);
+            }
+        }
+    }
+
+    /**
      *
      * @param mixed $element
      * @return string Element ID
@@ -74,16 +115,9 @@ class MUtil_Form_Decorator_AutoFocus extends \Zend_Form_Decorator_Abstract
 
         $focus = $request->getParam($form->focusTrackerElementId) ?: $this->_getFocus($form);
 
-        $elements = $form->getElements();
         $allowedElements = [];
-        foreach($elements as $element) {
-            $id = $element->getId();
-            if ($id === null) {
-                $id = $element->getName();
-            }
-            $allowedElements[] = $id;
-        }
-
+        $this->_getAllowed($form, $allowedElements);
+        
         if (in_array($focus, $allowedElements)) {
             if ($form->focusTrackerElementId) {
                 $form->getElement($form->focusTrackerElementId)->setValue($focus);
