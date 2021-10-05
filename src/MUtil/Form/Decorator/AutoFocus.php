@@ -129,6 +129,9 @@ class MUtil_Form_Decorator_AutoFocus extends \Zend_Form_Decorator_Abstract
                 $script .= "
                     if (e) {
                         e.focus();
+                        if (e.scrollIntoView) {
+                            e.scrollIntoView({behavior: 'smooth', block: 'center'});
+                        }
                         try {
                             if (e.select) {
                                 e.select();
