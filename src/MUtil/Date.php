@@ -489,6 +489,14 @@ class MUtil_Date extends \Zend_Date
     }
 
     /**
+     * @return bool Returns true if the time is 00:00:00
+     */
+    public function isAtMidnight()
+    {
+        return 0 == (($this->getTimestamp() - $this->getGmtOffset()) % self::DAY_SECONDS);
+    }
+
+    /**
      * Returns if the given date or datepart is earlier or equal
      * For example:
      * 15.May.2000 <-> 13.June.1999 will return true for day, year and date, but not for month
