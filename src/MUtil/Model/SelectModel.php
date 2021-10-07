@@ -61,6 +61,25 @@ class MUtil_Model_SelectModel extends \MUtil_Model_DatabaseModelAbstract
     }
 
     /**
+     * Returns a nested array containing the items requested.
+     *
+     * @param array $filter Filter array, num keys contain fixed expresions, text keys are equal or one of filters
+     * @param array $sort Sort array field name => sort type
+     * @return array Nested array or false
+     */
+    protected function _load(array $filter, array $sort)
+    {
+        // Sort
+        foreach ($sort as $key => $order) {
+            if (! (is_numeric($key) || is_string($order))) {
+                $this->set($key);
+            }
+        }
+        
+        return parent::_load($filter, $sort);
+    }
+
+    /**
      * Save a single model item.
      *
      * @param array $newValues The values to store for a single model item.

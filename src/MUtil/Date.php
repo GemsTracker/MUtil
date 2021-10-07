@@ -25,7 +25,7 @@ class MUtil_Date extends \Zend_Date
     const WEEK_SECONDS = 604800;    // 7 * 24 * 60 * 60
 
     /**
-     * You can add your project specfic dates to this array
+     * You can add your project specific dates to this array
      *
      * @var array Zend DateTime Format => PHP DateTime Format
      */
@@ -486,6 +486,14 @@ class MUtil_Date extends \Zend_Date
     public function intYear($locale = null)
     {
         return intval($this->get(\Zend_Date::YEAR, $locale));
+    }
+
+    /**
+     * @return bool Returns true if the time is 00:00:00
+     */
+    public function isAtMidnight()
+    {
+        return 0 == (($this->getTimestamp() - $this->getGmtOffset()) % self::DAY_SECONDS);
     }
 
     /**
