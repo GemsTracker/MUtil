@@ -50,7 +50,16 @@
  */
 class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
 {
+    /**
+     * @var array from field => joining field (with two from fields for a composite join)
+     */
     protected $_joinFields = array();
+
+    /**
+     * @var array tableName => [fromField1 => toField1, [fromField2 => toField2]]
+     */
+    protected $_joinTables = array();
+
     protected $_saveTables;
 
     private $_select;
@@ -148,6 +157,8 @@ class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
                 $joinSql[] = $adapter->quoteIdentifier($source) . ' = ' . $adapter->quoteIdentifier($target);
             }
         }
+        
+        $this->_joinTables[$alias] = $joinFields;
         if ($tableName != $alias) {
             $tableName = array($alias => $tableName);
         }

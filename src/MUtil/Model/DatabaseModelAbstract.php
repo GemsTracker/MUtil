@@ -247,6 +247,8 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
                         // Never a result when a value should be one of an empty set.
                         return self::WHERE_NONE;
                     }
+                } elseif ($value instanceof \Zend_Db_Select) {
+                    $output[] = $name . ' IN (' . (string) $value . ')';
                 } else {
                     $output[] = $adapter->quoteInto($name . ' = ?', $value);
                 }
