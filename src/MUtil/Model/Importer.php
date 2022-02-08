@@ -96,10 +96,19 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
      * @var \MUtil_Model_ModelAbstract
      */
     protected $targetModel;
-    
-    protected function addVariablesToBatch( \MUtil_Task_TaskBatch $batch)
+
+    /**
+     * Set the variables 
+     * @param \MUtil_Task_TaskBatch $batch
+     */
+    protected function addVariablesToBatch(\MUtil_Task_TaskBatch $batch)
     {
         $batch->getStack()->registerAllowedClass('MUtil_Date');
+        
+        if ($batch->hasVariable('targetModel')) {
+            // Already set
+            return;
+        }
 
         $targetModel = $this->getTargetModel();
         $batch->setVariable('targetModel', $targetModel);

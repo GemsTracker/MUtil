@@ -555,7 +555,7 @@ abstract class MUtil_Model_ModelTranslatorAbstract extends \MUtil_Translate_Tran
      */
     public function setTargetModel(\MUtil_Model_ModelAbstract $targetModel)
     {
-        $this->_targetModel    = $targetModel;
+        $this->_targetModel = $targetModel;
 
         return $this;
     }
