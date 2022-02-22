@@ -306,6 +306,10 @@ class MUtil_Loader_PluginLoader extends \Zend_Loader_PluginLoader
      */
     public function load($name, $throwExceptions = true)
     {
+        if (class_exists($name, true)) {
+            return $name;
+        }
+        
         if ($this->isLoaded($name)) {
             return $this->getClassName($name);
         }
