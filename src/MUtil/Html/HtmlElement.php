@@ -1099,7 +1099,10 @@ class MUtil_Html_HtmlElement extends \Zend_View_Helper_HtmlElement
      */
     public function offsetGet($offset)
     {
-        return $this->_content[$offset];
+        if (array_key_exists($offset, $this->_content)) {
+            return $this->_content[$offset];
+        }
+        error_log(sprintf("Non existing HtmlElement ofhset %s requested for tag %s using url %s.", $offset, $this->tagName, $_SERVER['REQUEST_URI']));
     }
 
     /**

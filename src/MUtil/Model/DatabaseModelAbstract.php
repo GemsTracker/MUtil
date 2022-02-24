@@ -942,9 +942,12 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
 
         if ($options = $this->get($name, 'multiOptions')) {
             $adapter = $this->getAdapter();
-            $wheres = array();
+            $wheres  = [];
+            if (\MUtil_Ra::isMultiDimensional($options)) {
+                $options = \MUtil_Ra::flatten($options);
+            }
             foreach ($options as $key => $value) {
-                // \MUtil_Echo::track($key, $value, $filter, stripos($value, $filter));
+                // \MUtil_Echo::track($sqlField, $key, $value, $filter, stripos($value, $filter));
                 if (stripos($value, $filter) !== false) {
                     if (null === $key) {
                         $wheres[1] = $sqlField . ' IS NULL';

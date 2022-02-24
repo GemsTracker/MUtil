@@ -591,6 +591,21 @@ class MUtil_Ra
     }
 
     /**
+     * @param array $value
+     * @return bool True when there is an array in the value
+     */
+    public static function isMultiDimensional(array $value)
+    {
+        foreach ($value as $val) {
+            if (is_array($val)) {
+                return true;
+            }
+        }
+        
+        return false;        
+    }
+    
+    /**
      * Test whether the value is scalar or an array containing
      * scalars or scalar arrays.
      *
