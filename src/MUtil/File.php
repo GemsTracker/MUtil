@@ -65,9 +65,10 @@ class MUtil_File
     /**
      * @param array $extensions An [optionally nested] array of file extensions
      * @param string $startName A start path / regular expression
+     * @param boolean $caseSensitive
      * @return string A preg expression for the extensions
      */
-    public static function createMask($extensions, $startName = '')
+    public static function createMask($extensions, $startName = '', $caseSensitive = false)
     {
         $masks = \MUtil_Ra::flatten((array) $extensions);
         
@@ -75,7 +76,7 @@ class MUtil_File
             return '/' . $startName . '.*\\.(' . implode('|', $masks) . ')$/';
         }
         
-        return '/.+\\.(' . implode('|', $masks) . ')$/'; 
+        return '/.+\\.(' . implode('|', $masks) . ')$/' . ($caseSensitive ? '' : 'i'); 
     }
 
     /**
