@@ -114,7 +114,7 @@ abstract class MUtil_Controller_Action extends \Zend_Controller_Action
         $this->setRequest($request)
             ->setResponse($response)
             ->_setInvokeArgs($invokeArgs);
-        $this->_helper = new Zend_Controller_Action_HelperBroker($this);
+        //$this->_helper = new Zend_Controller_Action_HelperBroker($this);
 
         if ($init) {
             $this->init();
@@ -420,9 +420,9 @@ abstract class MUtil_Controller_Action extends \Zend_Controller_Action
             $this->view->html = $this->html;
 
             // Load html-view.phtml from the same directory as this file.
-            $this->view->setScriptPath(dirname(__FILE__));
+            /*$this->view->setScriptPath(dirname(__FILE__));
             $this->_helper->viewRenderer->setNoController();
-            $this->_helper->viewRenderer->setScriptAction('html-view');
+            $this->_helper->viewRenderer->setScriptAction('html-view');*/
 
             $this->useHtmlView  = true;
             $this->useRawOutput = false;
