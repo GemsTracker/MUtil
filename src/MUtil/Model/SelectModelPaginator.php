@@ -114,7 +114,7 @@ class MUtil_Model_SelectModelPaginator implements \MUtil_Paginator_Adapter_Prefe
      *
      * @return integer
      */
-    public function count()
+    public function count(): int
     {
         if (null === $this->_count) {
             $this->_count = $this->_selectAdapter->count();

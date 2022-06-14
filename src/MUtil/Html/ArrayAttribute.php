@@ -195,7 +195,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_values);
     }
@@ -235,7 +235,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      *
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->_values);
     }
@@ -271,7 +271,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      * @param scalar $offset
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         return array_key_exists($offset, $this->_values);
     }
@@ -284,7 +284,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      * @param scalar $offset
      * @return mixed
      */
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->_values[$offset];
     }
@@ -295,7 +295,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      * @param scalar $offset
      * @param mixed $value
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset,mixed $value): void
     {
         if (null === $offset) {
             $this->_values[] = $value;
@@ -309,7 +309,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      *
      * @param scalar $offset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->_values[$offset]);
     }

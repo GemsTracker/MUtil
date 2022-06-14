@@ -459,17 +459,19 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
             if ($field['PRECISION']) {
                 $finfo['decimals'] = $field['PRECISION'];
             }
-            switch (strtoupper($field['DEFAULT'])) {
-                case 'CURRENT_DATE':
-                case 'CURRENT_TIME':
-                case 'CURRENT_TIMESTAMP':
-                    $finfo['default'] = new \Zend_Db_Expr($field['DEFAULT']);
-                    break;
-                case 'NULL':
-                    break;
+            if (is_string($field['DEFAULT'])) {
+                switch (strtoupper($field['DEFAULT'])) {
+                    case 'CURRENT_DATE':
+                    case 'CURRENT_TIME':
+                    case 'CURRENT_TIMESTAMP':
+                        $finfo['default'] = new \Zend_Db_Expr($field['DEFAULT']);
+                        break;
+                    case 'NULL':
+                        break;
 
-                default:
-                    $finfo['default'] = $field['DEFAULT'];
+                    default:
+                        $finfo['default'] = $field['DEFAULT'];
+                }
             }
             $finfo['required'] = ! ($field['NULLABLE'] || $field['DEFAULT']);
 

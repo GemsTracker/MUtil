@@ -103,7 +103,41 @@ class MUtil_Html_AElement extends \MUtil_Html_HtmlElement
             // Assumption that is not tested, but when clicking on a target link, no further bubble is needed.
             $attribs['onclick'] = "event.cancelBubble = true;";
         }
-        return parent::_htmlAttribs($attribs);
+        $xhtml = '';
+        foreach ((array) $attribs as $key => $val) {
+            $key = $this->view->escape($key);
+
+            if (('on' == substr($key, 0, 2)) || ('constraints' == $key)) {
+                // Don't escape event attributes; _do_ substitute double quotes with singles
+                if (!is_scalar($val)) {
+                    // non-scalar data should be cast to JSON first
+                    require_once 'Zend/Json.php';
+                    $val = Zend_Json::encode($val);
+                }
+                // Escape single quotes inside event attribute values.
+                // This will create html, where the attribute value has
+                // single quotes around it, and escaped single quotes or
+                // non-escaped double quotes inside of it
+                $val = str_replace('\'', '&#39;', $val);
+            } else {
+                if (is_array($val)) {
+                    $val = implode(' ', $val);
+                }
+                $val = $this->view->escape($val);
+            }
+
+            if ('id' == $key) {
+                $val = $this->_normalizeId($val);
+            }
+
+            if ($val !== null && strpos($val, '"') !== false) {
+                $xhtml .= " $key='$val'";
+            } else {
+                $xhtml .= " $key=\"$val\"";
+            }
+
+        }
+        return $xhtml;
     }
 
     /**

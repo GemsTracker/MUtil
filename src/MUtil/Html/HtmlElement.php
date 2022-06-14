@@ -891,7 +891,7 @@ class MUtil_Html_HtmlElement extends \Zend_View_Helper_HtmlElement
      * The number of items in the content
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_content);
     }
@@ -981,7 +981,7 @@ class MUtil_Html_HtmlElement extends \Zend_View_Helper_HtmlElement
      *
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->_content);
     }
@@ -1060,7 +1060,7 @@ class MUtil_Html_HtmlElement extends \Zend_View_Helper_HtmlElement
      * @param scalar $offset
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         return array_key_exists($offset, $this->_content);
     }
@@ -1071,7 +1071,7 @@ class MUtil_Html_HtmlElement extends \Zend_View_Helper_HtmlElement
      * @param scalar $offset
      * @return mixed
      */
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         if (array_key_exists($offset, $this->_content)) {
             return $this->_content[$offset];
@@ -1093,7 +1093,7 @@ class MUtil_Html_HtmlElement extends \Zend_View_Helper_HtmlElement
      * @param mixed $value
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         if ($this->_notSpecialType($value, $offset)) {
             if ($this->_contentToTag) {
@@ -1133,7 +1133,7 @@ class MUtil_Html_HtmlElement extends \Zend_View_Helper_HtmlElement
      *
      * @param scalar $offset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->_content[$offset]);
     }

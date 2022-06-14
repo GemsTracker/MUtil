@@ -135,7 +135,7 @@ class MUtil_MultiWrapper implements \ArrayAccess
         }
     }
 
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         // Return on first one found
         foreach ($this->_array as $key => $obj) {
@@ -147,7 +147,7 @@ class MUtil_MultiWrapper implements \ArrayAccess
         return false;
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         $result = array();
 
@@ -161,14 +161,14 @@ class MUtil_MultiWrapper implements \ArrayAccess
         return $result;
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         foreach ($this->_array as $obj) {
             $obj[$offset] = $value;
         }
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         foreach ($this->_array as $obj) {
             unset($obj[$offset]);

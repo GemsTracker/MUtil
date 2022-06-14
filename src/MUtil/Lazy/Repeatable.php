@@ -212,22 +212,22 @@ class MUtil_Lazy_Repeatable implements \MUtil_Lazy_RepeatableInterface
         }
     }
 
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         return true;
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->$offset;
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset,mixed $value): void
     {
         throw new \MUtil_Lazy_LazyException('You cannot set a Lazy object.');
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         throw new \MUtil_Lazy_LazyException('You cannot unset a Lazy object.');
     }

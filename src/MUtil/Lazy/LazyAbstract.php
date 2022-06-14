@@ -123,7 +123,7 @@ abstract class MUtil_Lazy_LazyAbstract implements \MUtil_Lazy_LazyInterface
             return $e->getMessage();
         }
     }
-    
+
     /**
      * Returns a lazy call where this object is the first parameter
      *
@@ -156,22 +156,22 @@ abstract class MUtil_Lazy_LazyAbstract implements \MUtil_Lazy_LazyInterface
         return new \MUtil_Lazy_Call($callable, $args);
     }
 
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         return true;
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return new \MUtil_Lazy_ArrayAccessor($this, $offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new \MUtil_Lazy_LazyException('You cannot set a Lazy object.');
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         throw new \MUtil_Lazy_LazyException('You cannot unset a Lazy object.');
     }
