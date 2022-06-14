@@ -160,6 +160,7 @@ class MUtil_Html_UrlArrayAttribute extends \MUtil_Html_ArrayAttribute
             // Make sure controllor, action, module are specified
             $url_parameters = self::rerouteUrl($request, $url_parameters);
         }
+        return null;
 
         $router = $this->getRouter();
         return $router->assemble($url_parameters, null, true, false);
