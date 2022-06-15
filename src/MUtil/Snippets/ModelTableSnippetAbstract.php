@@ -139,7 +139,7 @@ abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_
      */
     protected function addPaginator(\MUtil_Html_TableElement $table, \Zend_Paginator $paginator)
     {
-        $table->tfrow()->pagePanel($paginator, $this->request, array('baseUrl' => $this->baseUrl));
+        //$table->tfrow()->pagePanel($paginator, null, array('baseUrl' => $this->baseUrl));
     }
 
     /**
@@ -216,7 +216,8 @@ abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_
 
         // Add generic text search filter and marker
         $textKey = $model->getTextFilter();
-        if ($searchText = $this->request->getParam($textKey)) {
+        if (isset($this->requestQueryParams[$textKey])) {
+            $searchText = $this->requestQueryParams[$textKey];
             // \MUtil_Echo::r($textKey . '[' . $searchText . ']');
             $this->_marker = new \MUtil_Html_Marker($model->getTextSearches($searchText), 'strong', 'UTF-8');
 
