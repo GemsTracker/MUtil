@@ -353,7 +353,7 @@ class MUtil_Model_Bridge_TableBridge extends \MUtil_Model_Bridge_TableBridgeAbst
 
     public function setPage(\Zend_Paginator $paginator, \Zend_Controller_Request_Abstract $request, \Zend_Translate $t, $scrollingStyle = 'Sliding')
     {
-        $this->table->tfrow()->pagePanel($paginator, $request, $t, array('baseurl' => $this->baseUrl, 'scrollingStyle' => $scrollingStyle));
+        //$this->table->tfrow()->pagePanel($paginator, $request, $t, array('baseurl' => $this->baseUrl, 'scrollingStyle' => $scrollingStyle));
     }
 
     /**
