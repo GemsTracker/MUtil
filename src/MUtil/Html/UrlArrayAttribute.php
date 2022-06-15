@@ -136,13 +136,14 @@ class MUtil_Html_UrlArrayAttribute extends \MUtil_Html_ArrayAttribute
         // escaping.
         if (! $this->getRouteReset()) {
 
+            $params = [];
             if ($request instanceof \Zend_Controller_Request_Http) {
                 // Make sure we don't get any POST's, but we do want the rest of the parameters
                 $old = $request->getParamSources();
                 $request->setParamSources(array('_GET'));
                 $params = $request->getParams();
                 $request->setParamSources($old);
-            } else {
+            } elseif ($request instanceof \Zend_Controller_Request_Abstract) {
                 $params = $request->getParams();
             }
 
@@ -156,7 +157,7 @@ class MUtil_Html_UrlArrayAttribute extends \MUtil_Html_ArrayAttribute
                     $url_parameters[$key] = rawurlencode($value);
                 }
             }
-        } else {
+        } elseif ($request instanceof \Zend_Controller_Request_Abstract) {
             // Make sure controllor, action, module are specified
             $url_parameters = self::rerouteUrl($request, $url_parameters);
         }
