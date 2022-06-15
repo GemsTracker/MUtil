@@ -48,7 +48,7 @@ class MUtil_Form_Decorator_AutoFocus extends \Zend_Form_Decorator_Abstract
                     $id = $element->getName();
                 }
                 $allowedElements[] = $id;
-                
+
                 if ($element instanceof \Zend_Form_Element_MultiCheckbox) {
                     foreach ($element->getMultiOptions() as $key => $label) {
                         $allowedElements[] = $id . '-' . $key;
@@ -111,13 +111,13 @@ class MUtil_Form_Decorator_AutoFocus extends \Zend_Form_Decorator_Abstract
     {
         $form  = $this->getElement();
         $view  = $form->getView();
-        $request = \MUtil\Controller\Front::getRequest();
 
-        $focus = $request->getParam($form->focusTrackerElementId) ?: $this->_getFocus($form);
+        //$focus = $request->getParam($form->focusTrackerElementId) ?: $this->_getFocus($form);
+        $focus = null;
 
         $allowedElements = [];
         $this->_getAllowed($form, $allowedElements);
-        
+
         if (in_array($focus, $allowedElements)) {
             if ($form->focusTrackerElementId) {
                 $form->getElement($form->focusTrackerElementId)->setValue($focus);
@@ -142,7 +142,7 @@ class MUtil_Form_Decorator_AutoFocus extends \Zend_Form_Decorator_Abstract
                 $view->inlineScript()->appendScript($script);
             }
         }
-        
+
         return $content;
     }
 }
