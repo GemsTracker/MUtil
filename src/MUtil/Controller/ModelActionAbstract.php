@@ -52,7 +52,7 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      *
      * @var boolean $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
      */
-    public $includeNumericFilters = false;
+    public bool $includeNumericFilters = false;
 
     /**
      * Array of the actions that use a summarized version of the model.
@@ -65,7 +65,7 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      * @var array $summarizedActions Array of the actions that use a
      * summarized version of the model.
      */
-    public $summarizedActions = array();
+    public array $summarizedActions = [];
 
 
     /**
@@ -73,7 +73,7 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      *
      * @var boolean $useHtmlView true
      */
-    public $useHtmlView = true;  // Overrule parent
+    public bool $useHtmlView = true;  // Overrule parent
 
 
     /**
@@ -83,16 +83,16 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      *
      * $var \MUtil_Model_ModelAbstract $_model The model in use
      */
-    private $_model;
+    private ?\MUtil_Model_ModelAbstract $_model;
 
     /**
      * The request ID value
      *
      * @return string The request ID value
      */
-    protected function _getIdParam()
+    protected function _getIdParam(): string
     {
-        return $this->_getParam(\MUtil_Model::REQUEST_ID);
+        return $this->request->getAttribute(\MUtil_Model::REQUEST_ID);
     }
 
     /**
@@ -105,7 +105,7 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      * @param \MUtil_Model_ModelAbstract $model
      * @return void
      */
-    protected function addBrowseTableColumns(\MUtil_Model_Bridge_TableBridge $bridge, \MUtil_Model_ModelAbstract $model)
+    protected function addBrowseTableColumns(\MUtil_Model_Bridge_TableBridge $bridge, \MUtil_Model_ModelAbstract $model): void
     {
         foreach($model->getItemsOrdered() as $name) {
             if ($label = $model->get($name, 'label')) {
@@ -124,10 +124,10 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      * @param \MUtil_Model_Bridge_FormBridgeInterface $bridge
      * @param \MUtil_Model_ModelAbstract $model
      * @param array $data The data that will later be loaded into the form
-     * @param optional boolean $new Form should be for a new element
-     * @return void|array When an array of new values is return, these are used to update the $data array in the calling function
+     * @param boolean $new Form should be for a new element
+     * @return void When an array of new values is return, these are used to update the $data array in the calling function
      */
-    protected function addFormElements(\MUtil_Model_Bridge_FormBridgeInterface $bridge, \MUtil_Model_ModelAbstract $model, array $data, $new = false)
+    protected function addFormElements(\MUtil_Model_Bridge_FormBridgeInterface $bridge, \MUtil_Model_ModelAbstract $model, array $data, $new = false): void
     {
         foreach($model->getItemsOrdered() as $name) {
             if ($model->has($name, 'label') || $model->has($name, 'elementClass')) {
@@ -150,7 +150,7 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      * @param string $action The current action.
      * @return \MUtil_Model_ModelAbstract
      */
-    abstract protected function createModel($detailed, $action);
+    abstract protected function createModel(bool $detailed, string $action): \MUtil_Model_ModelAbstract;
 
 
     /**
@@ -159,7 +159,7 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      * @param mixed $options
      * @return \Zend_Form
      */
-    protected function createForm($options = null)
+    protected function createForm(mixed $options = null): \Zend_Form
     {
         $form = new \Zend_Form($options);
 
@@ -200,10 +200,12 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      *
      * @return \MUtil_Model_ModelAbstract
      */
-    protected function getModel()
+    protected function getModel(): \MUtil_Model_ModelAbstract
     {
-        $request = $this->getRequest();
-        $action  = null === $request ? '' : $request->getActionName();
+        $action = null;
+        if ($this->request instanceof \Psr\Http\Message\ServerRequestInterface) {
+            $action = $this->requestHelper->getActionName();
+        }
 
         // Only get new model if there is no model or the model was for a different action
         if (! ($this->_model && $this->_model->isMeta('action', $action))) {
@@ -214,7 +216,17 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
 
             // Detailed models DO NOT USE $_POST for filtering,
             // multirow models DO USE $_POST parameters for filtering.
-            $this->_model->applyRequest($request, $detailed, $this->includeNumericFilters);
+            $parameters = $this->request->getQueryParams();
+            if (!$detailed) {
+                $parameters += $this->request->getParsedBody();
+            }
+
+            // Remove all empty values (but not arrays)
+            $parameters = array_filter($parameters, function($i) {
+                return is_array($i) || strlen($i);
+            });
+
+            $this->_model->applyParameters($parameters, $this->includeNumericFilters);
         }
 
         return $this->_model;
@@ -226,10 +238,10 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      * using addFormElements().
      *
      * @param array $data The data that will later be loaded into the form, can be changed
-     * @param optional boolean $new Form should be for a new element
+     * @param boolean $new Form should be for a new element
      * @return \Zend_Form
      */
-    public function getModelForm(array &$data, $new = false)
+    public function getModelForm(array &$data, bool $new = false)
     {
         $model = $this->getModel();
 
@@ -248,7 +260,7 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      * @param integer $columns The number of columns to use for presentation
      * @return \MUtil_Html_TableElement
      */
-    public function getShowTable($columns = 1)
+    public function getShowTable(int $columns = 1): \MUtil_Html_TableElement
     {
         $model = $this->getModel();
 
@@ -270,7 +282,7 @@ abstract class MUtil_Controller_ModelActionAbstract extends \MUtil_Controller_Ac
      *
      * return boolean True if the user can add new items
      */
-    public function hasNew()
+    public function hasNew(): bool
     {
         $model = $this->getModel();
 

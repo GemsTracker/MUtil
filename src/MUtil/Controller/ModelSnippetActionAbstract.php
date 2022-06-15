@@ -28,10 +28,10 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    private $_defaultAutofilterParameters = array(
+    private $_defaultAutofilterParameters = [
         'searchData'    => 'getSearchData',
         'searchFilter'  => 'getSearchFilter',
-        );
+    ];
 
     /**
      * Default parameters for createAction, can be overruled by $this->createParameters
@@ -44,9 +44,9 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array
      */
-    private $_defaultCreateParameters = array(
+    private $_defaultCreateParameters = [
         'createData' => true,
-        );
+    ];
 
     /**
      * Default parameters for editAction, can be overruled by $this->editParameters
@@ -59,9 +59,9 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array
      */
-    private $_defaultEditParameters = array(
+    private $_defaultEditParameters = [
         'createData' => false,
-        );
+    ];
 
     /**
      * Default parameters used for the import action
@@ -73,10 +73,10 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    private $_defaultImportParameters = array(
+    private $_defaultImportParameters = [
         'defaultImportTranslator' => 'getDefaultImportTranslator',
         'importTranslators'       => 'getImportTranslators',
-    );
+    ];
 
     /**
      * Default parameters for all actions, unless overruled by values with the same key at
@@ -89,12 +89,12 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array
      */
-    private $_defaultParameters = array(
+    private $_defaultParameters = [
         'cacheTags'             => 'getCacheTags',
         'includeNumericFilters' => 'getIncludeNumericFilters',
         'model'                 => 'getModel',
-        'request'               => 'getRequest',
-        );
+        //'request'               => 'getRequest',
+    ];
 
     /**
      * Created in createModel().
@@ -141,7 +141,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array
      */
-    public $cacheTags = array();
+    public $cacheTags = [];
 
     /**
      * The parameters used for the create and edit actions.
@@ -153,7 +153,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $createEditParameters = array();
+    protected $createEditParameters = [];
 
     /**
      * The snippets used for the create and edit actions.
@@ -173,7 +173,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $createParameters = array();
+    protected $createParameters = [];
 
     /**
      * Model level parameters used for all actions, overruled by any values set in any other
@@ -187,14 +187,14 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $defaultParameters = array();
+    protected $defaultParameters = [];
 
     /**
      * The default search data to use.
      *
      * @var array()
      */
-    protected $defaultSearchData = array();
+    protected $defaultSearchData = [];
 
     /**
      * The parameters used for the deactivate action.
@@ -206,7 +206,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $deactivateParameters = array();
+    protected $deactivateParameters = [];
 
     /**
      * The snippets used for the deactivate  action.
@@ -225,7 +225,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $deleteParameters = array();
+    protected $deleteParameters = [];
 
     /**
      * The snippets used for the delete action.
@@ -245,7 +245,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $editParameters = array();
+    protected $editParameters = [];
 
     /**
      * Array of the actions that use the model in form version.
@@ -266,7 +266,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $importParameters = array();
+    protected $importParameters = [];
 
     /**
      * The snippets used for the import action
@@ -291,7 +291,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $indexParameters = array();
+    protected $indexParameters = [];
 
     /**
      * The snippets used for the index action, before those in autofilter
@@ -317,7 +317,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $reactivateParameters = array();
+    protected $reactivateParameters = [];
 
     /**
      * The snippets used for the reactivate action.
@@ -334,7 +334,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array
      */
-    protected $searchFieldRenames = array();
+    protected $searchFieldRenames = [];
 
     /**
      * An optional search session id.
@@ -355,7 +355,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $showParameters = array();
+    protected $showParameters = [];
 
     /**
      * The snippets used for the show action
@@ -389,9 +389,9 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @return string The request ID value
      */
-    protected function _getIdParam()
+    protected function _getIdParam(): string
     {
-        return $this->_getParam(\MUtil_Model::REQUEST_ID);
+        return $this->request->getAttribute(\MUtil_Model::REQUEST_ID);
     }
 
     /**
@@ -401,7 +401,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      */
     protected function _processParameters(array $input)
     {
-        $output = array();
+        $output = [];
 
         foreach ($input + $this->defaultParameters + $this->_defaultParameters as $key => $value) {
             if (is_string($value) && method_exists($this, $value)) {
@@ -427,9 +427,12 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      */
     protected function aliasAction($alias)
     {
-        $request = $this->getRequest();
+        /**
+         * TODO reimplement alias action
+         */
+        /*$request = $this->getRequest();
         $request->setActionName($alias);
-        $request->setParam($request->getActionKey(), $alias);
+        $request->setParam($request->getActionKey(), $alias);*/
     }
 
     /**
@@ -447,7 +450,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
     /**
      * The automatically filtered result
      *
-     * @param $resetMvc When true only the filtered resulsts
+     * @param $resetMvc bool When true only the filtered resulsts
      */
     public function autofilterAction($resetMvc = true)
     {
@@ -610,8 +613,10 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      */
     protected function getModel()
     {
-        $request = $this->getRequest();
-        $action  = null === $request ? '' : $request->getActionName();
+        $action = null;
+        if ($this->request instanceof \Psr\Http\Message\ServerRequestInterface) {
+            $action = $this->requestHelper->getActionName();
+        }
 
         // Only get new model if there is no model or the model was for a different action
         if (! ($this->_model && $this->_model->isMeta('action', $action))) {
@@ -628,7 +633,17 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
 
             // Detailed models DO NOT USE $_POST for filtering,
             // multirow models DO USE $_POST parameters for filtering.
-            $this->_model->applyRequest($request, $detailed, $this->includeNumericFilters);
+            $parameters = $this->request->getQueryParams();
+            if (!$detailed) {
+                $parameters += $this->request->getParsedBody();
+            }
+
+            // Remove all empty values (but not arrays)
+            $parameters = array_filter($parameters, function($i) {
+                return is_array($i) || strlen($i);
+            });
+
+            $this->_model->applyParameters($parameters, $this->includeNumericFilters);
         }
 
         return $this->_model;
@@ -663,25 +678,20 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
             $sessionData = $searchSession->$sessionId;
             // \MUtil_Echo::track($sessionData);
         } else {
-            $sessionData = array();
+            $sessionData = [];
         }
 
         $defaults = $this->getSearchDefaults();
 
         if ($useRequest) {
-            $request = $this->getRequest();
-            $data = $request->getParams();
-
-            // remove controler/action/module
-            unset($data[$request->getModuleKey()],
-                    $data[$request->getControllerKey()],
-                    $data[$request->getActionKey()]);
+            $data = $this->request->getQueryParams();
+            $data += $this->request->getParsedBody();
 
             if (isset($data[\MUtil_Model::AUTOSEARCH_RESET]) && $data[\MUtil_Model::AUTOSEARCH_RESET]) {
                 // Clean up values
-                $sessionData = array();
+                $sessionData = [];
 
-                $request->setParam(\MUtil_Model::AUTOSEARCH_RESET, null);
+                //$request->setParam(\MUtil_Model::AUTOSEARCH_RESET, null);
             } else {
                 $data = $data + $sessionData;
             }
@@ -694,7 +704,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
             // On the other hand we do store empty values in the session when they are in the defaults
             // array. The reason is that otherwise a non-empty default can later overrule an empty
             // value.
-            $tmp = array();
+            $tmp = [];
             foreach ($data as $k => $v) {
                 if (is_array($v) || strlen($v) || array_key_exists($k, $defaults)) {
                     $tmp[$k] = $v;
@@ -748,7 +758,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
         }
 
         $filter = $this->getSearchData($useRequest);
-        $this->_searchFilter = array();
+        $this->_searchFilter = [];
 
         foreach ($filter as $field => $value) {
             if (isset($this->searchFieldRenames[$field])) {
