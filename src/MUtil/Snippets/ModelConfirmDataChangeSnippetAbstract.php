@@ -37,6 +37,8 @@
 
 namespace MUtil\Snippets;
 
+use Psr\Cache\CacheItemPoolInterface;
+
 /**
  * A snippet asking for confirmation before performing a save of predertemined data
  *
@@ -87,7 +89,7 @@ abstract class ModelConfirmDataChangeSnippetAbstract extends \MUtil_Snippets_Mod
 
     /**
      *
-     * @var \Zend_Cache_Core
+     * @var CacheItemPoolInterface
      */
     protected $cache;
 
@@ -230,8 +232,8 @@ abstract class ModelConfirmDataChangeSnippetAbstract extends \MUtil_Snippets_Mod
 
         $model->save($this->saveData + $model->getFilter());
 
-        if ($this->cacheTags && ($this->cache instanceof \Zend_Cache_Core)) {
-            $this->cache->clean(\Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG, (array) $this->cacheTags);
+        if ($this->cacheTags && ($this->cache instanceof \Symfony\Contracts\Cache\TagAwareCacheInterface)) {
+            $this->cache->invalidateTags((array) $this->cacheTags);
         }
 
         $this->setAfterDeleteRoute();

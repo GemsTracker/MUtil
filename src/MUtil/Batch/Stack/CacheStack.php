@@ -50,7 +50,7 @@ class MUtil_Batch_Stack_CacheStack extends \MUtil_Batch_Stack_StackAbstract
 {
     /**
      *
-     * @var \Zend_Cache_Core
+     * @var \Psr\Cache\CacheItemPoolInterface
      */
     private $_cache;
 
@@ -70,14 +70,15 @@ class MUtil_Batch_Stack_CacheStack extends \MUtil_Batch_Stack_StackAbstract
      *
      * @param string $id A unique name identifying the batch
      */
-    public function __construct($id, \Zend_Cache_Core $cache)
+    public function __construct($id, \Psr\Cache\CacheItemPoolInterface $cache)
     {
         $this->_cacheId  = 'batch_' . session_id() . '_' . $id;
         $this->_cache    = $cache;
-        $this->_commands = $this->_cache->load($this->_cacheId, true);
+        $item = $this->_cache->getItem($this->_cacheId);
+        $this->_commands = $item->get();
 
         if (! $this->_commands) {
-            $this->_commands = array();
+            $this->_commands = [];
         }
     }
 
@@ -88,9 +89,14 @@ class MUtil_Batch_Stack_CacheStack extends \MUtil_Batch_Stack_StackAbstract
     {
         // \MUtil_Echo::track(count($this->_commands));
         if ($this->_commands) {
-            $this->_cache->save($this->_commands, $this->_cacheId, array('batch', 'sess_' . session_id()));
+            $item = $this->_cache->getItem($this->_cacheId);
+            $item->set($this->_commands);
+            if ($item instanceof Symfony\Contracts\Cache\ItemInterface) {
+                $item->tag(['batch', 'sess_' . session_id()]);
+            }
+            $this->_cache->save($item);
         } else {
-            $this->_cache->remove($this->_cacheId);
+            $this->_cache->deleteItem($this->_cacheId);
         }
     }
 

@@ -74,7 +74,7 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
 
     /**
      *
-     * @var \Zend_Cache_Core
+     * @var \Psr\Cache\CacheItemPoolInterface
      */
     protected $cache;
 
@@ -141,13 +141,6 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
     protected $onlyUsedElements = false;
 
     /**
-     * Required
-     *
-     * @var \Zend_Controller_Request_Abstract
-     */
-    protected $request;
-
-    /**
      * The name of the action to forward to after form completion
      *
      * @var string
@@ -187,7 +180,7 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
     {
         if (! $this->_csrf) {
             $this->_form->addElement('hash', $this->csrfId, array(
-                'salt' => 'mutil_' . $this->request->getControllerName() . '_' . $this->request->getActionName(),
+                'salt' => 'mutil_' . $this->currentController . '_' . $this->currentAction,
                 'timeout' => $this->csrfTimeout,
                 ));
             $this->_csrf = $this->_form->getElement($this->csrfId);
@@ -293,8 +286,8 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
         // Communicate to user
         if ($changed) {
             // Clean cache on changes
-            if ($this->cacheTags && ($this->cache instanceof \Zend_Cache_Core)) {
-                $this->cache->clean(\Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG, (array) $this->cacheTags);
+            if ($this->cacheTags && ($this->cache instanceof \Symfony\Contracts\Cache\TagAwareCacheInterface)) {
+                $this->cache->invalidateTags((array) $this->cacheTags);
             }
 
             $this->addMessage($this->getChangedMessage($changed));
@@ -316,17 +309,6 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
      */
     protected function beforeSave()
     { }
-
-    /**
-     * Should be called after answering the request to allow the Target
-     * to check if all required registry values have been set correctly.
-     *
-     * @return boolean False if required values are missing.
-     */
-    public function checkRegistryRequestsAnswers()
-    {
-        return (boolean) $this->request;
-    }
 
     /**
      * After validation we clean the form data to remove all
@@ -362,7 +344,7 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
     {
         return sprintf($this->_('%2$u %1$s saved'), $this->getTopic($changed), $changed);
     }
-    
+
     /**
      * Create the snippets content
      *
@@ -469,15 +451,7 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
      */
     protected function isPost()
     {
-        if ($this->request instanceof \Zend_Controller_Request_Http) {
-            return $this->request->isPost();
-        }
-        if ($this->request instanceof \MUtil_Controller_Request_Cli && (!array_key_exists($this->saveButtonId, $this->formData))) {
-            // Set save label for Cli unless parameter was passed empty
-            $this->formData[$this->saveButtonId] = $this->saveLabel;
-        }
-
-        return true;
+        return $this->isPost;
     }
 
     /**
@@ -499,8 +473,8 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
     {
         $model = $this->getModel();
 
-        if ($this->request->isPost()) {
-            $this->formData = $model->loadPostData($this->request->getPost() + $this->formData, $this->createData);
+        if ($this->isPost) {
+            $this->formData = $model->loadPostData($this->requestPost + $this->formData, $this->createData);
 
         } else {
             // Assume that if formData is set it is the correct formData
@@ -635,8 +609,8 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
     protected function setAfterSaveRoute()
     {
         // Default is just go to the index
-        if ($this->routeAction && ($this->request->getActionName() !== $this->routeAction)) {
-            $this->afterSaveRouteUrl = array($this->request->getActionKey() => $this->routeAction);
+        if ($this->routeAction && ($this->currentAction !== $this->routeAction)) {
+            $this->afterSaveRouteUrl = ['action' => $this->routeAction];
 
             if ($this->afterSaveRouteKeys) {
                 // Set the key identifiers for the route.

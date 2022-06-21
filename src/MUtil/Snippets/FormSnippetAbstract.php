@@ -11,6 +11,8 @@
 
 namespace MUtil\Snippets;
 
+use Psr\Cache\CacheItemPoolInterface;
+
 /**
  *
  *
@@ -56,7 +58,7 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
 
     /**
      *
-     * @var \Zend_Cache_Core
+     * @var CacheItemPoolInterface
      */
     protected $cache;
 
@@ -242,8 +244,8 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
     {
         if ($changed) {
             // Clean cache on changes
-            if ($this->cacheTags && ($this->cache instanceof \Zend_Cache_Core)) {
-                $this->cache->clean(\Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG, (array) $this->cacheTags);
+            if ($this->cacheTags && ($this->cache instanceof \Symfony\Contracts\Cache\TagAwareCacheInterface)) {
+                $this->cache->invalidateTags((array) $this->cacheTags);
             }
         }
     }

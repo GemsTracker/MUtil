@@ -87,7 +87,7 @@ abstract class MUtil_Snippets_ModelYesNoDeleteSnippetAbstract extends \MUtil_Sni
 
     /**
      *
-     * @var \Zend_Cache_Core
+     * @var \Psr\Cache\CacheItemPoolInterface
      */
     protected $cache;
 
@@ -214,8 +214,8 @@ abstract class MUtil_Snippets_ModelYesNoDeleteSnippetAbstract extends \MUtil_Sni
 
         $this->setAfterDeleteRoute();
 
-        if ($this->cacheTags && ($this->cache instanceof \Zend_Cache_Core)) {
-            $this->cache->clean(\Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG, (array) $this->cacheTags);
+        if ($this->cacheTags && ($this->cache instanceof \Symfony\Contracts\Cache\TagAwareCacheInterface)) {
+            $this->cache->invalidateTags((array) $this->cacheTags);
         }
     }
 
