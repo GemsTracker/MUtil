@@ -49,6 +49,8 @@ abstract class MUtil_Controller_Action
      */
     public $html;
 
+    public ?string $redirectUrl = null;
+
     /**
      * PSR-7 Request
      *
@@ -99,6 +101,8 @@ abstract class MUtil_Controller_Action
      */
     public $translateAdapter;
 
+    protected \Mezzio\Helper\UrlHelper $urlHelper;
+
     /**
      * Set to true in child class for automatic creation of $this->html.
      *
@@ -123,10 +127,11 @@ abstract class MUtil_Controller_Action
      */
     public $useRawOutput = false;
 
-    public function __construct(\Psr\Http\Message\ServerRequestInterface $request, $init = true)
+    public function __construct(\Psr\Http\Message\ServerRequestInterface $request, \Mezzio\Helper\UrlHelper $urlHelper, $init = true)
     {
         $this->request = $request;
         $this->requestHelper = new \MUtil\Legacy\RequestHelper($request);
+        $this->urlHelper = $urlHelper;
 
         //$this->_helper = new Zend_Controller_Action_HelperBroker($this);
 
@@ -231,7 +236,20 @@ abstract class MUtil_Controller_Action
                     $results[$filename]    = $snippet;
 
                 } elseif ($snippet->getRedirectRoute()) {
-                    $snippet->redirectRoute();
+                    $redirectParts = $snippet->getRedirectRoute();
+                    if (isset($redirectParts['routeName'])) {
+                        $url = $this->urlHelper->generate($redirectParts['routeName']);
+                        $this->redirectUrl = $url;
+                    }
+                    $route = $this->requestHelper->getRoute();
+                    $routeName = $route->getName();
+                    $routeNameParts = explode('.', $routeName);
+                    array_pop($routeNameParts);
+                    $routeNameParts[] = $redirectParts['action'];
+                    $newRouteName = join('.', $routeNameParts);
+
+                    $url = $this->urlHelper->generate($newRouteName);
+                    $this->redirectUrl = $url;
                     return null;
                 }
             }
@@ -283,6 +301,11 @@ abstract class MUtil_Controller_Action
         }
 
         return $this->_messenger;
+    }
+
+    public function getRedirectUrl(): ?string
+    {
+        return $this->redirectUrl;
     }
 
     /**
