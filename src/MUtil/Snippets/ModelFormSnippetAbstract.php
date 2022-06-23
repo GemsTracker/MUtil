@@ -180,7 +180,7 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
     {
         if (! $this->_csrf) {
             $this->_form->addElement('hash', $this->csrfId, array(
-                'salt' => 'mutil_' . $this->currentController . '_' . $this->currentAction,
+                'salt' => 'mutil_' . $this->requestInfo->getCurrentController() . '_' . $this->requestInfo->getCurrentAction(),
                 'timeout' => $this->csrfTimeout,
                 ));
             $this->_csrf = $this->_form->getElement($this->csrfId);
