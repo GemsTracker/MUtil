@@ -130,7 +130,7 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
     /**
      * @var \MUtil\Request\RequestInfo
      */
-    protected ?\MUtil\Request\RequestInfo $requestInfo;
+    protected ?\MUtil\Request\RequestInfo $requestInfo = null;
 
     /**
      * The name of the action to forward to after form completion

@@ -77,7 +77,7 @@ abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_Snipp
      */
     public $removePost = true;
 
-    protected ?\MUtil\Request\RequestInfo $requestInfo;
+    protected ?\MUtil\Request\RequestInfo $requestInfo = null;
 
     /**
      * Searchfilter to use including model sorts, etcc..

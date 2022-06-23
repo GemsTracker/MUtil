@@ -85,7 +85,7 @@ abstract class YesNoDeleteSnippetAbstract extends \MUtil_Snippets_SnippetAbstrac
     /**
      * @var \MUtil\Request\RequestInfo
      */
-    protected ?\MUtil\Request\RequestInfo $requestInfo;
+    protected ?\MUtil\Request\RequestInfo $requestInfo = null;
 
     /**
      * Called after the check that all required registry values

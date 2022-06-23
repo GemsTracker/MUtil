@@ -57,7 +57,7 @@ class SequenceSnippet extends \MUtil_Snippets_SnippetAbstract
     /**
      * @var RequestInfo
      */
-    protected ?RequestInfo $requestInfo;
+    protected ?RequestInfo $requestInfo = null;
 
     /**
      *

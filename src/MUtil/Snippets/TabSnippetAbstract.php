@@ -64,7 +64,7 @@ abstract class MUtil_Snippets_TabSnippetAbstract extends \MUtil_Snippets_Snippet
     /**
      * @var \MUtil\Request\RequestInfo
      */
-    protected \MUtil\Request\RequestInfo $requestInfo;
+    protected ?\MUtil\Request\RequestInfo $requestInfo = null;
 
     /**
      *
