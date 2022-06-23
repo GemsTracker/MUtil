@@ -71,26 +71,13 @@ abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_Snipp
     public $includeNumericFilters = false;
 
     /**
-     * @var bool is current request a POST request?
-     */
-    protected bool $isPost = false;
-
-    /**
      * When true the post parameters are removed from the request while filtering
      *
      * @var boolean Should post variables be removed from the request?
      */
     public $removePost = true;
 
-    /**
-     * @var array POST request content
-     */
-    protected array $requestPost = [];
-
-    /**
-     * @var array query params
-     */
-    protected array $requestQueryParams = [];
+    protected \MUtil\Request\RequestInfo $requestInfo;
 
     /**
      * Searchfilter to use including model sorts, etcc..
@@ -199,10 +186,10 @@ abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_Snipp
             }
             $model->applyParameters($this->searchFilter, true);
 
-        } elseif (count($this->requestQueryParams)) {
-            $params = $this->requestQueryParams;
+        } elseif (count($this->requestInfo->getRequestQueryParams())) {
+            $params = $this->requestInfo->getRequestQueryParams();
             if (!$this->removePost) {
-                $params += $this->requestPost;
+                $params += $this->requestInfo->getRequestPostParams();
             }
             // Remove all empty values (but not arrays) from the filter
             $params = array_filter($params, function($i) {
@@ -222,10 +209,13 @@ abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_Snipp
      */
     protected function processSortOnly(\MUtil_Model_ModelAbstract $model)
     {
-        if (count($this->requestQueryParams)) {
-            if (isset($this->requestQueryParams[$model->getSortParamAsc()])) {
+        if (count($this->requestInfo->getRequestQueryParams())) {
+            $queryParams = $this->requestInfo->getRequestQueryParams();
+            if (isset($queryParams[$model->getSortParamAsc()])) {
+                $sort = $queryParams[$model->getSortParamAsc()];
                 $model->addSort([$sort => SORT_ASC]);
-            } elseif (isset($this->requestQueryParams[$model->getSortParamDesc()])) {
+            } elseif (isset($queryParams[$model->getSortParamDesc()])) {
+                $sort = $queryParams[$model->getSortParamAsc()];
                 $model->addSort(array($sort => SORT_DESC));
             }
         }

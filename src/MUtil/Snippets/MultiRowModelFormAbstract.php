@@ -71,8 +71,8 @@ abstract class MultiRowModelFormAbstract extends \MUtil_Snippets_ModelFormSnippe
 
         // \MUtil_Echo::track($model->getFilter());
 
-        if ($this->request->isPost()) {
-            $formData = $this->request->getPost();
+        if ($this->requestInfo->isPost()) {
+            $formData = $this->requestInfo->getRequestPostParams();
 
             foreach ($formData[$mname] as $id => $row) {
                 if (isset($this->formData[$mname], $this->formData[$mname][$id])) {

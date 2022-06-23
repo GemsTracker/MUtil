@@ -83,10 +83,9 @@ abstract class YesNoDeleteSnippetAbstract extends \MUtil_Snippets_SnippetAbstrac
     protected $deleteQuestion;
 
     /**
-     *
-     * @var \Zend_Controller_Request_Abstract
+     * @var \MUtil\Request\RequestInfo
      */
-    protected $request;
+    protected \MUtil\Request\RequestInfo $requestInfo;
 
     /**
      * Called after the check that all required registry values
@@ -130,8 +129,8 @@ abstract class YesNoDeleteSnippetAbstract extends \MUtil_Snippets_SnippetAbstrac
         $div->append(' ');
         $div->a(
                 array(
-                    $this->request->getControllerKey() => $this->abortController ?: $this->request->getControllerName(),
-                    $this->request->getActionKey() => $this->abortAction ?: $this->request->getActionName(),
+                    'controller' => $this->abortController ?: $this->requestInfo->getCurrentController(),
+                    'action' => $this->abortAction ?: $this->requestInfo->getCurrentAction()
                     ),
                 $this->_('No'),
                 array('class' => $this->buttonNoClass)
@@ -182,7 +181,8 @@ abstract class YesNoDeleteSnippetAbstract extends \MUtil_Snippets_SnippetAbstrac
      */
     public function hasHtmlOutput()
     {
-        if ($this->request->getParam($this->confirmParameter)) {
+        $queryParams = $this->requestInfo->getRequestQueryParams();
+        if (isset($queryParams[$this->confirmParameter])) {
             $this->performAction();
 
             $redirectRoute = $this->getRedirectRoute();

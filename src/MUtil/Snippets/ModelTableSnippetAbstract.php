@@ -216,8 +216,9 @@ abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_
 
         // Add generic text search filter and marker
         $textKey = $model->getTextFilter();
-        if (isset($this->requestQueryParams[$textKey])) {
-            $searchText = $this->requestQueryParams[$textKey];
+        $queryParams = $this->requestInfo->getRequestQueryParams();
+        if (isset($queryParams[$textKey])) {
+            $searchText = $queryParams[$textKey];
             // \MUtil_Echo::r($textKey . '[' . $searchText . ']');
             $this->_marker = new \MUtil_Html_Marker($model->getTextSearches($searchText), 'strong', 'UTF-8');
 

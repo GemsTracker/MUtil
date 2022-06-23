@@ -473,8 +473,8 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
     {
         $model = $this->getModel();
 
-        if ($this->isPost) {
-            $this->formData = $model->loadPostData($this->requestPost + $this->formData, $this->createData);
+        if ($this->requestInfo->isPost()) {
+            $this->formData = $model->loadPostData($this->requestInfo->getRequestPostParams() + $this->formData, $this->createData);
 
         } else {
             // Assume that if formData is set it is the correct formData

@@ -15,6 +15,8 @@
 
 namespace MUtil\Snippets\Standard;
 
+use MUtil\Request\RequestInfo;
+
 /**
  *
  * @package    MUtil
@@ -51,6 +53,11 @@ class SequenceSnippet extends \MUtil_Snippets_SnippetAbstract
      * @var string
      */
     protected $resetParam;
+
+    /**
+     * @var RequestInfo
+     */
+    protected RequestInfo $requestInfo;
 
     /**
      *
@@ -113,15 +120,20 @@ class SequenceSnippet extends \MUtil_Snippets_SnippetAbstract
 
         $sessionId = sprintf('%s_%s_%s',
                 __CLASS__,
-                $this->request->getControllerName(),
-                $this->request->getActionName()
+                $this->requestInfo->getCurrentController(),
+                $this->requestInfo->getCurrentAction()
                 );
 
         $this->_session = new \Zend_Session_Namespace($sessionId);
 
         if ($this->resetParam) {
-            $reset = (boolean) $this->request->getParam($this->resetParam, false);
-            $this->request->setParam($this->resetParam, null);
+
+            $queryParams = $this->requestInfo->getRequestQueryParams();
+            $reset = false;
+
+            if (isset($queryParams[$this->resetParam])) {
+                $reset = (bool) $queryParams[$this->resetParam];
+            }
         } else  {
             $reset = false;
         }

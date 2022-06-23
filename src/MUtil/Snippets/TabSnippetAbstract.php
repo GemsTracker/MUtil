@@ -62,11 +62,9 @@ abstract class MUtil_Snippets_TabSnippetAbstract extends \MUtil_Snippets_Snippet
     protected $href = array();
 
     /**
-     * Optional: $request or $tokenData must be set
-     *
-     * @var \Zend_Controller_Request_Abstract
+     * @var \MUtil\Request\RequestInfo
      */
-    protected $request;
+    protected \MUtil\Request\RequestInfo $requestInfo;
 
     /**
      *
@@ -83,7 +81,7 @@ abstract class MUtil_Snippets_TabSnippetAbstract extends \MUtil_Snippets_Snippet
     /**
      * Sets the default and current tab and returns the current
      *
-     * @return The current tab
+     * @return string The current tab
      */
     public function getCurrentTab()
     {
@@ -95,7 +93,11 @@ abstract class MUtil_Snippets_TabSnippetAbstract extends \MUtil_Snippets_Snippet
             $this->defaultTab = key($tabs);
         }
         if (null === $this->currentTab) {
-            $this->currentTab = $this->request->getParam($this->getParameterKey());
+            $this->currentTab = null;
+            $queryParams = $this->requestInfo->getRequestQueryParams();
+            if (isset($queryParams[$this->getParameterKey()])) {
+                $this->currentTab = $queryParams[$this->getParameterKey()];
+            }
         }
 
         // Param can exist and be empty or can have a false value

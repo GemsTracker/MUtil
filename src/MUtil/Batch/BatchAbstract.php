@@ -98,7 +98,7 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
      * @var string Unique id
      */
     private $_id;
-    
+
     /**
      * Stack to keep existing id's.
      *
@@ -139,15 +139,15 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
 
     /**
      * Progress template
-     * 
+     *
      * Available placeholders:
      * {total}      Total time
      * {elapsed}    Elapsed time
      * {remaining}  Remaining time
      * {percent}    Progress percent without the % sign
      * {msg}        Message reveiced
-     * 
-     * @var string 
+     *
+     * @var string
      */
     private $_progressTemplate = "{percent}% {msg}";
 
@@ -198,7 +198,7 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
      * @var \Zend_Locale
      */
     protected $locale;
-    
+
     /**
      *
      * @var \Zend_Log
@@ -389,7 +389,7 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
     {
         $this->getProgressBar()->update($this->getProgressPercentage(), $this->getLastMessage());
     }
-    
+
     /**
      * Add to exception store
      * @param \Exception $e
@@ -451,12 +451,12 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
 
         return $this;
     }
-    
+
     /**
      * Allow to add steps to the counter
-     * 
+     *
      * This should only be used by iterable tasks that execute in more then 1 step
-     * 
+     *
      * @param int $number
      */
     public function addStepCount($number)
@@ -464,7 +464,7 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
         if ($number > 0) {
             $this->_session->count = $this->_session->count + $number;
         }
-    }    
+    }
 
     /**
      * Add a message to the message stack.
@@ -980,13 +980,13 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
      * Returns true if any output was communicated, i.e. the "normal"
      * page should not be displayed.
      *
-     * @param \Zend_Controller_Request_Abstract $request
+     * @param array Request query params
      * @return boolean True when something ran
      */
-    public function run(\Zend_Controller_Request_Abstract $request)
+    public function run(array $requestQueryParams)
     {
         // Check for run url
-        if ($request->getParam($this->progressParameterName) === $this->progressParameterRunValue) {
+        if (isset($requestQueryParams[$this->progressParameterName]) && $requestQueryParams[$this->progressParameterName] === $this->progressParameterRunValue) {
             // [Try to] remove the maxumum execution time for this session
             @ini_set("max_execution_time", 0);
             @set_time_limit(0);
@@ -1231,18 +1231,18 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
         $this->progressBarAdapter = $adapter;
         return $this;
     }
-    
+
     /**
      * Set the progress template
-     * 
+     *
      * Available placeholders:
      * {total}      Total time
      * {elapsed}    Elapsed time
      * {remaining}  Remaining time
      * {percent}    Progress percent without the % sign
      * {msg}        Message reveiced
-     * 
-     * @var string 
+     *
+     * @var string
      */
     public function setProgressTemplate($template)
     {
@@ -1359,12 +1359,12 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
 
         $this->addMessage($message);
     }
-    
+
     /**
      * Unload a batch
-     * 
+     *
      * Normally we don't need this, but in unit test we need to be able to run a batch after is was finished
-     * 
+     *
      * @param string $id
      */
     public static function unload($id) {

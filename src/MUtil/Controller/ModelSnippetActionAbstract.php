@@ -93,7 +93,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
         'cacheTags'             => 'getCacheTags',
         'includeNumericFilters' => 'getIncludeNumericFilters',
         'model'                 => 'getModel',
-        //'request'               => 'getRequest',
+        'requestInfo'           => 'getRequestInfo',
     ];
 
     /**
@@ -647,6 +647,12 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
         }
 
         return $this->_model;
+    }
+
+    public function getRequestInfo(): \MUtil\Request\RequestInfo
+    {
+        $factory = new \MUtil\Request\RequestInfoFactory($this->request);
+        return $factory->getRequestInfo();
     }
 
     /**

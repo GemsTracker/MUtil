@@ -128,10 +128,9 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
     protected $layoutFixedWidth;
 
     /**
-     *
-     * @var \Zend_Controller_Request_Abstract
+     * @var \MUtil\Request\RequestInfo
      */
-    protected $request;
+    protected \MUtil\Request\RequestInfo $requestInfo;
 
     /**
      * The name of the action to forward to after form completion
@@ -182,7 +181,7 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
     {
         if (! $this->_csrf) {
             $this->_form->addElement('hash', $this->csrfId, array(
-                'salt' => 'mutil_' . $this->request->getControllerName() . '_' . $this->request->getActionName(),
+                'salt' => 'mutil_' . $this->requestInfo->getCurrentController() . '_' . $this->requestInfo->getCurrentAction(),
                 'timeout' => $this->csrfTimeout,
                 ));
             $this->_csrf = $this->_form->getElement($this->csrfId);
@@ -272,17 +271,6 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
                 $div->setAutoWidthFormLayout($this->_form, $this->layoutAutoWidthFactor);
             }
         }
-    }
-
-    /**
-     * Should be called after answering the request to allow the Target
-     * to check if all required registry values have been set correctly.
-     *
-     * @return boolean False if required values are missing.
-     */
-    public function checkRegistryRequestsAnswers()
-    {
-        return (boolean) $this->request;
     }
 
     /**
@@ -381,24 +369,6 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
     }
 
     /**
-     * Should this be treated as a post (allows override of default behaviour)
-     *
-     * @return boolean
-     */
-    protected function isPost()
-    {
-        if ($this->request instanceof \Zend_Controller_Request_Http) {
-            return $this->request->isPost();
-        }
-        if ($this->request instanceof \MUtil_Controller_Request_Cli && (!array_key_exists($this->saveButtonId, $this->formData))) {
-            // Set save label for Cli unless parameter was passed empty
-            $this->formData[$this->saveButtonId] = $this->saveLabel;
-        }
-
-        return true;
-    }
-
-    /**
      * Makes sure there is a form.
      */
     protected function loadForm()
@@ -424,13 +394,13 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
      */
     protected function loadFormData()
     {
-        if ($this->request instanceof \Zend_Controller_Request_Http && $this->request->isPost()) {
-            $this->formData = $this->request->getPost();
-        } elseif ($this->request instanceof \MUtil_Controller_Request_Cli) {
-            $this->formData = $this->request->getParams();
-        } else {
-            $this->formData = $this->getDefaultFormValues() + $this->request->getParams();
+        if ($this->isPost()) {
+            $this->formData = $this->getPostData();
+            return $this->formData;
         }
+
+        $this->formData = $this->getDefaultFormValues() + $this->getPostData();
+        return $this->formData;
     }
 
     /**
@@ -531,12 +501,12 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
      * Set what to do when the form is 'finished'.
      *
      * #param array $params Url items to set for this route
-     * @return MUtil_Snippets_ModelFormSnippetAbstract (continuation pattern)
+     * @return self (continuation pattern)
      */
     protected function setAfterSaveRoute(array $params = array())
     {
         // Only reroute when it is to a different url
-        if ($params
+        /* if ($params
                 || ($this->routeAction && ($this->request->getActionName() !== $this->routeAction))
                 || ($this->routeController && ($this->request->getControllerName() !== $this->routeController))) {
 
@@ -551,7 +521,7 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
                 $this->request->getActionKey() => $this->routeAction,
                 'RouteReset' => true,
                 );
-        }
+        } */
 
         return $this;
     }

@@ -112,7 +112,7 @@ abstract class ModelConfirmDataChangeSnippetAbstract extends \MUtil_Snippets_Mod
     /**
      * The question to ask the user.
      *
-     * @var sting Required
+     * @var string Required
      */
     protected $confirmQuestion;
 
@@ -211,7 +211,8 @@ abstract class ModelConfirmDataChangeSnippetAbstract extends \MUtil_Snippets_Mod
      */
     public function hasHtmlOutput()
     {
-        if ($this->request->getParam($this->confirmParameter)) {
+        $queryParams = $this->getRequestQueryParams();
+        if (isset($queryParams[$this->confirmParameter])) {
             $this->performAction();
 
             $redirectRoute = $this->getRedirectRoute();
@@ -247,13 +248,13 @@ abstract class ModelConfirmDataChangeSnippetAbstract extends \MUtil_Snippets_Mod
     protected function setAfterDeleteRoute()
     {
         // Default is just go to the index
-        if ($this->confirmAction && ($this->request->getActionName() !== $this->confirmAction)) {
+        /*if ($this->confirmAction && ($this->request->getActionName() !== $this->confirmAction)) {
             $this->afterSaveRouteUrl = array(
                 $this->request->getControllerKey() => $this->request->getControllerName(),
                 $this->request->getActionKey() => $this->confirmAction,
                 $this->confirmParameter => null, // make empty
                 );
-        }
+        }*/
 
         }
     /**
@@ -279,7 +280,7 @@ abstract class ModelConfirmDataChangeSnippetAbstract extends \MUtil_Snippets_Mod
                 );
         $footer[] = ' ';
         $footer->a(
-                array($this->request->getActionKey() => $this->abortAction),
+                array('action' => $this->abortAction),
                 $this->_('No'),
                 array('class' => $this->buttonNoClass)
                 );

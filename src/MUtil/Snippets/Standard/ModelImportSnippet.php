@@ -316,7 +316,7 @@ class MUtil_Snippets_Standard_ModelImportSnippet extends \MUtil_Snippets_WizardF
             $batch->autoStart = true;
 
             // \MUtil_Registry_Source::$verbose = true;
-            if ($batch->run($this->request)) {
+            if ($batch->run($this->getRequestQueryParams())) {
                 exit;
             }
 
@@ -369,7 +369,7 @@ class MUtil_Snippets_Standard_ModelImportSnippet extends \MUtil_Snippets_WizardF
             $batch->setFormId($form->getId());
             $batch->autoStart = true;
 
-            if ($batch->run($this->request)) {
+            if ($batch->run($this->getRequestQueryParams())) {
                 exit;
             }
 
@@ -560,7 +560,7 @@ class MUtil_Snippets_Standard_ModelImportSnippet extends \MUtil_Snippets_WizardF
     {
         if (! $this->importModel instanceof \MUtil_Model_ModelAbstract) {
             // $model = new \MUtil_Model_TableModel
-            $model = new \MUtil_Model_SessionModel('import_for_' . $this->request->getControllerName());
+            $model = new \MUtil_Model_SessionModel('import_for_' . $this->getCurrentController());
 
             $model->set('trans', 'label', $this->_('Import definition'),
                     'default', $this->defaultImportTranslator,
@@ -902,11 +902,6 @@ class MUtil_Snippets_Standard_ModelImportSnippet extends \MUtil_Snippets_WizardF
      */
     public function hasHtmlOutput()
     {
-        if ($this->request instanceof \MUtil_Controller_Request_Cli) {
-
-            $this->processCli();
-            return false;
-        }
         return parent::hasHtmlOutput();
     }
 
@@ -931,8 +926,8 @@ class MUtil_Snippets_Standard_ModelImportSnippet extends \MUtil_Snippets_WizardF
      */
     protected function loadFormData()
     {
-        if ($this->request->isPost()) {
-            $this->formData = $this->request->getPost() + $this->formData;
+        if ($this->isPost()) {
+            $this->formData = $this->getRequestPostParams() + $this->formData;
         } else {
             foreach ($this->importModel->getColNames('default') as $name) {
                 if (!(isset($this->formData[$name]) && $this->formData[$name])) {
@@ -950,7 +945,7 @@ class MUtil_Snippets_Standard_ModelImportSnippet extends \MUtil_Snippets_WizardF
                 (!(isset($this->_session->localfile) && $this->_session->localfile))) {
             $this->_session->localfile = \MUtil_File::createTemporaryIn(
                     $this->tempDirectory,
-                    $this->request->getControllerName() . '_'
+                    $this->getCurrentController() . '_'
                     );
         }
 
@@ -997,7 +992,11 @@ class MUtil_Snippets_Standard_ModelImportSnippet extends \MUtil_Snippets_WizardF
     {
         try {
             // Lookup in importTranslators
-            $transName = $this->request->getParam('trans', $this->defaultImportTranslator);
+            $queryParams = $this->getRequestQueryParams();
+            $transName = $this->defaultImportTranslator;
+            if (isset($queryParams['trans'])) {
+                $transName = $queryParams['trans'];
+            }
             if (! isset($this->importTranslators[$transName])) {
                 throw new \MUtil_Model_ModelTranslateException(sprintf(
                         $this->_("Unknown translator '%s'. Should be one of: %s"),
@@ -1007,12 +1006,22 @@ class MUtil_Snippets_Standard_ModelImportSnippet extends \MUtil_Snippets_WizardF
             }
             $translator = $this->importTranslators[$transName];
 
-            $this->importer->setSourceFile($this->request->getParam('file'));
+            $file = null;
+            if (isset($queryParams['file'])) {
+                $file = $queryParams['file'];
+            }
+
+            $this->importer->setSourceFile($file);
             $this->importer->setImportTranslator($translator);
+
+            $check = false;
+            if (isset($queryParams['check'])) {
+                $check = $queryParams['check'];
+            }
 
             // \MUtil_Registry_Source::$verbose = true;
             $batch = $this->importer->getCheckAndImportBatch();
-            $batch->setVariable('addImport', !$this->request->getParam('check', false));
+            $batch->setVariable('addImport', !$check);
             $batch->runContinuous();
 
             if ($batch->getMessages(false)) {
@@ -1028,8 +1037,8 @@ class MUtil_Snippets_Standard_ModelImportSnippet extends \MUtil_Snippets_WizardF
             $messages[] = null;
             $messages[] = sprintf(
                     "Usage instruction: %s %s file=filename [trans=[%s]] [check=1]",
-                    $this->request->getControllerName(),
-                    $this->request->getActionName(),
+                    $this->getCurrentController(),
+                    $this->getCurrentAction(),
                     implode('|', array_keys($this->importTranslators))
                     );
             $messages[] = sprintf(

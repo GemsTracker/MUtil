@@ -191,7 +191,8 @@ abstract class MUtil_Snippets_ModelYesNoDeleteSnippetAbstract extends \MUtil_Sni
      */
     public function hasHtmlOutput()
     {
-        if ($this->request->getParam($this->confirmParameter)) {
+        $queryParams = $this->requestInfo->getRequestQueryParams();
+        if (isset($queryParams[$this->confirmParameter])) {
             $this->performAction();
 
             $redirectRoute = $this->getRedirectRoute();
@@ -227,12 +228,12 @@ abstract class MUtil_Snippets_ModelYesNoDeleteSnippetAbstract extends \MUtil_Sni
     protected function setAfterDeleteRoute()
     {
         // Default is just go to the index
-        if ($this->deleteAction && ($this->request->getActionName() !== $this->deleteAction)) {
+        /*if ($this->deleteAction && ($this->request->getActionName() !== $this->deleteAction)) {
             $this->afterSaveRouteUrl = array(
                 $this->request->getControllerKey() => $this->request->getControllerName(),
                 $this->request->getActionKey() => $this->deleteAction,
                 );
-        }
+        }*/
     }
 
     /**
@@ -258,7 +259,7 @@ abstract class MUtil_Snippets_ModelYesNoDeleteSnippetAbstract extends \MUtil_Sni
                 );
         $footer[] = ' ';
         $footer->a(
-                array($this->request->getActionKey() => $this->abortAction),
+                array('action' => $this->abortAction),
                 $this->_('No'),
                 array('class' => $this->buttonNoClass)
                 );

@@ -449,7 +449,11 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
         if ($this->_finishButton) {
             return $this->_finishButton->isChecked();
         }
-        return $this->request->getParam($this->finishButtonId);
+        $queryParams = $this->requestInfo->getRequestQueryParams();
+        if (isset($queryParams[$this->finishButtonId])) {
+            return $queryParams[$this->finishButtonId];
+        }
+        return false;
     }
 
     /**
@@ -462,7 +466,11 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
         if ($this->_nextButton) {
             return $this->_nextButton->isChecked();
         }
-        return $this->request->getParam($this->nextButtonId);
+        $queryParams = $this->requestInfo->getRequestQueryParams();
+        if (isset($queryParams[$this->nextButtonId])) {
+            return $queryParams[$this->nextButtonId];
+        }
+        return false;
     }
 
     /**
@@ -475,7 +483,11 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
         if ($this->_previousButton) {
             return $this->_previousButton->isChecked();
         }
-        return $this->request->getParam($this->previousButtonId);
+        $queryParams = $this->requestInfo->getRequestQueryParams();
+        if (isset($queryParams[$this->previousButtonId])) {
+            return $queryParams[$this->previousButtonId];
+        }
+        return false;
     }
 
     /**
@@ -537,7 +549,7 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
         // Make sure there is a $this->_form
         $this->loadFormFor($this->currentStep);
 
-        if ($this->request->isPost()) {
+        if ($this->requestInfo->isPost()) {
             // \MUtil_Echo::track($this->formData);
             if ($this->_cancelButton && $this->_cancelButton->isChecked()) {
                 $this->setAfterSaveRoute();
