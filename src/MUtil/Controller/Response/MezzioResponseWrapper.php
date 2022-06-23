@@ -4,7 +4,7 @@ namespace MUtil\Controller\Response;
 
 use Zend_Controller_Response_Exception;
 
-class ExpressiveResponseWrapper
+class MezzioResponseWrapper
 {
     /**
      * @var \Psr\Http\Message\ResponseInterface
@@ -42,7 +42,7 @@ class ExpressiveResponseWrapper
      *
      * @param string $url
      * @param int $code
-     * @return ExpressiveResponseWrapper
+     * @return MezzioResponseWrapper
      */
     public function setRedirect($url, $code = 302)
     {

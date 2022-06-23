@@ -3,9 +3,9 @@
 namespace MUtil\Controller\Router;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Expressive\Helper\UrlHelper;
+use Mezzio\Helper\UrlHelper;
 
-class ExpressiveRouteWrapper
+class MezzioRouteWrapper
 {
 
     protected $actionKey = 'action';
@@ -54,7 +54,7 @@ class ExpressiveRouteWrapper
 
     public function getRoute()
     {
-        $routeResult = $this->request->getAttribute('Zend\Expressive\Router\RouteResult');
+        $routeResult = $this->request->getAttribute('Mezzio\Router\RouteResult');
         if (is_null($routeResult)) {
             return null; // Probably needs to be some default route
         }

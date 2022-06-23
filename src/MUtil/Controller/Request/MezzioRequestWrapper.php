@@ -6,7 +6,7 @@ namespace MUtil\Controller\Request;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-class ExpressiveRequestWrapper
+class MezzioRequestWrapper
 {
     /**
      * @var ServerRequestInterface
@@ -105,7 +105,7 @@ class ExpressiveRequestWrapper
 
     public function getRouteResult()
     {
-        return $this->request->getAttribute('Zend\Expressive\Router\RouteResult');
+        return $this->request->getAttribute('Mezzio\Router\RouteResult');
     }
 
     protected function getRouteOptions()
