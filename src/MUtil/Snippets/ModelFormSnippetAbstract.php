@@ -445,16 +445,6 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
     }
 
     /**
-     * Should this be treated as a post (allows override of default behaviour)
-     *
-     * @return boolean
-     */
-    protected function isPost()
-    {
-        return $this->isPost;
-    }
-
-    /**
      * Makes sure there is a form.
      */
     protected function loadForm()
@@ -548,7 +538,7 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
             $this->addCsrf();
         }
 
-        if ($this->isPost()) {
+        if ($this->requestInfo->isPost()) {
             //First populate the form, otherwise the saveButton will never be 'checked'!
             $this->populateForm();
 
@@ -609,7 +599,7 @@ abstract class MUtil_Snippets_ModelFormSnippetAbstract extends \MUtil_Snippets_M
     protected function setAfterSaveRoute()
     {
         // Default is just go to the index
-        if ($this->routeAction && ($this->currentAction !== $this->routeAction)) {
+        if ($this->routeAction && ($this->requestInfo->getCurrentAction() !== $this->routeAction)) {
             $this->afterSaveRouteUrl = ['action' => $this->routeAction];
 
             if ($this->afterSaveRouteKeys) {
