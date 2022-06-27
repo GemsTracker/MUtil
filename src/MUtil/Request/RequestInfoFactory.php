@@ -27,7 +27,7 @@ class RequestInfoFactory
         $requestInfo->setRequestPost($this->request->getParsedBody());
 
         $routeResult = $this->requestHelper->getRouteResult();
-        $requestInfo->setMatchedParams($routeResult->getMatchedParams());
+        $requestInfo->setRequestMatchedParams($routeResult->getMatchedParams());
 
         return $requestInfo;
     }

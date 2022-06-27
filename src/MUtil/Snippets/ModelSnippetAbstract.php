@@ -188,6 +188,7 @@ abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_Snipp
 
         } elseif (count($this->requestInfo->getRequestQueryParams())) {
             $params = $this->requestInfo->getRequestQueryParams();
+            $params += $this->requestInfo->getRequestMatchedParams();
             if (!$this->removePost) {
                 $params += $this->requestInfo->getRequestPostParams();
             }

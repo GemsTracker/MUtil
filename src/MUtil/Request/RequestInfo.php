@@ -22,7 +22,7 @@ class RequestInfo
     /**
      * @var array The matched Route params
      */
-    protected array $matchedParams = [];
+    protected array $requestMatchedParams = [];
 
     /**
      * @var array POST request content
@@ -60,11 +60,11 @@ class RequestInfo
     }
 
     /**
-     * @param array $matchedParams
+     * @param array $requestMatchedParams
      */
-    public function setMatchedParams(array $matchedParams): void
+    public function setRequestMatchedParams(array $requestMatchedParams): void
     {
-        $this->matchedParams = $matchedParams;
+        $this->requestMatchedParams = $requestMatchedParams;
     }
 
     /**
@@ -106,9 +106,9 @@ class RequestInfo
     /**
      * @return array
      */
-    public function getMatchedParams(): array
+    public function getRequestMatchedParams(): array
     {
-        return $this->matchedParams;
+        return $this->requestMatchedParams;
     }
 
     /**
