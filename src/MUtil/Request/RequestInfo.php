@@ -20,6 +20,11 @@ class RequestInfo
     protected bool $isPost = false;
 
     /**
+     * @var array The matched Route params
+     */
+    protected array $matchedParams = [];
+
+    /**
      * @var array POST request content
      */
     protected array $requestPost = [];
@@ -52,6 +57,14 @@ class RequestInfo
     public function setIsPost(bool $isPost): void
     {
         $this->isPost = $isPost;
+    }
+
+    /**
+     * @param array $matchedParams
+     */
+    public function setMatchedParams(array $matchedParams): void
+    {
+        $this->matchedParams = $matchedParams;
     }
 
     /**
@@ -88,6 +101,14 @@ class RequestInfo
     public function getCurrentController(): ?string
     {
         return $this->currentController;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMatchedParams(): array
+    {
+        return $this->matchedParams;
     }
 
     /**
