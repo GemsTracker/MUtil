@@ -899,11 +899,7 @@ class MUtil_Model_Bridge_FormBridge implements \MUtil_Model_Bridge_FormBridgeInt
         }
         $this->form->activateJQuery();
 
-        if (\MUtil_Bootstrap::enabled() || (!class_exists('Gems_JQuery_Form_Element_ToggleCheckboxes'))) {
-            $element = new \MUtil_Bootstrap_Form_Element_ToggleCheckboxes($name, $options);
-        } else {
-            $element = new \Gems_JQuery_Form_Element_ToggleCheckboxes($name, $options);
-        }
+        $element = new \MUtil_Bootstrap_Form_Element_ToggleCheckboxes($name, $options);
 
         $this->form->addElement($element);
 

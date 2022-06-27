@@ -143,10 +143,8 @@ class MUtil_Form_Decorator_Select2 extends \Zend_Form_Decorator_Abstract
             foreach($this->_select2CssFilenames as $filename) {
                 $cssUrls[] = $this->_request->getBasePath() . '/' . $this->_cssPath . '/' . $filename;
             }
-            if (\MUtil_Bootstrap::enabled()) {
-                foreach($this->_select2CssBootstrapFilenames as $filename) {
-                    $cssUrls[] = $this->_request->getBasePath() . '/' . $this->_cssPath . '/' . $filename;
-                }
+            foreach($this->_select2CssBootstrapFilenames as $filename) {
+                $cssUrls[] = $this->_request->getBasePath() . '/' . $this->_cssPath . '/' . $filename;
             }
 
             return $cssUrls;
