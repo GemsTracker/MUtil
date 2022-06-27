@@ -35,7 +35,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      *
      * @var array
      */
-	protected $_scripts = null;
+    protected $_scripts = null;
 
     /**
      * The order in which the element parts should be displayed
@@ -46,10 +46,10 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
     protected $_displayOrder = array('element', 'errors', 'description');
 
     /**
-     * @var string When true an extra hidden element with this name is added when the number of hidden elements is odd 
+     * @var string When true an extra hidden element with this name is added when the number of hidden elements is odd
      */
     protected $_hiddenAlwaysEven = '__tmpEvenOut';
-    
+
     /**
      * $var \MUtil_HtmlElement
      */
@@ -126,11 +126,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
 
             $elementId = $this->focusTrackerElementId;
 
-            if (\MUtil_Bootstrap::enabled()) {
-                $element = new \MUtil\Bootstrap\Form\Element\Hidden($elementId);
-            } else {
-                $element = new \MUtil\Form\Element\Hidden($elementId);
-            }
+            $element = new \MUtil\Bootstrap\Form\Element\Hidden($elementId);
 
             $this->addElement($element);
 
@@ -202,22 +198,19 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
                     }
                 } elseif (isset($items[$order]) && $items[$order] !== $key) {
                     throw new \Zend_Form_Exception('Form elements ' .
-                                                  $items[$order] . ' and ' . $key .
-                                                  ' have the same order (' .
-                                                  $order . ') - ' .
-                                                  'this would result in only the last added element to be rendered'
+                        $items[$order] . ' and ' . $key .
+                        ' have the same order (' .
+                        $order . ') - ' .
+                        'this would result in only the last added element to be rendered'
                     );
                 } else {
                     $items[$order] = $key;
                 }
             }
-            
+
             if ($this->_hiddenAlwaysEven && (1 == (count($hidden) % 2))) {
-                if (\MUtil_Bootstrap::enabled()) {
-                    $this->_elements[$this->_hiddenAlwaysEven] = new \MUtil\Bootstrap\Form\Element\Hidden($this->_hiddenAlwaysEven);
-                } else {
-                    $this->_elements[$this->_hiddenAlwaysEven] = new \MUtil\Form\Element\Hidden($this->_hiddenAlwaysEven);
-                }
+                $this->_elements[$this->_hiddenAlwaysEven] = new \MUtil\Bootstrap\Form\Element\Hidden($this->_hiddenAlwaysEven);
+
                 $hidden[] = $this->_hiddenAlwaysEven;
             }
 
@@ -278,7 +271,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      */
     public function addCss($file, $media = '')
     {
-    	$this->_css[$file] = $media;
+        $this->_css[$file] = $media;
     }
 
     /**
@@ -330,10 +323,10 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      */
     public function addScript($script)
     {
-    	if (is_array($this->_scripts) && in_array($script, $this->_scripts)) {
+        if (is_array($this->_scripts) && in_array($script, $this->_scripts)) {
             return $this;
         }
-    	$this->_scripts[] = $script;
+        $this->_scripts[] = $script;
 
         return $this;
     }
@@ -358,8 +351,8 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
     {
         if (\MUtil_Registry_Source::$verbose) {
             \MUtil_Echo::r('Resource set: ' . get_class($this) . '->' . __FUNCTION__ .
-                    '("' . $name . '", ' .
-                    (is_object($resource) ? get_class($resource) : gettype($resource)) . ')');
+                '("' . $name . '", ' .
+                (is_object($resource) ? get_class($resource) : gettype($resource)) . ')');
         }
         $this->$name = $resource;
 
@@ -392,7 +385,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
             $options = $options->toArray();
         }
         $options = (array) $options + [
-            'disableTranslator' => $this->translatorIsDisabled()
+                'disableTranslator' => $this->translatorIsDisabled()
             ];
         return parent::createElement($type, $name, $options);
     }
@@ -417,7 +410,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      */
     public function getCss()
     {
-    	return $this->_css;
+        return $this->_css;
     }
 
     /**
@@ -519,7 +512,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
             $this->_loaders[$type] = new \MUtil_Loader_PluginLoader(array(
                 'Zend_'  . $prefixSegment . '_' => 'Zend/'  . $pathSegment . '/',
                 'MUtil_' . $prefixSegment . '_' => 'MUtil/' . $pathSegment . '/',
-                ));
+            ));
         }
 
         return $this->_loaders[$type];
@@ -530,11 +523,11 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      *
      * @return array
      */
-	public function getScripts() {
-    	return $this->_scripts;
+    public function getScripts() {
+        return $this->_scripts;
     }
 
-     /**
+    /**
      * Allows the loader to know the resources to set.
      *
      * Returns those object variables defined by the subclass but not at the level of this definition.
@@ -604,10 +597,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
         $decorators = $this->getDecorators();
         if (empty($decorators)) {
             $this->addDecorator('AutoFocus', ['form' => $this])
-                 ->addDecorator('FormElements');
-            if (!\MUtil_Bootstrap::enabled()) {
-                $this->addDecorator('HtmlTag', array('tag' => 'dl', 'class' => 'zend_form'));
-            }
+                ->addDecorator('FormElements');
             $this->addDecorator('Form');
         }
     }
