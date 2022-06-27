@@ -601,7 +601,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
                             // not disappear, while preventing a difference between an integer
                             // and string input of triggering a false change
                             $noChange = ($returnValues[$name] == $value) &&
-                                    (strlen($returnValues[$name]) == strlen($value));
+                                    (strlen((string)$returnValues[$name]) == strlen((string)$value));
                         }
 
                         // Detect change that is not auto update
