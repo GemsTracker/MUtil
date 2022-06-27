@@ -78,11 +78,11 @@ class ItemCallbackIterator implements \OuterIterator, \Countable
     /**
      * Count elements of an object
      *
-     * Rewinding version of count 
+     * Rewinding version of count
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         if ($this->_iterator instanceof \Countable) {
             return $this->_iterator->count();
@@ -98,7 +98,7 @@ class ItemCallbackIterator implements \OuterIterator, \Countable
      *
      * @return mixed
      */
-    public function current()
+    public function current(): mixed
     {
         return call_user_func($this->_callback, $this->_iterator->current());
     }
@@ -108,7 +108,7 @@ class ItemCallbackIterator implements \OuterIterator, \Countable
      *
      * @return \Iterator
      */
-    public function getInnerIterator()
+    public function getInnerIterator(): ?\Iterator
     {
         return $this->_iterator;
     }
@@ -118,7 +118,7 @@ class ItemCallbackIterator implements \OuterIterator, \Countable
      *
      * @return mixed
      */
-    public function key()
+    public function key(): mixed
     {
         return $this->_iterator->key();
     }
@@ -126,7 +126,7 @@ class ItemCallbackIterator implements \OuterIterator, \Countable
     /**
      * Move forward to next element
      */
-    public function next()
+    public function next(): void
     {
         $this->_iterator->next();
     }
@@ -134,7 +134,7 @@ class ItemCallbackIterator implements \OuterIterator, \Countable
     /**
      * Rewind the Iterator to the first element
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->_iterator->rewind();
     }
@@ -144,7 +144,7 @@ class ItemCallbackIterator implements \OuterIterator, \Countable
      *
      * @return boolean
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->_iterator->valid();
     }

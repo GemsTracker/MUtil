@@ -100,7 +100,7 @@ class MUtil_Db_Iterator_SelectIterator implements \Countable, \Iterator
      * Count interface implementation
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         if (null !== $this->_count) {
             return $this->_count;
@@ -119,7 +119,7 @@ class MUtil_Db_Iterator_SelectIterator implements \Countable, \Iterator
      *
      * @return array
      */
-    public function current()
+    public function current(): mixed
     {
         if (! $this->_statement instanceof \Zend_Db_Statement_Interface) {
             $this->_initStatement();
@@ -132,7 +132,7 @@ class MUtil_Db_Iterator_SelectIterator implements \Countable, \Iterator
      *
      * @return int
      */
-    public function key()
+    public function key(): int
     {
         if (! $this->_statement instanceof \Zend_Db_Statement_Interface) {
             $this->_initStatement();
@@ -143,7 +143,7 @@ class MUtil_Db_Iterator_SelectIterator implements \Countable, \Iterator
     /**
      * Move forward to next element
      */
-    public function next()
+    public function next(): void
     {
         if (! $this->_statement instanceof \Zend_Db_Statement_Interface) {
             $this->_initStatement();
@@ -155,7 +155,7 @@ class MUtil_Db_Iterator_SelectIterator implements \Countable, \Iterator
     /**
      *  Rewind the \Iterator to the first element
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->_initStatement();
     }
@@ -165,7 +165,7 @@ class MUtil_Db_Iterator_SelectIterator implements \Countable, \Iterator
      *
      * @return boolean
      */
-    public function valid()
+    public function valid(): bool
     {
         if (! $this->_statement instanceof \Zend_Db_Statement_Interface) {
             $this->_initStatement();
