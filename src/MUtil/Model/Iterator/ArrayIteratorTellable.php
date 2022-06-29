@@ -13,7 +13,7 @@ namespace MUtil\Model\Iterator;
  * ArrayIteratorTellable
  *
  * This is needed for the ArrayIterator that is does not retain
- * it's position after serialization.
+ * its position after serialization.
  *
  * @package    MUtil
  * @subpackage Model\Iterator
@@ -25,9 +25,9 @@ namespace MUtil\Model\Iterator;
 class ArrayIteratorTellable extends \ArrayIterator implements TellableInterface
 {
 
-    protected $position = 0;
+    protected int $position = 0;
 
-    public function next()
+    public function next(): void
     {
         parent::next();
         if (!$this->valid()) {
@@ -38,26 +38,26 @@ class ArrayIteratorTellable extends \ArrayIterator implements TellableInterface
         }
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
         parent::rewind();
     }
 
-    public function seek($position)
+    public function seek(int $offset): void
     {
-        $this->position = $position;
-        parent::seek($position);
+        $this->position = $offset;
+        parent::seek($offset);
     }
 
-    public function tell()
+    public function tell(): int
     {
         return $this->position;
     }
 
-    public function unserialize($serialized)
+    public function unserialize($data): void
     {
-        $result = parent::unserialize($serialized);
+        parent::unserialize($data);
         if ($this->position < 0) {
             // We are at the end, got to last
             $this->seek(abs($this->position));
@@ -69,8 +69,6 @@ class ArrayIteratorTellable extends \ArrayIterator implements TellableInterface
             // For zero a rewind will do
             $this->rewind();
         }
-
-        return $result;
     }
 
 }

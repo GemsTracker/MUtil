@@ -49,6 +49,7 @@ class MUtil_String
      * @param string $needle The string to search for
      * @param boolean $caseInSensitive When true a case insensitive compare is performed
      * @return boolean
+     * @deprecated replaced with native str_contains
      */
     public static function contains($haystack, $needle, $caseInSensitive = false)
     {
@@ -65,6 +66,7 @@ class MUtil_String
      * @param string $needle The string to search for
      * @param boolean $caseInSensitive When true a case insensitive compare is performed
      * @return boolean
+     * @deprecated replaced with native str_ends_with
      */
     public static function endsWith($haystack, $needle, $caseInSensitive = false)
     {
@@ -149,6 +151,7 @@ class MUtil_String
      * @param string $needle The string to search for
      * @param boolean $caseInSensitive When true a case insensitive compare is performed
      * @return boolean
+     * @deprecated replaced with native str_starts_with
      */
     public static function startsWith($haystack, $needle, $caseInSensitive = false)
     {

@@ -44,7 +44,7 @@
  * @license    New BSD License
  * @since      Class available since MUtil version 1.3
  */
-class MUtil_Model_Iterator_TextFileIterator implements \Countable, \Iterator, \Serializable
+class MUtil_Model_Iterator_TextFileIterator implements \Countable, \Iterator
 {
     /**
      * @var int
@@ -177,7 +177,7 @@ class MUtil_Model_Iterator_TextFileIterator implements \Countable, \Iterator, \S
      * 
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         if ($this->_count === null) {
             // Save position like in serialize
@@ -205,7 +205,7 @@ class MUtil_Model_Iterator_TextFileIterator implements \Countable, \Iterator, \S
      *
      * @return array or false
      */
-    public function current()
+    public function current(): mixed
     {
         if (null === $this->_file) {
             $this->_openFile();
@@ -255,7 +255,7 @@ class MUtil_Model_Iterator_TextFileIterator implements \Countable, \Iterator, \S
      *
      * @return int
      */
-    public function key()
+    public function key(): mixed
     {
         if (null === $this->_file) {
             $this->_openFile();
@@ -267,7 +267,7 @@ class MUtil_Model_Iterator_TextFileIterator implements \Countable, \Iterator, \S
     /**
      * Move forward to next element
      */
-    public function next()
+    public function next(): void
     {
         if (null === $this->_file) {
             $this->_openFile();
@@ -290,7 +290,7 @@ class MUtil_Model_Iterator_TextFileIterator implements \Countable, \Iterator, \S
     /**
      *  Rewind the \Iterator to the first element
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->_filepos = null;
         $this->_key = 0;
@@ -354,7 +354,7 @@ class MUtil_Model_Iterator_TextFileIterator implements \Countable, \Iterator, \S
      *
      * @return boolean
      */
-    public function valid()
+    public function valid(): bool
     {
         if (null === $this->_file) {
             $this->_openFile();

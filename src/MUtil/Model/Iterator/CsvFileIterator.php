@@ -44,7 +44,7 @@
  * @license    New BSD License
  * @since      Class available since MUtil version 1.3
  */
-class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Serializable, \Countable
+class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Countable
 {
     protected $delimiter;
     protected $enclosure;
@@ -89,7 +89,7 @@ class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Serializable, 
     /**
      * The current key value
      *
-     * @var type
+     * @var mixed
      */
     protected $_key = 0;
 
@@ -205,7 +205,7 @@ class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Serializable, 
      * 
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         if ($this->_count === null) {
             // Save position like in serialize
@@ -233,7 +233,7 @@ class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Serializable, 
      *
      * @return array or false
      */
-    public function current()
+    public function current(): mixed
     {
         if (null === $this->_file) {
             $this->_openFile();
@@ -283,7 +283,7 @@ class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Serializable, 
      *
      * @return int
      */
-    public function key()
+    public function key(): mixed
     {
         if (null === $this->_file) {
             $this->_openFile();
@@ -295,7 +295,7 @@ class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Serializable, 
     /**
      * Move forward to next element
      */
-    public function next()
+    public function next(): void
     {
         if (null === $this->_file) {
             $this->_openFile();
@@ -318,7 +318,7 @@ class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Serializable, 
     /**
      *  Rewind the \Iterator to the first element
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->_filepos = null;
         $this->_key = 0;
@@ -337,7 +337,7 @@ class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Serializable, 
      *
      * @return string
      */
-    public function serialize()
+    public function serialize(): string
     {
         $data = array(
             'filename' => $this->filename,
@@ -355,19 +355,19 @@ class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Serializable, 
      * 
      * @param bool $enabled
      */
-    public function setAutoSenseDelimiter($enabled)
+    public function setAutoSenseDelimiter(bool $enabled): void
     {
-        $this->_autoSenseDelim = (bool) $enabled;
+        $this->_autoSenseDelim = $enabled;
     }
 
     /**
      * Called during unserialization of the object.
      *
-     * @param string $serialized
+     * @param string $data
      */
-    public function unserialize($serialized)
+    public function unserialize(string $data): void
     {
-        $data = @unserialize($serialized);
+        $data = @unserialize($data);
         if ($data === false) {
             $lastErr = error_get_last();
             error_log($lastErr['message'] . "\n", 3, ini_get('error_log'));
@@ -392,7 +392,7 @@ class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Serializable, 
      *
      * @return boolean
      */
-    public function valid()
+    public function valid(): bool
     {
         if (null === $this->_file) {
             $this->_openFile();

@@ -514,7 +514,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
 
         // \MUtil_Echo::r($newValues, $tableName);
         foreach ($primaryKeys as $key) {
-            if (array_key_exists($key, $newValues) && (0 == strlen($newValues[$key]))) {
+            if (array_key_exists($key, $newValues) && (0 == strlen((string)$newValues[$key]))) {
                 // Never include null key values, except when we have a save transformer
                 if (! $this->has($key, self::SAVE_TRANSFORMER)) {
                     unset($newValues[$key]);
