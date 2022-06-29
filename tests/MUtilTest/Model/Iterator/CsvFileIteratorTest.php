@@ -6,26 +6,26 @@
  * and open the template in the editor.
  */
 
-namespace MUtil\Model\Iterator;
+namespace MUtilTest\Model\Iterator;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * Description of TextFileIteratorTest
  *
  * @author 175780
  */
-class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase
+class CsvFileIteratorTest extends TestCase
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
     /**
      * 
-     * @param type $filename
-     * @param type $split
-     * @param type $encoding
+     * @param string $filename
      * @return \MUtil_Model_Iterator_CsvFileIterator
      */
     protected function getIterator($filename)

@@ -6,29 +6,31 @@
  * and open the template in the editor.
  */
 
-namespace MUtil\Model\Iterator;
+namespace MUtilTest\Model\Iterator;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * Description of TextFileIteratorTest
  *
  * @author 175780
  */
-class TextFileIteratorTest extends \PHPUnit_Framework_TestCase
+class TextFileIteratorTest extends TestCase
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
     /**
-     * 
-     * @param type $filename
-     * @param type $split
-     * @param type $encoding
+     *
+     * @param string $filename
+     * @param string $split
+     * @param string $encoding
      * @return \MUtil_Model_Iterator_TextFileIterator
      */
-    protected function getIterator($filename, $split = ',', $encoding = '')
+    protected function getIterator(string $filename, string $split = ',', string $encoding = ''): \MUtil_Model_Iterator_TextFileIterator
     {
         $splitObject = new \MUtil_Model_Iterator_TextLineSplitter($split, $encoding);
         if ($encoding) {

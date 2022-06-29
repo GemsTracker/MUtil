@@ -1,5 +1,11 @@
 <?php
 
+namespace MUtilTest\Model;
+
+use MUtilTest\Test\ZendDbFixtures;
+use MUtilTest\Test\ZendDbMigrateFromTestSql;
+use MUtilTest\Test\ZendDbTestCase;
+
 /**
  * Copyright (c) 2011, Erasmus MC
  * All rights reserved.
@@ -42,56 +48,51 @@
  * @subpackage Model
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @since      Class available since version 1.6.2
+ * @since      Class available since version 1.5.6
  */
-abstract class MUtil_Model_AbstractModelTest extends \Zend_Test_PHPUnit_DatabaseTestCase
+class TableModelTest  extends ZendDbTestCase
 {
-    /**
-     *
-     * @var PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    private $_connectionMock;
+    use ZendDbFixtures;
+    use ZendDbMigrateFromTestSql;
 
     /**
-     * Returns the test database connection.
      *
-     * @return PHPUnit_Extensions_Database_DB_IDatabaseConnection
+     * @var \MUtil_Model_TableModel
      */
-    protected function getConnection()
+    private $_model;
+
+    /**
+     * Create the model
+     *
+     * @return \MUtil_Model_ModelAbstract
+     */
+    protected function getModel()
     {
-        if($this->_connectionMock == null) {
-            $connection = Zend_Db::factory('Pdo_Sqlite', array('dbname' => ':memory:', 'username' => 'test'));
-
-            $sql  = file_get_contents(str_replace('.php', '.sql', $this->getTemplateFileName()));
-
-            foreach (MUtil_Parser_Sql_WordsParser::splitStatements($sql, false) as $sqlCommand) {
-                $stmt = $connection->query($sqlCommand);
-            }
-            $this->_connectionMock = $this->createZendDbConnection(
-                $connection, 'zfunittests'
-            );
-            Zend_Db_Table_Abstract::setDefaultAdapter($connection);
+        if (! $this->_model) {
+            $this->_model = new \MUtil_Model_TableModel('t1');
         }
 
-        return $this->_connectionMock;
+        return $this->_model;
     }
 
-    /**
-     * Returns the test dataset.
-     *
-     * @return PHPUnit_Extensions_Database_DataSet_IDataSet
-     */
-    protected function getDataSet()
+    public function testHasFirstRow()
     {
-        return $this->createFlatXMLDataSet(str_replace('.php', '.xml', $this->getTemplateFileName()));
+        $this->insertFixtures([TableModelFixtures::class]);
+
+        $model = $this->getModel();
+        $rows = $model->load();
+        $this->assertCount(1, $rows);
     }
 
-    /**
-     * The template file name to create the sql create and xml load names from.
-     *
-     * Just reutrn __FILE__
-     *
-     * @return string
-     */
-    abstract protected function getTemplateFileName();
+    public function testInsertARow()
+    {
+        $this->insertFixtures([TableModelFixtures::class]);
+
+        $model  = $this->getModel();
+        $result = $model->save(array('id' => null, 'c1' => "col1-2", 'c2' => "col2-2"));
+        $this->assertEquals(2, $result['id']);
+
+        $rows = $model->load();
+        $this->assertCount(2, $rows);
+    }
 }

@@ -1,5 +1,10 @@
 <?php
 
+namespace MUtilTest;
+
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
+
 /**
  *
  * @package    MUtil
@@ -18,15 +23,15 @@
  * @license    New BSD License
  * @since      Class available since version 1.5
  */
-class MUtil_DateTest extends \PHPUnit_Framework_TestCase
+class DateTest extends TestCase
 {
     /**
-     * @var Mutil_Date
+     * @var \Mutil_Date
      */
     protected $object;
 
     /**
-     * @var Zend_Translate_Adapter
+     * @var \Zend_Translate_Adapter
      */
     protected $translate;
 
@@ -36,7 +41,7 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
      *
      * Set up the translation adapter and set locale to 'en'
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         date_default_timezone_set('Europe/Amsterdam');
         // date_default_timezone_set('GMT');
@@ -49,51 +54,51 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
         $english = array(
             '%s ago' => '%s ago',
             '%s to go' => '%s to go',
-            'second' => array(0=>'second',
-                              1=>'seconds'),
-            'minute' => array(0=>'minute',
-                              1=>'minutes'),
-            'hour'   => array(0=>'hour',
-                              1=>'hours'),
-            'day'    => array(0=>'day',
-                              1=>'days'),
-            'week'   => array(0=>'week',
-                              1=>'weeks'),
-            'month'  => array(0=>'month',
-                              1=>'months'),
-            'year'   => array(0=>'year',
-                              1=>'years'),
-            'decade' => array(0=>'decade',
-                              1=>'decades')
+            'second' => [0=>'second',
+                              1=>'seconds'],
+            'minute' => [0=>'minute',
+                              1=>'minutes'],
+            'hour'   => [0=>'hour',
+                              1=>'hours'],
+            'day'    => [0=>'day',
+                              1=>'days'],
+            'week'   => [0=>'week',
+                              1=>'weeks'],
+            'month'  => [0=>'month',
+                              1=>'months'],
+            'year'   => [0=>'year',
+                              1=>'years'],
+            'decade' => [0=>'decade',
+                              1=>'decades'],
         );
         $dutch = array(
             '%s ago' => '%s geleden',
             '%s to go' => 'over %s',
-            'second' => array(0=>'seconde',
-                              1=>'seconden'),
-            'minute' => array(0=>'minuut',
-                              1=>'minuten'),
-            'hour'   => array(0=>'uur',
-                              1=>'uur'),
-            'day'    => array(0=>'dag',
-                              1=>'dagen'),
-            'week'   => array(0=>'week',
-                              1=>'weken'),
-            'month'  => array(0=>'maand',
-                              1=>'maanden'),
-            'year'   => array(0=>'jaar',
-                              1=>'jaren'),
-            'decade' => array(0=>'decennium',
-                              1=>'decennia')
+            'second' => [0=>'seconde',
+                              1=>'seconden'],
+            'minute' => [0=>'minuut',
+                              1=>'minuten'],
+            'hour'   => [0=>'uur',
+                              1=>'uur'],
+            'day'    => [0=>'dag',
+                              1=>'dagen'],
+            'week'   => [0=>'week',
+                              1=>'weken'],
+            'month'  => [0=>'maand',
+                              1=>'maanden'],
+            'year'   => [0=>'jaar',
+                              1=>'jaren'],
+            'decade' => [0=>'decennium',
+                              1=>'decennia'],
         );
-        $translate = new Zend_Translate(
-            array(
+        $translate = new \Zend_Translate(
+            [
                 'adapter' => 'array',
                 'content' => $english,
                 'locale'  => 'en'
-            )
+            ]
         );
-        $translate->addTranslation(array('content' => $dutch, 'locale' => 'nl'));
+        $translate->addTranslation(['content' => $dutch, 'locale' => 'nl']);
 
         $this->translate = $translate;
         $this->translate->setLocale('en');
@@ -101,29 +106,29 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestDateTime()
     {
-        return array(
+        return [
             // General case
-            array('2016-06-06T00:00:00+02:00', 'c', '2016-06-06 00:00:00', '+0200', 0),
+           ['2016-06-06T00:00:00+02:00', 'c', '2016-06-06 00:00:00', '+0200', 0],
             // Diff dates strings, only timezone is different
-            array('2016-06-06T00:00:00+00:00', 'c', '2016-06-06 02:00:00', '+0200', 7200),
-            array('2016-06-06T02:00:00+02:00', 'c', '2016-06-06T00:00:00', '+00:00', 7200),
+           ['2016-06-06T00:00:00+00:00', 'c', '2016-06-06 02:00:00', '+0200', 7200],
+           ['2016-06-06T02:00:00+02:00', 'c', '2016-06-06T00:00:00', '+00:00', 7200],
             // These one are only correct with: date_default_timezone_set('Europe/Amsterdam');
-            array('2016-06-06T00:00:00+02:00', 'c', '2016-06-06 00:00:00', null, 0),
-            array('2016-06-06T00:00:00', 'c', '2016-06-06 00:00:00', null, 0),
+           ['2016-06-06T00:00:00+02:00', 'c', '2016-06-06 00:00:00', null, 0],
+           ['2016-06-06T00:00:00', 'c', '2016-06-06 00:00:00', null, 0],
             // Test timezone in \DateTime string
-            array('2016-06-06T00:00:00+04:00', 'c', '2016-06-06 00:00:00+04:00', null, 0),
+           ['2016-06-06T00:00:00+04:00', 'c', '2016-06-06 00:00:00+04:00', null, 0],
             // Test different timezone outside \DateTime string is ignored
-            array('2016-06-06T00:00:00+04:00', 'c', '2016-06-06 00:00:00+04:00', '+0200', 0),
+           ['2016-06-06T00:00:00+04:00', 'c', '2016-06-06 00:00:00+04:00', '+0200', 0],
             // Old date tests for 1901 border
-            array('1907-01-01T22:00:00', 'c', '1907-01-01T22:00:00', null, 0),
-            array('1905-01-01T22:00:00', 'c', '1905-01-01T22:00:00', null, 0),
-            array('1902-01-01T22:00:00', 'c', '1902-01-01T22:00:00', null, 0),
-            array('1901-01-01T22:00:00+01:00', 'c', '1901-01-01T22:00:00', '+01:00', 0),
-            array('1900-01-01T22:00:00+00:00', 'c', '1900-01-01 22:00:00', '+00:00', 0),
-            array('1900-01-01T22:00:00+01:00', 'c', '1900-01-01T22:00:00', '+01:00', 0),
-            array('1899-01-01T22:00:00+02:00', 'c', '1899-01-01T22:00:00', '+02:00', 0),
-            array('1898-01-01T22:00:00+01:00', 'c', '1898-01-01T22:00:00', '+01:00', 0),
-        );
+           ['1907-01-01T22:00:00', 'c', '1907-01-01T22:00:00', null, 0],
+           ['1905-01-01T22:00:00', 'c', '1905-01-01T22:00:00', null, 0],
+           ['1902-01-01T22:00:00', 'c', '1902-01-01T22:00:00', null, 0],
+           ['1901-01-01T22:00:00+01:00', 'c', '1901-01-01T22:00:00', '+01:00', 0],
+           ['1900-01-01T22:00:00+00:00', 'c', '1900-01-01 22:00:00', '+00:00', 0],
+           ['1900-01-01T22:00:00+01:00', 'c', '1900-01-01T22:00:00', '+01:00', 0],
+           ['1899-01-01T22:00:00+02:00', 'c', '1899-01-01T22:00:00', '+02:00', 0],
+           ['1898-01-01T22:00:00+01:00', 'c', '1898-01-01T22:00:00', '+01:00', 0],
+        ];
     }
 
     /**
@@ -199,7 +204,7 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
         if ($year < 1902) {
             try {
                 $this->assertEquals($this->object->toString('yyyy-MM-dd HH:mm:ss'), $expectedResult);
-            } catch (\PHPUnit_Framework_ExpectationFailedException $exc) {
+            } catch (ExpectationFailedException $exc) {
                 $this->markTestSkipped("Allowed error: Dates before 1902 can be inaccurate on this system:\n" . $exc->getComparisonFailure()->toString());
             }
         } else {
@@ -286,19 +291,19 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestDiffDays()
     {
-      return array(
-            array('2016-06-06 02:00:00', '2016-06-06 12:34:56', 0),
-            array('2016-06-06 10:00:00', '2016-06-07 01:34:56', -1),
-            array('2016-06-05 00:00:00', '2016-06-06 12:34:56', -1),
-            array('2016-06-06 02:00:00', '2016-06-06 12:34:56', 0),
-            array('2016-06-06 01:00:00', '2016-06-06 12:34:56', 0),
-            array('2014-06-06 01:00:00', '2015-06-06 12:34:56', -365),
-            array('2016-05-06 00:00:00', '2016-06-06 12:34:56', -31),
-            array('2016-07-06 00:00:00', '2016-06-06 12:34:56', 30),
-            array('2016-06-07 00:00:00', '2016-06-06 12:34:56', 1),
-            array('2016-06-06 12:34:57', '2016-06-06 12:34:56', 0),
-            array('1902-01-01 12:34:57', '1901-01-01 12:34:56', 365),
-        );
+      return [
+            ['2016-06-06 02:00:00', '2016-06-06 12:34:56', 0],
+            ['2016-06-06 10:00:00', '2016-06-07 01:34:56', -1],
+            ['2016-06-05 00:00:00', '2016-06-06 12:34:56', -1],
+            ['2016-06-06 02:00:00', '2016-06-06 12:34:56', 0],
+            ['2016-06-06 01:00:00', '2016-06-06 12:34:56', 0],
+            ['2014-06-06 01:00:00', '2015-06-06 12:34:56', -365],
+            ['2016-05-06 00:00:00', '2016-06-06 12:34:56', -31],
+            ['2016-07-06 00:00:00', '2016-06-06 12:34:56', 30],
+            ['2016-06-07 00:00:00', '2016-06-06 12:34:56', 1],
+            ['2016-06-06 12:34:57', '2016-06-06 12:34:56', 0],
+            ['1902-01-01 12:34:57', '1901-01-01 12:34:56', 365],
+        ];
     }
 
     /**
@@ -318,36 +323,36 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestTimeZones()
     {
-        return array(
+        return [
             // These are only correct with: date_default_timezone_set('Europe/Amsterdam');
-            array('2016-06-06T00:00:00+02:00', 'c', '2016-06-06 00:00:00', 'yyyy-MM-dd HH:mm:ss', 0, 0),
-            array('2016-06-06T00:00:00+02:00', 'c', '2016-06-06 00:01:00', 'yyyy-MM-dd HH:mm:ss', 0, -60),
-            array('2016-06-06T02:00:00+02:00', 'c', '2016-06-06 02:00:00', 'yyyy-MM-dd HH:mm:ss', 0, 0),
-            array('2016-06-06T02:00:00+02:00', 'c', '2016-06-06 02:01:00', 'yyyy-MM-dd HH:mm:ss', 0, -60),
-            array('2016-06-06T02:00:00+02:00', 'c', '2016-06-06 00:00:00', 'yyyy-MM-dd HH:mm:ss', 0, 7200),
-            array('2016-06-06T02:00:00+02:00', 'c', '2016-06-07 00:00:00', 'yyyy-MM-dd HH:mm:ss', -1, -79200),
+            ['2016-06-06T00:00:00+02:00', 'c', '2016-06-06 00:00:00', 'yyyy-MM-dd HH:mm:ss', 0, 0],
+            ['2016-06-06T00:00:00+02:00', 'c', '2016-06-06 00:01:00', 'yyyy-MM-dd HH:mm:ss', 0, -60],
+            ['2016-06-06T02:00:00+02:00', 'c', '2016-06-06 02:00:00', 'yyyy-MM-dd HH:mm:ss', 0, 0],
+            ['2016-06-06T02:00:00+02:00', 'c', '2016-06-06 02:01:00', 'yyyy-MM-dd HH:mm:ss', 0, -60],
+            ['2016-06-06T02:00:00+02:00', 'c', '2016-06-06 00:00:00', 'yyyy-MM-dd HH:mm:ss', 0, 7200],
+            ['2016-06-06T02:00:00+02:00', 'c', '2016-06-07 00:00:00', 'yyyy-MM-dd HH:mm:ss', -1, -79200],
             // While the next four times differ only 0 and 1 second, they ARE on a different day according to the date part
-            array('2016-06-06T00:00:00+00:00', 'c', '2016-06-05T23:00:00-01:00', 'c', 1, 0),
-            array('2016-06-06T00:00:00+00:00', 'c', '2016-06-05T23:00:01-01:00', 'c', 1, -1),
-            array('2016-06-05T22:00:00-02:00', 'c', '2016-06-06T02:00:00+02:00', 'c', -1, 0),
-            array('2016-06-05T22:00:00-02:00', 'c', '2016-06-06T02:00:01+02:00', 'c', -1, -1),
+            ['2016-06-06T00:00:00+00:00', 'c', '2016-06-05T23:00:00-01:00', 'c', 1, 0],
+            ['2016-06-06T00:00:00+00:00', 'c', '2016-06-05T23:00:01-01:00', 'c', 1, -1],
+            ['2016-06-05T22:00:00-02:00', 'c', '2016-06-06T02:00:00+02:00', 'c', -1, 0],
+            ['2016-06-05T22:00:00-02:00', 'c', '2016-06-06T02:00:01+02:00', 'c', -1, -1],
             // While the next four times differ only 0 and 1 second, they ARE on a different day according to the date part
-            array('2016-06-06T23:00:00+00:00', 'c', '2016-06-07T01:00:00+02:00', 'c', -1, 0),
-            array('2016-06-06T23:00:01+00:00', 'c', '2016-06-07T01:00:00+02:00', 'c', -1, 1),
-            array('2016-06-06T21:00:00-02:00', 'c', '2016-06-07T01:00:00+02:00', 'c', -1, 0),
-            array('2016-06-06T21:00:01-02:00', 'c', '2016-06-07T01:00:00+02:00', 'c', -1, 1),
+            ['2016-06-06T23:00:00+00:00', 'c', '2016-06-07T01:00:00+02:00', 'c', -1, 0],
+            ['2016-06-06T23:00:01+00:00', 'c', '2016-06-07T01:00:00+02:00', 'c', -1, 1],
+            ['2016-06-06T21:00:00-02:00', 'c', '2016-06-07T01:00:00+02:00', 'c', -1, 0],
+            ['2016-06-06T21:00:01-02:00', 'c', '2016-06-07T01:00:00+02:00', 'c', -1, 1],
             // The next dates are all actually the same with subtle timezone differences
-            array('2016-06-06T02:00:00+02:00', 'c', '2016-06-06T00:00:00+00:00', 'c', 0, 0),
-            array('2016-06-06T12:00:00+04:00', 'c', '2016-06-06T08:00:00+00:00', 'c', 0, 0),
-            array('2016-06-06T08:00:00+04:00', 'c', '2016-06-06T08:00:00+00:00', 'c', 0, -14400),
-            array('2016-06-06T04:00:00+04:00', 'c', '2016-06-06T08:00:00+00:00', 'c', 0, -28800),
-            array('2016-06-06T00:00:00-04:00', 'c', '2016-06-06T04:00:00+00:00', 'c', 0, 0),
+            ['2016-06-06T02:00:00+02:00', 'c', '2016-06-06T00:00:00+00:00', 'c', 0, 0],
+            ['2016-06-06T12:00:00+04:00', 'c', '2016-06-06T08:00:00+00:00', 'c', 0, 0],
+            ['2016-06-06T08:00:00+04:00', 'c', '2016-06-06T08:00:00+00:00', 'c', 0, -14400],
+            ['2016-06-06T04:00:00+04:00', 'c', '2016-06-06T08:00:00+00:00', 'c', 0, -28800],
+            ['2016-06-06T00:00:00-04:00', 'c', '2016-06-06T04:00:00+00:00', 'c', 0, 0],
             // Old date tests for 1901 border
-            array('1907-01-01T22:00:00+02:00', 'c', '1905-01-01T22:00:00+02:00', 'c', 730, 63072000),
-            array('1902-01-01T22:00:00+02:00', 'c', '1900-01-01T22:00:00+02:00', 'c', 730, 63072000),
-            array('1901-01-01T22:00:00+02:00', 'c', '1899-01-01T22:00:00+02:00', 'c', 730, 63072000),
-            array('1900-01-01T22:00:00+02:00', 'c', '1898-01-01T22:00:00+02:00', 'c', 730, 63072000),
-        );
+            ['1907-01-01T22:00:00+02:00', 'c', '1905-01-01T22:00:00+02:00', 'c', 730, 63072000],
+            ['1902-01-01T22:00:00+02:00', 'c', '1900-01-01T22:00:00+02:00', 'c', 730, 63072000],
+            ['1901-01-01T22:00:00+02:00', 'c', '1899-01-01T22:00:00+02:00', 'c', 730, 63072000],
+            ['1900-01-01T22:00:00+02:00', 'c', '1898-01-01T22:00:00+02:00', 'c', 730, 63072000],
+        ];
     }
 
     /**
@@ -372,7 +377,7 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
 
     public function testIsEarlier()
     {
-        $now = new Mutil_Date();
+        $now = new \Mutil_Date();
         $yesterday = clone $now;
         $yesterday = $yesterday->subDay(1);
         $tomorrow =  clone $now;
@@ -385,7 +390,7 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
 
     public function testIsEarlierorEqual()
     {
-        $now = new Mutil_Date();
+        $now = new \Mutil_Date();
         $yesterday = clone $now;
         $yesterday = $yesterday->subDay(1);
         $tomorrow =  clone $now;
@@ -398,7 +403,7 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
 
     public function testIsLater()
     {
-        $now = new Mutil_Date();
+        $now = new \Mutil_Date();
         $yesterday = clone $now;
         $yesterday = $yesterday->subDay(1);
         $tomorrow =  clone $now;
@@ -411,7 +416,7 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
 
     public function testIsLaterorEqual()
     {
-        $now = new Mutil_Date();
+        $now = new \Mutil_Date();
         $yesterday = clone $now;
         $yesterday = $yesterday->subDay(1);
         $tomorrow =  clone $now;
@@ -426,7 +431,7 @@ class MUtil_DateTest extends \PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
 
     }

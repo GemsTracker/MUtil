@@ -1,17 +1,21 @@
 <?php
 
+namespace MUtilTest\Validate;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Description of NoTags
  *
  * @author 175780
  */
-class NoTagsTest extends \PHPUnit_Framework_TestCase
+class NoTagsTest extends TestCase
 {
 
     /**
@@ -39,7 +43,7 @@ class NoTagsTest extends \PHPUnit_Framework_TestCase
         return [
             'valid#1' => [ "< allowed" ],
             'valid#2' => [ "<1" ],
-            'valid#2' => [ "tom&jerry@wb.com" ]
+            'valid#3' => [ "tom&jerry@wb.com" ]
         ];
     }
     

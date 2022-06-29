@@ -9,6 +9,10 @@
  * @license    No free license, do not copy
  */
 
+namespace MUtilTest;
+
+use PHPUnit\Framework\TestCase;
+
 /**
  *
  * @package    MUtil
@@ -17,7 +21,7 @@
  * @license    No free license, do not copy
  * @since      Class available since version 1.8.4 20-Feb-2018 12:06:58
  */
-class MUtil_FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends TestCase
 {
     /**
      * Test isOnWindows function

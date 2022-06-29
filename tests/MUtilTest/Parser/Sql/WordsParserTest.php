@@ -1,5 +1,9 @@
 <?php
 
+namespace MUtilTest\Parser\Sql;
+
+use PHPUnit\Framework\TestCase;
+
 /**
  *
  * @package    MUtil
@@ -18,11 +22,11 @@
  * @license    New BSD License
  * @since      Class available since version 1.5
  */
-class WordsParserTest extends PHPUnit_Framework_TestCase
+class WordsParserTest extends TestCase
 {
     /**
      *
-     * @var MUtil_Parser_Sql_WordsParser
+     * @var \MUtil_Parser_Sql_WordsParser
      */
     protected $_parser;
 
@@ -70,13 +74,14 @@ UPDATE Nothing SET Something = '\" /* -- bla' WHERE SomethingElse = \"'quoted'\"
      *
      * @var array
      */
-    protected $_sqlOutputString = array(
+    protected $_sqlOutputString = [
         "SELECT  Something as [Really Something] FROM Nothing",
-        "UPDATE Nothing SET Something = '\" /* -- bla' WHERE SomethingElse = \"'quoted'\"");
+        "UPDATE Nothing SET Something = '\" /* -- bla' WHERE SomethingElse = \"'quoted'\""
+    ];
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->_parser = new MUtil_Parser_Sql_WordsParser($this->_sql);
+        $this->_parser = new \MUtil_Parser_Sql_WordsParser($this->_sql);
     }
 
     public function testParse()
@@ -95,7 +100,7 @@ UPDATE Nothing SET Something = '\" /* -- bla' WHERE SomethingElse = \"'quoted'\"
 
     public function testSplitAllArray()
     {
-        $result = MUtil_Parser_Sql_WordsParser::splitStatements($this->_sql, false, false);
+        $result = \MUtil_Parser_Sql_WordsParser::splitStatements($this->_sql, false, false);
         $this->assertCount(3, $result);
         // $this->assertEquals($result[0], $this->_sqlOutputArray[0]);
         // $this->assertEquals($result[1], $this->_sqlOutputArray[1]);
@@ -105,7 +110,7 @@ UPDATE Nothing SET Something = '\" /* -- bla' WHERE SomethingElse = \"'quoted'\"
 
     public function testSplitAllString()
     {
-        $result = MUtil_Parser_Sql_WordsParser::splitStatements($this->_sql, false, true);
+        $result = \MUtil_Parser_Sql_WordsParser::splitStatements($this->_sql, false, true);
         $this->assertCount(2, $result);
         $this->assertEquals($result, $this->_sqlOutputString);
     }
@@ -115,7 +120,7 @@ UPDATE Nothing SET Something = '\" /* -- bla' WHERE SomethingElse = \"'quoted'\"
      */
     public function testSplitEndings($statements)
     {
-        $result = MUtil_Parser_Sql_WordsParser::splitStatements($statements, false);
+        $result = \MUtil_Parser_Sql_WordsParser::splitStatements($statements, false);
         $this->assertCount(2, $result);
     }
     

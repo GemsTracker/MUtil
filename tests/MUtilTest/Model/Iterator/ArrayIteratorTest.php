@@ -6,26 +6,26 @@
  * and open the template in the editor.
  */
 
-namespace MUtil\Model\Iterator;
+namespace MUtilTest\Model\Iterator;
+
+use MUtil\Model\Iterator\ArrayIteratorTellable;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Description of TextFileIteratorTest
  *
  * @author 175780
  */
-class ArrayIteratorTest extends \PHPUnit_Framework_TestCase
+class ArrayIteratorTest extends TestCase
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
     /**
      *
-     * @param type $filename
-     * @param type $split
-     * @param type $encoding
      * @return \MUtil\Model\Iterator\ArrayIteratorTellable
      */
     protected function getIterator(array $input)

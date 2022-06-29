@@ -1,11 +1,15 @@
 <?php
 
-class ModelTest extends PHPUnit_Framework_TestCase
+namespace MUtilTest\Model;
+
+use PHPUnit\Framework\TestCase;
+
+class ModelTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
-        $this->model = $this->getMockForAbstractClass('MUtil_Model_ModelAbstract', array('testAbstractModel'));
+        $this->model = $this->getMockForAbstractClass('MUtil_Model_ModelAbstract', ['testAbstractModel']);
     }
        
     /**
@@ -26,68 +30,66 @@ class ModelTest extends PHPUnit_Framework_TestCase
     public function providerAddFilterDataProvider()
     {
         return array(
-            array(  // Simple first test
-                array(
+            [  // Simple first test
+                [
                     'testfield' => 'stringvalue'
-                    ),
-                array(
+                ],
+                [
                     'field2'    => 2
-                    ),
-                array(
+                ],
+                [
                     'testfield' => 'stringvalue',
                     'field2'    => 2
-                    )
-            ),
-            array(  // Check remove duplicates
-                array(
+                ],
+            ],
+            [  // Check remove duplicates
+                [
                     'testfield' => 'stringvalue'
-                    ),
-                array(
+                ],
+                [
                     'stringvalue'
-                    ),
-                array(
+                ],
+                [
                     'testfield' => 'stringvalue'
-                    )
-            ),
-            array(  // Check remove duplicates
-                array(
+                ],
+            ],
+            [  // Check remove duplicates
+                [
                     'testfield' => 'stringvalue'
-                    ),
-                array(
+                ],
+                [
                     'testfield' => 'stringvalue'
-                    ),
-                array(
+                ],
+                [
                     'testfield' => 'stringvalue'
-                    )
-            ),
-            array(  // Check mixed types
-                array(
+                ],
+            ],
+            [  // Check mixed types
+                [
                     'testfield' => 1
-                    ),
-                array(
+                ],
+                [
                     'stringvalue'
-                    ),
-                array(
+                ],
+                [
                     'testfield' => 1,
                     0           => 'stringvalue'
-                    )
-            ),
-            array(  // Check mixed types bug #838
-                array(
-                    'testfield' => 0
-                    ),
-                array(
+                ],
+            ],
+            [  // Check mixed types bug #838
+                [
+                    'testfield' => 0,
+                ],
+                [
                     'stringvalue',
                     'test'
-                    ),
-                array(
+                ],
+                [
                     'testfield' => 0,
                     0           => 'stringvalue',
                     1           => 'test'
-                    )
-            )
+                ],
+            ],
         );
     }
-    
-    
 }

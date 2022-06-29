@@ -1,5 +1,11 @@
 <?php
 
+namespace MUtilTest\Model;
+
+use MUtilTest\Test\ZendDbFixtures;
+use MUtilTest\Test\ZendDbMigrateFromTestSql;
+use MUtilTest\Test\ZendDbTestCase;
+
 /**
  * Copyright (c) 2011, Erasmus MC
  * All rights reserved.
@@ -44,25 +50,28 @@
  * @license    New BSD License
  * @since      Class available since version 1.6.2
  */
-class MUtil_Model_NestedModelTest extends MUtil_Model_AbstractModelTest
+class NestedModelTest extends ZendDbTestCase
 {
+    use ZendDbFixtures;
+    use ZendDbMigrateFromTestSql;
+
     /**
      *
-     * @var MUtil_Model_TableModel
+     * @var \MUtil_Model_TableModel
      */
     private $_nestedModel;
 
     /**
      * Create the model
      *
-     * @return MUtil_Model_ModelAbstract
+     * @return \MUtil_Model_ModelAbstract
      */
     protected function getNestedModel()
     {
         if (! $this->_nestedModel) {
-            $this->_nestedModel = new MUtil_Model_TableModel('n1');
+            $this->_nestedModel = new \MUtil_Model_TableModel('n1');
 
-            $sub = new MUtil_Model_TableModel('n2');
+            $sub = new \MUtil_Model_TableModel('n2');
 
             $this->_nestedModel->addModel($sub, array('id' => 'pid'));
         }
@@ -72,34 +81,25 @@ class MUtil_Model_NestedModelTest extends MUtil_Model_AbstractModelTest
     
     public function testJoinTransformer()
     {
-            $main = new MUtil_Model_TableModel('n1');
-            $sub = new MUtil_Model_TableModel('n2');
-            $transformer = new MUtil_Model_Transform_JoinTransformer();
-            $transformer->addModel($sub, array('id' => 'pid'));
-            
-            $main->addTransformer($transformer);
-            
-            $rows = $main->load();        
-            $this->assertCount(3, $rows);             // No duplicate records
-            $this->assertEquals(2, $rows[0]['cid']);  //last matching record found will be returned
-            $this->assertNull($rows[1]['cid']);       // When no match we get null
-    }
-            
+        $this->insertFixtures([NestedModelFixtures::class]);
 
-    /**
-     * The template file name to create the sql create and xml load names from.
-     *
-     * Just reutrn __FILE__
-     *
-     * @return string
-     */
-    protected function getTemplateFileName()
-    {
-        return __FILE__;
+        $main = new \MUtil_Model_TableModel('n1');
+        $sub = new \MUtil_Model_TableModel('n2');
+        $transformer = new \MUtil_Model_Transform_JoinTransformer();
+        $transformer->addModel($sub, array('id' => 'pid'));
+
+        $main->addTransformer($transformer);
+
+        $rows = $main->load();
+        $this->assertCount(3, $rows);             // No duplicate records
+        $this->assertEquals(2, $rows[0]['cid']);  //last matching record found will be returned
+        $this->assertNull($rows[1]['cid']);       // When no match we get null
     }
 
     public function testHasTwoTables()
     {
+        $this->insertFixtures([NestedModelFixtures::class]);
+
         $model = $this->getNestedModel();
         $rows  = $model->load();
         // error_log(print_r($rows, true));
@@ -109,13 +109,15 @@ class MUtil_Model_NestedModelTest extends MUtil_Model_AbstractModelTest
         $this->assertCount(0, $rows[1]['n2']);
         $this->assertCount(3, $rows[2]['n2']);
 
-        $model = new MUtil_Model_TableModel('n2');
+        $model = new \MUtil_Model_TableModel('n2');
         $rows  = $model->load();
         $this->assertCount(5, $rows);
     }
 
     public function testInsertARow()
     {
+        $this->insertFixtures([NestedModelFixtures::class]);
+
         $model  = $this->getNestedModel();
         $result = $model->save(array(
             'id' => null,

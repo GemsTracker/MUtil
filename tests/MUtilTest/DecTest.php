@@ -1,5 +1,9 @@
 <?php
 
+namespace MUtilTest;
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * Copyright (c) 2011, Erasmus MC
  * All rights reserved.
@@ -28,7 +32,7 @@
  *
  *
  * @package    MUtil
- * @subpackage Model
+ * @subpackage Dec
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
@@ -36,62 +40,75 @@
  */
 
 /**
- *
+ * Unit test for class MUtil_String
  *
  * @package    MUtil
- * @subpackage Model
+ * @subpackage Dec
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @since      Class available since version 1.5.6
+ * @since      Class available since version 1.5.7
  */
-class MUtil_Model_TableModelTest  extends MUtil_Model_AbstractModelTest
+class DecTest extends TestCase
 {
     /**
+     * Dataprovider
      *
-     * @var MUtil_Model_TableModel
+     * @return array
      */
-    private $_model;
-
-    /**
-     * Create the model
-     *
-     * @return MUtil_Model_ModelAbstract
-     */
-    protected function getModel()
+    public function forCeiling()
     {
-        if (! $this->_model) {
-            $this->_model = new MUtil_Model_TableModel('t1');
-        }
-
-        return $this->_model;
+        return [
+            [10.49825, 1, 10.5],
+            [10.99825, 1, 11.0],
+            [10.09825, 1, 10.1],
+            [10.09825, 2, 10.10],
+            [10.09825, 3, 10.099],
+            [79.99*100, 0, 7999],
+            [79.99*100, -1, 8000],
+            [(10.02-10)*100, 1, 2.0],
+        ];
     }
 
     /**
-     * The template file name to create the sql create and xml load names from.
+     * Dataprovider
      *
-     * Just reutrn __FILE__
-     *
-     * @return string
+     * @return array
      */
-    protected function getTemplateFileName()
+    public function forFloor()
     {
-        return __FILE__;
+        return [
+            [10.49825, 1, 10.4],
+            [10.99825, 1, 10.9],
+            [10.09825, 1, 10.0],
+            [10.09825, 2, 10.09],
+            [10.09825, 3, 10.098],
+            [79.99*100, 0, 7999],
+            [79.99*100, -1, 7990],
+            [(10.02-10)*100, 1, 2.0],
+        ];
     }
 
-    public function testHasFirstRow()
+    /**
+     *
+     * @dataProvider forCeiling
+     * @param float $float
+     * @param int $precision
+     * @param float $output
+     */
+    public function testCeil($float, $precision, $output)
     {
-        $model = $this->getModel();
-        $rows = $model->load();
-        $this->assertCount(1, $rows);
+        $this->assertEquals($output, \MUtil_Dec::ceil($float, $precision));
     }
 
-    public function testInsertARow()
+    /**
+     *
+     * @dataProvider forFloor
+     * @param float $float
+     * @param int $precision
+     * @param float $output
+     */
+    public function testFloor($float, $precision, $output)
     {
-        $model  = $this->getModel();
-        $result = $model->save(array('id' => null, 'c1' => "col1-2", 'c2' => "col2-2"));
-        $this->assertEquals(2, $result['id']);
-
-        $rows = $model->load();
-        $this->assertCount(2, $rows);
+        $this->assertEquals($output, \MUtil_Dec::floor($float, $precision));
     }
 }

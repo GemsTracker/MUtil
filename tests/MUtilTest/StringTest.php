@@ -9,6 +9,9 @@
  * @license    New BSD License
  */
 
+namespace MUtilTest;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit test for class \MUtil_String
@@ -19,7 +22,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.5.7
  */
-class MUtil_StringTest extends \PHPUnit_Framework_TestCase
+class StringTest extends TestCase
 {
     /**
      * Return empty string if charFilters hit on first character
