@@ -337,15 +337,13 @@ class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Countable
      *
      * @return string
      */
-    public function serialize(): string
+    public function __serialize(): array
     {
-        $data = array(
+        return [
             'filename' => $this->filename,
             'filepos'  => $this->_filepos,
             'key'      => $this->_key - 1,
-        );
-
-        return serialize($data);
+        ];
     }
     
     /**
@@ -363,11 +361,10 @@ class MUtil_Model_Iterator_CsvFileIterator implements \Iterator, \Countable
     /**
      * Called during unserialization of the object.
      *
-     * @param string $data
+     * @param array $data
      */
-    public function unserialize(string $data): void
+    public function __unserialize(array $data): void
     {
-        $data = @unserialize($data);
         if ($data === false) {
             $lastErr = error_get_last();
             error_log($lastErr['message'] . "\n", 3, ini_get('error_log'));

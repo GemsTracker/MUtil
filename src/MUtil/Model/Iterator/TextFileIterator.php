@@ -307,18 +307,16 @@ class MUtil_Model_Iterator_TextFileIterator implements \Countable, \Iterator
     /**
      * Return the string representation of the object.
      *
-     * @return string
+     * @return array
      */
-    public function serialize()
+    public function __serialize(): array
     {
-        $data = array(
+        return [
             'filename' => $this->_filename,
             'filepos'  => $this->_filepos,
             'key'      => $this->_key - 1,
             'splitter' => $this->_splitFunction,
-        );
-
-        return serialize($data);
+        ];
     }
 
     /**
@@ -326,9 +324,8 @@ class MUtil_Model_Iterator_TextFileIterator implements \Countable, \Iterator
      *
      * @param string $serialized
      */
-    public function unserialize($serialized)
+    public function __unserialize($data)
     {
-        $data = @unserialize($serialized);
         if ($data === false) {
             $lastErr = error_get_last();
             error_log($lastErr['message'] . "\n", 3, ini_get('error_log'));
