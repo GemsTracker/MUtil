@@ -57,7 +57,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "MUtilTest\\": "tests/MUtilTest"
+            "MUtilTest\\": "tests"
         }
     },
     "archive": {
