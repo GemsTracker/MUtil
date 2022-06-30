@@ -206,6 +206,11 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
     protected $log;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * The mode to use for the panel: PUSH or PULL
      *
      * @var string
@@ -477,7 +482,7 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
         $this->_session->messages[] = $text;
         $this->_lastMessage = $text;
 
-        if ($this->_messageLogWhenAdding && $this->_messageLogFile) {
+        if ($this->_messageLogWhenAdding) {
             $this->logMessage($text);
         }
 
@@ -678,8 +683,8 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
     {
         if (! $this->progressBar instanceof \Zend_ProgressBar) {
             $this->setProgressBar(
-                    new \Zend_ProgressBar($this->getProgressBarAdapter(), 0, 100, $this->_session->getNamespace() . '_pb')
-                    );
+                new \Zend_ProgressBar($this->getProgressBarAdapter(), 0, 100, $this->_session->getNamespace() . '_pb')
+            );
         }
         return $this->progressBar;
     }
@@ -745,8 +750,8 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
         $args['onclick'] = new \MUtil_Html_OnClickArrayAttribute(
             new \MUtil_Html_Raw('if (! this.disabled) {location.href = "'),
             new \MUtil_Html_HrefArrayAttribute(
-                    array($this->progressParameterName => $this->progressParameterRestartValue)
-                    ),
+                array($this->progressParameterName => $this->progressParameterRestartValue)
+            ),
             new \MUtil_Html_Raw('";} this.disabled = true; event.cancelBubble=true;'));
 
         $button = new \MUtil_Html_HtmlElement('button', $args);
@@ -816,7 +821,7 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
     {
         $args = \MUtil_Ra::args(func_get_args());
         $args['onclick'] = 'if (! this.disabled) {' . $this->getFunctionPrefix() .
-                'Start();} this.disabled = true; event.cancelBubble=true;';
+            'Start();} this.disabled = true; event.cancelBubble=true;';
 
         $button = new \MUtil_Html_HtmlElement('button', $args);
         $button->appendAttrib('class', $this->_buttonClass.' btn-succes');
@@ -922,6 +927,9 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
                 $text = sprintf($this->messageLogFormatString, gmdate($this->messageLogDateFormat), $text);
             }
             file_put_contents($this->_messageLogFile, $text . PHP_EOL, FILE_APPEND);
+        }
+        if ($this->logger) {
+            $this->logger->info($text);
         }
 
         return $this;
@@ -1124,6 +1132,11 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
         $this->_messageLogWhenAdding  = $logAdd && $filename;
 
         return $this;
+    }
+
+    public function setMessageLogger(\Psr\Log\LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 
     /**
@@ -1336,8 +1349,8 @@ abstract class MUtil_Batch_BatchAbstract extends \MUtil_Registry_TargetAbstract 
             } catch (\Exception $e) {
                 $this->addMessage('ERROR!!!');
                 $this->addMessage(
-                        'While calling:' . $command[0] . '(' . implode(',', \MUtil_Ra::flatten($command[1])) . ')'
-                        );
+                    'While calling:' . $command[0] . '(' . implode(',', \MUtil_Ra::flatten($command[1])) . ')'
+                );
                 $this->addException($e);
                 $this->stopBatch($e->getMessage());
 
