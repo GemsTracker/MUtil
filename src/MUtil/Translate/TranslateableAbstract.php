@@ -20,24 +20,10 @@ use MUtil\Translate\TranslateableTrait;
  * @subpackage Translate
  * @copyright  Copyright (c) 2012 Erasmus MC
  * @license    New BSD License
- * @since      Class available since version 1.1.35
+ * @since      Class availablesince version 1.1.35
+ * @deprecated Use TranslatableTrait directly
  */
 class MUtil_Translate_TranslateableAbstract extends \MUtil_Registry_TargetAbstract
 {
     use TranslateableTrait;
-
-    /**
-     * Called after the check that all required registry values
-     * have been set correctly has run.
-     *
-     * This function is no needed if the classes are setup correctly
-     *
-     * @return void
-     */
-    public function afterRegistry()
-    {
-        parent::afterRegistry();
-
-        $this->initTranslateable();
-    }
 }
