@@ -1,35 +1,9 @@
 <?php
 
-/**
- *
- * @package    MUtil
- * @subpackage Translate
- * @author     Matijs de Jong <mjong@magnafacta.nl>
- * @copyright  Copyright (c) 2012 Erasmus MC
- * @license    New BSD License
- */
-
 namespace MUtil\Translate;
 
-/**
- * Add auto translate functions to a class
- *
- * Can be implemented as Traight in PHP 5.4 or copied into source
- *
- * @package    MUtil
- * @subpackage Translate
- * @copyright  Copyright (c) 2012 Erasmus MC
- * @license    New BSD License
- * @since      Class available since version 1.1.35
- */
-trait TranslateableTrait
+class Translator extends \Symfony\Component\Translation\Translator
 {
-    /**
-     *
-     * @var Translator
-     */
-    protected $translate;
-
     /**
      * Translates the given message.
      *
@@ -73,9 +47,9 @@ trait TranslateableTrait
      *
      * @throws \InvalidArgumentException If the locale contains invalid characters
      */
-    public function _($text, $locale = null)
+    public function _(?string $id, array $parameters = [], string $domain = null, string $locale = null): string
     {
-        return $this->translate->trans($text, $locale);
+        return $this->trans($id, $parameters, $domain, $locale);
     }
 
     /**
@@ -89,8 +63,12 @@ trait TranslateableTrait
      * @param string|null        $locale   The locale or null to use the default
      * @return string
      */
-    public function plural($singular, $plural, $number, $locale = null)
+    public function plural(string $singular, string $plural, int $number, ?string $locale = null): string
     {
-        $this->translate->trans($singular, $plural, $number, $locale);
+        $message = $singular . '|' . $plural;
+        $parameters = [
+            '%count%' => $number,
+        ];
+        return $this->trans($message, $parameters, null, $locale);
     }
 }

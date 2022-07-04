@@ -31,6 +31,8 @@
  */
 abstract class MUtil_Controller_Action
 {
+    use \MUtil\Translate\TranslateableTrait;
+
     /**
      * A session based message store.
      *
@@ -81,26 +83,6 @@ abstract class MUtil_Controller_Action
      */
     protected $title;
 
-    /**
-     * Set in init() from \Zend_Registry::get('Zend_Translate'), unless set already.
-     *
-     * The code will use a Potemkin Translate adapter when \Zend_Translate is not set in the registry, so
-     * the code will still work, it just will not translate.
-     *
-     * @var \Zend_Translate
-     */
-    public $translate;
-
-    /**
-     * Set in init() from \Zend_Registry::get('Zend_Translate'), unless set already.
-     *
-     * The code will use a Potemkin Translate adapter when \Zend_Translate is not set in the registry, so
-     * the code will still work, it just will not translate.
-     *
-     * @var \Zend_Translate_Adapter
-     */
-    public $translateAdapter;
-
     protected \Mezzio\Helper\UrlHelper $urlHelper;
 
     /**
@@ -138,22 +120,6 @@ abstract class MUtil_Controller_Action
         if ($init) {
             $this->init();
         }
-    }
-
-    /**
-     * Copy from \Zend_Translate_Adapter
-     *
-     * Translates the given string
-     * returns the translation
-     *
-     * @param  string             $text   Translation string
-     * @param  string|\Zend_Locale $locale (optional) Locale/Language to use, identical with locale
-     *                                    identifier, @see \Zend_Locale for more information
-     * @return string
-     */
-    public function _($text, $locale = null)
-    {
-        return $this->translateAdapter->_($text, $locale);
     }
 
     /**
@@ -488,27 +454,6 @@ abstract class MUtil_Controller_Action
     {
         // Create the snippet with this controller as the parameter source
         $this->snippetLoader = new \MUtil_Snippets_SnippetLoader($this);
-    }
-
-
-    /**
-     * Copy from \Zend_Translate_Adapter
-     *
-     * Translates the given string using plural notations
-     * Returns the translated string
-     *
-     * @see \Zend_Locale
-     * @param  string             $singular Singular translation string
-     * @param  string             $plural   Plural translation string
-     * @param  integer            $number   Number for detecting the correct plural
-     * @param  string|\Zend_Locale $locale   (Optional) Locale/Language to use, identical with
-     *                                      locale identifier, @see \Zend_Locale for more information
-     * @return string
-     */
-    public function plural(string $singular, string $plural, int $number, mixed $locale = null): string
-    {
-        $args = func_get_args();
-        return call_user_func_array(array($this->translateAdapter, 'plural'), $args);
     }
 
     /* currently not in use
