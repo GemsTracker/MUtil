@@ -8,6 +8,7 @@ namespace MUtilTest\Validate;
  * and open the template in the editor.
  */
 
+use MUtil\Validate\NotEqualTo;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -24,7 +25,7 @@ class NotEqualToTest extends TestCase
     public function testIsValid($value, $context)
     {
         $fields = ['a', 'b'];
-        $validator = new \MUtil_Validate_NotEqualTo($fields);
+        $validator = new NotEqualTo($fields);
         $result = $validator->isValid($value, $context);
         $this->assertTrue($result);
     }
@@ -35,7 +36,7 @@ class NotEqualToTest extends TestCase
     public function testIsInValid($value, $context)
     {
         $fields = ['a', 'b'];
-        $validator = new \MUtil_Validate_NotEqualTo($fields);
+        $validator = new NotEqualTo($fields);
         $result = $validator->isValid($value, $context);
         $this->assertFalse($result);
     }
@@ -47,7 +48,7 @@ class NotEqualToTest extends TestCase
     {
         $fields = ['a', 'b'];
         $messages = ['a' => 'A not OK', 'not OK'];
-        $validator = new \MUtil_Validate_NotEqualTo($fields, $messages);
+        $validator = new NotEqualTo($fields, $messages);
         $validator->isValid($value, $context);
         $result = $validator->getMessages();
         $this->assertEquals($expected, $result['notEqualTo']);

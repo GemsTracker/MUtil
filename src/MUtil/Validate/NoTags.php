@@ -1,5 +1,6 @@
 <?php
 
+namespace MUtil\Validate;
 /**
  *
  * @package    MUtil
@@ -17,28 +18,27 @@
  * @license    New BSD License
  * @since      Class available since version 1.8.2 Feb 7, 2017 5:03:48 PM
  */
-class MUtil_Validate_NoTags extends \MUtil_Validate_Regexclude
+class NoTags extends Regexclude
 {
-    const NOTAGS_REGEX = '/&(?:[a-z\d]+|#\d+|#x[a-f\d]+);|[<][a-z\\\\\/:]/i';
+    protected const NOTAGS_REGEX = '/&(?:[a-z\d]+|#\d+|#x[a-f\d]+);|[<][a-z\\\\\/:]/i';
 
     /**
      * Regular expression pattern
      *
      * @var string
      */
-    protected $_pattern = self::NOTAGS_REGEX;
+    protected string $pattern = self::NOTAGS_REGEX;
 
     /**
      * Sets validator options
      *
-     * @param  string|\Zend_Config $pattern
+     * @param  string $pattern
      * @return void
      */
-    public function __construct($pattern = self::NOTAGS_REGEX)
+    public function __construct(string $pattern = self::NOTAGS_REGEX)
     {
+        $this->messageTemplates[parent::MATCH] = "No letters, ':' or '\\' are allowed directly after a '<' or '&' character.";
         parent::__construct($pattern);
-
-        $this->_messageTemplates[parent::MATCH] = "No letters, ':' or '\\' are allowed directly after a '<' or '&' character.";
     }
 
     /**
@@ -49,7 +49,7 @@ class MUtil_Validate_NoTags extends \MUtil_Validate_Regexclude
      * @param  string $value
      * @return boolean
      */
-    public function isValid($value)
+    public function isValid($value): bool
     {
         if ((null === $value) || ('' == $value) || (is_array($value) && empty($value)) || is_object($value)) {
             return true;

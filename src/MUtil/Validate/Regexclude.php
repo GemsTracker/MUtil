@@ -1,5 +1,9 @@
 <?php
 
+namespace MUtil\Validate;
+use Laminas\Validator\AbstractValidator;
+use Laminas\Validator\Exception\RuntimeException;
+
 /**
  *
  * @package    MUtil
@@ -18,7 +22,7 @@
  * @license    New BSD License
  * @since      Class available since MUtil version 1.3
  */
-class MUtil_Validate_Regexclude extends \Zend_Validate_Abstract
+class Regexclude extends AbstractValidator
 {
     const INVALID   = 'regexInvalid';
     const MATCH     = 'regexMatch';
@@ -27,50 +31,38 @@ class MUtil_Validate_Regexclude extends \Zend_Validate_Abstract
     /**
      * @var array
      */
-    protected $_messageTemplates = array(
+    protected $messageTemplates = [
         self::INVALID   => "Invalid type given. String, integer or float expected",
         self::MATCH     => "'%value%' does match against pattern '%pattern%'",
         self::ERROROUS  => "There was an internal error while using the pattern '%pattern%'",
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $_messageVariables = array(
-        'pattern' => '_pattern'
-    );
+    protected $messageVariables = [
+        'pattern' => 'pattern'
+    ];
 
     /**
      * Regular expression pattern
      *
      * @var string
      */
-    protected $_pattern;
+    protected string $pattern;
 
     /**
      * Sets validator options
      *
-     * @param  string|\Zend_Config $pattern
+     * @param  string regex parern $pattern
      * @throws \Zend_Validate_Exception On missing 'pattern' parameter
      * @return void
      */
-    public function __construct($pattern = null)
+    public function __construct(?string $pattern = null)
     {
-        if ($this->_pattern && !$pattern) {
+        parent::__construct();
+        if ($this->pattern && !$pattern) {
             return;
-        }
-
-        if ($pattern instanceof \Zend_Config) {
-            $pattern = $pattern->toArray();
-        }
-
-        if (is_array($pattern)) {
-            if (array_key_exists('pattern', $pattern)) {
-                $pattern = $pattern['pattern'];
-            } else {
-                require_once 'Zend/Validate/Exception.php';
-                throw new \Zend_Validate_Exception("Missing option 'pattern'");
-            }
         }
 
         $this->setPattern($pattern);
@@ -81,26 +73,25 @@ class MUtil_Validate_Regexclude extends \Zend_Validate_Abstract
      *
      * @return string
      */
-    public function getPattern()
+    public function getPattern(): string
     {
-        return $this->_pattern;
+        return $this->pattern;
     }
 
     /**
      * Sets the pattern option
      *
      * @param  string $pattern
-     * @throws \Zend_Validate_Exception if there is a fatal error in pattern matching
+     * @throws RuntimeException if there is a fatal error in pattern matching
      * @return \Zend_Validate_Regex Provides a fluent interface
      */
-    public function setPattern($pattern)
+    public function setPattern(string $pattern): self
     {
-        $this->_pattern = (string) $pattern;
-        $status         = @preg_match($this->_pattern, "Test");
+        $this->pattern = $pattern;
+        $status         = @preg_match($this->pattern, "Test");
 
         if (false === $status) {
-            require_once 'Zend/Validate/Exception.php';
-            throw new \Zend_Validate_Exception("Internal error while using the pattern '$this->_pattern'");
+            throw new RuntimeException("Internal error while using the pattern '$this->pattern'");
         }
 
         return $this;
@@ -114,23 +105,23 @@ class MUtil_Validate_Regexclude extends \Zend_Validate_Abstract
      * @param  string $value
      * @return boolean
      */
-    public function isValid($value)
+    public function isValid(mixed $value): bool
     {
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
-            $this->_error(self::INVALID);
+            $this->error(self::INVALID);
             return false;
         }
 
-        $this->_setValue($value);
+        $this->setValue($value);
 
-        $status = @preg_match($this->_pattern, $value);
+        $status = @preg_match($this->pattern, $value);
         if (false === $status) {
-            $this->_error(self::ERROROUS);
+            $this->error(self::ERROROUS);
             return false;
         }
 
         if ($status) {
-            $this->_error(self::MATCH);
+            $this->error(self::MATCH);
             return false;
         }
 

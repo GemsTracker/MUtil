@@ -8,7 +8,7 @@ namespace MUtilTest\Validate;
  * and open the template in the editor.
  */
 
-use MUtil\Validate\NoTags;
+use MUtil\Validate\NoScript;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @author 175780
  */
-class NoTagsTest extends TestCase
+class NoScriptTest extends TestCase
 {
 
     /**
@@ -24,7 +24,7 @@ class NoTagsTest extends TestCase
      */
     public function testIsValid($value)
     {
-        $validator = new NoTags();
+        $validator = new NoScript();
         $result = $validator->isValid($value);
         $this->assertTrue($result);
     }
@@ -34,7 +34,7 @@ class NoTagsTest extends TestCase
      */
     public function testIsInValid($value, $messageKey)
     {
-        $validator = new NoTags();
+        $validator = new NoScript();
         $result = $validator->isValid($value);
         $this->assertFalse($result);
         $messages = $validator->getMessages();
@@ -44,24 +44,22 @@ class NoTagsTest extends TestCase
     public function IsValidProvider()
     {
         return [
-            'valid#1' => [ "< allowed" ],
-            'valid#2' => [ "<1" ],
-            'valid#3' => [ "tom&jerry@wb.com" ]
+            'valid#1' => ['allowed'],
+            'valid#2' => ['1'],
+            'valid#3' => ['tom&jerry@wb.com'],
         ];
     }
     
     public function IsInValidProvider()
     {
         return [
-            'invalid#1' => ['<abc', NoTags::MATCH],
-            'invalid#2' => ['<ABC', NoTags::MATCH],
-            'invalid#3' => ['</abc', NoTags::MATCH],
-            'invalid#4' => ['<\abc', NoTags::MATCH],
-            'invalid#5' => ['<:abc', NoTags::MATCH],
-            'invalid#6' => ['&nbsp;', NoTags::MATCH],
-            'invalid#7' => ['&#160;', NoTags::MATCH],
-            'invalid#8' => ['&#x000A0;', NoTags::MATCH],
-            'invalid#9' => ['&#X000A0;', NoTags::MATCH],
+            'invalid#1' => ['<abc', NoScript::MATCH],
+            'invalid#2' => ['<ABC', NoScript::MATCH],
+            'invalid#3' => ['</abc', NoScript::MATCH],
+            'invalid#4' => ['<\abc', NoScript::MATCH],
+            'invalid#5' => ['<:abc', NoScript::MATCH],
+            'invalid#6' => [null, NoScript::INVALID],
+
         ];
     }
 

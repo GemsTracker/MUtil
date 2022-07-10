@@ -1,5 +1,7 @@
 <?php
 
+namespace MUtil\Validate;
+
 /**
  *
  * @package    MUtil
@@ -18,7 +20,7 @@
  * @license    New BSD License
  * @since      Class available since MUtil version 1.0
  */
-class MUtil_Validate_NoScript extends \MUtil_Validate_Regexclude
+class NoScript extends Regexclude
 {
     const SCRIPT_REGEX = '/[<>{}\(\)]/';
 
@@ -27,18 +29,19 @@ class MUtil_Validate_NoScript extends \MUtil_Validate_Regexclude
      *
      * @var string
      */
-    protected $_pattern = self::SCRIPT_REGEX;
+    protected string $pattern = self::SCRIPT_REGEX;
 
     /**
      * Sets validator options
      *
-     * @param  string|\Zend_Config $pattern
+     * @param  string $pattern
      * @return void
      */
-    public function __construct($pattern = self::SCRIPT_REGEX)
+    public function __construct(string $pattern = self::SCRIPT_REGEX)
     {
+        $this->messageTemplates[parent::MATCH] = "Html tags may not be entered here.";
         parent::__construct($pattern);
 
-        $this->_messageTemplates[parent::MATCH] = "Html tags may not be entered here.";
+
     }
 }

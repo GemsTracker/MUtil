@@ -1,5 +1,9 @@
 <?php
 
+namespace MUtil\Validate;
+
+use Laminas\Validator\Regex;
+
 /**
  * Copyright (c) 2011, Erasmus MC
  * All rights reserved.
@@ -44,32 +48,32 @@
  * @license    New BSD License
  * @since      Class available since MUtil version 1.0
  */
-class MUtil_Validate_Phone extends \Zend_Validate_Regex
+class Phone extends Regex
 {
     const PHONE_REGEX = '/^[\d\s\+\(\)\-]*$/';
 
     /**
      * @var array
      */
-    protected $_messageTemplates = array(
+    protected $messageTemplates = [
         self::INVALID   => "Invalid type given, value should be string, integer or float",
         self::NOT_MATCH => "'%value%' is not a phone number (e.g. +12 (0)34-567 890).",
-    );
+    ];
 
     /**
      * Regular expression pattern
      *
      * @var string
      */
-    protected $_pattern = self::PHONE_REGEX;
+    protected $pattern = self::PHONE_REGEX;
 
     /**
      * Sets validator options
      *
-     * @param  string|\Zend_Config $pattern
+     * @param  string $pattern
      * @return void
      */
-    public function __construct($pattern = self::PHONE_REGEX)
+    public function __construct(string $pattern = self::PHONE_REGEX)
     {
         parent::__construct($pattern);
     }
