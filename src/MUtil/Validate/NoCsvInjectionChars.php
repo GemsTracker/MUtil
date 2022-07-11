@@ -1,5 +1,7 @@
 <?php
 
+namespace MUtil\Validate;
+
 /**
  *
  * @package    MUtil
@@ -17,7 +19,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.8.4 03-Apr-2018 15:51:24
  */
-class MUtil_Validate_NoCsvInjectionChars extends \MUtil_Validate_Regexclude
+class NoCsvInjectionChars extends Regexclude
 {
     const SCRIPT_REGEX = '/[=+|]/';
 
@@ -26,7 +28,7 @@ class MUtil_Validate_NoCsvInjectionChars extends \MUtil_Validate_Regexclude
      *
      * @var string
      */
-    protected $_pattern = self::SCRIPT_REGEX;
+    protected string $pattern = self::SCRIPT_REGEX;
 
     /**
      * Sets validator options
@@ -38,6 +40,6 @@ class MUtil_Validate_NoCsvInjectionChars extends \MUtil_Validate_Regexclude
     {
         parent::__construct($pattern);
 
-        $this->_messageTemplates[parent::MATCH] = "The characters =, + and | are not allowed here.";
+        $this->messageTemplates[parent::MATCH] = "The characters =, + and | are not allowed here.";
     }
 }
