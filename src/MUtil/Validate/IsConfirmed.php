@@ -1,39 +1,8 @@
 <?php
 
-/**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- *
- * @package    MUtil
- * @subpackage Validate
- * @author     Matijs de Jong <mjong@magnafacta.nl>
- * @copyright  Copyright (c) 2011 Erasmus MC
- * @license    New BSD License
- * @version    $Id$
- */
+namespace MUtil\Validate;
+
+use Laminas\Validator\AbstractValidator;
 
 /**
  *
@@ -43,38 +12,41 @@
  * @license    New BSD License
  * @since      Class available since MUtil version 1.0
  */
-class MUtil_Validate_IsConfirmed extends \Zend_Validate_Abstract
+class IsConfirmed extends AbstractValidator
 {
     /**
      * Error codes
      * @const string
      */
-    const NOT_SAME           = 'notSame';
-    const MISSING_FIELD_NAME = 'missingFieldName';
+    public const NOT_SAME           = 'notSame';
+    public const MISSING_DATA       = 'missingData';
+    public const MISSING_FIELD_NAME = 'missingFieldName';
 
-    protected $_messageTemplates = array(
-        self::NOT_SAME           => "Must be the same as %fieldDescription%.",
-        self::MISSING_FIELD_NAME => 'No field was provided to match against.',
-    );
+    protected array $messageTemplates = [
+        self::NOT_SAME              => "Must be the same as %fieldDescription%.",
+        self::MISSING_DATA          => "Field %fieldName% missing in data",
+        self::MISSING_FIELD_NAME    => 'No field was provided to match against.',
+    ];
 
     /**
      * @var array
      */
-    protected $_messageVariables = array(
-        'fieldDescription' => '_fieldDescription'
-    );
+    protected array $messageVariables = [
+        'fieldName' => 'fieldName',
+        'fieldDescription' => 'fieldDescription',
+    ];
 
     /**
      * The field name against which to validate
      * @var string
      */
-    protected $_fieldName;
+    protected ?string $fieldName = null;
 
     /**
      * Description of field name against which to validate
      * @var string
      */
-    protected $_fieldDescription;
+    protected ?string $fieldDescription = null;
 
     /**
      * Sets validator options
@@ -83,8 +55,9 @@ class MUtil_Validate_IsConfirmed extends \Zend_Validate_Abstract
      * $param string $fieldDescription  Description of field name against which to validate
      * @return void
      */
-    public function __construct($fieldName = null, $fieldDescription = null)
+    public function __construct(?string $fieldName = null, ?string $fieldDescription = null)
     {
+        parent::__construct();
         if (null !== $fieldDescription) {
             $this->setFieldDescription($fieldDescription);
         }
@@ -98,9 +71,9 @@ class MUtil_Validate_IsConfirmed extends \Zend_Validate_Abstract
      *
      * @return String
      */
-    public function getFieldName()
+    public function getFieldName(): ?string
     {
-        return $this->_fieldname;
+        return $this->fieldName;
     }
 
     /**
@@ -108,9 +81,9 @@ class MUtil_Validate_IsConfirmed extends \Zend_Validate_Abstract
      *
      * @return String
      */
-    public function getFieldDescription()
+    public function getFieldDescription(): ?string
     {
-        return $this->_fieldDescription;
+        return $this->fieldDescription;
     }
 
     /**
@@ -122,18 +95,23 @@ class MUtil_Validate_IsConfirmed extends \Zend_Validate_Abstract
      * @param  mixed $value
      * @return boolean
      */
-    public function isValid($value, $context = array())
+    public function isValid($value, array $context = []): bool
         {
-        $this->_setValue((string) $value);
-        $fieldName        = $this->getFieldName();
+        $this->setValue((string) $value);
+        $fieldName = $this->getFieldName();
 
         if ($fieldName === null) {
-            $this->_error(self::MISSING_FIELD_NAME);
+            $this->error(self::MISSING_FIELD_NAME);
+            return false;
+        }
+
+        if (!array_key_exists($fieldName, $context)) {
+            $this->error(self::MISSING_DATA);
             return false;
         }
 
         if ($value !== $context[$fieldName])  {
-            $this->_error(self::NOT_SAME);
+            $this->error(self::NOT_SAME);
             return false;
         }
 
@@ -146,11 +124,11 @@ class MUtil_Validate_IsConfirmed extends \Zend_Validate_Abstract
      * @param  mixed $token
      * @return self
      */
-    public function setFieldName($fieldName)
+    public function setFieldName(string $fieldName): self
     {
-        $this->_fieldname = $fieldName;
+        $this->fieldName = $fieldName;
 
-        if (! $this->_fieldDescription) {
+        if (! $this->fieldDescription) {
             $this->setFieldDescription($fieldName);
         }
 
@@ -163,9 +141,9 @@ class MUtil_Validate_IsConfirmed extends \Zend_Validate_Abstract
      * @param  mixed $description
      * @return self
      */
-    public function setFieldDescription($description)
+    public function setFieldDescription($description): self
     {
-        $this->_fieldDescription = $description;
+        $this->fieldDescription = $description;
         return $this;
     }
 }

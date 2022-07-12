@@ -1,13 +1,9 @@
 <?php
 
-/**
- *
- * @package     MUtil
- * @subpackage Validate
- * @author     Matijs de Jong <mjong@magnafacta.nl>
- * @copyright  Copyright (c) 2012 Erasmus MC
- * @license    New BSD License
- */
+namespace MUtil\Validate;
+
+use Laminas\Validator\AbstractValidator;
+use Laminas\Validator\Regex;
 
 /**
  *
@@ -17,34 +13,42 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Validate_SimpleEmail extends \Zend_Validate_Regex
+class SimpleEmail extends AbstractValidator
 {
-    // Reg checked at Wikipedia, only | and ` chars are technically allowed in name and not in there fro security reasons.
-    const EMAIL_REGEX = '/^(([[:alnum:]._!#$%*\\/&?{}+=\'^~-])+@[[:alnum:]]+[[:alnum:].-]+\\.[[:alpha:]]{2,}){0,1}$/';
+    public const INVALID   = 'emailInvalid';
+    public const NOT_MATCH = 'emailNotMatch';
 
     /**
      * @var array
      */
-    protected $_messageTemplates = array(
+    protected $messageTemplates = [
         self::INVALID   => "Invalid type given, value should be string, integer or float",
         self::NOT_MATCH => "'%value%' is not an email address (e.g. name@somewhere.com).",
-    );
+    ];
 
     /**
-     * Regular expression pattern
+     * Defined by Zend_Validate_Interface
      *
-     * @var string
-     */
-    protected $_pattern = self::EMAIL_REGEX;
-
-    /**
-     * Sets validator options
+     * Returns true if and only if $value matches against the pattern option
      *
-     * @param  string|\Zend_Config $pattern
-     * @return void
+     * @param  string $value
+     * @return boolean
      */
-    public function __construct($pattern = self::EMAIL_REGEX)
+    public function isValid($value): bool
     {
-        parent::__construct($pattern);
+        $this->setValue($value);
+
+        if (!is_string($value) && !is_int($value) && !is_float($value)) {
+            $this->error(self::INVALID);
+            return false;
+        }
+
+        $status = filter_var($value, FILTER_VALIDATE_EMAIL);
+        if (false === $status) {
+            $this->error(self::NOT_MATCH);
+            return false;
+        }
+
+        return true;
     }
 }
