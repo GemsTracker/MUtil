@@ -387,9 +387,9 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
     /**
      * The request ID value
      *
-     * @return string The request ID value
+     * @return ?string The request ID value
      */
-    protected function _getIdParam(): string
+    protected function _getIdParam(): ?string
     {
         return $this->request->getAttribute(\MUtil_Model::REQUEST_ID);
     }
