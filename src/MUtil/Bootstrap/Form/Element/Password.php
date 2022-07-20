@@ -46,6 +46,8 @@
  */
 class MUtil_Bootstrap_Form_Element_Password extends \Zend_Form_Element_Password
 {
+    use \MUtil\Form\Element\LaminasElementValidator;
+
 	/**
 	 * Bootstrap class for an input tag. Remove if you want the normal layout.
 	 * @var string
