@@ -189,11 +189,11 @@ class MUtil_Model_Type_ConcatenatedRow
         // \MUtil_Echo::track($value, $name, $context);
         if (! is_array($value)) {
             if ($this->valuePad) {
-                $value = trim($value, $this->seperatorChar);
+                $value = trim((string)$value, $this->seperatorChar);
             }
             // If it was empty, return an empty array instead of array with an empty element
             if(empty($value)) {
-                return array();
+                return [];
             }
             $value = explode($this->seperatorChar, $value);
         }
