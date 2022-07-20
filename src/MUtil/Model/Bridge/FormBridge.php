@@ -58,24 +58,24 @@ class MUtil_Model_Bridge_FormBridge implements \MUtil_Model_Bridge_FormBridgeInt
     public $defaultSize = 40;
 
     // First list html attributes, then Zend attributes, lastly own attributes
-    private $_allowedOptions = array(
-        self::AUTO_OPTIONS       => array('elementClass', 'multiOptions'),
-        self::CHECK_OPTIONS      => array('checkedValue', 'uncheckedValue'),
-        self::DATE_OPTIONS       => array('dateFormat', 'storageFormat'),
-        self::DISPLAY_OPTIONS    => array('accesskey', 'addDecorators', 'autoInsertNoTagsValidator', 'autoInsertNotEmptyValidator', 'class', 'decorators', 'disabled', 'disableTranslator', 'description', 'escape', 'escapeDescription', 'label', 'labelplacement', 'onclick', 'placeholder', 'readonly', 'required', 'tabindex', 'value', 'showLabels'),
-        self::EXHIBIT_OPTIONS    => array('formatFunction', 'itemDisplay', 'nohidden'),
-        self::FAKESUBMIT_OPTIONS => array('label', 'tabindex', 'disabled'),
-        self::FILE_OPTIONS       => array('accept', 'count', 'destination', 'extension', 'filename', 'valueDisabled'),
-        self::GROUP_OPTIONS      => array('elements', 'legend', 'separator'),
-        self::JQUERY_OPTIONS     => array('jQueryParams'),
-        self::MULTI_OPTIONS      => array('disable', 'multiOptions', 'onchange', 'separator', 'size'),
-        self::PASSWORD_OPTIONS   => array('renderPassword', 'repeatLabel'),
-        self::SUBFORM_OPTIONS    => array('class', 'decorators', 'escape', 'form', 'label', 'tabindex'),
-        self::TAB_OPTIONS        => array('value'),
-        self::TEXT_OPTIONS       => array('maxlength', 'minlength', 'onblur', 'onchange', 'onfocus', 'onselect', 'size'),
-        self::TEXTAREA_OPTIONS   => array('cols', 'decorators', 'rows', 'wrap'),
-        self::TOGGLE_OPTIONS     => array('selector', 'selectorName'),
-        );
+    private $_allowedOptions = [
+        self::AUTO_OPTIONS       => ['elementClass', 'multiOptions'],
+        self::CHECK_OPTIONS      => ['checkedValue', 'uncheckedValue'],
+        self::DATE_OPTIONS       => ['dateFormat', 'storageFormat'],
+        self::DISPLAY_OPTIONS    => ['accesskey', 'addDecorators', 'autoInsertNoTagsValidator', 'autoInsertNotEmptyValidator', 'class', 'decorators', 'disabled', 'disableTranslator', 'description', 'escape', 'escapeDescription', 'label', 'labelplacement', 'onclick', 'placeholder', 'readonly', 'required', 'tabindex', 'value', 'showLabels'],
+        self::EXHIBIT_OPTIONS    => ['formatFunction', 'itemDisplay', 'nohidden'],
+        self::FAKESUBMIT_OPTIONS => ['label', 'tabindex', 'disabled'],
+        self::FILE_OPTIONS       => ['accept', 'count', 'destination', 'extension', 'filename', 'valueDisabled'],
+        self::GROUP_OPTIONS      => ['elements', 'legend', 'separator'],
+        self::JQUERY_OPTIONS     => ['jQueryParams'],
+        self::MULTI_OPTIONS      => ['disable', 'multiOptions', 'onchange', 'separator', 'size'],
+        self::PASSWORD_OPTIONS   => ['renderPassword', 'repeatLabel'],
+        self::SUBFORM_OPTIONS    => ['class', 'decorators', 'escape', 'form', 'label', 'tabindex'],
+        self::TAB_OPTIONS        => ['value'],
+        self::TEXT_OPTIONS       => ['maxlength', 'minlength', 'onblur', 'onchange', 'onfocus', 'onselect', 'size'],
+        self::TEXTAREA_OPTIONS   => ['cols', 'decorators', 'rows', 'wrap'],
+        self::TOGGLE_OPTIONS     => ['selector', 'selectorName'],
+    ];
 
     /**
      * Construct the bridge while setting the model.
@@ -505,7 +505,7 @@ class MUtil_Model_Bridge_FormBridge implements \MUtil_Model_Bridge_FormBridgeInt
             $element->addValidator('Extension', false, $extension);
             // Now set a custom validation message telling what extensions are allowed
             $validator = $element->getValidator('Extension');
-            $validator->setMessage('Only %extension% files are accepted.', \Zend_Validate_File_Extension::FALSE_EXTENSION);
+            $validator->setMessage('Only %extension% files are accepted.', \Laminas\Validator\File\Extension::FALSE_EXTENSION);
         }
 
         return $this->_addToForm($name, $element);
@@ -715,8 +715,8 @@ class MUtil_Model_Bridge_FormBridge implements \MUtil_Model_Bridge_FormBridgeInt
                 $repeatElement->addValidator('StringLength', true, $stringlength);
             }
 
-            $element->addValidator(new \MUtil_Validate_IsConfirmed($repeatName, $repeatLabel));
-            $repeatElement->addValidator(new \MUtil_Validate_IsConfirmed($name, isset($options['label']) ? $options['label'] : null));
+            $element->addValidator(new \MUtil\Validate\IsConfirmed($repeatName, $repeatLabel));
+            $repeatElement->addValidator(new \MUtil\Validate\IsConfirmed($name, isset($options['label']) ? $options['label'] : null));
         }
 
         return $element;
