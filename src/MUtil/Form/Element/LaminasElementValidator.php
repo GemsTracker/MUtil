@@ -37,4 +37,54 @@ trait LaminasElementValidator
 
         return $this;
     }
+
+    /**
+     * Add multiple validators
+     *
+     * @param  array $validators
+     * @return \Zend_Form_Element
+     */
+    public function addValidators(array $validators)
+    {
+        foreach ($validators as $validatorInfo) {
+            if (is_string($validatorInfo)) {
+                $this->addValidator($validatorInfo);
+            } elseif ($validatorInfo instanceof ValidatorInterface) {
+                $this->addValidator($validatorInfo);
+            } elseif (is_array($validatorInfo)) {
+                $argc                = count($validatorInfo);
+                $breakChainOnFailure = false;
+                $options             = [];
+                if (isset($validatorInfo['validator'])) {
+                    $validator = $validatorInfo['validator'];
+                    if (isset($validatorInfo['breakChainOnFailure'])) {
+                        $breakChainOnFailure = $validatorInfo['breakChainOnFailure'];
+                    }
+                    if (isset($validatorInfo['options'])) {
+                        $options = $validatorInfo['options'];
+                    }
+                    $this->addValidator($validator, $breakChainOnFailure, $options);
+                } else {
+                    switch (true) {
+                        case (0 == $argc):
+                            break;
+                        case (1 <= $argc):
+                            $validator  = array_shift($validatorInfo);
+                        case (2 <= $argc):
+                            $breakChainOnFailure = array_shift($validatorInfo);
+                        case (3 <= $argc):
+                            $options = array_shift($validatorInfo);
+                        default:
+                            $this->addValidator($validator, $breakChainOnFailure, $options);
+                            break;
+                    }
+                }
+            } else {
+                require_once 'Zend/Form/Exception.php';
+                throw new \Zend_Form_Exception('Invalid validator passed to addValidators()');
+            }
+        }
+
+        return $this;
+    }
 }
