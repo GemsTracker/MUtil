@@ -46,6 +46,8 @@
  */
 class MUtil_Bootstrap_Form_Element_Select extends \MUtil_Form_Element_Select
 {
+    Use \MUtil\Form\Element\LaminasElementValidator;
+
     /**
 	 * Bootstrap class for an input tag. Remove if you want the normal layout.
 	 * @var string

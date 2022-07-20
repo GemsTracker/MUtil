@@ -11,6 +11,7 @@
 
 namespace MUtil\Bootstrap\Form\Element;
 
+use MUtil\Form\Element\LaminasElementValidator;
 use MUtil\Form\Element\Textarea as BaseTextarea;
 
 /**
@@ -25,6 +26,8 @@ use MUtil\Form\Element\Textarea as BaseTextarea;
  */
 class Textarea extends BaseTextarea
 {
+    use LaminasElementValidator;
+
 	/**
 	 * Bootstrap class for an input tag. Remove if you want the normal layout.
 	 * @var string

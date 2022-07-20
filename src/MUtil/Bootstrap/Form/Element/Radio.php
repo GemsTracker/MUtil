@@ -21,6 +21,7 @@
  */
 class MUtil_Bootstrap_Form_Element_Radio extends \Zend_Form_Element_Radio
 {
+    use \MUtil\Form\Element\LaminasElementValidator;
 
     /**
      * Constructor
@@ -66,7 +67,7 @@ class MUtil_Bootstrap_Form_Element_Radio extends \Zend_Form_Element_Radio
                  ->addDecorator('Label')
                  ->addDecorator('BootstrapRow');
         }
-        
+
         if (false !== $decorator = $this->getDecorator('label')) {
             $decorator->setOption('disableFor', true);
         }
