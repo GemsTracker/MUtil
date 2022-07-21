@@ -777,7 +777,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
             // \MUtil_Echo::r($excludes);
 
             if ($excludes) {
-                return new \MUtil_Validate_Db_UniqueValue($tableName, $names, $excludes, $adapter);
+                return new \MUtil\Validate\Db\ZendDbUniqueValue($tableName, $names, $excludes, $adapter);
             }
 
             throw new \MUtil_Model_ModelException(
