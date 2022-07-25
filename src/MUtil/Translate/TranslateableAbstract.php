@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Translate;
+
 use MUtil\Translate\TranslateableTrait;
 
 /**
@@ -23,7 +25,7 @@ use MUtil\Translate\TranslateableTrait;
  * @since      Class availablesince version 1.1.35
  * @deprecated Use TranslatableTrait directly
  */
-class MUtil_Translate_TranslateableAbstract extends \MUtil_Registry_TargetAbstract
+class TranslateableAbstract extends \MUtil\Registry\TargetAbstract
 {
     use TranslateableTrait;
 }

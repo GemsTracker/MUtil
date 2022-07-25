@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Model\Bridge;
+
 /**
  *
  * @package    MUtil
@@ -17,7 +19,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Model_Bridge_VerticalTableBridge extends \MUtil_Model_Bridge_TableBridgeAbstract
+class VerticalTableBridge extends \MUtil\Model\Bridge\TableBridgeAbstract
 {
     protected $columnCount   = 1;
     protected $columnCounts  = array();
@@ -87,7 +89,7 @@ class MUtil_Model_Bridge_VerticalTableBridge extends \MUtil_Model_Bridge_TableBr
                     $this->columnCounts = array_pad($this->columnCounts, $rowspan, $this->columnCount - $colCount);
                 }
 
-                // \MUtil_Echo::r($this->columnCounts);
+                // \MUtil\EchoOut\EchoOut::r($this->columnCounts);
             }
         }
     }
@@ -100,7 +102,7 @@ class MUtil_Model_Bridge_VerticalTableBridge extends \MUtil_Model_Bridge_TableBr
             //
             // First get the number of columns that should be in the current row
             if ($this->columnCounts) {
-                // \MUtil_Echo::r($this->columnCounts);
+                // \MUtil\EchoOut\EchoOut::r($this->columnCounts);
                 $maxColumns = reset($this->columnCounts);
             } else {
                 $maxColumns = $this->columnCount;
@@ -109,7 +111,7 @@ class MUtil_Model_Bridge_VerticalTableBridge extends \MUtil_Model_Bridge_TableBr
             // Now add new row if over column margin.
             //
             // Do this before the ROWSPAN is applied as that applies to future rows
-            // \MUtil_Echo::r((is_string($name) ? $name : 'array') . '-' . $this->currentColumn . '-' . $maxColumns);
+            // \MUtil\EchoOut\EchoOut::r((is_string($name) ? $name : 'array') . '-' . $this->currentColumn . '-' . $maxColumns);
             if ($this->currentColumn >= $maxColumns) {
                 $this->table->tr();
                 $this->currentColumn = 0;
@@ -159,12 +161,12 @@ class MUtil_Model_Bridge_VerticalTableBridge extends \MUtil_Model_Bridge_TableBr
         $this->_checkColumnNewRow();
 
         if ($this->labelTh) {
-            $this->table->tdh(\MUtil_Lazy::iif($condition, $this->_checkLabel($label, $name)), $hattr);
+            $this->table->tdh(\MUtil\Lazy::iif($condition, $this->_checkLabel($label, $name)), $hattr);
         } else {
-            $this->table->td(\MUtil_Lazy::iif($condition, $this->_checkLabel($label, $name)), $hattr);
+            $this->table->td(\MUtil\Lazy::iif($condition, $this->_checkLabel($label, $name)), $hattr);
         }
 
-        $this->table->td(\MUtil_Lazy::iif($condition, $this->_getLazyName($name)), $attr);
+        $this->table->td(\MUtil\Lazy::iif($condition, $this->_getLazyName($name)), $attr);
 
         $this->_checkColumnAdded($attr);
 
@@ -183,7 +185,7 @@ class MUtil_Model_Bridge_VerticalTableBridge extends \MUtil_Model_Bridge_TableBr
             //
             // First get the number of columns that should be in the current row
             if ($this->columnCounts) {
-                // \MUtil_Echo::r($this->columnCounts);
+                // \MUtil\EchoOut\EchoOut::r($this->columnCounts);
                 $maxColumns = $this->columnCounts;
             } else {
                 $maxColumns = array($this->columnCount);
@@ -216,7 +218,7 @@ class MUtil_Model_Bridge_VerticalTableBridge extends \MUtil_Model_Bridge_TableBr
             $if = $this->$if;
         }
 
-        return \MUtil_Lazy::iff($if, $item, $else);
+        return \MUtil\Lazy::iff($if, $item, $else);
     }
 
     public function setColumnCount($count)

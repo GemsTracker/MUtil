@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Html;
 
 /**
  * Html DL element with functions for applying it to a form.
@@ -44,7 +21,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Html_DlElement extends \MUtil_Html_HtmlElement implements \MUtil_Html_FormLayout
+class DlElement extends \MUtil\Html\HtmlElement implements \MUtil\Html\FormLayout
 {
     /**
      * Only dt and dd elements are allowed as content.
@@ -83,11 +60,11 @@ class MUtil_Html_DlElement extends \MUtil_Html_HtmlElement implements \MUtil_Htm
      * Any parameters are added as either content, attributes or handled
      * as special types, if defined as such for this element.
      *
-     * @param mixed $arg_array \MUtil_Ra::args arguments
+     * @param mixed $arg_array \MUtil\Ra::args arguments
      */
     public function __construct($arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         parent::__construct('dl', $args);
     }
@@ -100,7 +77,7 @@ class MUtil_Html_DlElement extends \MUtil_Html_HtmlElement implements \MUtil_Htm
             // Return all objects in a wrapper object
             // that makes sure they are all treated
             // the same way.
-            return new \MUtil_MultiWrapper($ds);
+            return new \MUtil\MultiWrapper($ds);
         }
 
         // Return first object only
@@ -177,10 +154,10 @@ class MUtil_Html_DlElement extends \MUtil_Html_HtmlElement implements \MUtil_Htm
 
 
     /**
-     * Static helper function for creation, used by @see \MUtil_Html_Creator.
+     * Static helper function for creation, used by @see \MUtil\Html\Creator.
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_DlElement
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\DlElement
      */
     public static function dl($arg_array = null)
     {
@@ -199,13 +176,13 @@ class MUtil_Html_DlElement extends \MUtil_Html_HtmlElement implements \MUtil_Htm
      * @param \Zend_Form $form
      * @param mixed $width The style.width content for the labels
      * @param array $order The display order of the elements
-     * @return \MUtil_Html_DlElement
+     * @return \MUtil\Html\DlElement
      */
     public function setAsFormLayout(\Zend_Form $form, $width = null,
             array $order = array('element', 'errors', 'description'))
     {
         // Make a Lazy repeater for the form elements and set it as the element repeater
-        $formrep = new \MUtil_Lazy_RepeatableFormElements($form);
+        $formrep = new \MUtil\Lazy\RepeatableFormElements($form);
         $formrep->setSplitHidden(true); // These are treated separately
         $this->setRepeater($formrep);
 
@@ -224,7 +201,7 @@ class MUtil_Html_DlElement extends \MUtil_Html_HtmlElement implements \MUtil_Htm
         // $this->dd($formrep->element, $formrep->description, $formrep->errors);
 
         // Set this element as the form decorator
-        $decorator = new \MUtil_Html_ElementDecorator();
+        $decorator = new \MUtil\Html\ElementDecorator();
         $decorator->setHtmlElement($this);
         $decorator->setPrologue($formrep);  // Renders hidden elements before this element
         $form->setDecorators(array($decorator, 'AutoFocus', 'Form'));
@@ -239,7 +216,7 @@ class MUtil_Html_DlElement extends \MUtil_Html_HtmlElement implements \MUtil_Htm
      * @param float $factor To multiply the widest nummers of letters in the labels with to calculate the width in
      * em at drawing time
      * @param array $order The display order of the elements
-     * @return \MUtil_Html_DlElement
+     * @return \MUtil\Html\DlElement
      */
     public function setAutoWidthFormLayout(\Zend_Form $form, $factor = 1,
             array $order = array('element', 'errors', 'description'))
@@ -247,7 +224,7 @@ class MUtil_Html_DlElement extends \MUtil_Html_HtmlElement implements \MUtil_Htm
         // Lazy call becase the form might not be completed at this stage.
         return $this->setAsFormLayout(
                 $form,
-                \MUtil_Lazy::call(array(__CLASS__, 'calculateAutoWidthFormLayout'), $form, $factor),
+                \MUtil\Lazy::call(array(__CLASS__, 'calculateAutoWidthFormLayout'), $form, $factor),
                 $order
                 );
     }

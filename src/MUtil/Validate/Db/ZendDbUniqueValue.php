@@ -11,7 +11,7 @@ use Laminas\Validator\ValidatorInterface;
  * @subpackage Validate
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.0
+ * @since      Class available since \MUtil version 1.0
  */
 class ZendDbUniqueValue extends \Zend_Validate_Db_NoRecordExists implements ValidatorInterface
 {
@@ -169,7 +169,7 @@ class ZendDbUniqueValue extends \Zend_Validate_Db_NoRecordExists implements Vali
         // Clear cached query
         $this->_select = null;
 
-        // \MUtil_Echo::track($this->_exclude, $this->_checkFields, $this->_keyFields, $context, $_POST);
+        // \MUtil\EchoOut\EchoOut::track($this->_exclude, $this->_checkFields, $this->_keyFields, $context, $_POST);
 
         return parent::isValid($value, $context);
     }

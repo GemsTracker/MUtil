@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Html;
 
 /**
  * An image element with added functionality to automatically add with and height
@@ -54,7 +31,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.1
  */
-class MUtil_Html_ImgElement extends \MUtil_Html_HtmlElement
+class ImgElement extends \MUtil\Html\HtmlElement
 {
     /**
      * @var array List of directory names where img looks for images.
@@ -92,7 +69,7 @@ class MUtil_Html_ImgElement extends \MUtil_Html_HtmlElement
     protected function _htmlAttribs($attribs)
     {
         if (isset($attribs['src'])) {
-            $filename = \MUtil_Lazy::rise($attribs['src']);
+            $filename = \MUtil\Lazy::rise($attribs['src']);
             
             if ($dir = self::getImageDir($filename)) {
                 if (! isset($attribs['width'], $attribs['height'])) {
@@ -106,15 +83,15 @@ class MUtil_Html_ImgElement extends \MUtil_Html_HtmlElement
                             $attribs['height'] = $info[1];
                         }
                     } catch (\Exception $e) {
-                        if (\MUtil_Html::$verbose) {
-                            \MUtil_Echo::r($e, __CLASS__ . '->' .  __FUNCTION__);
+                        if (\MUtil\Html::$verbose) {
+                            \MUtil\EchoOut\EchoOut::r($e, __CLASS__ . '->' .  __FUNCTION__);
                         }
                     }
                 }
 
                 $attribs['src'] = $this->view->baseUrl() . $dir . $filename;
             }
-            // \MUtil_Echo::r($attribs['src']);
+            // \MUtil\EchoOut\EchoOut::r($attribs['src']);
         }
 
         return parent::_htmlAttribs($attribs);
@@ -163,8 +140,8 @@ class MUtil_Html_ImgElement extends \MUtil_Html_HtmlElement
                     return $dir;
                 }
             }
-            if (\MUtil_Html::$verbose) {
-                \MUtil_Echo::r("File not found: $filename. \n\nLooked in: \n" . implode(", \n", self::$_imageDirs));
+            if (\MUtil\Html::$verbose) {
+                \MUtil\EchoOut\EchoOut::r("File not found: $filename. \n\nLooked in: \n" . implode(", \n", self::$_imageDirs));
             }
         }
     }
@@ -194,10 +171,10 @@ class MUtil_Html_ImgElement extends \MUtil_Html_HtmlElement
     }
 
     /**
-     * Static helper function for creation, used by @see \MUtil_Html_Creator.
+     * Static helper function for creation, used by @see \MUtil\Html\Creator.
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_ImgElement
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\ImgElement
      */
     public static function img($arg_array = null)
     {
@@ -206,15 +183,15 @@ class MUtil_Html_ImgElement extends \MUtil_Html_HtmlElement
     }
 
     /**
-     * Static helper function for creation, used by @see \MUtil_Html_Creator.
+     * Static helper function for creation, used by @see \MUtil\Html\Creator.
      *
      * @param string $src The source
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_ImgElement
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\ImgElement
      */
     public static function imgFile($src, $arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args(), 1);
+        $args = \MUtil\Ra::args(func_get_args(), 1);
 
         $args['src'] = $src;
         if (! isset($args['alt'])) {
@@ -261,7 +238,7 @@ class MUtil_Html_ImgElement extends \MUtil_Html_HtmlElement
             if (is_scalar($this->_attribs['src'])) {
                 $src = $this->_attribs['src'];
             } else {
-                $src = \MUtil_Html::getRenderer()->renderArray($view, array($this->_attribs['src']));
+                $src = \MUtil\Html::getRenderer()->renderArray($view, array($this->_attribs['src']));
             }
         } else {
             $src = false;

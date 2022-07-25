@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Snippets;
+
 /**
  * An abstract class for building snippets. Sub classes should override at least
  * getHtmlOutput() or render() to generate output.
@@ -26,8 +28,8 @@
  * @license    New BSD License
  * @since      Class available since version 1.1
  */
-abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_TranslateableAbstract
-    implements \MUtil_Snippets_SnippetInterface
+abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
+    implements \MUtil\Snippets\SnippetInterface
 {
     /**
      *
@@ -50,7 +52,7 @@ abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_Translate
     protected $class;
 
     /**
-     * @var MUtil_Controller_Action_Helper_Redirector
+     * @var \MUtil\Controller\Action\Helper\Redirector
      */
     protected $redirector;
 
@@ -70,7 +72,7 @@ abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_Translate
      */
     public function addMessage($message_args)
     {
-        $messages  = \MUtil_Ra::flatten(func_get_args());
+        $messages  = \MUtil\Ra::flatten(func_get_args());
         $messenger = $this->getMessenger();
 
         foreach ($messages as $message) {
@@ -84,9 +86,9 @@ abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_Translate
      * Applies the $this=>attributes and $this->class snippet parameters to the
      * $html element.
      *
-     * @param \MUtil_Html_HtmlElement $html Element to apply the snippet parameters to.
+     * @param \MUtil\Html\HtmlElement $html Element to apply the snippet parameters to.
      */
-    protected function applyHtmlAttributes(\MUtil_Html_HtmlElement $html)
+    protected function applyHtmlAttributes(\MUtil\Html\HtmlElement $html)
     {
         if ($this->attributes) {
             foreach ($this->attributes as $name => $value) {
@@ -106,7 +108,7 @@ abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_Translate
      * This is a stub function either override getHtmlOutput() or override render()
      *
      * @param \Zend_View_Abstract $view Just in case it is needed here
-     * @return \MUtil_Html_HtmlInterface Something that can be rendered
+     * @return \MUtil\Html\HtmlInterface Something that can be rendered
      */
     public function getHtmlOutput(\Zend_View_Abstract $view)
     {
@@ -116,11 +118,11 @@ abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_Translate
     /**
      * Helper function for snippets returning a sequence of Html items.
      *
-     * @return \MUtil_Html_Sequence
+     * @return \MUtil\Html\Sequence
      */
     protected function getHtmlSequence()
     {
-        return new \MUtil_Html_Sequence();
+        return new \MUtil\Html\Sequence();
     }
 
     /**
@@ -131,18 +133,18 @@ abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_Translate
     protected function getMessenger()
     {
         if (! isset($this->_messenger)) {
-            $this->_messenger = new \MUtil_Controller_Action_Helper_FlashMessenger();
+            $this->_messenger = new \MUtil\Controller\Action\Helper\FlashMessenger();
         }
         return $this->_messenger;
     }
 
     /**
-     * @return MUtil_Controller_Action_Helper_Redirector
+     * @return \MUtil\Controller\Action\Helper\Redirector
      */
     protected function getRedirector()
     {
         if (!$this->redirector) {
-            $this->redirector = new MUtil_Controller_Action_Helper_Redirector();
+            $this->redirector = new MUtil\Controller\Action\Helper\Redirector();
         }
         return $this->redirector;
     }
@@ -172,7 +174,7 @@ abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_Translate
      * When invalid data should result in an error, you can throw it
      * here but you can also perform the check in the
      * checkRegistryRequestsAnswers() function from the
-     * {@see \MUtil_Registry_TargetInterface}.
+     * {@see \MUtil\Registry\TargetInterface}.
      *
      * @return boolean
      */
@@ -191,10 +193,10 @@ abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_Translate
     public function redirectRoute()
     {
         if ($url = $this->getRedirectRoute()) {
-            //\MUtil_Echo::track($url);
+            //\MUtil\EchoOut\EchoOut::track($url);
 
             $router = $this->getRedirector();
-            $router->setExit($router->getExit() && ! (\MUtil_Console::isConsole() || \Zend_Session::$_unitTestEnabled));
+            $router->setExit($router->getExit() && ! (\MUtil\Console::isConsole() || \Zend_Session::$_unitTestEnabled));
             $router->gotoRoute($url, null, $this->resetRoute);
         }
     }
@@ -209,7 +211,7 @@ abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_Translate
      */
     public function render(\Zend_View_Abstract $view)
     {
-        // \MUtil_Echo::r(sprintf('Rendering snippet %s.', get_class($this)));
+        // \MUtil\EchoOut\EchoOut::r(sprintf('Rendering snippet %s.', get_class($this)));
         //
         // TODO: Change snippet workings.
         // All forms are processed twice if hasHtmlOutput() is called here. This is
@@ -225,13 +227,13 @@ abstract class MUtil_Snippets_SnippetAbstract extends \MUtil_Translate_Translate
             $html = $this->getHtmlOutput($view);
 
             if ($html) {
-                if ($html instanceof \MUtil_Html_HtmlInterface) {
-                    if ($html instanceof \MUtil_Html_HtmlElement) {
+                if ($html instanceof \MUtil\Html\HtmlInterface) {
+                    if ($html instanceof \MUtil\Html\HtmlElement) {
                         $this->applyHtmlAttributes($html);
                     }
                     return $html->render($view);
                 } else {
-                    return \MUtil_Html::renderAny($view, $html);
+                    return \MUtil\Html::renderAny($view, $html);
                 }
             }
         }

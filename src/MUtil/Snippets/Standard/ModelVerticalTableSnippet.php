@@ -10,6 +10,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Snippets\Standard;
+
 /**
  * Displays each field of a single item in a model in a row in a Html table
  * the model set through the $model snippet parameter.
@@ -20,18 +22,18 @@
  * @license    New BSD License
  * @since      Class available since version 1.2
  */
-class MUtil_Snippets_Standard_ModelVerticalTableSnippet extends \MUtil_Snippets_ModelVerticalTableSnippetAbstract
+class ModelVerticalTableSnippet extends \MUtil\Snippets\ModelVerticalTableSnippetAbstract
 {
     /**
      *
-     * @var \MUtil_Model_ModelAbstract
+     * @var \MUtil\Model\ModelAbstract
      */
     protected $model;
 
     /**
      * Creates the model
      *
-     * @return \MUtil_Model_ModelAbstract
+     * @return \MUtil\Model\ModelAbstract
      */
     protected function createModel()
     {

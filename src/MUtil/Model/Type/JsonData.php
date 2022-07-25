@@ -17,7 +17,7 @@ namespace MUtil\Model\Type;
  * @subpackage Model_Type
  * @copyright  Copyright (c) 2015 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.7.1 16-apr-2015 15:30:45
+ * @since      Class available since \MUtil version 1.7.1 16-apr-2015 15:30:45
  */
 class JsonData
 {
@@ -57,12 +57,12 @@ class JsonData
     /**
      * Use this function for a default application of this type to the model
      *
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $model
      * @param string $name The field to set the seperator character
      * @param boolean $detailed When true show detailed information
      * @return \MUtil\Model\Type\JsonData (continuation pattern)
      */
-    public function apply(\MUtil_Model_ModelAbstract $model, $name, $detailed)
+    public function apply(\MUtil\Model\ModelAbstract $model, $name, $detailed)
     {
         if ($detailed) {
             $formatFunction = 'formatDetailed';
@@ -86,16 +86,16 @@ class JsonData
             return $value;
         }
         if (! is_array($value)) {
-                return \MUtil_Html_TableElement::createArray($value)
+                return \MUtil\Html\TableElement::createArray($value)
                         ->appendAttrib('class', 'jsonNestedObject');
         }
         foreach ($value as $key => $val) {
-            if (! (is_int($key) && (is_scalar($val) || ($val instanceof \MUtil_Html_HtmlInterface)))) {
-                return \MUtil_Html_TableElement::createArray($value)
+            if (! (is_int($key) && (is_scalar($val) || ($val instanceof \MUtil\Html\HtmlInterface)))) {
+                return \MUtil\Html\TableElement::createArray($value)
                         ->appendAttrib('class', 'jsonNestedArray');
             }
         }
-        return \MUtil_Html::create('ul', $value, array('class' => 'jsonArrayList'));
+        return \MUtil\Html::create('ul', $value, array('class' => 'jsonArrayList'));
     }
 
     /**
@@ -111,7 +111,7 @@ class JsonData
         }
         if (is_array($value)) {
             $i = 0;
-            $output = new \MUtil_Html_Sequence();
+            $output = new \MUtil\Html\Sequence();
             $output->setGlue($this->_separator);
             foreach ($value as $val) {
                 if ($i++ > $this->_maxTable) {
@@ -122,14 +122,14 @@ class JsonData
             }
             return $output;
         }
-        return \MUtil_Html_TableElement::createArray($value);
+        return \MUtil\Html\TableElement::createArray($value);
     }
 
     /**
      * A ModelAbstract->setOnLoad() function that concatenates the
      * value if it is an array.
      *
-     * @see \MUtil_Model_ModelAbstract
+     * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
      * @param boolean $isNew True when a new item is being saved
@@ -147,7 +147,7 @@ class JsonData
      * A ModelAbstract->setOnSave() function that concatenates the
      * value if it is an array.
      *
-     * @see \MUtil_Model_ModelAbstract
+     * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
      * @param boolean $isNew True when a new item is being saved

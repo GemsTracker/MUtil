@@ -10,6 +10,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil;
+
 /**
  * Extends standard \Zend_Mail with functions for using HTML templates for all mails
  * and adding content using BB Code text.
@@ -20,7 +22,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.1
  */
-class MUtil_Mail extends \Zend_Mail implements \MUtil_Registry_TargetInterface
+class Mail extends \Zend_Mail implements \MUtil\Registry\TargetInterface
 {
     /**
      * HTML Template for html part of the message
@@ -47,8 +49,8 @@ class MUtil_Mail extends \Zend_Mail implements \MUtil_Registry_TargetInterface
      */
     public function answerRegistryRequest($name, $resource)
     {
-        if (\MUtil_Registry_Source::$verbose) {
-            \MUtil_Echo::r('Resource set: ' . get_class($this) . '->' . __FUNCTION__ .
+        if (\MUtil\Registry\Source::$verbose) {
+            \MUtil\EchoOut\EchoOut::r('Resource set: ' . get_class($this) . '->' . __FUNCTION__ .
             '("' . $name . '", ' .
             (is_object($resource) ? get_class($resource) : gettype($resource)) . ')');
         }
@@ -113,12 +115,12 @@ class MUtil_Mail extends \Zend_Mail implements \MUtil_Registry_TargetInterface
      * Set both the Html and Text versions of a message
      *
      * @param string $content
-     * @return \MUtil_Mail (continuation pattern)
+     * @return \MUtil\Mail (continuation pattern)
      */
     public function setBodyBBCode($content)
     {
-        $this->setBodyHtml(\MUtil_Markup::render($content, 'Bbcode', 'Html'));
-        $this->setBodyText(\MUtil_Markup::render($content, 'Bbcode', 'Text'));
+        $this->setBodyHtml(\MUtil\Markup::render($content, 'Bbcode', 'Html'));
+        $this->setBodyText(\MUtil\Markup::render($content, 'Bbcode', 'Text'));
 
         return $this;
     }
@@ -129,7 +131,7 @@ class MUtil_Mail extends \Zend_Mail implements \MUtil_Registry_TargetInterface
      * @param  string    $html
      * @param  string    $charset
      * @param  string    $encoding
-     * @return \MUtil_Mail (continuation pattern)
+     * @return \MUtil\Mail (continuation pattern)
      */
     public function setBodyHtml($html, $charset = null, $encoding = \Zend_Mime::ENCODING_QUOTEDPRINTABLE)
     {
@@ -144,7 +146,7 @@ class MUtil_Mail extends \Zend_Mail implements \MUtil_Registry_TargetInterface
      * Set's a html template in which the message content is placed.
      *
      * @param string $template
-     * @return \MUtil_Mail \MUtil_Mail (continuation pattern)
+     * @return \MUtil\Mail \MUtil\Mail (continuation pattern)
      */
     public function setHtmlTemplate($template)
     {
@@ -156,7 +158,7 @@ class MUtil_Mail extends \Zend_Mail implements \MUtil_Registry_TargetInterface
      * Set the basic html template with the content of a filename
      *
      * @param string $filename
-     * @return \MUtil_Mail (continuation pattern)
+     * @return \MUtil\Mail (continuation pattern)
      */
     public function setHtmlTemplateFile($filename)
     {

@@ -50,7 +50,7 @@ class DateTest extends TestCase
         // \Zend_Locale::setDefault('en');          // Does not override the browser or system locale
         \Zend_Registry::set('Zend_Locale', 'nl');   // Just set the locale to en in the registry to set a default
 
-        $this->object = new \MUtil_Date();
+        $this->object = new \MUtil\Date();
         $english = array(
             '%s ago' => '%s ago',
             '%s to go' => '%s to go',
@@ -142,7 +142,7 @@ class DateTest extends TestCase
      */
     public function testDateTimeObject($firstDate, $firstFormat, $secondDate, $timeZone, $timeZoneDiff)
     {
-        $mDate = new \MUtil_Date($firstDate, $firstFormat);
+        $mDate = new \MUtil\Date($firstDate, $firstFormat);
         if ($timeZone) {
             $pDate = new \DateTime($secondDate, new \DateTimeZone($timeZone));
         } else {
@@ -181,8 +181,8 @@ class DateTest extends TestCase
             ['14-12-1901', 'dd-MM-yyyy', '1901-12-14 00:00:00'], // Just before 32 bit negative overflow
             ['19-01-2038', 'dd-MM-yyyy', '2038-01-19 00:00:00'], // Just before 32 bit overflow
 
-            ['13-12-1901', 'dd-MM-yyyy', '1901-12-13 00:40:28'], // Zend_Date 1901 and earlier could show a different time due to 32/64 bit implementation
-            ['01-06-1900', 'dd-MM-yyyy', '1900-06-01 00:40:28'], // Zend_Date 1901 and earlier could show a different time due to 32/64 bit implementation
+            ['13-12-1901', 'dd-MM-yyyy', '1901-12-13 00:40:28'], // \Zend_Date 1901 and earlier could show a different time due to 32/64 bit implementation
+            ['01-06-1900', 'dd-MM-yyyy', '1900-06-01 00:40:28'], // \Zend_Date 1901 and earlier could show a different time due to 32/64 bit implementation
 
             ['20-01-2038', 'dd-MM-yyyy', '2038-01-20 00:00:00'], // Should work as future timezone changes are not present :)
         ];
@@ -199,7 +199,7 @@ class DateTest extends TestCase
      */
     public function testDateWithoutTime($dateString, $dateFormat, $expectedResult)
     {
-        $this->object = new \MUtil_Date($dateString, $dateFormat);
+        $this->object = new \MUtil\Date($dateString, $dateFormat);
         $year = substr($dateString, strpos($dateFormat, 'yyyy'),4);
         if ($year < 1902) {
             try {
@@ -214,67 +214,67 @@ class DateTest extends TestCase
 
     public function testDiffReadableBeforeAndAfter()
     {
-        $this->object = new \MUtil_Date('2010-05-13 12:00:00');
-        $testDate = new \MUtil_Date('2010-05-13 12:00:10');
+        $this->object = new \MUtil\Date('2010-05-13 12:00:00');
+        $testDate = new \MUtil\Date('2010-05-13 12:00:10');
         $this->assertEquals('10 seconds ago', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2010-05-13 11:59:50');
+        $testDate = new \MUtil\Date('2010-05-13 11:59:50');
         $this->assertEquals('10 seconds to go', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2010-05-13 12:00:00');
+        $testDate = new \MUtil\Date('2010-05-13 12:00:00');
         $this->assertEquals('0 seconds to go', $this->object->diffReadable($testDate, $this->translate));
     }
 
     public function testDiffReadableBeforeAndAfterLocalised()
     {
         $this->translate->setLocale('nl');
-        $this->object = new \MUtil_Date('2010-05-13 12:00:00');
-        $testDate = new \MUtil_Date('2010-05-13 12:00:10');
+        $this->object = new \MUtil\Date('2010-05-13 12:00:00');
+        $testDate = new \MUtil\Date('2010-05-13 12:00:10');
         $this->assertEquals('10 seconden geleden', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2010-05-13 11:59:50');
+        $testDate = new \MUtil\Date('2010-05-13 11:59:50');
         $this->assertEquals('over 10 seconden', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2010-05-13 12:00:00');
+        $testDate = new \MUtil\Date('2010-05-13 12:00:00');
         $this->assertEquals('over 0 seconden', $this->object->diffReadable($testDate, $this->translate));
     }
 
     public function testDiffReadableSingularPlural()
     {
-        $this->object = new \MUtil_Date('2010-05-13 12:00:00');
-        $testDate = new \MUtil_Date('2010-05-13 12:01:00');
+        $this->object = new \MUtil\Date('2010-05-13 12:00:00');
+        $testDate = new \MUtil\Date('2010-05-13 12:01:00');
         $this->assertEquals('1 minute ago', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2010-05-13 12:02:00');
+        $testDate = new \MUtil\Date('2010-05-13 12:02:00');
         $this->assertEquals('2 minutes ago', $this->object->diffReadable($testDate, $this->translate));
     }
 
     public function testDiffReadablePeriods()
     {
-        $this->object = new \MUtil_Date('2010-05-13 12:00:00');
-        $testDate = new \MUtil_Date('2010-05-13 12:00:01');
+        $this->object = new \MUtil\Date('2010-05-13 12:00:00');
+        $testDate = new \MUtil\Date('2010-05-13 12:00:01');
         $this->assertEquals('1 second ago', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2010-05-13 12:01:00');
+        $testDate = new \MUtil\Date('2010-05-13 12:01:00');
         $this->assertEquals('1 minute ago', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2010-05-13 13:00:00');
+        $testDate = new \MUtil\Date('2010-05-13 13:00:00');
         $this->assertEquals('1 hour ago', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2010-05-14 12:00:00');
+        $testDate = new \MUtil\Date('2010-05-14 12:00:00');
         $this->assertEquals('1 day ago', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2010-05-20 12:00:00');
+        $testDate = new \MUtil\Date('2010-05-20 12:00:00');
         $this->assertEquals('1 week ago', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2010-06-13 12:00:00');
+        $testDate = new \MUtil\Date('2010-06-13 12:00:00');
         $this->assertEquals('1 month ago', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2011-05-13 12:00:01');
+        $testDate = new \MUtil\Date('2011-05-13 12:00:01');
         $this->assertEquals('1 year ago', $this->object->diffReadable($testDate, $this->translate));
-        $testDate = new \MUtil_Date('2020-05-13 12:00:00');
+        $testDate = new \MUtil\Date('2020-05-13 12:00:00');
         $this->assertEquals('1 decade ago', $this->object->diffReadable($testDate, $this->translate));
     }
 
     public function testDiffDayDynamic1()
     {
-        $date = new \MUtil_Date();
+        $date = new \MUtil\Date();
 
         $this->assertEquals(0, $date->diffDays());
     }
 
     public function testDiffDayDynamic2()
     {
-        $date = new \MUtil_Date();
+        $date = new \MUtil\Date();
 
         $date->setTimeToDayStart();
         $this->assertEquals(0, $date->diffDays());
@@ -282,7 +282,7 @@ class DateTest extends TestCase
 
     public function testDiffDayDynamic3()
     {
-        $date = new \MUtil_Date();
+        $date = new \MUtil\Date();
 
         $date->setTimeToDayStart();
         $date->subHour(10);
@@ -315,8 +315,8 @@ class DateTest extends TestCase
      */
     public function testDiffDays($firstDate, $secondDate, $expectedDiff)
     {
-        $date = new \MUtil_Date($firstDate);
-        $otherDate = new \MUtil_Date($secondDate);
+        $date = new \MUtil\Date($firstDate);
+        $otherDate = new \MUtil\Date($secondDate);
         $diff = $date->diffDays($otherDate);
         $this->assertEquals($expectedDiff, $diff);
     }
@@ -367,8 +367,8 @@ class DateTest extends TestCase
      */
     public function testDiffTimeZones($firstDate, $firstFormat, $secondDate, $secondFormat, $expectedDiffDays, $expectedDiffSeconds)
     {
-        $date = new \MUtil_Date($firstDate, $firstFormat);
-        $otherDate = new \MUtil_Date($secondDate, $secondFormat);
+        $date = new \MUtil\Date($firstDate, $firstFormat);
+        $otherDate = new \MUtil\Date($secondDate, $secondFormat);
         $diff = $date->diffDays($otherDate);
         // echo $secondFormat . ' ' . $date->getTimestamp() . ' - ' . $date->getGmtOffset() . ' vs  ' . $otherDate->getTimestamp() . ' - ' . $otherDate->getGmtOffset() . "\n";
         $this->assertEquals($expectedDiffDays, $diff);

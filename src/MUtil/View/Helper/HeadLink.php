@@ -11,6 +11,8 @@
  * @license    No free license, do not copy
  */
 
+namespace MUtil\View\Helper;
+
 /**
  *
  * @package    MUtil
@@ -19,7 +21,7 @@
  * @license    No free license, do not copy
  * @since      Class available since version 1.8.6 24-Sep-2019 12:00:22
  */
-class MUtil_View_Helper_HeadLink extends \Zend_View_Helper_HeadLink
+class HeadLink extends \Zend_View_Helper_HeadLink
 {
     /**
      * Create item for stylesheet link item
@@ -77,7 +79,7 @@ class MUtil_View_Helper_HeadLink extends \Zend_View_Helper_HeadLink
     {
         if (3 > count($args)) {
             require_once 'Zend/View/Exception.php';
-            $e = new Zend_View_Exception(sprintf('Alternate tags require 3 arguments; %s provided', count($args)));
+            $e = new \Zend_View_Exception(sprintf('Alternate tags require 3 arguments; %s provided', count($args)));
             $e->setView($this->view);
             throw $e;
         }

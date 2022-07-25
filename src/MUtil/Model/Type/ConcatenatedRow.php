@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Model\Type;
 
 /**
  *
@@ -44,7 +21,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.5
  */
-class MUtil_Model_Type_ConcatenatedRow
+class ConcatenatedRow
 {
     /**
      * The character used to separate values when displaying.
@@ -77,7 +54,7 @@ class MUtil_Model_Type_ConcatenatedRow
     protected $valuePad = true;
 
     /**
-     * \MUtil_Ra::args() parameter passing is allowed.
+     * \MUtil\Ra::args() parameter passing is allowed.
      *
      * @param string $seperatorChar
      * @param string $displaySeperator
@@ -85,11 +62,11 @@ class MUtil_Model_Type_ConcatenatedRow
      */
     public function __construct($seperatorChar = ' ', $displaySeperator = ' ', $valuePad = true)
     {
-        $args = \MUtil_Ra::args(
+        $args = \MUtil\Ra::args(
                 func_get_args(),
                 array(
                     'seperatorChar' => 'is_string',
-                    'displaySeperator' => array('MUtil_Html_HtmlInterface', 'is_string'),
+                    'displaySeperator' => array('\\MUtil\\Html\\HtmlInterface', 'is_string'),
                     'valuePad' => 'is_boolean',
                     ),
                 array('seperatorChar' => ' ', 'displaySeperator' => ' ', 'valuePad' => true)
@@ -103,17 +80,17 @@ class MUtil_Model_Type_ConcatenatedRow
     /**
      * Use this function for a default application of this type to the model
      *
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $model
      * @param string $name The field to set the seperator character
-     * @return \MUtil_Model_Type_ConcatenatedRow (continuation pattern)
+     * @return \MUtil\Model\Type\ConcatenatedRow (continuation pattern)
      */
-    public function apply(\MUtil_Model_ModelAbstract $model, $name)
+    public function apply(\MUtil\Model\ModelAbstract $model, $name)
     {
         $model->set($name, 'formatFunction', array($this, 'format'));
         $model->setOnLoad($name, array($this, 'loadValue'));
         $model->setOnSave($name, array($this, 'saveValue'));
 
-        if ($model instanceof \MUtil_Model_DatabaseModelAbstract) {
+        if ($model instanceof \MUtil\Model\DatabaseModelAbstract) {
             $model->setOnTextFilter($name, array($this, 'textFilter'));
         }
 
@@ -130,7 +107,7 @@ class MUtil_Model_Type_ConcatenatedRow
      */
     public function format($value)
     {
-        // \MUtil_Echo::track($value, $this->options);
+        // \MUtil\EchoOut\EchoOut::track($value, $this->options);
         if (! is_array($value)) {
             $value = $this->loadValue($value);
         }
@@ -145,7 +122,7 @@ class MUtil_Model_Type_ConcatenatedRow
             if (is_string($this->displaySeperator)) {
                 return implode($this->displaySeperator, $value);
             } else {
-                $output = new \MUtil_Html_Sequence($value);
+                $output = new \MUtil\Html\Sequence($value);
                 $output->setGlue($this->displaySeperator);
                 return $output;
             }
@@ -164,9 +141,9 @@ class MUtil_Model_Type_ConcatenatedRow
     public function getSettings()
     {
         $output['formatFunction'] = array($this, 'format');
-        $output[\MUtil_Model_ModelAbstract::LOAD_TRANSFORMER] = array($this, 'loadValue');
-        $output[\MUtil_Model_ModelAbstract::SAVE_TRANSFORMER] = array($this, 'saveValue');
-        $output[\MUtil_Model_DatabaseModelAbstract::TEXTFILTER_TRANSFORMER] = array($this, 'textFilter');
+        $output[\MUtil\Model\ModelAbstract::LOAD_TRANSFORMER] = array($this, 'loadValue');
+        $output[\MUtil\Model\ModelAbstract::SAVE_TRANSFORMER] = array($this, 'saveValue');
+        $output[\MUtil\Model\DatabaseModelAbstract::TEXTFILTER_TRANSFORMER] = array($this, 'textFilter');
 
         return $output;
     }
@@ -175,7 +152,7 @@ class MUtil_Model_Type_ConcatenatedRow
      * A ModelAbstract->setOnLoad() function that concatenates the
      * value if it is an array.
      *
-     * @see \MUtil_Model_ModelAbstract
+     * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
      * @param boolean $isNew True when a new item is being saved
@@ -186,7 +163,7 @@ class MUtil_Model_Type_ConcatenatedRow
      */
     public function loadValue($value, $isNew = false, $name = null, array $context = array(), $isPost = false)
     {
-        // \MUtil_Echo::track($value, $name, $context);
+        // \MUtil\EchoOut\EchoOut::track($value, $name, $context);
         if (! is_array($value)) {
             if ($this->valuePad) {
                 $value = trim((string)$value, $this->seperatorChar);
@@ -197,7 +174,7 @@ class MUtil_Model_Type_ConcatenatedRow
             }
             $value = explode($this->seperatorChar, $value);
         }
-        // \MUtil_Echo::track($value);
+        // \MUtil\EchoOut\EchoOut::track($value);
 
         return $value;
     }
@@ -206,7 +183,7 @@ class MUtil_Model_Type_ConcatenatedRow
      * A ModelAbstract->setOnSave() function that concatenates the
      * value if it is an array.
      *
-     * @see \MUtil_Model_ModelAbstract
+     * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
      * @param boolean $isNew True when a new item is being saved
@@ -216,7 +193,7 @@ class MUtil_Model_Type_ConcatenatedRow
      */
     public function saveValue($value, $isNew = false, $name = null, array $context = array())
     {
-        // \MUtil_Echo::track($value);
+        // \MUtil\EchoOut\EchoOut::track($value);
         if (is_array($value)) {
             $value = implode($this->seperatorChar, $value);
 
@@ -232,17 +209,17 @@ class MUtil_Model_Type_ConcatenatedRow
      * @param string $filter The text to filter for
      * @param string $name The model field name
      * @param string $sqlField The SQL field name
-     * @param \MUtil_Model_DatabaseModelAbstract $model
+     * @param \MUtil\Model\DatabaseModelAbstract $model
      * @return array Array of OR-filter statements
      */
-    public function textFilter($filter, $name, $sqlField, \MUtil_Model_DatabaseModelAbstract $model)
+    public function textFilter($filter, $name, $sqlField, \MUtil\Model\DatabaseModelAbstract $model)
     {
         $options = $model->get($name, 'multiOptions');
         if ($options) {
             $adapter = $model->getAdapter();
             $wheres = array();
             foreach ($options as $key => $value) {
-                // \MUtil_Echo::track($key, $value, $filter, stripos($value, $filter));
+                // \MUtil\EchoOut\EchoOut::track($key, $value, $filter, stripos($value, $filter));
                 if (stripos($value, $filter) === false) {
                     continue;
                 }

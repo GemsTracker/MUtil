@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil;
+
 /**
  * The Ra class contains static array processing functions that are used to give PHP/Zend some
  * Python and Haskell like parameter processing functionality.
@@ -16,9 +18,9 @@
  * Ra class: pronouce "array" except on 19 september, then it is "ahrrray".
  *
  * The functions are:<ol>
- * <li>\MUtil_Ra::args    => Python faking</li>
- * <li>\MUtil_Ra::flatten => flatten an array renumbering keys</li>
- * <li>\MUtil_Ra::pairs   => the parameters represent name => value pairs</li></ol>
+ * <li>\MUtil\Ra::args    => Python faking</li>
+ * <li>\MUtil\Ra::flatten => flatten an array renumbering keys</li>
+ * <li>\MUtil\Ra::pairs   => the parameters represent name => value pairs</li></ol>
  *
  * @package    MUtil
  * @subpackage Ra
@@ -26,7 +28,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Ra
+class Ra
 {
     const RELAXED = 0;
     const STRICT  = 1;
@@ -38,9 +40,9 @@ class MUtil_Ra
      * @var array
      */
     private static $_initialToArrayList = array(
-        'ArrayObject'                      => 'getArrayCopy',
-        'MUtil_Lazy_LazyInterface'         => 'MUtil_Lazy::rise',
-        'MUtil_Lazy_RepeatableInterface'   => '__current',
+        '\\ArrayObject'                      => 'getArrayCopy',
+        '\\MUtil\\Lazy\\LazyInterface'         => '\\MUtil\\Lazy::rise',
+        '\\MUtil\\Lazy\\RepeatableInterface'   => '__current',
         'Zend_Config'                      => 'toArray',
         'Zend_Controller_Request_Abstract' => 'getParams',
         'Zend_Db_Table_Row_Abstract'       => 'toArray',
@@ -49,13 +51,13 @@ class MUtil_Ra
 
 
         // Last function to try
-        'Traversable' => 'iterator_to_array'
+        '\\Traversable' => 'iterator_to_array'
         );
 
     /**
      * A class list with function that convert data to an array
      *
-     * @var \MUtil_Util_ClassList
+     * @var \MUtil\Util\ClassList
      */
     private static $_toArrayConverter;
 
@@ -101,7 +103,7 @@ class MUtil_Ra
      * The input is usually just the output of func_get_args(). This array is flattened
      * like this:
      * <code>
-     * \MUtil_Ra::args(
+     * \MUtil\Ra::args(
      *  array(0 => array(0 => 'f', 1 => array('o' => '0', 0 => 'b')), 1 => array('a' => array('r' => 'r'))));
      * =>
      *  array(0 => 'f', 'o' => '0', 1 => 'b', 'a' => array('r' => 'r'))
@@ -112,7 +114,7 @@ class MUtil_Ra
      *
      * If you assign a name twice, the last value is used:
      * <code>
-     * \MUtil_Ra::args(
+     * \MUtil\Ra::args(
      *  array(array('a' => 'b'), array('a' => 'c'));
      * =>
      *  array('a' => 'c');
@@ -123,7 +125,7 @@ class MUtil_Ra
      * When the first X arguments passed to a function are fixed, you can skip the flattening of the
      * items by specifiying a numeric $skipOrName value.
      * <code>
-     * \MUtil_Ra::args(
+     * \MUtil\Ra::args(
      *  array(0 => array(0 => 'f', 1 => array('o' => '0', 0 => 'b')), 1 => array('a' => array('r' => 'r'))),
      *  1);
      * =>
@@ -136,7 +138,7 @@ class MUtil_Ra
      * is using named arguments. With array('foo', 'bar') as $skipOrName parameter the previous
      * example output becomes:
      * <code>
-     * \MUtil_Ra::args(
+     * \MUtil\Ra::args(
      *  array(0 => array(0 => 'f', 1 => array('o' => '0', 0 => 'b')), 1 => array('a' => array('r' => 'r'))),
      *  array('foo', 'bar'));
      * =>
@@ -151,7 +153,7 @@ class MUtil_Ra
      *
      * Using the $skipOrName array('a', 'c', 'o') the same example returns:
      * <code>
-     * \MUtil_Ra::args(
+     * \MUtil\Ra::args(
      *  array(0 => array(0 => 'f', 1 => array('o' => '0', 0 => 'b')), 1 => array('a' => array('r' => 'r'))),
      *  array('a', 'c', 'o'));
      * =>
@@ -169,7 +171,7 @@ class MUtil_Ra
      * args() also supports class-typed arguments. The $skipOrName parameter then uses the
      * name of the parameter as the array key and the class or interface name as the value:
      * <code>
-     * \MUtil_Ra::args(
+     * \MUtil\Ra::args(
      *  array(new \Zend_DB_Select(), array('a', 'b', new \Zend_Foo()))),
      *  array('foo' => 'Zend_Foo', 'bar', 'foobar' => 'Zend_Db_Select'));
      * =>
@@ -179,10 +181,10 @@ class MUtil_Ra
      * parameter value.
      *
      * Assignment is depth first. Mind you, assignment is name first, instanceof second as long
-     * as the $mode = \MUtil_Ra::RELAXED. If the name does not correspond to the specified type
+     * as the $mode = \MUtil\Ra::RELAXED. If the name does not correspond to the specified type
      * it is still assigned. Also the assignment order is again depth first:
      * <code>
-     * \MUtil_Ra::args(
+     * \MUtil\Ra::args(
      *  array(new \Zend_Foo(1), array('a', 'b', new \Zend_Foo(2)), array('foobar' => 'x')),
      *  array('foo' => 'Zend_Foo', 'bar' => 'Zend_Foo', 'foobar' => 'Zend_Db_Select'));
      * =>
@@ -211,7 +213,7 @@ class MUtil_Ra
      *
      * So the example:
      * <code>
-     * $args = \MUtil_Ra::args(func_get_args(), array('class1',  'class2'), array('class1' => 'odd',  'class2' => 'even'));
+     * $args = \MUtil\Ra::args(func_get_args(), array('class1',  'class2'), array('class1' => 'odd',  'class2' => 'even'));
      * </code>
      * Will return this for the inputs:
      * <code>
@@ -510,7 +512,7 @@ class MUtil_Ra
     /**
      * Get or create the current to ArrayConverter
      *
-     * @param mixed $converter \MUtil_Util_ClassList or something that can be used as input to create one
+     * @param mixed $converter \MUtil\Util\ClassList or something that can be used as input to create one
      */
     public static function getToArrayConverter()
     {
@@ -768,14 +770,14 @@ class MUtil_Ra
     /**
      * Set the current to ArrayConverter
      *
-     * @param mxied $converter \MUtil_Util_ClassList or something that can be used as input to create one
+     * @param mxied $converter \MUtil\Util\ClassList or something that can be used as input to create one
      */
     public static function setToArrayConverter($converter)
     {
-        if ($converter instanceof \MUtil_Util_ClassList) {
+        if ($converter instanceof \MUtil\Util\ClassList) {
             self::$_toArrayConverter = $converter;
         } elseif (is_array($converter)) {
-            self::$_toArrayConverter = new \MUtil_Util_ClassList($converter);
+            self::$_toArrayConverter = new \MUtil\Util\ClassList($converter);
         }
     }
 
@@ -805,7 +807,7 @@ class MUtil_Ra
             }
         }
 
-        // \MUtil_Echo::r($object);
+        // \MUtil\EchoOut\EchoOut::r($object);
         if (is_array($object)) {
             return $object;
         }
@@ -824,5 +826,5 @@ class MUtil_Ra
 
 function is_ra_array($value)
 {
-    return \MUtil_Ra::is($value);
+    return \MUtil\Ra::is($value);
 }

@@ -9,6 +9,8 @@
  * @license    No free license, do not copy
  */
 
+namespace MUtil\View\Helper;
+
 use MUtil\Javascript;
 
 /**
@@ -19,7 +21,7 @@ use MUtil\Javascript;
  * @license    No free license, do not copy
  * @since      Class available since version 1.9.1
  */
-class MUtil_View_Helper_InlineScript extends \Zend_View_Helper_InlineScript
+class InlineScript extends \Zend_View_Helper_InlineScript
 {
     /**
      * Optional allowed attributes for script tag

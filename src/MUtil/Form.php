@@ -8,12 +8,14 @@
  * @copyright  Copyright (c) 2011 Erasmus MC
  */
 
+namespace MUtil;
+
 /**
  * Extends a \Zend_Form with automatic JQuery activation,
- * \MUtil_Html rendering integration and non-css stylesheet per
+ * \MUtil\Html rendering integration and non-css stylesheet per
  * form (possibly automatically calculated) fixed label widths.
  *
- * @see \MUtil_Html
+ * @see \MUtil\Html
  *
  * @package    MUtil
  * @subpackage Form
@@ -21,7 +23,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
+class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
 {
     /**
      * This variable holds all the stylesheets attached to this form
@@ -51,14 +53,14 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
     protected $_hiddenAlwaysEven = '__tmpEvenOut';
 
     /**
-     * $var \MUtil_HtmlElement
+     * $var \MUtil\HtmlElement
      */
     protected $_html_element;
 
     /**
-     * Option value for fixed label width for label elements redered with \MUtil_Html_LabelElement
+     * Option value for fixed label width for label elements redered with \MUtil\Html\LabelElement
      *
-     * @see \MUtil_Html_LabelElement
+     * @see \MUtil\Html\LabelElement
      *
      * @var int
      */
@@ -66,10 +68,10 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
 
     /**
      * Option value to set the fixed label with for label elements redered with
-     * \MUtil_Html_LabelElement by takeing the strlen of the longest label times
+     * \MUtil\Html\LabelElement by takeing the strlen of the longest label times
      * this factor
      *
-     * @see \MUtil_Html_LabelElement
+     * @see \MUtil\Html\LabelElement
      *
      * @var float
      */
@@ -116,7 +118,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      */
     public function __construct($options = null)
     {
-        $this->addElementPrefixPath('MUtil_Form_Decorator', 'MUtil/Form/Decorator',  \Zend_Form_Element::DECORATOR);
+        $this->addElementPrefixPath('MUtil\Form_Decorator', 'MUtil/Form/Decorator',  \Zend_Form_Element::DECORATOR);
         $this->addElementPrefixPath('MUtil_Validate',       'MUtil/Validate/',       \Zend_Form_Element::VALIDATE);
 
         parent::__construct($options);
@@ -164,17 +166,17 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
             }
         }
 
-        \MUtil_JQuery::enableView($view);
+        \MUtil\JQuery::enableView($view);
 
-        if (false === $view->getPluginLoader('helper')->getPaths('MUtil_JQuery_View_Helper')) {
-            $view->addHelperPath('MUtil/JQuery/View/Helper', 'MUtil_JQuery_View_Helper');
+        if (false === $view->getPluginLoader('helper')->getPaths('MUtil\JQuery_View_Helper')) {
+            $view->addHelperPath('MUtil/JQuery/View/Helper', 'MUtil\JQuery_View_Helper');
         }
     }
 
     /**
      * Sort items according to their order
      *
-     * @throws Zend_Form_Exception
+     * @throws \Zend_Form_Exception
      * @return void
      */
     protected function _sort()
@@ -226,15 +228,15 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
     /**
      * Activate Bootstrap for this form
      *
-     * @return \MUtil_Form (continuation pattern)
+     * @return \MUtil\Form (continuation pattern)
      */
     public function activateBootstrap()
     {
         if ($this->_no_bootstrap) {
 
-            $this->addPrefixPath('MUtil_Bootstrap_Form_Element', 'MUtil/Bootstrap/Form/Element/', \Zend_Form::ELEMENT);
+            $this->addPrefixPath('MUtil\Bootstrap_Form_Element', 'MUtil/Bootstrap/Form/Element/', \Zend_Form::ELEMENT);
             $this->_no_bootstrap = false;
-            $this->_defaultDisplayGroupClass = 'MUtil_Bootstrap_Form_DisplayGroup';
+            $this->_defaultDisplayGroupClass = '\\MUtil\\Bootstrap\\Form\\DisplayGroup';
         }
 
         return $this;
@@ -243,15 +245,15 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
     /**
      * Activate JQuery for this form
      *
-     * @return \MUtil_Form (continuation pattern)
+     * @return \MUtil\Form (continuation pattern)
      */
     public function activateJQuery()
     {
         if ($this->_no_jquery) {
-            \MUtil_JQuery::enableForm($this);
+            \MUtil\JQuery::enableForm($this);
 
-            //$this->addPrefixPath('MUtil_JQuery_Form_Decorator', 'MUtil/JQuery/Form/Decorator/', \Zend_Form::DECORATOR);
-            $this->addPrefixPath('MUtil_JQuery_Form_Element', 'MUtil/JQuery/Form/Element/', \Zend_Form::ELEMENT);
+            //$this->addPrefixPath('MUtil\JQuery_Form_Decorator', 'MUtil/JQuery/Form/Decorator/', \Zend_Form::DECORATOR);
+            $this->addPrefixPath('MUtil\JQuery_Form_Element', 'MUtil/JQuery/Form/Element/', \Zend_Form::ELEMENT);
 
             $this->_activateJQueryView();
 
@@ -319,7 +321,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      * Add a script to the head
      *
      * @param sring $script name of script, located in baseurl/js/
-     * @return \Gems_Form (continuation pattern)
+     * @return \Gems\Form (continuation pattern)
      */
     public function addScript($script)
     {
@@ -349,8 +351,8 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      */
     public function answerRegistryRequest($name, $resource)
     {
-        if (\MUtil_Registry_Source::$verbose) {
-            \MUtil_Echo::r('Resource set: ' . get_class($this) . '->' . __FUNCTION__ .
+        if (\MUtil\Registry\Source::$verbose) {
+            \MUtil\EchoOut\EchoOut::r('Resource set: ' . get_class($this) . '->' . __FUNCTION__ .
                 '("' . $name . '", ' .
                 (is_object($resource) ? get_class($resource) : gettype($resource)) . ')');
         }
@@ -381,7 +383,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      */
     public function createElement($type, $name, $options = null)
     {
-        if ($options instanceof Zend_Config) {
+        if ($options instanceof \Zend_Config) {
             $options = $options->toArray();
         }
         $options = (array) $options + [
@@ -429,17 +431,17 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
     /**
      * Returns an Html element that is used to render the form contents.
      *
-     * @return \MUtil_Html_HtmlElement Or an equivalent class
+     * @return \MUtil\Html\HtmlElement Or an equivalent class
      */
     public function getHtml()
     {
         if (! $this->_html_element) {
             foreach ($this->_decorators as $decorator) {
-                if ($decorator instanceof \MUtil_Html_ElementDecorator) {
+                if ($decorator instanceof \MUtil\Html\ElementDecorator) {
                     break;
                 }
             }
-            if ($decorator instanceof \MUtil_Html_ElementDecorator) {
+            if ($decorator instanceof \MUtil\Html\ElementDecorator) {
                 $this->_html_element = $decorator->getHtmlElement();
             } else {
                 $this->setHtml();
@@ -452,10 +454,10 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
 
     /**
      * Value to set the fixed label with for label elements redered with
-     * \MUtil_Html_LabelElement by takeing the strlen of the longest label times
+     * \MUtil\Html\LabelElement by takeing the strlen of the longest label times
      * this factor
      *
-     * @see \MUtil_Html_LabelElement
+     * @see \MUtil\Html\LabelElement
      *
      * @var float
      */
@@ -466,10 +468,10 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
 
     /**
      * Value to set the fixed label with for label elements redered with
-     * \MUtil_Html_LabelElement by takeing the strlen of the longest label times
+     * \MUtil\Html\LabelElement by takeing the strlen of the longest label times
      * this factor
      *
-     * @see \MUtil_Html_LabelElement
+     * @see \MUtil\Html\LabelElement
      *
      * @var float
      */
@@ -509,7 +511,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
                     throw new \Zend_Form_Exception(sprintf('Invalid type "%s" provided to getPluginLoader()', $type));
             }
 
-            $this->_loaders[$type] = new \MUtil_Loader_PluginLoader(array(
+            $this->_loaders[$type] = new \MUtil\Loader\PluginLoader(array(
                 'Zend_'  . $prefixSegment . '_' => 'Zend/'  . $pathSegment . '/',
                 'MUtil_' . $prefixSegment . '_' => 'MUtil/' . $pathSegment . '/',
             ));
@@ -538,7 +540,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      */
     public function getRegistryRequests()
     {
-        // \MUtil_Echo::track(array_filter(array_keys(get_object_vars($this)), array($this, 'filterRequestNames')));
+        // \MUtil\EchoOut\EchoOut::track(array_filter(array_keys(get_object_vars($this)), array($this, 'filterRequestNames')));
         return array_filter(array_keys(get_object_vars($this)), array($this, 'filterRequestNames'));
     }
 
@@ -556,10 +558,10 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      * Validate the form
      *
      * As it is better for translation utilities to set the labels etc. translated,
-     * the MUtil default is to disable translation.
+     * the \MUtil default is to disable translation.
      *
      * However, this also disables the translation of validation messages, which we
-     * cannot set translated. The MUtil form is extended so it can make this switch.
+     * cannot set translated. The \MUtil form is extended so it can make this switch.
      *
      * @param  array   $data
      * @param  boolean $disableTranslateValidators Extra switch
@@ -624,7 +626,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      * Added cascading to elements
      *
      * @param  bool $flag
-     * @return \MUtil_Form
+     * @return \MUtil\Form
      */
     public function setDisableTranslator($flag)
     {
@@ -656,7 +658,7 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      * @see setLabelWidth
      *
      * @param array $order Array containing element parts like 'element', 'errors' and 'description'
-     * @return \MUtil_Form (continuation pattern)
+     * @return \MUtil\Form (continuation pattern)
      */
     public function setDisplayOrder(array $order)
     {
@@ -668,17 +670,17 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
     /**
      * Sets the layout to the use of html elements
      *
-     * @see \MUtil_Html
+     * @see \MUtil\Html
      *
      * @param string $html HtmlTag for element or empty sequence when empty
-     * @param string $args \MUtil_Ra::args additional arguments for element
-     * @return \MUtil_Form (continuation pattern)
+     * @param string $args \MUtil\Ra::args additional arguments for element
+     * @return \MUtil\Form (continuation pattern)
      */
     public function setHtml($html = null, $args = null)
     {
-        $options = \MUtil_Ra::args(func_get_args(), 1);
+        $options = \MUtil\Ra::args(func_get_args(), 1);
 
-        if ($html instanceof \MUtil_Html_ElementInterface) {
+        if ($html instanceof \MUtil\Html\ElementInterface) {
             if ($options) {
                 foreach ($options as $name => $option) {
                     if (is_int($name)) {
@@ -689,16 +691,16 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
                 }
             }
         } elseif (null == $html) {
-            $html = new \MUtil_Html_Sequence($options);
+            $html = new \MUtil\Html\Sequence($options);
         } else {
-            $html = \MUtil_Html::createArray($html, $options);
+            $html = \MUtil\Html::createArray($html, $options);
         }
 
-        if ($html instanceof \MUtil_Html_FormLayout) {
+        if ($html instanceof \MUtil\Html\FormLayout) {
             $html->setAsFormLayout($this);
         } else {
             // Set this element as the form decorator
-            $decorator = new \MUtil_Html_ElementDecorator();
+            $decorator = new \MUtil\Html\ElementDecorator();
             $decorator->setHtmlElement($html);
             // $decorator->setPrologue($formrep); // Renders hidden elements before this element
             $this->setDecorators(array($decorator, 'AutoFocus', 'Form'));
@@ -713,13 +715,13 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      * Render the element labels with a fixed width
      *
      * @param mixed $width The style.width content for the labels
-     * @return \MUtil_Form (continuation pattern)
+     * @return \MUtil\Form (continuation pattern)
      */
     public function setLabelWidth($width)
     {
         $this->_labelWidth = $width;
 
-        $layout = new \MUtil_Html_DlElement();
+        $layout = new \MUtil\Html\DlElement();
         $layout->setAsFormLayout($this, $width, $this->getDisplayOrder());
 
         $this->_html_element = $layout;
@@ -732,13 +734,13 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
      * characters in a label with this factor.
      *
      * @param float $factor To multiply the widest nummers of letters in the labels with to calculate the width in em at drawing time
-     * @return \MUtil_Form (continuation pattern)
+     * @return \MUtil\Form (continuation pattern)
      */
     public function setLabelWidthFactor($factor)
     {
         $this->_labelWidthFactor = $factor;
 
-        $layout = new \MUtil_Html_DlElement();
+        $layout = new \MUtil\Html\DlElement();
         $layout->setAutoWidthFormLayout($this, $factor, $this->getDisplayOrder());
 
         $this->_html_element = $layout;

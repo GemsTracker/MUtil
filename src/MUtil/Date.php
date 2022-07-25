@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil;
+
 /**
  * Extends \Zend_Date with extra date math and Utility functions
  *
@@ -16,9 +18,9 @@
  * @subpackage Date
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.0
+ * @since      Class available since \MUtil version 1.0
  */
-class MUtil_Date extends \Zend_Date
+class Date extends \Zend_Date
 {
     const DAY_SECONDS = 86400;      // 24 * 60 * 60
     const HOUR_SECONDS = 3600;      // 60 * 60
@@ -52,8 +54,8 @@ class MUtil_Date extends \Zend_Date
      *                                                 ,depending on $part. If null the actual time is set
      * @param  string                          $part    OPTIONAL Defines the input format of $date
      * @param  string|Zend_Locale              $locale  OPTIONAL Locale for parsing input
-     * @return Zend_Date
-     * @throws Zend_Date_Exception
+     * @return \Zend_Date
+     * @throws \Zend_Date_Exception
      */
     public function __construct($date = null, $part = null, $locale = null)
     {
@@ -354,12 +356,12 @@ class MUtil_Date extends \Zend_Date
      */
     public static function format($date, $outFormat, $inFormat = null, $localeOut = null)
     {
-        // \MUtil_Echo::timeFunctionStart(__CLASS__ . '->' . __FUNCTION__);
+        // \MUtil\EchoOut\EchoOut::timeFunctionStart(__CLASS__ . '->' . __FUNCTION__);
         if (! $date instanceof \Zend_Date) {
             $date = self::ifDate($date, array($inFormat));
 
             if (! $date) {
-                // \MUtil_Echo::timeFunctionStop(__CLASS__ . '->' . __FUNCTION__);
+                // \MUtil\EchoOut\EchoOut::timeFunctionStop(__CLASS__ . '->' . __FUNCTION__);
                 return null;
             }
         }
@@ -392,7 +394,7 @@ class MUtil_Date extends \Zend_Date
      *
      * @param string $date
      * @param array $formats
-     * @return \MUtil_Date or null if not a date
+     * @return \MUtil\Date or null if not a date
      */
     public static function ifDate($date, $formats)
     {
@@ -536,7 +538,7 @@ class MUtil_Date extends \Zend_Date
     /**
      * Set the time of this object to 23:59:59
      *
-     * @return \MUtil_Date (continuation pattern)
+     * @return \MUtil\Date (continuation pattern)
      */
     public function setTimeToDayEnd()
     {
@@ -546,7 +548,7 @@ class MUtil_Date extends \Zend_Date
     /**
      * Set the time of this object to 00:00:00
      *
-     * @return \MUtil_Date (continuation pattern)
+     * @return \MUtil\Date (continuation pattern)
      */
     public function setTimeToDayStart()
     {
@@ -583,16 +585,16 @@ class MUtil_Date extends \Zend_Date
         // strftime() depends on an instable setlocale()
         //
         // DID NOT YET TRY the PHP IntlDateFormatter extension
-        \MUtil_Echo::timeFunctionStart(__CLASS__ . '->' . __FUNCTION__);
+        \MUtil\EchoOut\EchoOut::timeFunctionStart(__CLASS__ . '->' . __FUNCTION__);
         if ((null === $locale) && (null == $type) && is_string($format ) && isset(self::$zendToPhpFormats[$format])) {
-            \MUtil_Echo::countOccurences('date()');
+            \MUtil\EchoOut\EchoOut::countOccurences('date()');
             $out = date(self::$zendToPhpFormats[$format], $this->getUnixTimestamp());
         } else {
-            \MUtil_Echo::countOccurences('toString()');
-            \MUtil_Echo::countOccurences($format);
+            \MUtil\EchoOut\EchoOut::countOccurences('toString()');
+            \MUtil\EchoOut\EchoOut::countOccurences($format);
             $out = parent::toString($format, $type, $locale);
         }
-        \MUtil_Echo::timeFunctionStop(__CLASS__ . '->' . __FUNCTION__);
+        \MUtil\EchoOut\EchoOut::timeFunctionStop(__CLASS__ . '->' . __FUNCTION__);
         return $out;
     } // */
 }

@@ -29,7 +29,7 @@ class FileTest extends TestCase
     public function testIsOnWindows()
     {
         // Use a different method to establish being on windows
-        $this->assertEquals(strncasecmp(PHP_OS, 'WIN', 3) == 0, \MUtil_File::isOnWindows());
+        $this->assertEquals(strncasecmp(PHP_OS, 'WIN', 3) == 0, \MUtil\File::isOnWindows());
     }
 
     /**
@@ -58,6 +58,6 @@ class FileTest extends TestCase
      */
     public function testRemoveWindowsDriveLetter($input, $output)
     {
-        $this->assertEquals($output, \MUtil_File::removeWindowsDriveLetter($input));
+        $this->assertEquals($output, \MUtil\File::removeWindowsDriveLetter($input));
     }
 }

@@ -30,7 +30,7 @@ trait NoTagsElementTrait
     /**
      * Add no tags validator if not already set
      *
-     * @return MUtil\Form\Element\NoTagsElementTrait
+     * @return \MUtil\Form\Element\NoTagsElementTrait
      */
     public function addNoTagsValidator()
     {
@@ -78,7 +78,7 @@ trait NoTagsElementTrait
      * Set flag indicating whether a NoTags validator should be inserted
      *
      * @param  bool $flag
-     * @return MUtil\Form\Element\NoTagsElementTrait
+     * @return \MUtil\Form\Element\NoTagsElementTrait
      */
     public function setAutoInsertNoTagsValidator($flag)
     {

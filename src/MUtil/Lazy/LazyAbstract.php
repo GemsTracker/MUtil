@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Lazy;
 
 /**
  * The basic workhorse function for all Lazy objects.
@@ -47,22 +24,22 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-abstract class MUtil_Lazy_LazyAbstract implements \MUtil_Lazy_LazyInterface
+abstract class LazyAbstract implements \MUtil\Lazy\LazyInterface
 {
     /**
      * Return a lazy version of the call
      *
-     * @return \MUtil_Lazy_Call
+     * @return \MUtil\Lazy\Call
      */
     public function __call($name, array $arguments)
     {
-        return new \MUtil_Lazy_Call(array($this, $name), $arguments);
+        return new \MUtil\Lazy\Call(array($this, $name), $arguments);
     }
 
     /**
      * Return a lazy version of the property retrieval
      *
-     * @return \MUtil_Lazy_Property
+     * @return \MUtil\Lazy\Property
      */
     public function __get($name)
     {
@@ -74,17 +51,17 @@ abstract class MUtil_Lazy_LazyAbstract implements \MUtil_Lazy_LazyInterface
         //
         // All in all I concluded the overhead is probably not worth it, though I
         // did not test this.
-        return new \MUtil_Lazy_Property($this, $name);
+        return new \MUtil\Lazy\Property($this, $name);
     }
 
     /**
      * You cannot set a Lazy object.
      *
-     * throws \MUtil_Lazy_LazyException
+     * throws \MUtil\Lazy\LazyException
      */
     public function __set($name, $value)
     {
-        throw new \MUtil_Lazy_LazyException('You cannot set a Lazy object.');
+        throw new \MUtil\Lazy\LazyException('You cannot set a Lazy object.');
     }
 
     /**
@@ -97,10 +74,10 @@ abstract class MUtil_Lazy_LazyAbstract implements \MUtil_Lazy_LazyInterface
     public function __toString()
     {
         try {
-            $stack = new \MUtil_Lazy_Stack_EmptyStack(__FUNCTION__);
+            $stack = new \MUtil\Lazy\Stack\EmptyStack(__FUNCTION__);
             $value = $this;
 
-            while ($value instanceof \MUtil_Lazy_LazyInterface) {
+            while ($value instanceof \MUtil\Lazy\LazyInterface) {
                 $value = $this->__toValue($stack);
             }
 
@@ -153,7 +130,7 @@ abstract class MUtil_Lazy_LazyAbstract implements \MUtil_Lazy_LazyInterface
             $callable = array($this, $callable);
         }
 
-        return new \MUtil_Lazy_Call($callable, $args);
+        return new \MUtil\Lazy\Call($callable, $args);
     }
 
     public function offsetExists(mixed $offset): bool
@@ -163,16 +140,16 @@ abstract class MUtil_Lazy_LazyAbstract implements \MUtil_Lazy_LazyInterface
 
     public function offsetGet(mixed $offset): mixed
     {
-        return new \MUtil_Lazy_ArrayAccessor($this, $offset);
+        return new \MUtil\Lazy\ArrayAccessor($this, $offset);
     }
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        throw new \MUtil_Lazy_LazyException('You cannot set a Lazy object.');
+        throw new \MUtil\Lazy\LazyException('You cannot set a Lazy object.');
     }
 
     public function offsetUnset(mixed $offset): void
     {
-        throw new \MUtil_Lazy_LazyException('You cannot unset a Lazy object.');
+        throw new \MUtil\Lazy\LazyException('You cannot unset a Lazy object.');
     }
 }

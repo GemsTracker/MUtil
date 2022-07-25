@@ -6,7 +6,9 @@
  * and open the template in the editor.
  */
 
-class MUtil_Bootstrap_Form_Element_Multiselect extends MUtil_Bootstrap_Form_Element_Select
+namespace MUtil\Bootstrap\Form\Element;
+
+class Multiselect extends \MUtil\Bootstrap\Form\Element\Select
 {
     /**
      * 'multiple' attribute

@@ -10,6 +10,8 @@
  */
 
 
+namespace MUtil\Markup\Renderer\Html;
+
 /**
  *
  * @package    JointCompassion
@@ -17,7 +19,7 @@
  * @license    No free license, do not copy
  * @since      Class available since version 1.8.8
  */
-class MUtil_Markup_Renderer_Html_Url extends \Zend_Markup_Renderer_Html_Url
+class Url extends \Zend_Markup_Renderer_Html_Url
 {
 
     /**
@@ -37,7 +39,7 @@ class MUtil_Markup_Renderer_Html_Url extends \Zend_Markup_Renderer_Html_Url
         }
 
         // check if the URL is valid
-        if (!\MUtil_Markup::isValidUri($uri)) {
+        if (!\MUtil\Markup::isValidUri($uri)) {
             return $text;
         }
 

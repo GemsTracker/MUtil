@@ -17,8 +17,8 @@ class ToManySingleColumnChildTransformer extends ToManyTransformer
     /**
      * Function to allow overruling of transform for certain models
      *
-     * @param \MUtil_Model_ModelAbstract $model Parent model
-     * @param \MUtil_Model_ModelAbstract $sub Sub model
+     * @param \MUtil\Model\ModelAbstract $model Parent model
+     * @param \MUtil\Model\ModelAbstract $sub Sub model
      * @param array $data The nested data rows
      * @param array $join The join array
      * @param string $name Name of sub model
@@ -26,7 +26,7 @@ class ToManySingleColumnChildTransformer extends ToManyTransformer
      * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
      */
     protected function transformLoadSubModel(
-        \MUtil_Model_ModelAbstract $model, \MUtil_Model_ModelAbstract $sub, array &$data, array $join,
+        \MUtil\Model\ModelAbstract $model, \MUtil\Model\ModelAbstract $sub, array &$data, array $join,
         $name, $new, $isPostData)
     {
         $child = reset($join);
@@ -67,14 +67,14 @@ class ToManySingleColumnChildTransformer extends ToManyTransformer
     /**
      * Function to allow overruling of transform for certain models
      *
-     * @param \MUtil_Model_ModelAbstract $model
-     * @param \MUtil_Model_ModelAbstract $sub
+     * @param \MUtil\Model\ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $sub
      * @param array $data
      * @param array $join
      * @param string $name
      */
     protected function transformSaveSubModel(
-        \MUtil_Model_ModelAbstract $model, \MUtil_Model_ModelAbstract $sub, array &$row, array $join, $name)
+        \MUtil\Model\ModelAbstract $model, \MUtil\Model\ModelAbstract $sub, array &$row, array $join, $name)
     {
         if (!$this->savable) {
             return;

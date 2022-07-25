@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Application;
+
 /**
  * Hook 1: init()
  *   $this->_init{Name} method, like _initView()
@@ -52,9 +54,9 @@
  * @subpackage Application
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.0
+ * @since      Class available since \MUtil version 1.0
  */
-abstract class MUtil_Application_Escort extends \Zend_Application_Bootstrap_Bootstrap
+abstract class Escort extends \Zend_Application_Bootstrap_Bootstrap
 {
     /**
      *
@@ -82,11 +84,11 @@ abstract class MUtil_Application_Escort extends \Zend_Application_Bootstrap_Boot
     {
         $this->bootstrap('frontController');
         $front = $this->getResource('frontController');
-        if (\MUtil_Console::isConsole()) {
+        if (\MUtil\Console::isConsole()) {
             $front->setParam('disableOutputBuffering', true);
-            $front->setRouter(new \MUtil_Controller_Router_Cli());
-            $front->setRequest(new \MUtil_Controller_Request_Cli());
-            $front->setResponse(new \MUtil_Controller_Response_Cli());
+            $front->setRouter(new \MUtil\Controller\Router\Cli());
+            $front->setRequest(new \MUtil\Controller\Request\Cli());
+            $front->setResponse(new \MUtil\Controller\Response\Cli());
         } else {
             $front->setRouter(new \MUtil\Controller\Router\Rewrite());
         }
@@ -401,8 +403,8 @@ abstract class MUtil_Application_Escort extends \Zend_Application_Bootstrap_Boot
      */
     final public function run($stackIndex = null)
     {
-        \MUtil_Application_EscortPlugin::register($this, $stackIndex);
-        \MUtil_Application_EscortControllerHelper::register($this, $stackIndex);
+        \MUtil\Application\EscortPlugin::register($this, $stackIndex);
+        \MUtil\Application\EscortControllerHelper::register($this, $stackIndex);
 
         $this->beforeRun();
 
@@ -412,7 +414,7 @@ abstract class MUtil_Application_Escort extends \Zend_Application_Bootstrap_Boot
     }
 
     /**
-     * No hook. Called by \MUtil_Application_EscortControllerHelper->setActionController()
+     * No hook. Called by \MUtil\Application\EscortControllerHelper->setActionController()
      * and sets the controller. No event hooked up as controllerInit() is called straigt
      * after this call.
      *
@@ -433,7 +435,7 @@ abstract class MUtil_Application_Escort extends \Zend_Application_Bootstrap_Boot
      * Final as the workings are central to the Escort class.
      *
      * @param \Zend_Controller_Request_Abstract $request
-     * @return \MUtil_Application_Escort
+     * @return \MUtil\Application\Escort
      */
     public final function setRequest(\Zend_Controller_Request_Abstract $request)
     {
@@ -451,7 +453,7 @@ abstract class MUtil_Application_Escort extends \Zend_Application_Bootstrap_Boot
      * Final as the workings are central to the Escort class.
      *
      * @param \Zend_Controller_Response_Abstract $response
-     * @return \MUtil_Application_Escort
+     * @return \MUtil\Application\Escort
      */
     public final function setResponse(\Zend_Controller_Response_Abstract $response)
     {

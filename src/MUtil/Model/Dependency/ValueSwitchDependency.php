@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2014, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,7 +8,6 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2014 Erasmus MC
  * @license    New BSD License
- * @version    $Id: ValueSwitchDependency.php 1748 2014-02-19 18:09:41Z matijsdejong $
  */
 
 namespace MUtil\Model\Dependency;
@@ -149,7 +124,7 @@ class ValueSwitchDependency extends DependencyAbstract
 
             $this->_checkEffectFor($this->_switches, $this->_dependentOn, $results);
 
-            // \MUtil_Echo::track($results);
+            // \MUtil\EchoOut\EchoOut::track($results);
 
             $this->setEffecteds($results);
 
@@ -177,9 +152,9 @@ class ValueSwitchDependency extends DependencyAbstract
 
         // When there is no data, return no changes
         if (!array_key_exists($name, $context)) {
-            if (\MUtil_Model::$verbose) {
+            if (\MUtil\Model::$verbose) {
                 $names = array_diff_key($this->_dependentOn, $context);
-                \MUtil_Echo::r(implode(', ', $names), 'Name(s) not found in ' . get_class($this));
+                \MUtil\EchoOut\EchoOut::r(implode(', ', $names), 'Name(s) not found in ' . get_class($this));
             }
             return array();
         }
@@ -214,9 +189,9 @@ class ValueSwitchDependency extends DependencyAbstract
                 }
             }
         }
-        if (\MUtil_Model::$verbose) {
-            \MUtil_Echo::track($this->_switches, $this->_dependentOn, $this->_effecteds);
-            \MUtil_Echo::r(
+        if (\MUtil\Model::$verbose) {
+            \MUtil\EchoOut\EchoOut::track($this->_switches, $this->_dependentOn, $this->_effecteds);
+            \MUtil\EchoOut\EchoOut::r(
                     "Value '$value' not found for field $name among the values: " .
                         implode(', ', array_keys($switches)),
                     'Value not found in ' . get_class($this));

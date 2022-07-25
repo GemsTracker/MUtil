@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Form\Element;
+
 /**
  *
  * @package    MUtil
@@ -17,7 +19,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Form_Element_Exhibitor extends \Zend_Form_Element_Xhtml implements \MUtil_Form_Element_NoFocusInterface
+class Exhibitor extends \Zend_Form_Element_Xhtml implements \MUtil\Form\Element\NoFocusInterface
 {
     public $helper = 'exhibitor';
 

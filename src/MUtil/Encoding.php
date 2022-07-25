@@ -29,19 +29,20 @@
   POSSIBILITY OF SUCH DAMAGE.
  */
 
+namespace MUtil;
+
 /**
  * Copied from http://stackoverflow.com/questions/910793/detect-encoding-and-make-everything-utf-8?rq=1
  * Will use it some day.
  *
  * @author "Sebastián Grignoli" <grignoli@framework2.com.ar>
  * @package Encoding
- * @version 1.2
  * @link https://github.com/neitanod/forceutf8
  * @example https://github.com/neitanod/forceutf8
  * @license Revised BSD
  */
 // namespace ForceUTF8;
-class MUtil_Encoding
+class Encoding
 {
 
     protected static $win1252ToUtf8 = array(
@@ -314,8 +315,8 @@ class MUtil_Encoding
     {
         $encodingLabel = self::normalizeEncoding($encodingLabel);
         if ($encodingLabel == 'UTF-8')
-            return \MUtil_Encoding::toUTF8($text);
+            return \MUtil\Encoding::toUTF8($text);
         if ($encodingLabel == 'ISO-8859-1')
-            return \MUtil_Encoding::toLatin1($text);
+            return \MUtil\Encoding::toLatin1($text);
     }
 }

@@ -190,7 +190,7 @@ class ElevenTest extends AbstractValidator
 
         //Set the length for the message template
         $this->_length = $count;
-        // \MUtil_Echo::rs($value, $weights);
+        // \MUtil\EchoOut\EchoOut::rs($value, $weights);
 
         // Simple length checks
         if ($count != strlen($value)) {

@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Snippets;
+
 /**
  * Abstract class for quickly creating a tabbed bar, or rather a div that contains a number
  * of links, adding specific classes for display.
@@ -19,7 +21,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.1
  */
-abstract class MUtil_Snippets_TabSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
+abstract class TabSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
 {
     /**
      * Optional standard url parts
@@ -114,7 +116,7 @@ abstract class MUtil_Snippets_TabSnippetAbstract extends \MUtil_Snippets_Snippet
      * This is a stub function either override getHtmlOutput() or override render()
      *
      * @param \Zend_View_Abstract $view Just in case it is needed here
-     * @return \MUtil_Html_HtmlInterface Something that can be rendered
+     * @return \MUtil\Html\HtmlInterface Something that can be rendered
      */
     public function getHtmlOutput(\Zend_View_Abstract $view)
     {
@@ -129,7 +131,7 @@ abstract class MUtil_Snippets_TabSnippetAbstract extends \MUtil_Snippets_Snippet
                 $this->href = $this->href + $this->baseUrl;
             }
 
-            $tabRow = \MUtil_Html::create()->ul();
+            $tabRow = \MUtil\Html::create()->ul();
 
             foreach ($tabs as $tabId => $content) {
 

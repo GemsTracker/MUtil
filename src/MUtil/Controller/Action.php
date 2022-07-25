@@ -9,10 +9,12 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Controller;
+
 use MUtil\Translate\Translator;
 
 /**
- * Extends \Zend_Controller_Action with basic functionality and \MUtil_Html
+ * Extends \Zend_Controller_Action with basic functionality and \MUtil\Html
  *
  * Basic functionality provided:
  *  - title attribute for use in htm/head/title element
@@ -20,8 +22,8 @@ use MUtil\Translate\Translator;
  *  - use of \Zend_Translate simplified and shortened in code
  *  - disable \Zend_Layout and \Zend_View with initRawOutput() and $useRawOutput.
  *
- * \MUtil_Html functionality provided:
- *  - semi automatic \MUtil_Html_Sequence initiation
+ * \MUtil\Html functionality provided:
+ *  - semi automatic \MUtil\Html\Sequence initiation
  *  - view script set to html-view.phtml when using html
  *  - snippet usage for repeatably used snippets of html on a page
  *
@@ -31,14 +33,14 @@ use MUtil\Translate\Translator;
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-abstract class MUtil_Controller_Action
+abstract class Action
 {
     /**
      * A session based message store.
      *
      * Standard the flash messenger for storing messages
      *
-     * @var Mezzio\Flash\FlashMessagesInterface
+     * @var \Mezzio\Flash\FlashMessagesInterface
      */
     private $_messenger;
 
@@ -47,7 +49,7 @@ abstract class MUtil_Controller_Action
      *
      * Allows you to create html using e.g. $this->html->p();
      *
-     * @var \MUtil_Html_Sequence $html The html object to add content to.
+     * @var \MUtil\Html\Sequence $html The html object to add content to.
      */
     public $html;
 
@@ -70,7 +72,7 @@ abstract class MUtil_Controller_Action
     /**
      * The loader for snippets.
      *
-     * @var \MUtil_Snippets_SnippetLoader
+     * @var \MUtil\Snippets\SnippetLoader
      */
     protected $snippetLoader;
 
@@ -121,7 +123,7 @@ abstract class MUtil_Controller_Action
         $this->requestHelper = new \MUtil\Legacy\RequestHelper($request);
         $this->urlHelper = $urlHelper;
 
-        //$this->_helper = new Zend_Controller_Action_HelperBroker($this);
+        //$this->_helper = new \Zend_Controller_Action_HelperBroker($this);
 
         if ($init) {
             $this->init();
@@ -190,9 +192,9 @@ abstract class MUtil_Controller_Action
          * TODO Reimplement reroute
          */
         /*if ($reset) {
-            // \MUtil_Echo::r($urlOptions, 'before');
-            $urlOptions = \MUtil_Html_UrlArrayAttribute::rerouteUrl($this->getRequest(), $urlOptions);
-            // \MUtil_Echo::r($urlOptions, 'after');
+            // \MUtil\EchoOut\EchoOut::r($urlOptions, 'before');
+            $urlOptions = \MUtil\Html\UrlArrayAttribute::rerouteUrl($this->getRequest(), $urlOptions);
+            // \MUtil\EchoOut\EchoOut::r($urlOptions, 'after');
         }
         $this->_helper->redirector->gotoRoute($urlOptions, $routeName, $reset, $encode);*/
     }
@@ -202,7 +204,7 @@ abstract class MUtil_Controller_Action
      *
      * @param mixed $message_args Can be an array or multiple argemuents. Each sub element is a single message string
      * @param string|null $status Optional message status, one of: success, info, warning or danger
-     * @return \MUtil_Controller_Action
+     * @return \MUtil\Controller\Action
      */
     public function addMessage(mixed $message, ?string $status = null)
     {
@@ -216,12 +218,12 @@ abstract class MUtil_Controller_Action
      * Searches and loads a .php snippet file and adds the content to $this->html.
      *
      * @param string $filename The name of the snippet
-     * @param \MUtil_Ra::pairs $parameter_value_pairs name/value pairs ot add to the source for this snippet
-     * @return \MUtil_Snippets_SnippetInterface The snippet if content was possibly added.
+     * @param \MUtil\Ra::pairs $parameter_value_pairs name/value pairs ot add to the source for this snippet
+     * @return \MUtil\Snippets\SnippetInterface The snippet if content was possibly added.
      */
-    public function addSnippet(string $filename, $parameter_value_pairs = null): ?MUtil_Snippets_SnippetInterface
+    public function addSnippet(string $filename, $parameter_value_pairs = null): ?MUtil\Snippets\SnippetInterface
     {
-        $extraSource = \MUtil_Ra::pairs(func_get_args(), 1);
+        $extraSource = \MUtil\Ra::pairs(func_get_args(), 1);
         $results     = $this->addSnippets([$filename], $extraSource);
         return $results ? reset($results) : null;
     }
@@ -231,13 +233,13 @@ abstract class MUtil_Controller_Action
      * content key, unless that key already exists.
      *
      * @param string[]|string $filenames Names of snippets
-     * @param \MUtil_Ra::pairs $parameter_value_pairs name/value pairs ot add to the source for this snippet
+     * @param \MUtil\Ra::pairs $parameter_value_pairs name/value pairs ot add to the source for this snippet
      * @return mixed The snippet if content was possibly added.
      */
     public function addSnippets(mixed $filenames, $parameter_value_pairs = null): ?array
     {
         if ($filenames) {
-            $extraSource = \MUtil_Ra::pairs(func_get_args(), 1);
+            $extraSource = \MUtil\Ra::pairs(func_get_args(), 1);
 
             if (is_string($filenames)) {
                 $filenames = [$filenames];
@@ -285,7 +287,7 @@ abstract class MUtil_Controller_Action
      * Forces $this->title to be an array.
      *
      * @param string $extraTitle
-     * @return \MUtil_Controller_Action
+     * @return \MUtil\Controller\Action
      */
     public function appendTitle(string $extraTitle): self
     {
@@ -312,9 +314,9 @@ abstract class MUtil_Controller_Action
     /**
      * Returns a session based message store for adding messages to.
      *
-     * @return Mezzio\Flash\FlashMessagesInterface
+     * @return \Mezzio\Flash\FlashMessagesInterface
      */
-    public function getMessenger(): Mezzio\Flash\FlashMessagesInterface
+    public function getMessenger(): \Mezzio\Flash\FlashMessagesInterface
     {
         if (! $this->_messenger) {
             $this->request->getAttribute('flash');
@@ -332,12 +334,12 @@ abstract class MUtil_Controller_Action
      * Searches and loads a .php snippet file.
      *
      * @param string $filename The name of the snippet
-     * @param \MUtil_Ra::pairs $parameter_value_pairs name/value pairs ot add to the source for this snippet
-     * @return \MUtil_Snippets_SnippetInterface The snippet
+     * @param \MUtil\Ra::pairs $parameter_value_pairs name/value pairs ot add to the source for this snippet
+     * @return \MUtil\Snippets\SnippetInterface The snippet
      */
-    public function getSnippet(string $filename, $parameter_value_pairs = null): \MUtil_Snippets_SnippetInterface
+    public function getSnippet(string $filename, $parameter_value_pairs = null): \MUtil\Snippets\SnippetInterface
     {
-        $extraSource = \MUtil_Ra::pairs(func_get_args(), 1);
+        $extraSource = \MUtil\Ra::pairs(func_get_args(), 1);
         $results     = $this->getSnippets([$filename], $extraSource);
         return reset($results);
     }
@@ -346,18 +348,18 @@ abstract class MUtil_Controller_Action
      * Searches and loads multiple .php snippet file.
      *
      * @param string[] $filenames Array of snippet names with optionally extra parameters included
-     * @param \MUtil_Ra::pairs $parameter_value_pairs name/value pairs ot add to the source for this snippet
-     * @return array Of filename => \MUtil_Snippets_SnippetInterface snippets
+     * @param \MUtil\Ra::pairs $parameter_value_pairs name/value pairs ot add to the source for this snippet
+     * @return array Of filename => \MUtil\Snippets\SnippetInterface snippets
      */
     public function getSnippets(array $filenames, $parameter_value_pairs = null): array
     {
         if (func_num_args() > 1) {
-            $extraSourceParameters = \MUtil_Ra::pairs(func_get_args(), 1);
+            $extraSourceParameters = \MUtil\Ra::pairs(func_get_args(), 1);
         } else {
             $extraSourceParameters = [];
         }
 
-        list($filenames, $params) = \MUtil_Ra::keySplit($filenames);
+        list($filenames, $params) = \MUtil\Ra::keySplit($filenames);
 
         if ($params) {
             $extraSourceParameters = $params + $extraSourceParameters;
@@ -379,7 +381,7 @@ abstract class MUtil_Controller_Action
     /**
      * Returns a source of values for snippets.
      *
-     * @return \MUtil_Snippets_SnippetLoader
+     * @return \MUtil\Snippets\SnippetLoader
      */
     public function getSnippetLoader()
     {
@@ -447,9 +449,9 @@ abstract class MUtil_Controller_Action
     public function initHtml(bool $reset = false): void
     {
         if ($reset || (! $this->html)) {
-            \MUtil_Html::setSnippetLoader($this->getSnippetLoader());
+            \MUtil\Html::setSnippetLoader($this->getSnippetLoader());
 
-            $this->html = new \MUtil_Html_Sequence();
+            $this->html = new \MUtil\Html\Sequence();
 
             // Add this variable to the view.
             //$this->view->html = $this->html;
@@ -487,7 +489,7 @@ abstract class MUtil_Controller_Action
     protected function loadSnippetLoader(): void
     {
         // Create the snippet with this controller as the parameter source
-        $this->snippetLoader = new \MUtil_Snippets_SnippetLoader($this);
+        $this->snippetLoader = new \MUtil\Snippets\SnippetLoader($this);
     }
 
 

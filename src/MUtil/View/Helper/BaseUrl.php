@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 
 
-class MUtil_View_Helper_BaseUrl extends \Zend_View_Helper_BaseUrl
+class BaseUrl extends \Zend_View_Helper_BaseUrl
 {
     /**
      * Set BaseUrl
      *
      * @param  string $base
-     * @return Zend_View_Helper_BaseUrl
+     * @return \Zend_View_Helper_BaseUrl
      */
     public function setBaseUrl($base)
     {

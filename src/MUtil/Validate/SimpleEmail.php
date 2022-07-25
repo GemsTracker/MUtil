@@ -27,7 +27,7 @@ class SimpleEmail extends AbstractValidator
     ];
 
     /**
-     * Defined by Zend_Validate_Interface
+     * Defined by \Zend_Validate_Interface
      *
      * Returns true if and only if $value matches against the pattern option
      *

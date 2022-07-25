@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Html;
 
 /**
  * Sprintf class is used to use sprintf with renderable content .
@@ -42,9 +19,9 @@
  * @subpackage Html
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.2
+ * @since      Class available since \MUtil version 1.2
  */
-class MUtil_Html_Sprintf extends \ArrayObject implements \MUtil_Html_ElementInterface
+class Sprintf extends \ArrayObject implements \MUtil\Html\ElementInterface
 {
     /**
      * Object classes that should not be added to the core array, but should be set using
@@ -75,15 +52,15 @@ class MUtil_Html_Sprintf extends \ArrayObject implements \MUtil_Html_ElementInte
     /**
      * Adds an HtmlElement to this element
      *
-     * @see \MUtil_Html_Creator
+     * @see \MUtil\Html\Creator
      *
-     * @param string $name Function name becomes tagname (unless specified otherwise in \MUtil_Html_Creator)
+     * @param string $name Function name becomes tagname (unless specified otherwise in \MUtil\Html\Creator)
      * @param array $arguments The content and attributes values
-     * @return \MUtil_Html_HtmlElement With '$name' tagName
+     * @return \MUtil\Html\HtmlElement With '$name' tagName
      */
     public function __call($name, array $arguments)
     {
-        $elem = \MUtil_Html::createArray($name, $arguments);
+        $elem = \MUtil\Html::createArray($name, $arguments);
 
         $this[] = $elem;
 
@@ -92,13 +69,13 @@ class MUtil_Html_Sprintf extends \ArrayObject implements \MUtil_Html_ElementInte
 
     /**
      *
-     * @param mixed $arg_array \MUtil_Ra::args parameter passing
+     * @param mixed $arg_array \MUtil\Ra::args parameter passing
      */
     public function __construct($arg_array = null)
     {
         parent::__construct();
 
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         $this->init();
 
@@ -153,7 +130,7 @@ class MUtil_Html_Sprintf extends \ArrayObject implements \MUtil_Html_ElementInte
 
         /*
         if (! $this->_specialTypes) {
-            \MUtil_Echo::backtrace();
+            \MUtil\EchoOut\EchoOut::backtrace();
         } // */
         foreach ($this->_specialTypes as $class => $method) {
             if ($newval instanceof $class) {
@@ -182,7 +159,7 @@ class MUtil_Html_Sprintf extends \ArrayObject implements \MUtil_Html_ElementInte
             $this->setView($view);
         }
 
-        $params = \MUtil_Html::getRenderer()->renderArray($view, $this->getIterator(), false);
+        $params = \MUtil\Html::getRenderer()->renderArray($view, $this->getIterator(), false);
 
         if ($params) {
             return call_user_func_array('sprintf', $params);
@@ -205,11 +182,11 @@ class MUtil_Html_Sprintf extends \ArrayObject implements \MUtil_Html_ElementInte
 
     /**
      *
-     * @param mixed $arg_array \MUtil_Ra::args parameter passing
+     * @param mixed $arg_array \MUtil\Ra::args parameter passing
      */
     public static function sprintf($arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         return new self($args);
     }

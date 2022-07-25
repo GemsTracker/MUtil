@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Controller\Request;
+
 /**
  * Command line repsonse client for Zend. Thanks to
  * http://stackoverflow.com/questions/2325338/running-a-zend-framework-action-from-command-line
@@ -17,9 +19,9 @@
  * @subpackage Controller
  * @copyright  Copyright (c) 2012 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.2
+ * @since      Class available since \MUtil version 1.2
  */
-class MUtil_Controller_Request_Cli extends \Zend_Controller_Request_Abstract
+class Cli extends \Zend_Controller_Request_Abstract
 {
     /**
      * @var string
@@ -141,7 +143,7 @@ class MUtil_Controller_Request_Cli extends \Zend_Controller_Request_Abstract
      * @param string $userName
      * @param int $organization
      * @param string $password
-     * @return \MUtil_Controller_Request_Cli (continuation pattern)
+     * @return \MUtil\Controller\Request\Cli (continuation pattern)
      */
     public function setUserLogin($userName, $organization, $password)
     {

@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2012, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2012 Erasmus MC
  * @license    New BSD License
- * @version    $Id: JoinTransformer.php 203 2012-01-01t 12:51:32Z matijs $
  */
+
+namespace MUtil\Model\Transform;
 
 /**
  * Transform that can be used to join models to another model in possibly non-relational
@@ -43,15 +20,15 @@
  * @subpackage Model
  * @copyright  Copyright (c) 2012 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.2
+ * @since      Class available since \MUtil version 1.2
  */
-class MUtil_Model_Transform_JoinTransformer extends \MUtil_Model_SubmodelTransformerAbstract
+class JoinTransformer extends \MUtil\Model\SubmodelTransformerAbstract
 {
     /**
      * Function to allow overruling of transform for certain models
      *
-     * @param \MUtil_Model_ModelAbstract $model Parent model
-     * @param \MUtil_Model_ModelAbstract $sub Sub model
+     * @param \MUtil\Model\ModelAbstract $model Parent model
+     * @param \MUtil\Model\ModelAbstract $sub Sub model
      * @param array $data The nested data rows
      * @param array $join The join array
      * @param string $name Name of sub model
@@ -59,7 +36,7 @@ class MUtil_Model_Transform_JoinTransformer extends \MUtil_Model_SubmodelTransfo
      * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
      */
     protected function transformLoadSubModel(
-            \MUtil_Model_ModelAbstract $model, \MUtil_Model_ModelAbstract $sub, array &$data, array $join,
+            \MUtil\Model\ModelAbstract $model, \MUtil\Model\ModelAbstract $sub, array &$data, array $join,
             $name, $new, $isPostData)
     {
         if (1 === count($join)) {
@@ -67,18 +44,18 @@ class MUtil_Model_Transform_JoinTransformer extends \MUtil_Model_SubmodelTransfo
             $mkey = key($join);
             $skey = reset($join);
 
-            $mfor = \MUtil_Ra::column($mkey, $data);
+            $mfor = \MUtil\Ra::column($mkey, $data);
 
-            // \MUtil_Echo::track($mfor);
+            // \MUtil\EchoOut\EchoOut::track($mfor);
             if ($new) {
                 $sdata = $sub->loadNew(1);
             } else {
                 $sdata = $sub->load(array($skey => $mfor));
             }
-            // \MUtil_Echo::track($sdata);
+            // \MUtil\EchoOut\EchoOut::track($sdata);
 
             if ($sdata) {
-                $skeys = array_flip(\MUtil_Ra::column($skey, $sdata));
+                $skeys = array_flip(\MUtil\Ra::column($skey, $sdata));
                 $empty = array_fill_keys(array_keys(reset($sdata)), null);
 
                 foreach ($data as &$mrow) {
@@ -97,7 +74,7 @@ class MUtil_Model_Transform_JoinTransformer extends \MUtil_Model_SubmodelTransfo
                     $mrow += $empty;
                 }
             }
-            // \MUtil_Echo::track($mrow);
+            // \MUtil\EchoOut\EchoOut::track($mrow);
         } else {
             // Multi column implementation
             $empty = array_fill_keys($sub->getItemNames(), null);
@@ -121,7 +98,7 @@ class MUtil_Model_Transform_JoinTransformer extends \MUtil_Model_SubmodelTransfo
                     $mrow += $empty;
                 }
 
-                // \MUtil_Echo::track($sdata, $mrow);
+                // \MUtil\EchoOut\EchoOut::track($sdata, $mrow);
             }
         }
     }
@@ -129,14 +106,14 @@ class MUtil_Model_Transform_JoinTransformer extends \MUtil_Model_SubmodelTransfo
     /**
      * Function to allow overruling of transform for certain models
      *
-     * @param \MUtil_Model_ModelAbstract $model
-     * @param \MUtil_Model_ModelAbstract $sub
+     * @param \MUtil\Model\ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $sub
      * @param array $data
      * @param array $join
      * @param string $name
      */
     protected function transformSaveSubModel
-            (\MUtil_Model_ModelAbstract $model, \MUtil_Model_ModelAbstract $sub, array &$row, array $join, $name)
+            (\MUtil\Model\ModelAbstract $model, \MUtil\Model\ModelAbstract $sub, array &$row, array $join, $name)
     {
         $keys = array();
 
