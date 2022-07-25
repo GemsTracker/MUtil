@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\EchoOut;
+
 /**
  * This class allows you to echo debug statements over multiple requests by
  * storing the output in the session.
@@ -19,7 +21,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Echo
+class EchoOut
 {
     /**
      * Add's a backtrace of the position of the code

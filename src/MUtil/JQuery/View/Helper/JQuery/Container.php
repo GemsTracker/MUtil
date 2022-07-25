@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\JQuery\View\Helper\JQuery;
+
 use MUtil\Javascript;
 
 /**
@@ -19,7 +21,7 @@ use MUtil\Javascript;
  * @license    New BSD License
  * @since      Class available since version 1.6.5
  */
-class MUtil_JQuery_View_Helper_JQuery_Container extends \ZendX_JQuery_View_Helper_JQuery_Container
+class Container extends \ZendX_JQuery_View_Helper_JQuery_Container
 {
     /**
      * Render jQuery stylesheets
@@ -86,21 +88,21 @@ class MUtil_JQuery_View_Helper_JQuery_Container extends \ZendX_JQuery_View_Helpe
     protected function _renderExtras()
     {
         $onLoadActions = array();
-        if( ($this->getRenderMode() & ZendX_JQuery::RENDER_JQUERY_ON_LOAD) > 0) {
+        if( ($this->getRenderMode() & \ZendX_JQuery::RENDER_JQUERY_ON_LOAD) > 0) {
             foreach ($this->getOnLoadActions() as $callback) {
                 $onLoadActions[] = $callback;
             }
         }
 
         $javascript = '';
-        if( ($this->getRenderMode() & ZendX_JQuery::RENDER_JAVASCRIPT) > 0) {
+        if( ($this->getRenderMode() & \ZendX_JQuery::RENDER_JAVASCRIPT) > 0) {
             $javascript = implode("\n    ", $this->getJavascript());
         }
 
         $content = '';
 
         if (!empty($onLoadActions)) {
-            if(true === ZendX_JQuery_View_Helper_JQuery::getNoConflictMode()) {
+            if(true === \ZendX_JQuery_View_Helper_JQuery::getNoConflictMode()) {
                 $content .= '$j(document).ready(function() {'."\n    ";
             } else {
                 $content .= '$(document).ready(function() {'."\n    ";
@@ -135,7 +137,7 @@ class MUtil_JQuery_View_Helper_JQuery_Container extends \ZendX_JQuery_View_Helpe
     protected function _renderScriptTags()
     {
         $scriptTags = '';
-        if( ($this->getRenderMode() & ZendX_JQuery::RENDER_LIBRARY) > 0) {
+        if( ($this->getRenderMode() & \ZendX_JQuery::RENDER_LIBRARY) > 0) {
             $source = $this->_getJQueryLibraryPath();
 
             $nonceAttribute = Javascript::getNonceAttributeString();

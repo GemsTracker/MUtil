@@ -11,7 +11,7 @@ use Laminas\Validator\AbstractValidator;
  * @subpackage Validate
  * @copyright  Copyright (c) 2014 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.4 23-jan-2014 17:57:39
+ * @since      Class available since \MUtil version 1.4 23-jan-2014 17:57:39
  */
 class UniqueValue extends AbstractValidator
 {
@@ -35,17 +35,17 @@ class UniqueValue extends AbstractValidator
 
     /**
      *
-     * @var \MUtil_Model_ModelAbstract
+     * @var \MUtil\Model\ModelAbstract
      */
-    protected \MUtil_Model_ModelAbstract $model;
+    protected \MUtil\Model\ModelAbstract $model;
 
     /**
      *
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $model
      * @param string|array $field A field to check or an array of fields to check for an
      * unique value combination, though only the value of the first will be shown
      */
-    public function __construct(\MUtil_Model_ModelAbstract $model, string|array $field)
+    public function __construct(\MUtil\Model\ModelAbstract $model, string|array $field)
     {
         parent::__construct();
         $this->model  = $model;

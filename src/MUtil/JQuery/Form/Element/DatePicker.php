@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\JQuery\Form\Element;
+
 use MUtil\Form\Element\NoTagsElementTrait;
 
 /**
@@ -23,7 +25,7 @@ use MUtil\Form\Element\NoTagsElementTrait;
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_JQuery_Form_Element_DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
+class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
 {
     use NoTagsElementTrait;
 
@@ -49,7 +51,7 @@ class MUtil_JQuery_Form_Element_DatePicker extends \ZendX_JQuery_Form_Element_Da
      * Set the underlying parent $this->_value as a string, reflecting the value
      * of $this->_dateValue.
      *
-     * @return \MUtil_JQuery_Form_Element_DatePicker (continuation pattern)
+     * @return \MUtil\JQuery\Form\Element\DatePicker (continuation pattern)
      */
     protected function _applyDateFormat()
     {
@@ -112,7 +114,7 @@ class MUtil_JQuery_Form_Element_DatePicker extends \ZendX_JQuery_Form_Element_Da
 
         if (! $this->getValidator('IsDate')) {
             // Always as first validator
-            $isDate = new \MUtil_Validate_Date_IsDate();
+            $isDate = new \MUtil\Validate\Date\IsDate();
             $isDate->setDateFormat($this->_dateFormat);
 
             array_unshift($validators, $isDate);
@@ -122,7 +124,7 @@ class MUtil_JQuery_Form_Element_DatePicker extends \ZendX_JQuery_Form_Element_Da
         if ($format = $this->getDateFormat()) {
             // Set the dataFormat if settable
             foreach ($validators as $validator) {
-                if (($validator instanceof \MUtil_Validate_Date_FormatInterface)
+                if (($validator instanceof \MUtil\Validate\Date\FormatInterface)
                     || method_exists($validator, 'setDateFormat')) {
                     $validator->setDateFormat($format);
                 }
@@ -136,13 +138,13 @@ class MUtil_JQuery_Form_Element_DatePicker extends \ZendX_JQuery_Form_Element_Da
      * Set the date view format: how the user gets to see te date / datetime
      *
      * @param string $format
-     * @return \MUtil_JQuery_Form_Element_DatePicker (continuation patern)
+     * @return \MUtil\JQuery\Form\Element\DatePicker (continuation patern)
      */
     public function setDateFormat($format)
     {
         $view = $this->getView();
 
-        list($dateFormat, $separator, $timeFormat) = \MUtil_Date_Format::splitDateTimeFormat($format);
+        list($dateFormat, $separator, $timeFormat) = \MUtil\Date\Format::splitDateTimeFormat($format);
 
         if ($dateFormat) {
             $this->setJQueryParam('dateFormat', $dateFormat);
@@ -164,11 +166,11 @@ class MUtil_JQuery_Form_Element_DatePicker extends \ZendX_JQuery_Form_Element_Da
      * Set the both he _value (as a string) and the _dateValue (as an \Zend_Date)
      *
      * @param string $format
-     * @return \MUtil_JQuery_Form_Element_DatePicker (continuation patern)
+     * @return \MUtil\JQuery\Form\Element\DatePicker (continuation patern)
      */
     public function setDateValue($value)
     {
-        // \MUtil_Echo::r('Input: ' . $value);
+        // \MUtil\EchoOut\EchoOut::r('Input: ' . $value);
         if (null === $value || '' === $value) {
             $this->_dateValue = null;
         } else {
@@ -177,12 +179,12 @@ class MUtil_JQuery_Form_Element_DatePicker extends \ZendX_JQuery_Form_Element_Da
             } else {
                 $format = $this->getDateFormat();
                 if ($format && \Zend_Date::isDate($value, $format)) {
-                    $this->_dateValue = new \MUtil_Date($value, $format);
+                    $this->_dateValue = new \MUtil\Date($value, $format);
 
                 } else {
                     $storageFormat = $this->getStorageFormat();
                     if ($storageFormat && \Zend_Date::isDate($value, $storageFormat)) {
-                        $this->_dateValue = new \MUtil_Date($value, $storageFormat);
+                        $this->_dateValue = new \MUtil\Date($value, $storageFormat);
 
                     } elseif ($format || $storageFormat) {
                         // Invalid dateformat, should be handled by validator, just ignore the datevalue
@@ -190,7 +192,7 @@ class MUtil_JQuery_Form_Element_DatePicker extends \ZendX_JQuery_Form_Element_Da
                         $this->_dateValue = null;
                     } else {
                         try {
-                            $this->_dateValue = new \MUtil_Date($value);
+                            $this->_dateValue = new \MUtil\Date($value);
                         } catch (\Zend_Date_Exception $zde) {
                             $this->_dateValue = null;
                         }
@@ -210,7 +212,7 @@ class MUtil_JQuery_Form_Element_DatePicker extends \ZendX_JQuery_Form_Element_Da
      * Set the date storage format: how the storage engine delivers the date / datetime
      *
      * @param string $format
-     * @return \MUtil_JQuery_Form_Element_DatePicker (continuation patern)
+     * @return \MUtil\JQuery\Form\Element\DatePicker (continuation patern)
      */
     public function setStorageFormat($format)
     {
@@ -242,8 +244,8 @@ class MUtil_JQuery_Form_Element_DatePicker extends \ZendX_JQuery_Form_Element_Da
         $element = parent::setView($view);
 
         if (null !== $view) {
-            if (false === $view->getPluginLoader('helper')->getPaths('MUtil_JQuery_View_Helper')) {
-                $view->addHelperPath('MUtil/JQuery/View/Helper', 'MUtil_JQuery_View_Helper');
+            if (false === $view->getPluginLoader('helper')->getPaths('MUtil\JQuery_View_Helper')) {
+                $view->addHelperPath('MUtil/JQuery/View/Helper', 'MUtil\JQuery_View_Helper');
             }
         }
 
@@ -257,7 +259,7 @@ class MUtil_JQuery_Form_Element_DatePicker extends \ZendX_JQuery_Form_Element_Da
                     $baseUrl = dirname($uiPath);
 
                 } else {
-                    $baseUrl = \MUtil_Https::on() ? \ZendX_JQuery::CDN_BASE_GOOGLE_SSL : \ZendX_JQuery::CDN_BASE_GOOGLE;
+                    $baseUrl = \MUtil\Https::on() ? \ZendX_JQuery::CDN_BASE_GOOGLE_SSL : \ZendX_JQuery::CDN_BASE_GOOGLE;
                     $baseUrl .= \ZendX_JQuery::CDN_SUBFOLDER_JQUERYUI;
                     $baseUrl .= $jquery->getUiVersion();
                 }

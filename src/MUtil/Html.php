@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil;
+
 /**
  * Collections of static function for using the Html subpackage.
  *
@@ -18,36 +20,36 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Html
+class Html
 {
     /**
      *
-     * @var \MUtil_Html_Creator
+     * @var \MUtil\Html\Creator
      */
     private static $_creator;
 
     /**
      *
-     * @var \MUtil_Html_Renderer
+     * @var \MUtil\Html\Renderer
      */
     private static $_renderer;
 
     /**
      *
-     * @var \MUtil_Snippets_SnippetLoader
+     * @var \MUtil\Snippets\SnippetLoader
      */
     private static $_snippetLoader;
 
     /**
      * Static variable for debuggging purposes. Toggles the echoing of e.g. of sql
-     * select statements, using \MUtil_Echo.
+     * select statements, using \MUtil\EchoOut\EchoOut.
      *
      * Implemention classes can use this variable to determine whether to display
      * extra debugging information or not. Please be considerate in what you display:
      * be as succint as possible.
      *
      * Use:
-     *     \MUtil_Html::$verbose = true;
+     *     \MUtil\Html::$verbose = true;
      * to enable.
      *
      * @var boolean $verbose If true echo retrieval statements.
@@ -68,7 +70,7 @@ class MUtil_Html
 
     public static function attrib($attributeName, $args_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args(), 1);
+        $args = \MUtil\Ra::args(func_get_args(), 1);
 
         return self::getCreator()->createAttribute($attributeName, $args);
     }
@@ -77,21 +79,21 @@ class MUtil_Html
      * Render a BB string to Html
      *
      * @param string $content
-     * @return \MUtil_Html_Raw
+     * @return \MUtil\Html\Raw
      */
     public static function bbcode($content)
     {
-        return self::getCreator()->create('raw', [\MUtil_Lazy::call('\MUtil_Markup::render', $content, 'Bbcode', 'Html')]);
+        return self::getCreator()->create('raw', [\MUtil\Lazy::call('\\MUtil\\Markup::render', $content, 'Bbcode', 'Html')]);
     }
 
     /**
      * A br element
      *
-     * @return \MUtil_Html_HtmlElement
+     * @return \MUtil\Html\HtmlElement
      */
     public static function br()
     {
-        return new \MUtil_Html_HtmlElement('br');
+        return new \MUtil\Html\HtmlElement('br');
     }
 
     /**
@@ -109,8 +111,8 @@ class MUtil_Html
      * Create an element or return an element creator
      *
      * @param string $tagName Optional tag to create
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement or \MUtil_Html_Creator
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement or \MUtil\Html\Creator
      */
     public static function create($tagName = null, $arg_array = null)
     {
@@ -133,7 +135,7 @@ class MUtil_Html
      *
      * @param string $tagName (or a Lazy object)
      * @param array $args
-     * @return \MUtil_Html_ElementInterface
+     * @return \MUtil\Html\ElementInterface
      */
     public static function createArray($tagName, array $args = array())
     {
@@ -144,8 +146,8 @@ class MUtil_Html
      * Create an element bypassing the standard element creation function stored for certain tags.
      *
      * @param string $tagName Optional tag to create
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement Always, never another type
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement Always, never another type
      */
     public static function createRaw($tagName, array $args = array())
     {
@@ -155,8 +157,8 @@ class MUtil_Html
     /**
      * Creates a div element
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement (with div tagName)
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement (with div tagName)
      */
     public static function div($arg_array = null)
     {
@@ -173,12 +175,12 @@ class MUtil_Html
     /**
      * Helper function to access the core creator.
      *
-     * @return \MUtil_Html_Creator
+     * @return \MUtil\Html\Creator
      */
     public static function getCreator()
     {
         if (! self::$_creator) {
-            self::$_creator = new \MUtil_Html_Creator();
+            self::$_creator = new \MUtil\Html\Creator();
         }
 
         return self::$_creator;
@@ -188,12 +190,12 @@ class MUtil_Html
      * Returns the class used to perform the actual rendering
      * of objects and items into html.
      *
-     * @return \MUtil_Html_Renderer
+     * @return \MUtil\Html\Renderer
      */
     public static function getRenderer()
     {
         if (! self::$_renderer) {
-            self::$_renderer = new \MUtil_Html_Renderer();
+            self::$_renderer = new \MUtil\Html\Renderer();
         }
 
         return self::$_renderer;
@@ -202,12 +204,12 @@ class MUtil_Html
     /**
      * Get the snippet loader for use by self::snippet().
      *
-     * @return \MUtil_Snippets_SnippetLoader
+     * @return \MUtil\Snippets\SnippetLoader
      */
     public static function getSnippetLoader()
     {
         if (! self::$_snippetLoader) {
-            self::setSnippetLoader(new \MUtil_Snippets_SnippetLoader());
+            self::setSnippetLoader(new \MUtil\Snippets\SnippetLoader());
         }
         return self::$_snippetLoader;
     }
@@ -230,7 +232,7 @@ class MUtil_Html
      * String content that should be rendered without output escaping
      *
      * @param string $content
-     * @return \MUtil_Html_Raw
+     * @return \MUtil\Html\Raw
      */
     public static function raw($content)
     {
@@ -339,8 +341,8 @@ class MUtil_Html
     /**
      * Creates a table element
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_TableElement
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\TableElement
      */
     public static function table($arg_array = null)
     {
@@ -349,13 +351,13 @@ class MUtil_Html
         return self::getCreator()->create('table', $args);
     }
 
-    public static function setCreator(\MUtil_Html_Creator $creator)
+    public static function setCreator(\MUtil\Html\Creator $creator)
     {
         self::$_creator = $creator;
         return self::$_creator;
     }
 
-    public static function setRenderer(\MUtil_Html_Renderer $renderer)
+    public static function setRenderer(\MUtil\Html\Renderer $renderer)
     {
         self::$_renderer = $renderer;
         return self::$_renderer;
@@ -364,10 +366,10 @@ class MUtil_Html
     /**
      * Set the snippet loader for use by self::snippet().
      *
-     * @param \MUtil_Snippets_SnippetLoaderInterface $snippetLoader
-     * @return \MUtil_Snippets_SnippetLoader
+     * @param \MUtil\Snippets\SnippetLoaderInterface $snippetLoader
+     * @return \MUtil\Snippets\SnippetLoader
      */
-    public static function setSnippetLoader(\MUtil_Snippets_SnippetLoaderInterface $snippetLoader)
+    public static function setSnippetLoader(\MUtil\Snippets\SnippetLoaderInterface $snippetLoader)
     {
         self::$_snippetLoader = $snippetLoader;
         return self::$_snippetLoader;
@@ -376,19 +378,19 @@ class MUtil_Html
     /**
      *
      * @param string $name Snippet name
-     * @param \MUtil_Ra::pairs $parameter_value_pairs Optional extra snippets
-     * @return \MUtil_Snippets_SnippetInterface
+     * @param \MUtil\Ra::pairs $parameter_value_pairs Optional extra snippets
+     * @return \MUtil\Snippets\SnippetInterface
      */
     public static function snippet($name, $parameter_value_pairs = null)
     {
         if (func_num_args() > 1) {
-            $extraSourceParameters = \MUtil_Ra::pairs(func_get_args(), 1);
+            $extraSourceParameters = \MUtil\Ra::pairs(func_get_args(), 1);
         } else {
             $extraSourceParameters = array();
         }
 
         if (is_array($name)) {
-            list($names, $params) = \MUtil_Ra::keySplit($name);
+            list($names, $params) = \MUtil\Ra::keySplit($name);
 
             if ($params) {
                 $extraSourceParameters = $params + $extraSourceParameters;
@@ -396,7 +398,7 @@ class MUtil_Html
             if (isset($names[0])) {
                 $name = $names[0];
             } else {
-                throw new \MUtil_Html_HtmlException('Missing snippet name in call to create snippet.');
+                throw new \MUtil\Html\HtmlException('Missing snippet name in call to create snippet.');
             }
         }
 
@@ -414,12 +416,12 @@ class MUtil_Html
      *
      * @deprecated
      * @param mixed $arg_array \MUtil_Args::ra arguements
-     * @return \MUtil_Html_HrefArrayAttribute
+     * @return \MUtil\Html\HrefArrayAttribute
      */
     public static function url($arg_array = null)
     {
         $args = func_get_args();
-        return new \MUtil_Html_HrefArrayAttribute($args);
+        return new \MUtil\Html\HrefArrayAttribute($args);
     }
 
     /**
@@ -436,6 +438,6 @@ class MUtil_Html
      */
     public static function urlString(array $options, \Zend_Controller_Request_Abstract $request = null, \Zend_Controller_Router_Route $router = null)
     {
-        return \MUtil_Html_UrlArrayAttribute::toUrlString($options, $request, $router);
+        return \MUtil\Html\UrlArrayAttribute::toUrlString($options, $request, $router);
     }
 }

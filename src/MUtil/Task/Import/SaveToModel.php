@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Task\Import;
+
 /**
  *
  *
@@ -16,13 +18,13 @@
  * @subpackage SaveToModel
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.3
+ * @since      Class available since \MUtil version 1.3
  */
-class MUtil_Task_Import_SaveToModel extends \MUtil_Task_TaskAbstract
+class SaveToModel extends \MUtil\Task\TaskAbstract
 {
     /**
      *
-     * @var \MUtil_Model_ModelAbstract
+     * @var \MUtil\Model\ModelAbstract
      */
     protected $targetModel;
 
@@ -34,7 +36,7 @@ class MUtil_Task_Import_SaveToModel extends \MUtil_Task_TaskAbstract
      */
     public function checkRegistryRequestsAnswers()
     {
-        return ($this->targetModel instanceof \MUtil_Model_ModelAbstract) &&
+        return ($this->targetModel instanceof \MUtil\Model\ModelAbstract) &&
             parent::checkRegistryRequestsAnswers();
     }
 
@@ -54,7 +56,7 @@ class MUtil_Task_Import_SaveToModel extends \MUtil_Task_TaskAbstract
 
             $oldCount = $this->targetModel->getChanged();
             
-            // \MUtil_Echo::track($row);
+            // \MUtil\EchoOut\EchoOut::track($row);
             $this->targetModel->save($row);
             $batch->addToCounter('changed', $this->targetModel->getChanged() - $oldCount);
         }

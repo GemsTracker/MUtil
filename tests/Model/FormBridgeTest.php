@@ -15,7 +15,7 @@ class FormBridgeTest extends TestCase
 
     /**
      *
-     * @var \MUtil_Model_ModelAbstract
+     * @var \MUtil\Model\ModelAbstract
      */
     protected $model;
 
@@ -38,7 +38,7 @@ class FormBridgeTest extends TestCase
             ],
         ];
         
-        \MUtil_Model_Bridge_FormBridge::setFixedOptions($this->options);
+        \MUtil\Model\Bridge\FormBridge::setFixedOptions($this->options);
         
         parent::setUpBeforeClass();
     }
@@ -56,12 +56,12 @@ class FormBridgeTest extends TestCase
         //Unchanged when not in the fixedOptions
         $options = ['description'=>'dd-mm-yyyy'];
         $original = $options;
-        \MUtil_Model_Bridge_FormBridge::applyFixedOptions('input', $options);
+        \MUtil\Model\Bridge\FormBridge::applyFixedOptions('input', $options);
         $this->assertEquals($original, $options);
 
         //Overruled and extended when in the fixedOptions
         $options = $original;
-        \MUtil_Model_Bridge_FormBridge::applyFixedOptions('date', $options);
+        \MUtil\Model\Bridge\FormBridge::applyFixedOptions('date', $options);
         $expected = $this->options['date'];
         $this->assertEquals($expected, $options);
     }

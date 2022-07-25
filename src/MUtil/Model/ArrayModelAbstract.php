@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2013, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @version    $Id: ArrayModelAbstract.php$
  */
+
+namespace MUtil\Model;
 
 /**
  * Generic model for data storage that does not come with it's own
@@ -46,9 +23,9 @@
  * @subpackage Model
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.3
+ * @since      Class available since \MUtil version 1.3
  */
-abstract class MUtil_Model_ArrayModelAbstract extends \MUtil_Model_ModelAbstract
+abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
 {
     /**
      * When set to true in a subclass, then the model should be able to
@@ -107,7 +84,7 @@ abstract class MUtil_Model_ArrayModelAbstract extends \MUtil_Model_ModelAbstract
                     $value = isset($row[$name]) ? $row[$name] : null;
                     $result = ($value === $filter) || (0 === strcasecmp($value, $filter));
                 }
-                // \MUtil_Echo::r($value . '===' . $filter . '=' . $result);
+                // \MUtil\EchoOut\EchoOut::r($value . '===' . $filter . '=' . $result);
             }
 
             if ($logicalAnd xor $result) {
@@ -143,7 +120,7 @@ abstract class MUtil_Model_ArrayModelAbstract extends \MUtil_Model_ModelAbstract
         }
 
         if ($data instanceof \Iterator) {
-            return new \MUtil_Model_Iterator_ArrayModelFilterIterator($data, $this, $filters);
+            return new \MUtil\Model\Iterator\ArrayModelFilterIterator($data, $this, $filters);
         }
 
         $filteredData = array();
@@ -219,11 +196,11 @@ abstract class MUtil_Model_ArrayModelAbstract extends \MUtil_Model_ModelAbstract
                         $search[$key] = $newValues[$key];
                     } else {
                         // Crude but hey
-                        throw new \MUtil_Model_ModelException(sprintf('Key value "%s" missing when saving data.', $key));
+                        throw new \MUtil\Model\ModelException(sprintf('Key value "%s" missing when saving data.', $key));
                     }
                 }
 
-                $rowId = \MUtil_Ra::findKeys($data, $search);
+                $rowId = \MUtil\Ra::findKeys($data, $search);
 
                 if ($rowId) {
                     // Overwrite to new values
@@ -241,7 +218,7 @@ abstract class MUtil_Model_ArrayModelAbstract extends \MUtil_Model_ModelAbstract
 
             return $newValues;
         } else {
-            throw new \MUtil_Model_ModelException(sprintf('Save not implemented for model "%s".', $this->getName()));
+            throw new \MUtil\Model\ModelException(sprintf('Save not implemented for model "%s".', $this->getName()));
         }
     }
 
@@ -258,7 +235,7 @@ abstract class MUtil_Model_ArrayModelAbstract extends \MUtil_Model_ModelAbstract
      */
     protected function _saveAllTraversable(array $data)
     {
-        throw new \MUtil_Model_ModelException(
+        throw new \MUtil\Model\ModelException(
                 sprintf('Function "%s" should be overriden for class "%s".', __FUNCTION__, __CLASS__)
                 );
     }
@@ -329,7 +306,7 @@ abstract class MUtil_Model_ArrayModelAbstract extends \MUtil_Model_ModelAbstract
         if ($this->_saveable) {
             // TODO: implement
         } else {
-            throw new \MUtil_Model_ModelException(sprintf('Delete not implemented for model "%s".', $this->getName()));
+            throw new \MUtil\Model\ModelException(sprintf('Delete not implemented for model "%s".', $this->getName()));
         }
     }
 
@@ -358,22 +335,22 @@ abstract class MUtil_Model_ArrayModelAbstract extends \MUtil_Model_ModelAbstract
 
                     // Almost always use, this allows reuse
                     $textFunction = function ($value) use ($searchOn) {
-                        // \MUtil_Echo::track($value . ' - ' . $searchOn . ' = ' . \MUtil_String::contains($value, $searchOn));
-                        return \MUtil_String::contains($value, $searchOn, true);
+                        // \MUtil\EchoOut\EchoOut::track($value . ' - ' . $searchOn . ' = ' . \MUtil\StringUtil\StringUtil::contains($value, $searchOn));
+                        return \MUtil\StringUtil\StringUtil::contains($value, $searchOn, true);
                     };
 
                     foreach ($fields as $name) {
                         if ($options = $this->get($name, 'multiOptions')) {
                             $items = array();
                             foreach ($options as $value => $label) {
-                                if (\MUtil_String::contains($label, $searchOn)) {
+                                if (\MUtil\StringUtil\StringUtil::contains($label, $searchOn)) {
                                     $items[$value] = $value;
                                 }
                             }
                             if ($items) {
                                 if (count($items) == count($options)) {
                                     // This filter always returns true, do not add this filter
-                                    // \MUtil_Echo::track('Always true');
+                                    // \MUtil\EchoOut\EchoOut::track('Always true');
                                     $textFilter = false;
                                     break;
                                 }
@@ -436,7 +413,7 @@ abstract class MUtil_Model_ArrayModelAbstract extends \MUtil_Model_ModelAbstract
         }
 
         if ($this->_checkSortUsed($sort)) {
-            throw new \MUtil_Model_ModelException("You cannot sort an array iterator.");
+            throw new \MUtil\Model\ModelException("You cannot sort an array iterator.");
         }
 
         return $data;
@@ -453,7 +430,7 @@ abstract class MUtil_Model_ArrayModelAbstract extends \MUtil_Model_ModelAbstract
     {
         foreach ($this->_sorts as $key => $direction) {
             if ($a[$key] !== $b[$key]) {
-                // \MUtil_Echo::r($key . ': [' . $direction . ']' . $a[$key] . '-' . $b[$key]);
+                // \MUtil\EchoOut\EchoOut::r($key . ': [' . $direction . ']' . $a[$key] . '-' . $b[$key]);
                 if (SORT_ASC == $direction) {
                     return $a[$key] > $b[$key] ? 1 : -1;
                 } else {

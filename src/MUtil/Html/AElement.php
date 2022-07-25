@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Html;
 
 /**
  * Class for A link element. Assumes first passed argument is the href attribute,
@@ -45,7 +22,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Html_AElement extends \MUtil_Html_HtmlElement
+class AElement extends \MUtil\Html\HtmlElement
 {
     /**
      * Most elements must be rendered even when empty, others should - according to the
@@ -73,14 +50,14 @@ class MUtil_Html_AElement extends \MUtil_Html_HtmlElement
      * as special types, if defined as such for this element.
      *
      * @param mixed $href We assume the first element contains the href, unless a later element is explicitly specified as such
-     * @param mixed $arg_array \MUtil_Ra::args arguments
+     * @param mixed $arg_array \MUtil\Ra::args arguments
      */
     public function __construct($href, $arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args(), array('href' => 'MUtil_Html_HrefArrayAttribute'));
+        $args = \MUtil\Ra::args(func_get_args(), array('href' => '\\MUtil\\Html\\HrefArrayAttribute'));
 
-        if (isset($args['href']) && (! $args['href'] instanceof \MUtil_Html_AttributeInterface)) {
-            $args['href'] = new \MUtil_Html_HrefArrayAttribute($args['href']);
+        if (isset($args['href']) && (! $args['href'] instanceof \MUtil\Html\AttributeInterface)) {
+            $args['href'] = new \MUtil\Html\HrefArrayAttribute($args['href']);
         }
 
         parent::__construct('a', $args);
@@ -112,7 +89,7 @@ class MUtil_Html_AElement extends \MUtil_Html_HtmlElement
                 if (!is_scalar($val)) {
                     // non-scalar data should be cast to JSON first
                     require_once 'Zend/Json.php';
-                    $val = Zend_Json::encode($val);
+                    $val = \Zend_Json::encode($val);
                 }
                 // Escape single quotes inside event attribute values.
                 // This will create html, where the attribute value has
@@ -147,11 +124,11 @@ class MUtil_Html_AElement extends \MUtil_Html_HtmlElement
      * as special types, if defined as such for this element.
      *
      * @param mixed $href We assume the first element contains the href, unless a later element is explicitly specified as such
-     * @param mixed $arg_array \MUtil_Ra::args arguments
+     * @param mixed $arg_array \MUtil\Ra::args arguments
      */
     public static function a($href, $arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args(), array('href' => 'MUtil_Html_HrefArrayAttribute'));
+        $args = \MUtil\Ra::args(func_get_args(), array('href' => '\\MUtil\\Html\\HrefArrayAttribute'));
 
         if (isset($args['href'])) {
             $href = $args['href'];
@@ -171,7 +148,7 @@ class MUtil_Html_AElement extends \MUtil_Html_HtmlElement
      */
     public static function email($email, $arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args(), 1);
+        $args = \MUtil\Ra::args(func_get_args(), 1);
         if (isset($args['href'])) {
             $href = $args['href'];
             unset($args['href']);
@@ -192,24 +169,24 @@ class MUtil_Html_AElement extends \MUtil_Html_HtmlElement
     /**
      * Return a link object when $iff is true
      *
-     * @param \MUtil_Lazy $iff The test
+     * @param \MUtil\Lazy $iff The test
      * @param mixed $aArgs Arguments when the test is true
      * @param mixed $spanArgs Arguments when the test is false
      * @return mixed
      */
     public static function iflink($iff, $aArgs, $spanArgs = null)
     {
-        if ($iff instanceof \MUtil_Lazy_LazyInterface) {
+        if ($iff instanceof \MUtil\Lazy\LazyInterface) {
             if ($spanArgs) {
-                return \MUtil_Lazy::iff($iff, \MUtil_Html::create('a', $aArgs), \MUtil_Html::create('span', $spanArgs, array('renderWithoutContent' => false)));
+                return \MUtil\Lazy::iff($iff, \MUtil\Html::create('a', $aArgs), \MUtil\Html::create('span', $spanArgs, array('renderWithoutContent' => false)));
             } else {
-                return \MUtil_Lazy::iff($iff, \MUtil_Html::create('a', $aArgs));
+                return \MUtil\Lazy::iff($iff, \MUtil\Html::create('a', $aArgs));
             }
         }
         if ($iff) {
-            return \MUtil_Html::create('a', $aArgs);
+            return \MUtil\Html::create('a', $aArgs);
         } elseif ($spanArgs) {
-            return \MUtil_Html::create('span', $spanArgs, array('renderWithoutContent' => false));
+            return \MUtil\Html::create('span', $spanArgs, array('renderWithoutContent' => false));
         }
     }
 
@@ -223,8 +200,8 @@ class MUtil_Html_AElement extends \MUtil_Html_HtmlElement
     public static function ifmail($email, $arg_array = null)
     {
         $args = func_get_args();
-        if ($email instanceof \MUtil_Lazy_LazyInterface) {
-            return \MUtil_Lazy::iff($email, call_user_func_array(array(__CLASS__, 'email'), $args));
+        if ($email instanceof \MUtil\Lazy\LazyInterface) {
+            return \MUtil\Lazy::iff($email, call_user_func_array(array(__CLASS__, 'email'), $args));
         }
         if ($email) {
             return self::email($args);

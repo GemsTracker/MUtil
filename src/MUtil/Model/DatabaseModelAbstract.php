@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Model;
+
 /**
  * Class contains standard helper functions for using models
  * that store information using \Zend_Db_Adapter.
@@ -19,7 +21,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstract
+abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
 {
     /**
      * Default value for $keyKopier.
@@ -197,8 +199,8 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
             $select->order($sqlsort);
         }
 
-        if (\MUtil_Model::$verbose) {
-            \MUtil_Echo::pre($select, get_class($this) . ' select');
+        if (\MUtil\Model::$verbose) {
+            \MUtil\EchoOut\EchoOut::pre($select, get_class($this) . ' select');
         }
 
         return $select;
@@ -259,7 +261,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
         if (! $output) {
             return null;
         }
-        // \MUtil_Echo::track($and, $output);
+        // \MUtil\EchoOut\EchoOut::track($and, $output);
         return '(' . implode($and ? ') AND (' : ') OR (', $output) . ')';
     }
 
@@ -327,7 +329,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
         }
         $data = $this->_filterDataForSave($data, $isNew);
 
-        // \MUtil_Echo::track($tableCols, array_keys($data), array_intersect_key($data, $tableCols));
+        // \MUtil\EchoOut\EchoOut::track($tableCols, array_keys($data), array_intersect_key($data, $tableCols));
         return array_intersect_key($data, $tableCols);
     }
 
@@ -404,14 +406,14 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
             $aliasPrefix = $alias . '.';
         }
 
-        // \MUtil_Echo::track($table->info('metadata'));
+        // \MUtil\EchoOut\EchoOut::track($table->info('metadata'));
         foreach ($table->info('metadata') as $field) {
             $name = $aliasPrefix . $field['COLUMN_NAME'];
             $finfo = array('table' => $alias);
 
             switch (strtolower($field['DATA_TYPE'])) {
                 case 'date':
-                    $finfo['type']          = \MUtil_Model::TYPE_DATE;
+                    $finfo['type']          = \MUtil\Model::TYPE_DATE;
                     $finfo['storageFormat'] = 'yyyy-MM-dd';
                     $this->setOnSave($name, array($this, 'formatSaveDate'));
                     $this->setOnLoad($name, array($this, 'formatLoadDate'));
@@ -419,14 +421,14 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
 
                 case 'datetime':
                 case 'timestamp':
-                    $finfo['type']          = \MUtil_Model::TYPE_DATETIME;
+                    $finfo['type']          = \MUtil\Model::TYPE_DATETIME;
                     $finfo['storageFormat'] = 'yyyy-MM-dd HH:mm:ss';
                     $this->setOnSave($name, array($this, 'formatSaveDate'));
                     $this->setOnLoad($name, array($this, 'formatLoadDate'));
                     break;
 
                 case 'time':
-                    $finfo['type']          = \MUtil_Model::TYPE_TIME;
+                    $finfo['type']          = \MUtil\Model::TYPE_TIME;
                     $finfo['storageFormat'] = 'HH:mm:ss';
                     $this->setOnSave($name, array($this, 'formatSaveDate'));
                     $this->setOnLoad($name, array($this, 'formatLoadDate'));
@@ -445,11 +447,11 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
                 case 'double precision':
                 case 'fixed':
                 case 'float':
-                    $finfo['type'] = \MUtil_Model::TYPE_NUMERIC;
+                    $finfo['type'] = \MUtil\Model::TYPE_NUMERIC;
                     break;
 
                 default:
-                    $finfo['type'] = \MUtil_Model::TYPE_STRING;
+                    $finfo['type'] = \MUtil\Model::TYPE_STRING;
                     break;
             }
 
@@ -512,22 +514,22 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
         $filter       = array();
         $update       = true;
 
-        // \MUtil_Echo::r($newValues, $tableName);
+        // \MUtil\EchoOut\EchoOut::r($newValues, $tableName);
         foreach ($primaryKeys as $key) {
             if (array_key_exists($key, $newValues) && (0 == strlen((string)$newValues[$key]))) {
                 // Never include null key values, except when we have a save transformer
                 if (! $this->has($key, self::SAVE_TRANSFORMER)) {
                     unset($newValues[$key]);
-                    if (\MUtil_Model::$verbose) {
-                        \MUtil_Echo::r('Null key value: ' . $key, 'INSERT!!');
+                    if (\MUtil\Model::$verbose) {
+                        \MUtil\EchoOut\EchoOut::r('Null key value: ' . $key, 'INSERT!!');
                     }
                 }
                 // Now we know we are not updating
                 $update = false;
 
             } elseif (isset($oldKeys[$key])) {
-                if (\MUtil_Model::$verbose) {
-                    \MUtil_Echo::r($key . ' => ' . $oldKeys[$key], 'Old key');
+                if (\MUtil\Model::$verbose) {
+                    \MUtil\EchoOut\EchoOut::r($key . ' => ' . $oldKeys[$key], 'Old key');
                 }
                 $filter[$key . ' = ?'] = $oldKeys[$key];
                 // Key values left in $returnValues in case of partial key insert
@@ -538,14 +540,14 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
 
                 if (isset($newValues[$copyKey])) {
                     $filter[$key . ' = ?'] = $newValues[$copyKey];
-                    if (\MUtil_Model::$verbose) {
-                        \MUtil_Echo::r($key . ' => ' . $newValues[$copyKey], 'Copy key');
+                    if (\MUtil\Model::$verbose) {
+                        \MUtil\EchoOut\EchoOut::r($key . ' => ' . $newValues[$copyKey], 'Copy key');
                     }
 
                 } elseif (isset($newValues[$key])) {
                     $filter[$key . ' = ?'] = $newValues[$key];
-                    if (\MUtil_Model::$verbose) {
-                        \MUtil_Echo::r($key . ' => ' . $newValues[$key], 'Key');
+                    if (\MUtil\Model::$verbose) {
+                        \MUtil\EchoOut\EchoOut::r($key . ' => ' . $newValues[$key], 'Key');
                     }
                 }
             }
@@ -555,7 +557,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
         }
 
         if ($update) {
-            // \MUtil_Echo::r($filter, 'Filter');
+            // \MUtil\EchoOut\EchoOut::r($filter, 'Filter');
 
             $adapter = $this->getAdapter();
             $wheres   = array();
@@ -565,7 +567,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
             // Retrieve the record from the database
             $oldValues = $table->fetchRow('(' . implode(' ) AND (', $wheres) . ')');
             if (! $oldValues) {
-                // \MUtil_Echo::r('INSERT!!', 'Old not found');
+                // \MUtil\EchoOut\EchoOut::r('INSERT!!', 'Old not found');
                 // Apparently the record does not exist in the database
                 $update = false;
             } else {
@@ -574,15 +576,15 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
         }
 
         // Check for actual values for this table to save.
-        // \MUtil_Echo::track($newValues);
+        // \MUtil\EchoOut\EchoOut::track($newValues);
         if ($returnValues = $this->_filterDataFor($tableName, $newValues, ! $update)) {
-            if (\MUtil_Model::$verbose) {
-                \MUtil_Echo::r($returnValues, 'Return');
+            if (\MUtil\Model::$verbose) {
+                \MUtil\EchoOut\EchoOut::r($returnValues, 'Return');
             }
-            // \MUtil_Echo::track($returnValues);
+            // \MUtil\EchoOut\EchoOut::track($returnValues);
 
             if ($update) {
-                // \MUtil_Echo::r($filter);
+                // \MUtil\EchoOut\EchoOut::r($filter);
                 $save = false;
                 // Check for actual changes
                 foreach ($oldValues as $name => $value) {
@@ -606,8 +608,8 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
 
                         // Detect change that is not auto update
                         if ($noChange) {
-                            // \MUtil_Echo::track($name, $returnValues[$name], $value);
-                            // \MUtil_Echo::track($returnValues);
+                            // \MUtil\EchoOut\EchoOut::track($name, $returnValues[$name], $value);
+                            // \MUtil\EchoOut\EchoOut::track($returnValues);
                             unset($returnValues[$name]);
                         } else {
                             $save = true;
@@ -631,10 +633,10 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
 
             } elseif ($saveMode & self::SAVE_MODE_INSERT) {
                 // Perform insert
-                // \MUtil_Echo::r($returnValues);
+                // \MUtil\EchoOut\EchoOut::r($returnValues);
                 $newKeyValues = $table->insert($returnValues);
                 $this->addChanged();
-                // \MUtil_Echo::rs($newKeyValues, $primaryKeys);
+                // \MUtil\EchoOut\EchoOut::rs($newKeyValues, $primaryKeys);
 
                 // Composite key returned.
                 if (is_array($newKeyValues)) {
@@ -680,7 +682,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
      * @param string|\Zend_Db_Expr $column
      * @param string $columnName
      * @param string $orignalColumn
-     * @return \MUtil_Model_DatabaseModelAbstract Provides a fluent interface
+     * @return \MUtil\Model\DatabaseModelAbstract Provides a fluent interface
      */
     public function addColumn($column, $columnName = null, $orignalColumn = null)
     {
@@ -702,15 +704,15 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
     /**
      * Adding DeleteValues means delete() updates the selected rows with these values, instead of physically deleting the rows.
      *
-     * @param string|array $arrayOrField1 \MUtil_Ra::pairs() arguments
+     * @param string|array $arrayOrField1 \MUtil\Ra::pairs() arguments
      * @param mxied $value1
      * @param string $field2
      * @param mixed $key2
-     * @return \MUtil_Model_TableModel
+     * @return \MUtil\Model\TableModel
      */
     public function addDeleteValues($arrayOrField1 = null, $value1 = null, $field2 = null, $key2 = null)
     {
-        $args = \MUtil_Ra::pairs(func_get_args());
+        $args = \MUtil\Ra::pairs(func_get_args());
         $this->_deleteValues = $args + $this->_deleteValues;
         return $this;
     }
@@ -724,7 +726,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
      * perform an update instead of an insert on a changed key.
      *
      * @param boolean $reset True if the key list should be rebuilt.
-     * return \MUtil_Model_DatabaseModelAbstract $this
+     * return \MUtil\Model\DatabaseModelAbstract $this
      */
     public function copyKeys($reset = false)
     {
@@ -768,24 +770,24 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
                         // This is required when the user
                         $excludes[$current] = $copyName;
                     } else {
-                        $excludes[$current] = $current; // \MUtil_Model::REQUEST_ID;
+                        $excludes[$current] = $current; // \MUtil\Model::REQUEST_ID;
                     }
                 }
             } else {
                 $excludes = $excludeFilter;
             }
-            // \MUtil_Echo::r($excludes);
+            // \MUtil\EchoOut\EchoOut::r($excludes);
 
             if ($excludes) {
                 return new \MUtil\Validate\Db\ZendDbUniqueValue($tableName, $names, $excludes, $adapter);
             }
 
-            throw new \MUtil_Model_ModelException(
+            throw new \MUtil\Model\ModelException(
                     "Cannot create UniqueValue validator as no keys were defined for table $tableName."
                     );
         }
 
-        throw new \MUtil_Model_ModelException(
+        throw new \MUtil\Model\ModelException(
                 "Cannot create UniqueValue validator as no table was defined for field $name."
                 );
     }
@@ -797,14 +799,14 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
      * If empty or \Zend_Db_Expression (after save) it will return just the value
      * currently there are no checks for a valid date format.
      *
-     * @see \MUtil_Model_ModelAbstract
+     * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
      * @param boolean $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
      * @param boolean $isPost True when passing on post data
-     * @return \MUtil_Date|\Zend_Db_Expr|null
+     * @return \MUtil\Date|\Zend_Db_Expr|null
      */
     public function formatLoadDate($value, $isNew = false, $name = null, array $context = array(), $isPost = false)
     {
@@ -823,20 +825,20 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
                 $formats[$name][$isPost][] = $this->_getKeyValue($name, 'dateFormat');
 
                 // Add default format as a fallback
-                $type = \MUtil_Date_Format::getDateTimeType($this->_getKeyValue($name, 'dateFormat'));
-                $formats[$name][$isPost][] = \MUtil_Model_Bridge_FormBridge::getFixedOption($type, 'dateFormat');
+                $type = \MUtil\Date\Format::getDateTimeType($this->_getKeyValue($name, 'dateFormat'));
+                $formats[$name][$isPost][] = \MUtil\Model\Bridge\FormBridge::getFixedOption($type, 'dateFormat');
             }
             $formats[$name][$isPost][] = $this->_getKeyValue($name, 'storageFormat');
         }
 
-        return \MUtil_Date::ifDate($value, $formats[$name][$isPost]);
+        return \MUtil\Date::ifDate($value, $formats[$name][$isPost]);
     }
 
     /**
      * A ModelAbstract->setOnSave() function that returns the input
      * date as a valid date.
      *
-     * @see \MUtil_Model_ModelAbstract
+     * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
      * @param boolean $isNew True when a new item is being saved
@@ -849,7 +851,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
         if ($name &&
                 (! ((null === $value) ||
                         ($value instanceof \Zend_Db_Expr) ||
-                        \MUtil_String::startsWith($value, 'current_', true))
+                        \MUtil\StringUtil\StringUtil::startsWith($value, 'current_', true))
                 )) {
             $saveFormat = $this->getWithDefault($name, 'storageFormat', \Zend_Date::ISO_8601);
 
@@ -860,7 +862,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
                 $displayFormat = $this->get($name, 'dateFormat');
 
                 try {
-                    return \MUtil_Date::format($value, $saveFormat, $displayFormat);
+                    return \MUtil\Date::format($value, $saveFormat, $displayFormat);
                 } catch (\Zend_Exception $e) {
                     if (\Zend_Date::isDate($value, $saveFormat)) {
                         return $value;
@@ -891,7 +893,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
      * @param array $filter Filter array, num keys contain fixed expresions, text keys are equal or one of filters
      * @param array $sort Sort array field name => sort type
      * @return integer number of total items in model result
-     * @throws Zend_Db_Select_Exception
+     * @throws \Zend_Db_Select_Exception
      */
     public function getItemCount($filter = true, $sort = true)
     {
@@ -945,11 +947,11 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
         if ($options = $this->get($name, 'multiOptions')) {
             $adapter = $this->getAdapter();
             $wheres  = [];
-            if (\MUtil_Ra::isMultiDimensional($options)) {
-                $options = \MUtil_Ra::flatten($options);
+            if (\MUtil\Ra::isMultiDimensional($options)) {
+                $options = \MUtil\Ra::flatten($options);
             }
             foreach ($options as $key => $value) {
-                // \MUtil_Echo::track($sqlField, $key, $value, $filter, stripos($value, $filter));
+                // \MUtil\EchoOut\EchoOut::track($sqlField, $key, $value, $filter, stripos($value, $filter));
                 if (stripos($value, $filter) !== false) {
                     if (null === $key) {
                         $wheres[1] = $sqlField . ' IS NULL';
@@ -1058,7 +1060,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
      */
     public function loadIterator($filter = true, $sort = true)
     {
-        $iter = new \MUtil_Db_Iterator_SelectIterator($this->_createSelect(
+        $iter = new \MUtil\Db\Iterator\SelectIterator($this->_createSelect(
                 $this->_checkFilterUsed($filter),
                 $this->_checkSortUsed($sort)
                 ));
@@ -1084,7 +1086,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
                 $this->_checkFilterUsed($filter),
                 $this->_checkSortUsed($sort)
                 );
-        $adapter = new \MUtil_Model_SelectModelPaginator($select, $this);
+        $adapter = new \MUtil\Model\SelectModelPaginator($select, $this);
 
         return new \Zend_Paginator($adapter);
     }
@@ -1095,7 +1097,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
      * Function to turn database insertion on or off for this model.
      *
      * @param boolean $value
-     * @return \MUtil_Model_DatabaseModelAbstract (continuation pattern)
+     * @return \MUtil\Model\DatabaseModelAbstract (continuation pattern)
      */
     public function setCreate($value = true)
     {
@@ -1106,15 +1108,15 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
     /**
      * Setting DeleteValues means delete() updates the selected rows with these values, instead of physically deleting the rows.
      *
-     * @param string|array $arrayOrField1 \MUtil_Ra::pairs() arguments
+     * @param string|array $arrayOrField1 \MUtil\Ra::pairs() arguments
      * @param mxied $value1
      * @param string $field2
      * @param mixed $key2
-     * @return \MUtil_Model_DatabaseModelAbstract (continuation pattern)
+     * @return \MUtil\Model\DatabaseModelAbstract (continuation pattern)
      */
     public function setDeleteValues($arrayOrField1 = null, $value1 = null, $field2 = null, $key2 = null)
     {
-        $args = \MUtil_Ra::pairs(func_get_args());
+        $args = \MUtil\Ra::pairs(func_get_args());
         $this->_deleteValues = $args;
         return $this;
     }
@@ -1124,7 +1126,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
      * for keys.
      *
      * @param string $value A sting of at least 3 characters containing %s.
-     * @return \MUtil_Model_DatabaseModelAbstract (continuation pattern)
+     * @return \MUtil\Model\DatabaseModelAbstract (continuation pattern)
      */
     public function setKeyCopier($value = self::KEY_COPIER)
     {
@@ -1139,7 +1141,7 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
      * this object are set to those of that table.
      *
      * @param mixed $keysOrTableName array or string
-     * @return \MUtil_Model_DatabaseModelAbstract (continuation pattern)
+     * @return \MUtil\Model\DatabaseModelAbstract (continuation pattern)
      */
     public function setKeysToTable($keysOrTableName)
     {
@@ -1157,8 +1159,8 @@ abstract class MUtil_Model_DatabaseModelAbstract extends \MUtil_Model_ModelAbstr
      * Sets a name to a callable function for query filtering.
      *
      * @param string $name The fieldname
-     * @param mixed $callableOrConstant A constant or a function of this type: callable($filter, $name, $sqlField, \MUtil_Model_DatabaseModelAbstract $model)
-     * @return \MUtil_Model_ModelAbstract (continuation pattern)
+     * @param mixed $callableOrConstant A constant or a function of this type: callable($filter, $name, $sqlField, \MUtil\Model\DatabaseModelAbstract $model)
+     * @return \MUtil\Model\ModelAbstract (continuation pattern)
      */
     public function setOnTextFilter($name, $callableOrConstant)
     {

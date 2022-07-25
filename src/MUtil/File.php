@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil;
+
 /**
  * File system utility functions
  *
@@ -16,9 +18,9 @@
  * @subpackage File
  * @copyright  Copyright (c) 2012 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.2
+ * @since      Class available since \MUtil version 1.2
  */
-class MUtil_File
+class File
 {
     /**
      * @var string[] Extensions for office and adobe documents 
@@ -70,7 +72,7 @@ class MUtil_File
      */
     public static function createMask($extensions, $startName = '', $caseSensitive = false)
     {
-        $masks = \MUtil_Ra::flatten((array) $extensions);
+        $masks = \MUtil\Ra::flatten((array) $extensions);
         
         if ($startName) {
             return '/' . $startName . '.*\\.(' . implode('|', $masks) . ')$/';
@@ -96,7 +98,7 @@ class MUtil_File
 
         file_put_contents($filename, '');
 
-        // \MUtil_Echo::track($filename, file_exists($filename), filesize($filename));
+        // \MUtil\EchoOut\EchoOut::track($filename, file_exists($filename), filesize($filename));
 
         return $filename;
     }
@@ -124,7 +126,7 @@ class MUtil_File
                 throw new \Zend_Exception(sprintf(
                         "Could not create '%s' directory: %s.",
                         $dir,
-                        \MUtil_Error::getLastPhpErrorMessage('reason unknown')
+                        \MUtil\Error::getLastPhpErrorMessage('reason unknown')
                         ));
             }
         }
@@ -222,7 +224,7 @@ class MUtil_File
             return false;
         }
         // Quick checkes first and then something just in case
-        if (('\\' == $path[0]) || ('/' == $path[0]) || \MUtil_String::startsWith($path, DIRECTORY_SEPARATOR)) {
+        if (('\\' == $path[0]) || ('/' == $path[0]) || \MUtil\StringUtil\StringUtil::startsWith($path, DIRECTORY_SEPARATOR)) {
             return true;
         }
         // One more check for windows

@@ -11,7 +11,7 @@ use Laminas\Validator\Hostname;
  * @subpackage Validate
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.0
+ * @since      Class available since \MUtil version 1.0
  */
 class ExistingUrl extends AbstractValidator
 {
@@ -119,7 +119,7 @@ class ExistingUrl extends AbstractValidator
                     }
 
                     // $return = curl_getinfo($ch, CURLINFO_FILETIME);
-                    // \MUtil_Echo::r('Date at server: '.date('r', $return));
+                    // \MUtil\EchoOut\EchoOut::r('Date at server: '.date('r', $return));
 
                     curl_close($ch);
 

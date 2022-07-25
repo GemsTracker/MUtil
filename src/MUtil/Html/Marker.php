@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * 
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Html;
 
 /**
  * Class to mark text in HTML content, e.g. to nmark the result of a search statement
@@ -44,7 +21,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Html_Marker
+class Marker
 {
     /**
      * Marker for tags in
@@ -142,7 +119,7 @@ class MUtil_Html_Marker
      * Mark the searches in $value
      *
      * @param mixed $value Lazy, Html, Raw or string
-     * @return \MUtil_Html_Raw
+     * @return \MUtil\Html\Raw
      */
     public function mark($value)
     {
@@ -163,11 +140,11 @@ class MUtil_Html_Marker
             }
         }
 
-        if ($value instanceof \MUtil_Lazy_LazyInterface) {
-            $value = \MUtil_Lazy::rise($value);
+        if ($value instanceof \MUtil\Lazy\LazyInterface) {
+            $value = \MUtil\Lazy::rise($value);
         }
 
-        if ($value instanceof \MUtil_Html_Raw) {
+        if ($value instanceof \MUtil\Html\Raw) {
             $values = array();
             // Split into HTML Elements
             foreach ($value->getElements() as $element) {
@@ -184,24 +161,24 @@ class MUtil_Html_Marker
                     }
                 }
             }
-            // \MUtil_Echo::r($values);
+            // \MUtil\EchoOut\EchoOut::r($values);
 
             return $value->setValue($this->_fillTags(implode('', $values)));
 
-        } elseif ($value instanceof \MUtil_Html_HtmlElement) {
+        } elseif ($value instanceof \MUtil\Html\HtmlElement) {
             foreach ($value as $key => $item) {
-                // \MUtil_Echo::r($key);
+                // \MUtil\EchoOut\EchoOut::r($key);
                 $value[$key] = $this->mark($item);
             }
             return $value;
 
         } elseif ($value || ($value === 0)) {
-            // \MUtil_Echo::r($value);
+            // \MUtil\EchoOut\EchoOut::r($value);
             $valueHtml = $this->escape($value);
 
             $valueTemp = $this->_findTags($valueHtml);
 
-            return new \MUtil_Html_Raw($this->_fillTags($valueTemp));
+            return new \MUtil\Html\Raw($this->_fillTags($valueTemp));
         }
     }
 
@@ -211,7 +188,7 @@ class MUtil_Html_Marker
      * @see htmlspecialchars()
      *
      * @param string $encoding Encoding htmlspecialchars
-     * @return \MUtil_Html_Marker (continuation pattern)
+     * @return \MUtil\Html\Marker (continuation pattern)
      */
     public function setEncoding($encoding)
     {
@@ -226,7 +203,7 @@ class MUtil_Html_Marker
      * Function to allow later setting of tag name.
      *
      * @param string $tagName Html element tag name
-     * @return \MUtil_Html_Marker (continuation pattern)
+     * @return \MUtil\Html\Marker (continuation pattern)
      */
     public function setTagName($tagName)
     {

@@ -1,7 +1,9 @@
 <?php
 
 
-class MUtil_Form_Decorator_Label extends \Zend_Form_Decorator_Label
+namespace MUtil\Form\Decorator;
+
+class Label extends \Zend_Form_Decorator_Label
 {
     /**
      * Render a label
@@ -72,7 +74,7 @@ class MUtil_Form_Decorator_Label extends \Zend_Form_Decorator_Label
 
         if (null !== $tag) {
             require_once 'Zend/Form/Decorator/HtmlTag.php';
-            $decorator = new Zend_Form_Decorator_HtmlTag();
+            $decorator = new \Zend_Form_Decorator_HtmlTag();
             if (null !== $this->_tagClass) {
                 $decorator->setOptions(array('tag'   => $tag,
                     'id'    => $id . '-label',

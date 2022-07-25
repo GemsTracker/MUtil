@@ -11,7 +11,7 @@ namespace MUtil\Model;
  * @license    New BSD License
  * @since      Class available since version 1.9,0
  */
-class PlaceholderModel extends \MUtil_Model_ArrayModelAbstract
+class PlaceholderModel extends \MUtil\Model\ArrayModelAbstract
 {
     /**
      * @var array The data in the model
@@ -19,7 +19,7 @@ class PlaceholderModel extends \MUtil_Model_ArrayModelAbstract
 	protected $data;
 
     /**
-     * Gems_Model_PlaceholderModel constructor.
+     * \Gems\Model\PlaceholderModel constructor.
      *
      * @param string $modelName
      * @param array $fieldArray Nested array containing settings

@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Model;
+
 /**
  * Utility object for importing data from one model to another
  *
@@ -16,9 +18,9 @@
  * @subpackage Model
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.3
+ * @since      Class available since \MUtil version 1.3
  */
-class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
+class Importer extends \MUtil\Translate\TranslateableAbstract
 {
     /**
      * The extension used for the import
@@ -36,7 +38,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
 
     /**
      *
-     * @var \MUtil_Task_TaskBatch
+     * @var \MUtil\Task\TaskBatch
      */
     protected $_importBatch;
 
@@ -52,7 +54,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
     /**
      * The translator to use
      *
-     * @var \MUtil_Model_ModelTranslatorInterface
+     * @var \MUtil\Model\ModelTranslatorInterface
      */
     protected $importTranslator;
 
@@ -68,14 +70,14 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
     /**
      * Registry source
      *
-     * @var \MUtil_Registry_SourceInterface
+     * @var \MUtil\Registry\SourceInterface
      */
     protected $registrySource;
 
     /**
      * Model to read import
      *
-     * @var \MUtil_Model_ModelAbstract
+     * @var \MUtil\Model\ModelAbstract
      */
     protected $sourceModel;
 
@@ -93,17 +95,17 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
      *
      * Required, can be set by passing a model to $this->model
      *
-     * @var \MUtil_Model_ModelAbstract
+     * @var \MUtil\Model\ModelAbstract
      */
     protected $targetModel;
 
     /**
      * Set the variables 
-     * @param \MUtil_Task_TaskBatch $batch
+     * @param \MUtil\Task\TaskBatch $batch
      */
-    protected function addVariablesToBatch(\MUtil_Task_TaskBatch $batch)
+    protected function addVariablesToBatch(\MUtil\Task\TaskBatch $batch)
     {
-        $batch->getStack()->registerAllowedClass('MUtil_Date');
+        $batch->getStack()->registerAllowedClass('\\MUtil\\Date');
         
         if ($batch->hasVariable('targetModel')) {
             // Already set
@@ -149,7 +151,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
      *
      * The file is thrown away after a failure.
      *
-     * @return \MUtil_Model_Importer (continuation pattern)
+     * @return \MUtil\Model\Importer (continuation pattern)
      */
     public function clearFailureDirectory()
     {
@@ -160,7 +162,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
      * Clears the filename for long term storage. The file is not renamed and
      * may overwrite an existing file.
      *
-     * @return \MUtil_Model_Importer (continuation pattern)
+     * @return \MUtil\Model\Importer (continuation pattern)
      */
     public function clearLongtermFilename()
     {
@@ -172,7 +174,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
      *
      * The the file is thrown away after the import.
      *
-     * @return \MUtil_Model_Importer (continuation pattern)
+     * @return \MUtil\Model\Importer (continuation pattern)
      */
     public function clearSuccessDirectory()
     {
@@ -182,13 +184,13 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
     /**
      *
      * @param string $idPart End part for batch id
-     * @param \MUtil_Task_TaskBatch $batch Optional batch with different source etc..
-     * @return \MUtil_Task_TaskBatch
+     * @param \MUtil\Task\TaskBatch $batch Optional batch with different source etc..
+     * @return \MUtil\Task\TaskBatch
      */
-    protected function getBasicImportBatch($idPart, \MUtil_Task_TaskBatch $batch = null)
+    protected function getBasicImportBatch($idPart, \MUtil\Task\TaskBatch $batch = null)
     {
         if (null === $batch) {
-            $batch = new \MUtil_Task_TaskBatch('check_' . basename($this->sourceModel->getName()) . '_' . $idPart);
+            $batch = new \MUtil\Task\TaskBatch('check_' . basename($this->sourceModel->getName()) . '_' . $idPart);
             $this->registrySource->applySource($batch);
             $batch->setSource($this->registrySource);
         }
@@ -201,18 +203,18 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
 
     /**
      *
-     * @param \MUtil_Task_TaskBatch $batch Optional batch with different source etc..
-     * @return \MUtil_Task_TaskBatch
+     * @param \MUtil\Task\TaskBatch $batch Optional batch with different source etc..
+     * @return \MUtil\Task\TaskBatch
      */
-    public function getCheckAndImportBatch(\MUtil_Task_TaskBatch $batch = null)
+    public function getCheckAndImportBatch(\MUtil\Task\TaskBatch $batch = null)
     {
         $batch = $this->getBasicImportBatch(__FUNCTION__, $batch);
 
         if (! $batch->isLoaded()) {
-            $batch->addTask('Import_ImportCheckTask');
+            $batch->addTask('Import\\ImportCheckTask');
             if ($this->_filename) {
                 $batch->addTask(
-                        'File_CopyFileWhenTask',
+                        'File\\CopyFileWhenTask',
                         $this->_filename,
                         $this->getFailureDirectory() . DIRECTORY_SEPARATOR . $this->getLongtermFilename() . '.' . $this->_extension,
                         'import_errors',
@@ -222,7 +224,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
             if ($this->_filename) {
                 $batch->addTask(
                         'AddTask', // AddTask task as when all is OK this task should be added
-                        'File_CopyFileWhenTask',
+                        'File\\CopyFileWhenTask',
                         $this->_filename,
                         $this->getSuccessDirectory() . DIRECTORY_SEPARATOR . $this->getLongtermFilename() . '.' . $this->_extension,
                         'import_errors',
@@ -236,16 +238,16 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
 
     /**
      *
-     * @param \MUtil_Task_TaskBatch $chechkBatch Optional check batch with different source etc..
-     * @param \MUtil_Task_TaskBatch $importBatch Optional import batch with different source etc..
-     * @return \MUtil_Task_TaskBatch
+     * @param \MUtil\Task\TaskBatch $chechkBatch Optional check batch with different source etc..
+     * @param \MUtil\Task\TaskBatch $importBatch Optional import batch with different source etc..
+     * @return \MUtil\Task\TaskBatch
      */
-    public function getCheckWithImportBatches(\MUtil_Task_TaskBatch $checkBatch = null, \MUtil_Task_TaskBatch $importBatch = null)
+    public function getCheckWithImportBatches(\MUtil\Task\TaskBatch $checkBatch = null, \MUtil\Task\TaskBatch $importBatch = null)
     {
         $batch = $this->getBasicImportBatch(__FUNCTION__, $checkBatch);
 
         if (! $batch->isLoaded()) {
-            $batch->addTask('Import_ImportCheckTask');
+            $batch->addTask('Import\\ImportCheckTask');
         }
         $batch->setVariable('importBatch', $this->getImportOnlyBatch($importBatch));
 
@@ -267,7 +269,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
     /**
      * Get the current translator, if set
      *
-     * @return \MUtil_Model_ModelTranslatorInterface or null
+     * @return \MUtil\Model\ModelTranslatorInterface or null
      */
     public function getImportTranslator()
     {
@@ -276,13 +278,13 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
 
     /**
      *
-     * @param \MUtil_Task_TaskBatch $batch Optional batch with different source etc..
-     * @return \MUtil_Task_TaskBatch
+     * @param \MUtil\Task\TaskBatch $batch Optional batch with different source etc..
+     * @return \MUtil\Task\TaskBatch
      */
-    public function getImportOnlyBatch(\MUtil_Task_TaskBatch $batch = null)
+    public function getImportOnlyBatch(\MUtil\Task\TaskBatch $batch = null)
     {
-        if (! $this->_importBatch instanceof \MUtil_Task_TaskBatch) {
-            $batch = new \MUtil_Task_TaskBatch(__CLASS__ . '_import_' . basename($this->sourceModel->getName()) . '_' . __FUNCTION__);
+        if (! $this->_importBatch instanceof \MUtil\Task\TaskBatch) {
+            $batch = new \MUtil\Task\TaskBatch(__CLASS__ . '_import_' . basename($this->sourceModel->getName()) . '_' . __FUNCTION__);
 
             $this->registrySource->applySource($batch);
             $batch->setSource($this->registrySource);
@@ -298,7 +300,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
             if ($this->_filename) {
                 $batch->addTask(
                         'AddTask', // AddTask task as when all is OK this task should be added
-                        'File_CopyFileWhenTask',
+                        'File\\CopyFileWhenTask',
                         $this->_filename,
                         $this->getSuccessDirectory() . DIRECTORY_SEPARATOR . $this->getLongtermFilename() . '.' . $this->_extension,
                         'import_errors',
@@ -325,7 +327,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
     /**
      * Get the data source for items created this importer (if any)
      *
-     * @return \MUtil_Registry_SourceInterface
+     * @return \MUtil\Registry\SourceInterface
      */
     public function getRegistrySource()
     {
@@ -335,7 +337,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
     /**
      * Get the source model that provides the import data
      *
-     * @return \MUtil_Model_ModelAbstract
+     * @return \MUtil\Model\ModelAbstract
      */
     public function getSourceModel()
     {
@@ -357,7 +359,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
     /**
      * Get the target model for the imported data
      *
-     * @return \MUtil_Model_ModelAbstract
+     * @return \MUtil\Model\ModelAbstract
      */
     public function getTargetModel()
     {
@@ -370,7 +372,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
      * If empty the file is thrown away after the failure.
      *
      * $param string $directory String or null when there is no failure storage
-     * @return \MUtil_Model_Importer (continuation pattern)
+     * @return \MUtil\Model\Importer (continuation pattern)
      */
     public function setFailureDirectory($directory = null)
     {
@@ -381,15 +383,15 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
     /**
      * Set the current translator
      *
-     * @param \MUtil_Model_ModelTranslatorInterface $translator
-     * @return \MUtil_Model_Importer (continuation pattern)
-     * @throws \MUtil_Model_ModelTranslateException for string translators that do not exist
+     * @param \MUtil\Model\ModelTranslatorInterface $translator
+     * @return \MUtil\Model\Importer (continuation pattern)
+     * @throws \MUtil\Model\ModelTranslateException for string translators that do not exist
      */
-    public function setImportTranslator(\MUtil_Model_ModelTranslatorInterface $translator)
+    public function setImportTranslator(\MUtil\Model\ModelTranslatorInterface $translator)
     {
         $this->importTranslator = $translator;
 
-        if ($this->targetModel instanceof \MUtil_Model_ModelAbstract) {
+        if ($this->targetModel instanceof \MUtil\Model\ModelAbstract) {
             $this->importTranslator->setTargetModel($this->targetModel);
         }
         return $this;
@@ -398,10 +400,10 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
     /**
      * Set the data source for items created this importer
      *
-     * @param \MUtil_Registry_SourceInterface $source
-     * @return \MUtil_Model_Importer (continuation pattern)
+     * @param \MUtil\Registry\SourceInterface $source
+     * @return \MUtil\Model\Importer (continuation pattern)
      */
-    public function setRegistrySource(\MUtil_Registry_SourceInterface $source)
+    public function setRegistrySource(\MUtil\Registry\SourceInterface $source)
     {
         $this->registrySource = $source;
         return $this;
@@ -413,7 +415,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
      * If empty the file is not renamed and may overwrite an existing file.
      *
      * @param string $noExtensionFilename String or null when the file is not renamed
-     * @return \MUtil_Model_Importer (continuation pattern)
+     * @return \MUtil\Model\Importer (continuation pattern)
      */
     public function setLongtermFilename($noExtensionFilename = null)
     {
@@ -426,13 +428,13 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
      *
      * @param string $filename
      * @param string $extension Optional extension if the extension of the file should not be used
-     * @return \MUtil_Model_Importer (continuation pattern)
-     * @throws \MUtil_Model_ModelTranslateException for files with an unsupported extension or that fail to load
+     * @return \MUtil\Model\Importer (continuation pattern)
+     * @throws \MUtil\Model\ModelTranslateException for files with an unsupported extension or that fail to load
      */
     public function setSourceFile($filename, $extension = null)
     {
         if (null === $filename) {
-            throw new \MUtil_Model_ModelTranslateException($this->_("No filename specified to import"));
+            throw new \MUtil\Model\ModelTranslateException($this->_("No filename specified to import"));
         }
 
         if (null === $extension) {
@@ -440,7 +442,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
         }
 
         if (!file_exists($filename)) {
-            throw new \MUtil_Model_ModelTranslateException(sprintf(
+            throw new \MUtil\Model\ModelTranslateException(sprintf(
                     $this->_("File '%s' does not exist. Import not possible."),
                     $filename
                     ));
@@ -448,19 +450,19 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
 
         switch (strtolower($extension)) {
             case 'txt':
-                $model = new \MUtil_Model_TabbedTextModel($filename);
+                $model = new \MUtil\Model\TabbedTextModel($filename);
                 break;
 
             case 'csv':
-                $model = new \MUtil_Model_CsvModel($filename);
+                $model = new \MUtil\Model\CsvModel($filename);
                 break;
 
             case 'xml':
-                $model = new \MUtil_Model_XmlModel($filename);
+                $model = new \MUtil\Model\XmlModel($filename);
                 break;
 
             default:
-                throw new \MUtil_Model_ModelTranslateException(sprintf(
+                throw new \MUtil\Model\ModelTranslateException(sprintf(
                         $this->_("Unsupported file extension: %s. Import not possible."),
                         $extension
                         ));
@@ -477,10 +479,10 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
     /**
      * Set the source model that provides the import data
      *
-     * @param \MUtil_Model_ModelAbstract $model
-     * @return \MUtil_Model_Importer (continuation pattern)
+     * @param \MUtil\Model\ModelAbstract $model
+     * @return \MUtil\Model\Importer (continuation pattern)
      */
-    public function setSourceModel(\MUtil_Model_ModelAbstract $model)
+    public function setSourceModel(\MUtil\Model\ModelAbstract $model)
     {
         $this->sourceModel = $model;
         return $this;
@@ -492,7 +494,7 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
      * If empty the file is thrown away after the import.
      *
      * $param string $directory String or null when there is no long term storage
-     * @return \MUtil_Model_Importer (continuation pattern)
+     * @return \MUtil\Model\Importer (continuation pattern)
      */
     public function setSuccessDirectory($directory = null)
     {
@@ -503,14 +505,14 @@ class MUtil_Model_Importer extends \MUtil_Translate_TranslateableAbstract
     /**
      * Set the target model for the imported data
      *
-     * @param \MUtil_Model_ModelAbstract $model
-     * @return \MUtil_Model_Importer (continuation pattern)
+     * @param \MUtil\Model\ModelAbstract $model
+     * @return \MUtil\Model\Importer (continuation pattern)
      */
-    public function setTargetModel(\MUtil_Model_ModelAbstract $model)
+    public function setTargetModel(\MUtil\Model\ModelAbstract $model)
     {
         $this->targetModel = $model;
 
-        if ($this->importTranslator instanceof \MUtil_Model_ModelTranslatorInterface) {
+        if ($this->importTranslator instanceof \MUtil\Model\ModelTranslatorInterface) {
             $this->importTranslator->setTargetModel($model);
         }
 

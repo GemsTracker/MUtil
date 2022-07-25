@@ -2,7 +2,7 @@
 
 namespace MUtil\Model\Transform;
 
-class ToManyTransformer extends \MUtil_Model_Transform_NestedTransformer
+class ToManyTransformer extends \MUtil\Model\Transform\NestedTransformer
 {
     protected $savable;
 
@@ -11,7 +11,7 @@ class ToManyTransformer extends \MUtil_Model_Transform_NestedTransformer
         $this->savable = $savable;
     }
 
-    public function transformFilterSubModel(\MUtil_Model_ModelAbstract $model, \MUtil_Model_ModelAbstract $sub,
+    public function transformFilterSubModel(\MUtil\Model\ModelAbstract $model, \MUtil\Model\ModelAbstract $sub,
                                             array $filter, array $join)
     {
         $itemNames = $sub->getItemNames();
@@ -20,8 +20,8 @@ class ToManyTransformer extends \MUtil_Model_Transform_NestedTransformer
         $child = reset($join);
         $parent = key($join);
 
-        if (isset($filter[\MUtil_Model::TEXT_FILTER])) {
-            $subFilter += $sub->getTextSearchFilter($filter[\MUtil_Model::TEXT_FILTER]);
+        if (isset($filter[\MUtil\Model::TEXT_FILTER])) {
+            $subFilter += $sub->getTextSearchFilter($filter[\MUtil\Model::TEXT_FILTER]);
             $mainFilter = $model->getTextSearchFilter($filter[\Mutil_model::TEXT_FILTER]);
             
         }
@@ -31,7 +31,7 @@ class ToManyTransformer extends \MUtil_Model_Transform_NestedTransformer
             if ($results) {
                 $subFilterValues = array_column($results, $child);
                 $addFilter = ' OR ' . $parent . ' IN ('.join(',', $subFilterValues).')';
-                unset($filter[\MUtil_Model::TEXT_FILTER]);
+                unset($filter[\MUtil\Model::TEXT_FILTER]);
                 foreach($mainFilter as $mainFilterSub) {
                     $filter[] = $mainFilterSub . $addFilter;
                 }
@@ -45,8 +45,8 @@ class ToManyTransformer extends \MUtil_Model_Transform_NestedTransformer
     /**
      * Function to allow overruling of transform for certain models
      *
-     * @param \MUtil_Model_ModelAbstract $model Parent model
-     * @param \MUtil_Model_ModelAbstract $sub Sub model
+     * @param \MUtil\Model\ModelAbstract $model Parent model
+     * @param \MUtil\Model\ModelAbstract $sub Sub model
      * @param array $data The nested data rows
      * @param array $join The join array
      * @param string $name Name of sub model
@@ -54,7 +54,7 @@ class ToManyTransformer extends \MUtil_Model_Transform_NestedTransformer
      * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
      */
     protected function transformLoadSubModel(
-        \MUtil_Model_ModelAbstract $model, \MUtil_Model_ModelAbstract $sub, array &$data, array $join,
+        \MUtil\Model\ModelAbstract $model, \MUtil\Model\ModelAbstract $sub, array &$data, array $join,
         $name, $new, $isPostData)
     {
         $child = reset($join);
@@ -95,14 +95,14 @@ class ToManyTransformer extends \MUtil_Model_Transform_NestedTransformer
     /**
      * Function to allow overruling of transform for certain models
      *
-     * @param \MUtil_Model_ModelAbstract $model
-     * @param \MUtil_Model_ModelAbstract $sub
+     * @param \MUtil\Model\ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $sub
      * @param array $data
      * @param array $join
      * @param string $name
      */
     protected function transformSaveSubModel(
-        \MUtil_Model_ModelAbstract $model, \MUtil_Model_ModelAbstract $sub, array &$row, array $join, $name)
+        \MUtil\Model\ModelAbstract $model, \MUtil\Model\ModelAbstract $sub, array &$row, array $join, $name)
     {
         if (!$this->savable) {
             return;

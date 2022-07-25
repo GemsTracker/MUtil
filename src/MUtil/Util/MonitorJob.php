@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2015, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,7 +8,6 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2015 Erasmus MC
  * @license    New BSD License
- * @version    $Id: Monitor.php 2430 2015-02-18 15:26:24Z matijsdejong $
  */
 
 namespace MUtil\Util;
@@ -44,7 +19,7 @@ namespace MUtil\Util;
  * @subpackage Util
  * @copyright  Copyright (c) 2015 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.7.2 Mar 2, 2016 12:47:47 PM
+ * @since      Class available since \MUtil version 1.7.2 Mar 2, 2016 12:47:47 PM
  */
 class MonitorJob
 {
@@ -198,7 +173,7 @@ This messages was send automatically.";
     {
         // Send a seperate mail to each recipient, otherwise they might do nothing
         foreach ($this->to as $to) {
-            $mail = new \MUtil_Mail();
+            $mail = new \MUtil\Mail();
             $mail->addTo($to);
 
             if ($this->from) {
@@ -225,7 +200,7 @@ This messages was send automatically.";
         if (! self::$monitorDir) {
             self::$monitorDir = getcwd();
         } else {
-            \MUtil_File::ensureDir(self::$monitorDir);
+            \MUtil\File::ensureDir(self::$monitorDir);
         }
 
         $file = self::$monitorDir . DIRECTORY_SEPARATOR . self::$monitorFilename;
@@ -257,13 +232,13 @@ This messages was send automatically.";
         if ($output) {
             self::_setMonitors($monitors);
 
-            // \MUtil_Echo::track($output);
+            // \MUtil\EchoOut\EchoOut::track($output);
             return $output;
         }
 
         $message = sprintf("No jobs where triggered out of %s.", count($monitors));
 
-        // \MUtil_Echo::track($message);
+        // \MUtil\EchoOut\EchoOut::track($message);
         return array($message);
     }
 

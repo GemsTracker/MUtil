@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id: CachedLoader.php$
  */
+
+namespace MUtil\Loader;
 
 /**
  *
@@ -42,9 +19,9 @@
  * @subpackage Loader
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.2
+ * @since      Class available since \MUtil version 1.2
  */
-class MUtil_Loader_CachedLoader implements \Zend_Loader_Autoloader_Interface
+class CachedLoader implements \Zend_Loader_Autoloader_Interface
 {
     /**
      *
@@ -125,7 +102,7 @@ class MUtil_Loader_CachedLoader implements \Zend_Loader_Autoloader_Interface
         }
 
         $this->_loadIncludePath();
-        // \MUtil_Echo::track($this->_cacheFile, $this->_cacheDir, file_exists($this->_cacheDir));
+        // \MUtil\EchoOut\EchoOut::track($this->_cacheFile, $this->_cacheDir, file_exists($this->_cacheDir));
     }
 
     /**
@@ -149,7 +126,7 @@ class MUtil_Loader_CachedLoader implements \Zend_Loader_Autoloader_Interface
         if (array_key_exists($file, $this->_cacheFileArray)) {
             return $this->_cacheFileArray[$file];
         }
-        // \MUtil_Echo::track($file);
+        // \MUtil\EchoOut\EchoOut::track($file);
 
         $this->_cacheFileArray[$file] = file_exists($file);
         $this->_cacheChanged          = true;
@@ -200,18 +177,18 @@ class MUtil_Loader_CachedLoader implements \Zend_Loader_Autoloader_Interface
      */
     protected function _saveCache()
     {
-        // \MUtil_Echo::track(filemtime($this->_cacheFile), $this->_cacheLoadTime, $this->_cacheChanged);
+        // \MUtil\EchoOut\EchoOut::track(filemtime($this->_cacheFile), $this->_cacheLoadTime, $this->_cacheChanged);
         if (file_exists($this->_cacheFile)) {
             if ((! $this->_cacheChanged) && (filemtime($this->_cacheFile) >= $this->_cacheLoadTime)) {
                 return;
             }
         }
         /*
-        \MUtil_Echo::r('Saving load cache (from previous call)');
+        \MUtil\EchoOut\EchoOut::r('Saving load cache (from previous call)');
 
         include $this->_cacheFile;
 
-        \MUtil_Echo::r(array_diff(array_keys($this->_cacheClassArray), array_keys($classArray)));
+        \MUtil\EchoOut\EchoOut::r(array_diff(array_keys($this->_cacheClassArray), array_keys($classArray)));
         // */
 
         $content = "<?php\n";
@@ -361,9 +338,9 @@ class MUtil_Loader_CachedLoader implements \Zend_Loader_Autoloader_Interface
 
     /**
      *
-     * @static \MUtil_Loader_CachedLoader $instance
+     * @static \MUtil\Loader\CachedLoader $instance
      * @param stirng $dir
-     * @return \MUtil_Loader_CachedLoader
+     * @return \MUtil\Loader\CachedLoader
      */
     public static function getInstance($dir = null)
     {
@@ -502,7 +479,7 @@ class MUtil_Loader_CachedLoader implements \Zend_Loader_Autoloader_Interface
 
         if (!class_exists($class, false) && !interface_exists($class, false)) {
             require_once 'Zend/Exception.php';
-            throw new \Zend_Exception("File \"$file\" does not exist or class \"$class\" was not found in the file");
+            throw new \Zend_Exception("File \"$file\" does not exist or class "$class\" was not found in the file");
         }
     }
 }

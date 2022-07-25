@@ -9,8 +9,10 @@
  * @license    New BSD License
  */
 
+namespace MUtil;
+
 /**
- * MUtil version info
+ * \MUtil version info
  *
  * @package    MUtil
  * @subpackage Util
@@ -18,7 +20,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Version
+class Version
 {
     const MAJOR = 1;
     const MINOR = 9;

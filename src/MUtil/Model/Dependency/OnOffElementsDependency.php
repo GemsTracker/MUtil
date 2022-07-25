@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2015, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,7 +8,6 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2015 Erasmus MC
  * @license    New BSD License
- * @version    $Id: OnOffElementsDependency.php 2430 2015-02-18 15:26:24Z matijsdejong $
  */
 
 namespace MUtil\Model\Dependency;
@@ -44,13 +19,13 @@ namespace MUtil\Model\Dependency;
  * @subpackage OnOffElementsDependency
  * @copyright  Copyright (c) 2015 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.7 27-apr-2015 18:50:11
+ * @since      Class available since \MUtil version 1.7 27-apr-2015 18:50:11
  */
 class OnOffElementsDependency extends DependencyAbstract
 {
     /**
      *
-     * @var \MUtil_Model_ModelAbstract
+     * @var \MUtil\Model\ModelAbstract
      */
     protected $model;
     
@@ -79,7 +54,7 @@ class OnOffElementsDependency extends DependencyAbstract
      * @param string $onElement The element that switches the other fields on or off
      * @param array|string $forElements The elements switched on or off
      * @param array|string $mode The values set ON when $onElement is true
-     * @param \MUtil_Model_ModelAbstract $model The model
+     * @param \MUtil\Model\ModelAbstract $model The model
      */
     public function __construct($onElement, $forElements, $mode = 'readonly', $model = null)
     {
@@ -178,15 +153,15 @@ class OnOffElementsDependency extends DependencyAbstract
     {
         $effecteds = array_keys($this->getEffecteds());
         foreach ($effecteds as $field) {
-            if ($this->model instanceof \MUtil_Model_ModelAbstract && $this->model->has($field)) {
+            if ($this->model instanceof \MUtil\Model\ModelAbstract && $this->model->has($field)) {
                 $modelItemType = $this->model->get($field, 'type');
                 $dateFormat = $this->model->get($field, 'dateFormat');
                 $timeFormat = $this->model->get($field, 'timeFormat');
 
                 switch ($modelItemType) {
-                    case \MUtil_Model::TYPE_DATE:
-                    case \MUtil_Model::TYPE_TIME:
-                    case \MUtil_Model::TYPE_DATETIME:
+                    case \MUtil\Model::TYPE_DATE:
+                    case \MUtil\Model::TYPE_TIME:
+                    case \MUtil\Model::TYPE_DATETIME:
                         $picker = 'datepicker';
                         break;
 

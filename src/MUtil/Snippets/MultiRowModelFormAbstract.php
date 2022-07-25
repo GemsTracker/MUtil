@@ -19,11 +19,11 @@ namespace MUtil\Snippets;
  * @license    New BSD License
  * @since      Class available since version 1.8.2 Jan 12, 2017 10:59:54 AM
  */
-abstract class MultiRowModelFormAbstract extends \MUtil_Snippets_ModelFormSnippetAbstract
+abstract class MultiRowModelFormAbstract extends \MUtil\Snippets\ModelFormSnippetAbstract
 {
     /**
      *
-     * @var \MUtil_Form_Element_Table
+     * @var \MUtil\Form\Element\Table
      */
     protected $formTableElement;
 
@@ -44,10 +44,10 @@ abstract class MultiRowModelFormAbstract extends \MUtil_Snippets_ModelFormSnippe
         $model     = $this->getModel();
         $baseform  = $this->createForm();
 
-        $bridge    = $model->getBridgeFor('form', new \Gems_Form_SubForm());
+        $bridge    = $model->getBridgeFor('form', new \Gems\Form\SubForm());
         $newData   = $this->addFormElements($bridge, $model);
 
-        $this->formTableElement = new \MUtil_Form_Element_Table(
+        $this->formTableElement = new \MUtil\Form\Element\Table(
                 $bridge->getForm(),
                 $model->getName(),
                 array('class' => $this->editTableClass)
@@ -69,7 +69,7 @@ abstract class MultiRowModelFormAbstract extends \MUtil_Snippets_ModelFormSnippe
         $model = $this->getModel();
         $mname = $model->getName();
 
-        // \MUtil_Echo::track($model->getFilter());
+        // \MUtil\EchoOut\EchoOut::track($model->getFilter());
 
         if ($this->requestInfo->isPost()) {
             $formData = $this->requestInfo->getRequestPostParams();
@@ -98,7 +98,7 @@ abstract class MultiRowModelFormAbstract extends \MUtil_Snippets_ModelFormSnippe
             }
         }
 
-        // \MUtil_Echo::track($this->formData);
+        // \MUtil\EchoOut\EchoOut::track($this->formData);
     }
 
     /**
@@ -120,7 +120,7 @@ abstract class MultiRowModelFormAbstract extends \MUtil_Snippets_ModelFormSnippe
         $model = $this->getModel();
         $mname = $model->getName();
 
-        // \MUtil_Echo::track($this->formData[$mname]);
+        // \MUtil\EchoOut\EchoOut::track($this->formData[$mname]);
         $this->formData[$mname] = $model->saveAll($this->formData[$mname]);
 
         $changed = $model->getChanged();

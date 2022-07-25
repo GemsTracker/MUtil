@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\StringUtil;
+
 /**
  * A collection of static string utility functions
  *
@@ -18,7 +20,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.5
  */
-class MUtil_String
+class StringUtil
 {
     /**
      * Return the part of $input before any of the $charFilter characters
@@ -110,9 +112,9 @@ class MUtil_String
      * Split a string whereever the callback returns true (including
      * the character that returns true.
      *
-     * \MUtil_String::splitOnCharCallback('abcDef', 'ctype_upper') => array(0 => 'abc', 1 => 'Def');
+     * \MUtil\StringUtil\StringUtil::splitOnCharCallback('abcDef', 'ctype_upper') => array(0 => 'abc', 1 => 'Def');
      *
-     * \MUtil_String::splitOnCharCallback('abCDef', 'ctype_upper', true) => array(0 => 'ab', 2 => 'ef');
+     * \MUtil\StringUtil\StringUtil::splitOnCharCallback('abCDef', 'ctype_upper', true) => array(0 => 'ab', 2 => 'ef');
      *
      * @param string $input
      * @param callback $callBack Taking a single character as input

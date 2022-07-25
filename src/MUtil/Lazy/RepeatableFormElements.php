@@ -2,30 +2,6 @@
 
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -33,8 +9,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Lazy;
 
 /**
  * Repeats all elements in a form, so a form can be used as source for e.g. an html element.
@@ -53,12 +30,12 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Lazy_RepeatableFormElements extends \MUtil_Lazy_Repeatable
+class RepeatableFormElements extends \MUtil\Lazy\Repeatable
 {
     /**
      * Enable access to the elements in this repeater using $this->element
      *
-     * @var \MUtil_Lazy_LazyAbstract
+     * @var \MUtil\Lazy\LazyAbstract
      */
     public $element;
 
@@ -79,7 +56,7 @@ class MUtil_Lazy_RepeatableFormElements extends \MUtil_Lazy_Repeatable
     /**
      * Enable access to the elements in this repeater using $this->element
      *
-     * @var \MUtil_Lazy_LazyAbstract
+     * @var \MUtil\Lazy\LazyAbstract
      */
     public $label;
 
@@ -103,8 +80,8 @@ class MUtil_Lazy_RepeatableFormElements extends \MUtil_Lazy_Repeatable
         // $this->element and $this->label.
         //
         // The other access method is: $this->{name of element renderer}
-        $this->element =  new \MUtil_Lazy_Call(array($this, '__current'));
-        $this->label   = \MUtil_Html::create('label', $this->element);
+        $this->element =  new \MUtil\Lazy\Call(array($this, '__current'));
+        $this->label   = \MUtil\Html::create('label', $this->element);
     }
 
     /**
@@ -112,7 +89,7 @@ class MUtil_Lazy_RepeatableFormElements extends \MUtil_Lazy_Repeatable
      * output if the decorator does not exist
      *
      * @param string $name
-     * @return \MUtil_Lazy_Call
+     * @return \MUtil\Lazy\Call
      */
     public function __get($name)
     {
@@ -120,7 +97,7 @@ class MUtil_Lazy_RepeatableFormElements extends \MUtil_Lazy_Repeatable
         // shortcut for a decorator function, however, if the property exists
         // (and no Decorator with the same name exists) the property value will
         // be returned.
-        return \MUtil_Lazy::call(array($this, 'getDecorator'), ucfirst($name));
+        return \MUtil\Lazy::call(array($this, 'getDecorator'), ucfirst($name));
     }
 
     /**
@@ -171,7 +148,7 @@ class MUtil_Lazy_RepeatableFormElements extends \MUtil_Lazy_Repeatable
         if ($element instanceof \Zend_Form) {
             $this->_flattenForm($element, $newElements);
 
-        } elseif ($element instanceof \MUtil_Form_Element_SubFocusInterface) {
+        } elseif ($element instanceof \MUtil\Form\Element\SubFocusInterface) {
             foreach ($element->getSubFocusElements() as $sub) {
                 $this->_flattenElement($sub, $newElements);
             }
@@ -198,14 +175,14 @@ class MUtil_Lazy_RepeatableFormElements extends \MUtil_Lazy_Repeatable
      * Get the current element's decorator output or property output if the decorator does not exist
      *
      * @param string $name
-     * @return \MUtil_Html_Raw|null
+     * @return \MUtil\Html\Raw|null
      */
     public function getDecorator($name)
     {
         if ($current = $this->__current()) {
             if ($decorator = $current->getDecorator($name)) {
                 $decorator->setElement($current);
-                return new \MUtil_Html_Raw($decorator->render(''));
+                return new \MUtil\Html\Raw($decorator->render(''));
             }
 
             if (property_exists($current, $name)) {
@@ -258,7 +235,7 @@ class MUtil_Lazy_RepeatableFormElements extends \MUtil_Lazy_Repeatable
      * Should the sub forms be split off?
      *
      * @param boolean $value
-     * @return \MUtil_Lazy_RepeatableFormElements (continuation pattern)
+     * @return \MUtil\Lazy\RepeatableFormElements (continuation pattern)
      */
     public function setFlattenSubs($value = true)
     {
@@ -270,7 +247,7 @@ class MUtil_Lazy_RepeatableFormElements extends \MUtil_Lazy_Repeatable
      * Should the hidden fields be split off?
      *
      * @param boolean $value
-     * @return \MUtil_Lazy_RepeatableFormElements (continuation pattern)
+     * @return \MUtil\Lazy\RepeatableFormElements (continuation pattern)
      */
     public function setSplitHidden($value = true)
     {

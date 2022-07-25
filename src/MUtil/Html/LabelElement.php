@@ -1,38 +1,15 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    MUtil
  * @subpackage Html
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Html;
 
 /**
  *
@@ -40,9 +17,9 @@
  * @subpackage Html
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.0
+ * @since      Class available since \MUtil version 1.0
  */
-class MUtil_Html_LabelElement extends \MUtil_Html_HtmlElement
+class LabelElement extends \MUtil\Html\HtmlElement
 {
     /**
      * Declaring $class a public property, ensures the attribute
@@ -118,8 +95,8 @@ class MUtil_Html_LabelElement extends \MUtil_Html_HtmlElement
         // If the label was assigned an element lazy,
         // now is the time to get it's value.
         foreach ($this->_content as $key => $value) {
-            if ($value instanceof \MUtil_Lazy_LazyInterface) {
-                $value = \MUtil_Lazy::rise($value);
+            if ($value instanceof \MUtil\Lazy\LazyInterface) {
+                $value = \MUtil\Lazy::rise($value);
             }
             if ($value instanceof \Zend_Form_Element) {
                 if ($value instanceof \Zend_Form_Element_Hidden) {
@@ -130,11 +107,11 @@ class MUtil_Html_LabelElement extends \MUtil_Html_HtmlElement
                 $decorator = $value->getDecorator('Label');
                 if ($decorator) {
                     if (false === $decorator->getOption('escape')) {
-                        $label = \MUtil_Html::raw($value->getLabel());
+                        $label = \MUtil\Html::raw($value->getLabel());
                     } else {
                         $label = $value->getLabel();
                     }
-                    $class = $this->class ? \MUtil_Html::renderAny($view, $this->class) . ' ' : '';
+                    $class = $this->class ? \MUtil\Html::renderAny($view, $this->class) . ' ' : '';
                     if ($value->isRequired()) {
                         $class .= $this->getRequiredClass();
                         $this->_currentContent[$key] = array($this->getRequiredPrefix(), $label, $this->getRequiredPostfix());
@@ -162,11 +139,11 @@ class MUtil_Html_LabelElement extends \MUtil_Html_HtmlElement
 
     protected function renderContent(\Zend_View_Abstract $view)
     {
-        if ($content = \MUtil_Html::getRenderer()->renderAny($view, $this->_currentContent)) {
+        if ($content = \MUtil\Html::getRenderer()->renderAny($view, $this->_currentContent)) {
             return $content;
 
         } elseif ($this->_onEmptyContent) {
-            return \MUtil_Html::getRenderer()->renderAny($view, $this->_onEmptyContent);
+            return \MUtil\Html::getRenderer()->renderAny($view, $this->_onEmptyContent);
 
         } else {
             return '&nbsp;';

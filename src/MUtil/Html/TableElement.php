@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Html;
 
 /**
  * TableElement is an extension of HtmlElement that add's a lot of table specific extra functionality
@@ -44,8 +21,8 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
-        implements \MUtil_Html_ColumnInterface, \MUtil_Html_FormLayout
+class TableElement extends \MUtil\Html\HtmlElement
+        implements \MUtil\Html\ColumnInterface, \MUtil\Html\FormLayout
 {
     /**
      * Content position constant for caption
@@ -198,11 +175,11 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     /**
      * Create a table (no tag to specify)
      *
-     * @param mixed $arg_array \MUtil_Ra::args
+     * @param mixed $arg_array \MUtil\Ra::args
      */
     public function __construct($arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         // Create positions for all (potential) elements
         //
@@ -212,7 +189,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
         $this->_content[self::COLGROUPS] = null;
         $this->_content[self::THEAD] = null;
         $this->_content[self::TFOOT] = null;
-        $this->_content[self::TBODY] = \MUtil_Html::create('tbody');
+        $this->_content[self::TBODY] = \MUtil\Html::create('tbody');
 
         parent::__construct('table', $args);
 
@@ -239,9 +216,9 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
 
     private function _pivotBody($name)
     {
-        $newBody = \MUtil_Html::create($name);
+        $newBody = \MUtil\Html::create($name);
 
-        if ($this->_content[$name] instanceof \MUtil_Html_TBodyElement) {
+        if ($this->_content[$name] instanceof \MUtil\Html\TBodyElement) {
             $newBody->_attribs = $this->_content[$name]->_attribs;
             $newBody->defaultRowClass = $this->_content[$name]->getDefaultRowClass();
         }
@@ -270,7 +247,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
                     $i = 0;
                     foreach ($row as $cell) {
                         if (! isset($newRows[$i])) {
-                            $newRows[$i] = \MUtil_Html::create('tr');
+                            $newRows[$i] = \MUtil\Html::create('tr');
                         }
                         $newCell = clone $cell;
 
@@ -328,7 +305,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
             // Return all objects in a wrapper object
             // that makes sure they are all treated
             // the same way.
-            return new \MUtil_MultiWrapper($tds);
+            return new \MUtil\MultiWrapper($tds);
         }
 
         // Return first object only
@@ -371,12 +348,12 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
 
     public function caption($arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         if ($this->_content[self::CAPTION]) {
             $this->_content[self::CAPTION]->_processParameters($args);
         } else {
-            $this->_content[self::CAPTION] = \MUtil_Html::createArray('caption', $args);
+            $this->_content[self::CAPTION] = \MUtil\Html::createArray('caption', $args);
         }
 
         return $this->_content[self::CAPTION];
@@ -384,7 +361,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
 
     public function col($arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         if (is_array($this->_content[self::COLGROUPS])) {
             $colgroup = end($this->_content[self::COLGROUPS]);
@@ -401,9 +378,9 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
 
     public function colgroup($arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
-        $colgroup = \MUtil_Html::create()->colgroup($args);
+        $colgroup = \MUtil\Html::create()->colgroup($args);
 
         $this->_content[self::COLGROUPS][] = $colgroup;
 
@@ -423,7 +400,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
             $args[] = $class2;
         }
 
-        return new \MUtil_Lazy_Alternate($args);
+        return new \MUtil\Lazy\Alternate($args);
     }
 
     /**
@@ -440,7 +417,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     public static function createArray($data, $caption = null, $nested = null, $objects_not_expanded = array())
     {
         if (! (is_array($data) || ($data instanceof \Traversable))) {
-            throw new \MUtil_Html_HtmlException('The $data parameter is not an array or a \Traversable interface instance ');
+            throw new \MUtil\Html\HtmlException('The $data parameter is not an array or a \Traversable interface instance ');
         }
 
         // Add the object to the not expand list if this is the first call.
@@ -450,7 +427,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
         }
 
         if (count($data) === 0) {
-            return new \MUtil_Html_Raw(self::RENDER_OPEN . self::RENDER_EMPTY_ARRAY . self::RENDER_CLOSE);
+            return new \MUtil\Html\Raw(self::RENDER_OPEN . self::RENDER_EMPTY_ARRAY . self::RENDER_CLOSE);
         }
 
         if (null === $nested) {
@@ -471,9 +448,9 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
         }
 
         if ($nested) {
-            $repeater_data = \MUtil_Lazy::repeat($data);
+            $repeater_data = \MUtil\Lazy::repeat($data);
         } else {
-            $repeater_data = new \MUtil_Lazy_RepeatableByKeyValue($data);
+            $repeater_data = new \MUtil\Lazy\RepeatableByKeyValue($data);
         }
 
         $table = new self($repeater_data);
@@ -486,7 +463,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
             if ($row) {
                 foreach ($row as $key => $data) {
                     $table->addColumn(
-                        \MUtil_Lazy::call(array(__CLASS__, 'createVar'), $repeater_data[$key], null, $objects_not_expanded),
+                        \MUtil\Lazy::call(array(__CLASS__, 'createVar'), $repeater_data[$key], null, $objects_not_expanded),
                         $key);
                 }
             } else {
@@ -497,7 +474,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
                 $repeater_data['key'],
                 'Key');
             $table->addColumn(
-                \MUtil_Lazy::call(array(__CLASS__, 'createVar'), $repeater_data['value'], null, $objects_not_expanded),
+                \MUtil\Lazy::call(array(__CLASS__, 'createVar'), $repeater_data['value'], null, $objects_not_expanded),
                 'Value');
         }
 
@@ -514,8 +491,8 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      */
     public static function createObject($data, $caption = null, $objects_not_expanded = array())
     {
-        if ($data instanceof \MUtil_Lazy_LazyInterface) {
-            return \MUtil_Lazy::call(array(__CLASS__, 'createVar'), \MUtil_Lazy::method('MUtil_Lazy::rise', $data), $caption, $objects_not_expanded);
+        if ($data instanceof \MUtil\Lazy\LazyInterface) {
+            return \MUtil\Lazy::call(array(__CLASS__, 'createVar'), \MUtil\Lazy::method('\\MUtil\\Lazy::rise', $data), $caption, $objects_not_expanded);
         }
 
         // Add the object to the not expand list if this is the first call.
@@ -524,7 +501,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
             $objects_not_expanded[] = $data;
         }
 
-        $repeater_data = new \MUtil_Lazy_RepeatableObjectProperties($data);
+        $repeater_data = new \MUtil\Lazy\RepeatableObjectProperties($data);
 
         if (null === $caption) {
             $classcaption = 'Class: ' . get_class($data);
@@ -540,9 +517,9 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
             $table->setRepeater($repeater_data);
 
             $table->addColumn($repeater_data->name, 'Name');
-            $table->addColumn(\MUtil_Lazy::call(array(__CLASS__, 'createVar'), \MUtil_Lazy::call('MUtil_Lazy::rise', $repeater_data->value), null, $objects_not_expanded), 'Value');
+            $table->addColumn(\MUtil\Lazy::call(array(__CLASS__, 'createVar'), \MUtil\Lazy::call('\\MUtil\\Lazy::rise', $repeater_data->value), null, $objects_not_expanded), 'Value');
             $table->addColumn($repeater_data->from_code->if('in code', 'in program'), 'Defined');
-            // $table->addColumn(\MUtil_Lazy::iff($repeater_data->from_code, 'in code', 'in program'), 'Defined');
+            // $table->addColumn(\MUtil\Lazy::iff($repeater_data->from_code, 'in code', 'in program'), 'Defined');
 
         } else {
             if ($data instanceof \Traversable) {
@@ -550,7 +527,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
             }
 
             $table->td()->em(
-                new \MUtil_Html_Raw(self::RENDER_OPEN .
+                new \MUtil\Html\Raw(self::RENDER_OPEN .
                     'No public properties for class' .
                     (null === $caption ? '' : ' ' . get_class($data)) .
                     self::RENDER_CLOSE));
@@ -572,7 +549,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     {
         foreach ($objects_not_expanded as $item) {
             if ($item === $data) {
-                return new \MUtil_Html_Raw(self::RENDER_OPEN . self::RENDER_CIRCULAR . self::RENDER_CLOSE);
+                return new \MUtil\Html\Raw(self::RENDER_OPEN . self::RENDER_CIRCULAR . self::RENDER_CLOSE);
             }
         }
 
@@ -586,13 +563,13 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
             $result = self::createObject($data, $caption, $objects_not_expanded);
 
         } elseif (null === $data) {
-            return new \MUtil_Html_Raw(self::RENDER_OPEN . self::RENDER_EMPTY . self::RENDER_CLOSE);
+            return new \MUtil\Html\Raw(self::RENDER_OPEN . self::RENDER_EMPTY . self::RENDER_CLOSE);
 
         } elseif ('' === $data) {
-            return new \MUtil_Html_Raw(self::RENDER_OPEN . self::RENDER_EMPTY_STRING . self::RENDER_CLOSE);
+            return new \MUtil\Html\Raw(self::RENDER_OPEN . self::RENDER_EMPTY_STRING . self::RENDER_CLOSE);
 
         } elseif (is_string($data)) {
-            $result = $data; // Removed htmlentities(): was double since introduction of \MUtil_Html_Raw()
+            $result = $data; // Removed htmlentities(): was double since introduction of \MUtil\Html\Raw()
 
         } else {
             $result = $data;
@@ -604,10 +581,10 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     }
 
     /**
-     * Returns the cell or a \MUtil_MultiWrapper containing cells that occupy the column position, taking colspan and other functions into account.
+     * Returns the cell or a \MUtil\MultiWrapper containing cells that occupy the column position, taking colspan and other functions into account.
      *
      * @param int $col The numeric column position, starting at 0;
-     * @return \MUtil_Html_HtmlElement Probably an element of this type, but can also be something else, posing as an element.
+     * @return \MUtil\Html\HtmlElement Probably an element of this type, but can also be something else, posing as an element.
      */
     public function getColumn($col)
     {
@@ -625,14 +602,14 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      * Returns the cells that occupies the column position, taking colspan and other functions into account, in an array.
      *
      * @param int $col The numeric column position, starting at 0;
-     * @return array Of probably one \MUtil_Html_HtmlElement
+     * @return array Of probably one \MUtil\Html\HtmlElement
      */
     public function getColumnArray($col)
     {
         $results = array();
 
         foreach ($this->_content as $body) {
-            if ($body instanceof \MUtil_Html_ColumnInterface) {
+            if ($body instanceof \MUtil\Html\ColumnInterface) {
                 $results = array_merge($results, $body->getColumnArray($col));
             }
         }
@@ -650,7 +627,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
         $counts[] = 1;
 
         foreach ($this->_content as $body) {
-            if ($body instanceof \MUtil_Html_ColumnInterface) {
+            if ($body instanceof \MUtil\Html\ColumnInterface) {
                 $counts[] = $body->getColumnCount();
             }
         }
@@ -753,7 +730,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      *
      * @param string $class1
      * @param string $class2
-     * @return \MUtil_Html_TableElement
+     * @return \MUtil\Html\TableElement
      */
     public function setAlternateRowClass($class1 = 'odd', $class2 = 'even')
     {
@@ -768,7 +745,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
             $args[] = $class2;
         }
 
-        $this->_content[self::TBODY]->setDefaultRowClass(new \MUtil_Lazy_Alternate($args));
+        $this->_content[self::TBODY]->setDefaultRowClass(new \MUtil\Lazy\Alternate($args));
         return $this;
     }
 
@@ -778,12 +755,12 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      * @param \Zend_Form $form
      * @param boolean $add_description When true the description is displayed
      * @param boolean $include_description When false the description is added in a separate column instead of the element column.
-     * @return \MUtil_Html_TableElement
+     * @return \MUtil\Html\TableElement
      */
     public function setAsFormLayout(\Zend_Form $form, $add_description = false, $include_description = false)
     {
         // Make a Lazy repeater for the form elements and set it as the element repeater
-        $formrep = new \MUtil_Lazy_RepeatableFormElements($form);
+        $formrep = new \MUtil\Lazy\RepeatableFormElements($form);
         $formrep->setSplitHidden(true); // These are treated separately
         $this->setRepeater($formrep);
 
@@ -804,7 +781,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
         }
 
         // Set this element as the form decorator
-        $decorator = new \MUtil_Html_ElementDecorator();
+        $decorator = new \MUtil\Html\ElementDecorator();
         $decorator->setHtmlElement($this);
         $decorator->setPrologue($formrep); // Renders hidden elements before this element
         $form->setDecorators(array($decorator, 'AutoFocus', 'Form'));
@@ -819,7 +796,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      * class attribute specified here.
      *
      * @param string $tag Tagname
-     * @return \MUtil_Html_TableElement (continuation pattern)
+     * @return \MUtil\Html\TableElement (continuation pattern)
      */
     public function setDefaultRowClass($class)
     {
@@ -841,7 +818,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      * @param boolean $pivot True to switch to left rotated pivot when rendering
      * @param int $headerRows The number of pivoted rows going to in the header
      * @param int $footerRows The number of pivoted rows going to in the footer
-     * @return \MUtil_Html_TableElement (continuation pattern)
+     * @return \MUtil\Html\TableElement (continuation pattern)
      */
     public function setPivot($pivot, $headerRows = 0, $footerRows = 0)
     {
@@ -861,7 +838,7 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      * @see $_onEmptyContent;
      *
      * @param mixed $content Content that can be rendered.
-     * @return \MUtil_Html_TableElement (continuation pattern)
+     * @return \MUtil\Html\TableElement (continuation pattern)
      */
     public function setOnEmpty($content)
     {
@@ -879,10 +856,10 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      * not the element tags. When repeatTags is true the both the tags and the
      * content are repeated.
      *
-     * @param mixed $repeater \MUtil_Lazy_RepeatableInterface or something that can be made into one.
+     * @param mixed $repeater \MUtil\Lazy\RepeatableInterface or something that can be made into one.
      * @param mixed $onEmptyContent Optional. When not null the content to display when the repeater does not result in data is set.
      * @param boolean $repeatTags Optional when not null the repeatTags switch is set.
-     * @return \MUtil_Html_TableElement (continuation pattern)
+     * @return \MUtil\Html\TableElement (continuation pattern)
      */
     public function setRepeater($repeater, $onEmptyContent = null, $repeatTags = null)
     {
@@ -891,10 +868,10 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     }
 
     /**
-     * Static helper function for creation, used by @see \MUtil_Html_Creator.
+     * Static helper function for creation, used by @see \MUtil\Html\Creator.
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_TableElement
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\TableElement
      */
     public static function table($arg_array = null)
     {
@@ -907,12 +884,12 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      *
      * Addition of multiple bodies is not possible.
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_TBodyElement With 'tbody' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\TBodyElement With 'tbody' tagName
      */
     public function tbody($arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         if ($args) {
             $this->_content[self::TBODY]->_processParameters($args);
@@ -924,8 +901,8 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     /**
      * Returns a 'td' cell in the current row in the tbody
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement With 'td' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement With 'td' tagName
      */
     public function td($arg_array = null)
     {
@@ -936,8 +913,8 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     /**
      * Returns a 'th' cell in the current row in the tbody
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement With 'th' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement With 'th' tagName
      */
     public function tdh($arg_array = null)
     {
@@ -948,8 +925,8 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     /**
      * Returns a 'td' cell in a new row in the body with a colspan equal to the number of columns in the table.
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement With 'td' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement With 'td' tagName
      */
     public function tdrow($arg_array = null)
     {
@@ -965,8 +942,8 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     /**
      * Returns a 'td' cell in the current row in the footer
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement With 'td' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement With 'td' tagName
      */
     public function tf($arg_array = null)
     {
@@ -977,8 +954,8 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     /**
      * Returns a 'th' cell in the current row in the footer
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement With 'th' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement With 'th' tagName
      */
     public function tfh($arg_array = null)
     {
@@ -991,15 +968,15 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      *
      * Addition of multiple bodies is not possible.
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_TBodyElement With 'tfoot' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\TBodyElement With 'tfoot' tagName
      */
     public function tfoot($arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         if (! $this->_content[self::TFOOT]) {
-            $this->_content[self::TFOOT] = \MUtil_Html::create('tfoot');
+            $this->_content[self::TFOOT] = \MUtil\Html::create('tfoot');
         }
         if ($args) {
             $this->_content[self::TFOOT]->_processParameters($args);
@@ -1011,8 +988,8 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     /**
      * Returns a 'td' cell in a new row in the footer with a colspan equal to the number of columns in the table.
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement With 'td' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement With 'td' tagName
      */
     public function tfrow($arg_array = null)
     {
@@ -1028,8 +1005,8 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     /**
      * Returns a 'th' cell in the current row in the header
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement With 'th' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement With 'th' tagName
      */
     public function th($arg_array = null)
     {
@@ -1042,15 +1019,15 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      *
      * Addition of multiple bodies is not possible.
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_TBodyElement With 'thead' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\TBodyElement With 'thead' tagName
      */
     public function thead($arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         if (! $this->_content[self::THEAD]) {
-            $this->_content[self::THEAD] = \MUtil_Html::create('thead');
+            $this->_content[self::THEAD] = \MUtil\Html::create('thead');
         }
         if ($args) {
             $this->_content[self::THEAD]->_processParameters($args);
@@ -1062,8 +1039,8 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     /**
      * Returns a 'td' cell in the current row in the header
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement With 'td' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement With 'td' tagName
      */
     public function thd($arg_array = null)
     {
@@ -1074,8 +1051,8 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
     /**
      * Returns a 'td' cell in a new row in the header with a colspan equal to the number of columns in the table.
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement With 'td' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement With 'td' tagName
      */
     public function thdrow($arg_array = null)
     {
@@ -1090,8 +1067,8 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      *
      * @see __call
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_HtmlElement With 'th' tagName
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\HtmlElement With 'th' tagName
      */
     public function thhrow($arg_array = null)
     {
@@ -1114,12 +1091,12 @@ class MUtil_Html_TableElement extends \MUtil_Html_HtmlElement
      * @see addColumn
      * @see addColumnArray
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_TrElement
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\TrElement
      */
     public function tr($arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         if ($this->_content[self::THEAD]) {
             $this->_content[self::THEAD]->_lastChild = null;
