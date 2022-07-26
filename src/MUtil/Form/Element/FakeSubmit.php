@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Form\Element;
+
 /**
  * A button element acting as a Submit button, but possibly placed in the
  * form before the "real" submit button.
@@ -21,7 +23,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.5.6
  */
-class MUtil_Form_Element_FakeSubmit extends \Zend_Form_Element_Button
+class FakeSubmit extends \Zend_Form_Element_Button
 {
     /**
      * Use fakeSubmit view helper by default

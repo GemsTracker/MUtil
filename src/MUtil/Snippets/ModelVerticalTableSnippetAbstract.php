@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Snippets;
+
 /**
  * Displays each fields of a single item in a model in a row in a Html table.
  *
@@ -22,7 +24,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.4
  */
-abstract class MUtil_Snippets_ModelVerticalTableSnippetAbstract extends \MUtil_Snippets_ModelSnippetAbstract
+abstract class ModelVerticalTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbstract
 {
     /**
      *
@@ -31,11 +33,11 @@ abstract class MUtil_Snippets_ModelVerticalTableSnippetAbstract extends \MUtil_S
     protected $bridgeColumns = 1;
 
     /**
-     * One of the \MUtil_Model_Bridge_BridgeAbstract MODE constants
+     * One of the \MUtil\Model\Bridge\BridgeAbstract MODE constants
      *
      * @var int
      */
-    protected $bridgeMode = \MUtil_Model_Bridge_BridgeAbstract::MODE_LAZY;
+    protected $bridgeMode = \MUtil\Model\Bridge\BridgeAbstract::MODE_LAZY;
 
     /**
      * Shortfix to add class attribute
@@ -56,11 +58,11 @@ abstract class MUtil_Snippets_ModelVerticalTableSnippetAbstract extends \MUtil_S
      * Overrule this function to add different columns to the browse table, without
      * having to recode the core table building code.
      *
-     * @param \MUtil_Model_Bridge_VerticalTableBridge $bridge
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\Bridge\VerticalTableBridge $bridge
+     * @param \MUtil\Model\ModelAbstract $model
      * @return void
      */
-    protected function addShowTableRows(\MUtil_Model_Bridge_VerticalTableBridge $bridge, \MUtil_Model_ModelAbstract $model)
+    protected function addShowTableRows(\MUtil\Model\Bridge\VerticalTableBridge $bridge, \MUtil\Model\ModelAbstract $model)
     {
         foreach($model->getItemsOrdered() as $name) {
             if ($label = $model->get($name, 'label')) {
@@ -86,7 +88,7 @@ abstract class MUtil_Snippets_ModelVerticalTableSnippetAbstract extends \MUtil_S
      * This is a stub function either override getHtmlOutput() or override render()
      *
      * @param \Zend_View_Abstract $view Just in case it is needed here
-     * @return \MUtil_Html_HtmlInterface Something that can be rendered
+     * @return \MUtil\Html\HtmlInterface Something that can be rendered
      */
     public function getHtmlOutput(\Zend_View_Abstract $view)
     {
@@ -97,7 +99,7 @@ abstract class MUtil_Snippets_ModelVerticalTableSnippetAbstract extends \MUtil_S
 
         $table = $this->getShowTable($model);
 
-        $container = \MUtil_Html::create()->div(array('class' => 'table-container', 'renderWithoutContent' => false));
+        $container = \MUtil\Html::create()->div(array('class' => 'table-container', 'renderWithoutContent' => false));
         $container[] = $table;
         return $container;
     }
@@ -105,32 +107,32 @@ abstract class MUtil_Snippets_ModelVerticalTableSnippetAbstract extends \MUtil_S
     /**
      * Function that allows for overruling the repeater loading.
      *
-     * @param \MUtil_Model_ModelAbstract $model
-     * @return \MUtil_Lazy_RepeatableInterface
+     * @param \MUtil\Model\ModelAbstract $model
+     * @return \MUtil\Lazy\RepeatableInterface
      */
-    public function getRepeater(\MUtil_Model_ModelAbstract $model)
+    public function getRepeater(\MUtil\Model\ModelAbstract $model)
     {
         return $model->loadRepeatable();
     }
 
     /**
-     * Creates from the model a \MUtil_Html_TableElement that can display multiple items.
+     * Creates from the model a \MUtil\Html\TableElement that can display multiple items.
      *
      * Allows overruling
      *
-     * @param \MUtil_Model_ModelAbstract $model
-     * @return \MUtil_Html_TableElement
+     * @param \MUtil\Model\ModelAbstract $model
+     * @return \MUtil\Html\TableElement
      */
-    public function getShowTable(\MUtil_Model_ModelAbstract $model)
+    public function getShowTable(\MUtil\Model\ModelAbstract $model)
     {
         $bridge = $model->getBridgeFor('itemTable', array('class' => $this->class));
         $bridge->setColumnCount($this->bridgeColumns)
                 ->setMode($this->bridgeMode);
 
         if ($model->hasDependencies()) {
-            $this->bridgeMode = \MUtil_Model_Bridge_BridgeAbstract::MODE_SINGLE_ROW;
+            $this->bridgeMode = \MUtil\Model\Bridge\BridgeAbstract::MODE_SINGLE_ROW;
         }
-        if (\MUtil_Model_Bridge_BridgeAbstract::MODE_SINGLE_ROW == $this->bridgeMode) {
+        if (\MUtil\Model\Bridge\BridgeAbstract::MODE_SINGLE_ROW == $this->bridgeMode) {
             // Trigger the dependencies
             $bridge->getRow();
         }
@@ -152,11 +154,11 @@ abstract class MUtil_Snippets_ModelVerticalTableSnippetAbstract extends \MUtil_S
      * Overrule this function to set the header differently, without
      * having to recode the core table building code.
      *
-     * @param \MUtil_Model_Bridge_VerticalTableBridge $bridge
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\Bridge\VerticalTableBridge $bridge
+     * @param \MUtil\Model\ModelAbstract $model
      * @return void
      */
-    protected function setShowTableFooter(\MUtil_Model_Bridge_VerticalTableBridge $bridge, \MUtil_Model_ModelAbstract $model)
+    protected function setShowTableFooter(\MUtil\Model\Bridge\VerticalTableBridge $bridge, \MUtil\Model\ModelAbstract $model)
     { }
 
     /**
@@ -165,10 +167,10 @@ abstract class MUtil_Snippets_ModelVerticalTableSnippetAbstract extends \MUtil_S
      * Overrule this function to set the header differently, without
      * having to recode the core table building code.
      *
-     * @param \MUtil_Model_Bridge_VerticalTableBridge $bridge
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\Bridge\VerticalTableBridge $bridge
+     * @param \MUtil\Model\ModelAbstract $model
      * @return void
      */
-    protected function setShowTableHeader(\MUtil_Model_Bridge_VerticalTableBridge $bridge, \MUtil_Model_ModelAbstract $model)
+    protected function setShowTableHeader(\MUtil\Model\Bridge\VerticalTableBridge $bridge, \MUtil\Model\ModelAbstract $model)
     { }
 }

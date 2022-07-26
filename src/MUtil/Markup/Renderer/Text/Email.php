@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Markup\Renderer\Text;
+
 /**
  * Makes sure the URL of a link is not lost when rendering Markup input
  * into text.
@@ -19,7 +21,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.1
  */
-class MUtil_Markup_Renderer_Text_Email implements \Zend_Markup_Renderer_TokenConverterInterface
+class Email implements \Zend_Markup_Renderer_TokenConverterInterface
 {
     /**
      * Convert the token

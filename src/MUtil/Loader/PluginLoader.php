@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Loader;
+
 /**
  * Extension of PluginLoader with class instantiation
  *
@@ -16,9 +18,9 @@
  * @subpackage Loader
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.2
+ * @since      Class available since \MUtil version 1.2
  */
-class MUtil_Loader_PluginLoader extends \Zend_Loader_PluginLoader
+class PluginLoader extends \Zend_Loader_PluginLoader
 {
     /**
      * Normalize plugin name
@@ -79,7 +81,7 @@ class MUtil_Loader_PluginLoader extends \Zend_Loader_PluginLoader
                 $path = rtrim($path, '/\\') . '/';
             }
 
-            // \MUtil_Echo::track(self::getAbsolutePaths($path));
+            // \MUtil\EchoOut\EchoOut::track(self::getAbsolutePaths($path));
             foreach (self::getAbsolutePaths($path) as $sub) {
                 if (! in_array($sub, $newPaths)) {
                     if ($prepend) {
@@ -113,9 +115,9 @@ class MUtil_Loader_PluginLoader extends \Zend_Loader_PluginLoader
         }
         /*
         if (isset($this->_prefixToPaths[$prefix])) {
-            // \MUtil_Echo::track($prefix, $this->_prefixToPaths);
+            // \MUtil\EchoOut\EchoOut::track($prefix, $this->_prefixToPaths);
         } else {
-            // \MUtil_Echo::track($prefix);
+            // \MUtil\EchoOut\EchoOut::track($prefix);
         } // */
 
         return $this;
@@ -236,7 +238,7 @@ class MUtil_Loader_PluginLoader extends \Zend_Loader_PluginLoader
                     $includePaths[] = $real . DIRECTORY_SEPARATOR;
                 }
             }
-            // \MUtil_Echo::track($includePaths);
+            // \MUtil\EchoOut\EchoOut::track($includePaths);
         }
 
         // Check path name
@@ -320,7 +322,7 @@ class MUtil_Loader_PluginLoader extends \Zend_Loader_PluginLoader
         } else {
             $registry = $this->_prefixToPaths;
         }
-        // \MUtil_Echo::track($name, $registry);
+        // \MUtil\EchoOut\EchoOut::track($name, $registry);
 
         $found     = false;
         $classFile = str_replace('_', DIRECTORY_SEPARATOR, $name) . '.php';

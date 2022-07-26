@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Less\View\Helper;
+
 /**
  * Make sure each .less css script is compiled to .css
  *
@@ -18,7 +20,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.5
  */
-class MUtil_Less_View_Helper_HeadLink extends \MUtil_View_Helper_HeadLink
+class HeadLink extends \MUtil\View\Helper\HeadLink
 {
     /**
      * Absolute file path to the webroot
@@ -97,10 +99,10 @@ class MUtil_Less_View_Helper_HeadLink extends \MUtil_View_Helper_HeadLink
      */
     public function compile(\Zend_View $view, $href, $always = false)
     {
-        if (\MUtil_String::startsWith($href, 'http', true)) {
+        if (\MUtil\StringUtil\StringUtil::startsWith($href, 'http', true)) {
             // When a local url, strip the serverUrl and basepath
             $base = $view->serverUrl() . $view->baseUrl();
-            if (\MUtil_String::startsWith($href, $base, true)) {
+            if (\MUtil\StringUtil\StringUtil::startsWith($href, $base, true)) {
                 // Only strip when urls match
                 $href = substr($href, strlen($base));
             }
@@ -112,7 +114,7 @@ class MUtil_Less_View_Helper_HeadLink extends \MUtil_View_Helper_HeadLink
 
         // Try compiling
         try {
-            // \MUtil_Echo::track($inFile, $outFile);
+            // \MUtil\EchoOut\EchoOut::track($inFile, $outFile);
 
             $lessc = new lessc();
             $lessc->setOption('relativeUrls', true);
@@ -125,7 +127,7 @@ class MUtil_Less_View_Helper_HeadLink extends \MUtil_View_Helper_HeadLink
         } catch (\Exception $exc) {
             // If we have an error, present it if not in production
             if ((APPLICATION_ENV !== 'production') || (APPLICATION_ENV !== 'acceptance')) {
-                \MUtil_Echo::pre($exc->getMessage());
+                \MUtil\EchoOut\EchoOut::pre($exc->getMessage());
             }
             $result = null;
         }
@@ -147,7 +149,7 @@ class MUtil_Less_View_Helper_HeadLink extends \MUtil_View_Helper_HeadLink
                 (($attributes['type'] == 'text/css') || ($attributes['type'] == 'text/less'))) {
 
             // This is a stylesheet, consider extension and compile .less to .css
-            if (($attributes['type'] == 'text/less') || \MUtil_String::endsWith($attributes['href'], '.less', true)) {
+            if (($attributes['type'] == 'text/less') || \MUtil\StringUtil\StringUtil::endsWith($attributes['href'], '.less', true)) {
                 $this->compile($this->view, $attributes['href'], false);
 
                 // Modify object, not the derived array

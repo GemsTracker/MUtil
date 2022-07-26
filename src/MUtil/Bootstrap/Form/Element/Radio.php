@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Bootstrap\Form\Element;
+
 /**
  * Show a table containing a subform repeated for the number of rows set for
  * this item when rendered.
@@ -19,7 +21,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.6.5
  */
-class MUtil_Bootstrap_Form_Element_Radio extends \Zend_Form_Element_Radio
+class Radio extends \Zend_Form_Element_Radio
 {
     use \MUtil\Form\Element\LaminasElementValidator;
 

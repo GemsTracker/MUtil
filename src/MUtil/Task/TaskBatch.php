@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2013, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,40 +8,41 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @version    $Id: TaskBatch.php 2483 2015-04-08 14:51:22Z matijsdejong$
  */
 
+namespace MUtil\Task;
+
 /**
- * The TaskBatch is an implementation of \MUtil_Batch_BatchAbstract that simplifies
+ * The TaskBatch is an implementation of \MUtil\Batch\BatchAbstract that simplifies
  * batch creation by allowing each job step to be created in a seperate class.
  *
  * These tasks can automatically load global objects when they implement
- * \MUtil_Registry_TargetInterface. Otherwise you can pass only scalar values during
+ * \MUtil\Registry\TargetInterface. Otherwise you can pass only scalar values during
  * execution.
  *
  * Task are loaded through a plugin architecture, but you can also specify them using
  * their full class name.
  *
- * @see \MUtil_Batch_BatchAbstract
- * @see \MUtil_Registry_TargetInterface
+ * @see \MUtil\Batch\BatchAbstract
+ * @see \MUtil\Registry\TargetInterface
  *
  * @package    MUtil
  * @subpackage Task
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.3
+ * @since      Class available since \MUtil version 1.3
  */
-class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
+class TaskBatch extends \MUtil\Batch\BatchAbstract
 {
     /**
      *
-     * @var \MUtil_Registry_SourceInterface
+     * @var \MUtil\Registry\SourceInterface
      */
     protected $source;
 
     /**
      *
-     * @var \MUtil_Loader_PluginLoader
+     * @var \MUtil\Loader\PluginLoader
      */
     protected $taskLoader;
 
@@ -81,7 +58,7 @@ class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
      * @param string $task Name of Task class
      * @param mixed $param1 Optional scalar or array with scalars, as many parameters as needed allowed
      * @param mixed $param2 ...
-     * @return \MUtil_Task_TaskBatch (continuation pattern)
+     * @return \MUtil\Task\TaskBatch (continuation pattern)
      */
     public function addTask($task, $param1 = null)
     {
@@ -97,7 +74,7 @@ class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
      * by new directories
      *
      * @param array $dirs An array containing the classPrefix => classPath values
-     * @return \MUtil_Task_TaskBatch (continuation pattern)
+     * @return \MUtil\Task\TaskBatch (continuation pattern)
      */
     public function addTaskLoaderPrefixDirectories(array $dirs)
     {
@@ -108,12 +85,12 @@ class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
     /**
      * Return the source used to set variables in tasks.
      *
-     * @return \MUtil_Registry_SourceInterface
+     * @return \MUtil\Registry\SourceInterface
      */
     public function getSource()
     {
         if (! $this->source) {
-            $this->setSource(new \MUtil_Registry_Source());
+            $this->setSource(new \MUtil\Registry\Source());
         }
         return $this->source;
     }
@@ -121,13 +98,13 @@ class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
     /**
      * Get the plugin loader to load the tasks
      *
-     * @return  \MUtil_Loader_PluginLoader
+     * @return  \MUtil\Loader\PluginLoader
      */
     public function getTaskLoader()
     {
-        // \MUtil_Echo::track($this->getTaskLoaderPrefixDirectories());
+        // \MUtil\EchoOut\EchoOut::track($this->getTaskLoaderPrefixDirectories());
         if (! $this->taskLoader) {
-            $this->setTaskLoader(new \MUtil_Loader_PluginLoader($this->getTaskLoaderPrefixDirectories()));
+            $this->setTaskLoader(new \MUtil\Loader\PluginLoader($this->getTaskLoaderPrefixDirectories()));
         }
 
         return $this->taskLoader;
@@ -149,30 +126,30 @@ class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
      * @param string $task Class name of task
      * @param array $params Parameters used in the call to execute
      * @return boolean true when the task has completed, otherwise task is rerun.
-     * @throws \MUtil_Batch_BatchException
+     * @throws \MUtil\Batch\BatchException
      */
     public function runTask($task, array $params = array())
     {
-        // \MUtil_Echo::track($task);
+        // \MUtil\EchoOut\EchoOut::track($task);
 
         $taskObject = $this->getTaskLoader()->createClass($task);
-        if ($taskObject instanceof \MUtil_Registry_TargetInterface) {
+        if ($taskObject instanceof \MUtil\Registry\TargetInterface) {
             // First set batch
-            if ($taskObject instanceof \MUtil_Task_TaskInterface) {
+            if ($taskObject instanceof \MUtil\Task\TaskInterface) {
                 $taskObject->setBatch($this);
             }
             if (!$this->getSource()->applySource($taskObject)) {
-                throw new \MUtil_Batch_BatchException(sprintf('ERROR: Parameters failed to load for task %s.', $task));
+                throw new \MUtil\Batch\BatchException(sprintf('ERROR: Parameters failed to load for task %s.', $task));
             }
         }
 
-        if ($taskObject instanceof \MUtil_Task_TaskInterface) {
+        if ($taskObject instanceof \MUtil\Task\TaskInterface) {
             call_user_func_array(array($taskObject, 'execute'), $params);
 
             return $taskObject->isFinished();
 
         } else {
-            throw new \MUtil_Batch_BatchException(sprintf('ERROR: Task by name %s not found', $task));
+            throw new \MUtil\Batch\BatchException(sprintf('ERROR: Task by name %s not found', $task));
         }
     }
 
@@ -181,7 +158,7 @@ class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
      *
      * @param string $name Name of the variable
      * @param mixed $variable Something that can be serialized
-     * @return \MUtil_Batch_BatchAbstract (continuation pattern)
+     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
      */
     public function setSessionVariable($name, $variable)
     {
@@ -195,10 +172,10 @@ class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
     /**
      * Set the variable source for tasks.
      *
-     * @param \MUtil_Registry_SourceInterface $source
-     * @return \MUtil_Task_TaskBatch (continuation pattern)
+     * @param \MUtil\Registry\SourceInterface $source
+     * @return \MUtil\Task\TaskBatch (continuation pattern)
      */
-    public function setSource(\MUtil_Registry_SourceInterface $source)
+    public function setSource(\MUtil\Registry\SourceInterface $source)
     {
         $this->source = $source;
 
@@ -219,7 +196,7 @@ class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
      * @param string $task Name of Task class
      * @param mixed $id A unique id to prevent double adding of something to do
      * @param mixed $param1 Scalar or array with scalars, as many parameters as needed allowed
-     * @return \MUtil_Task_TaskBatch (continuation pattern)
+     * @return \MUtil\Task\TaskBatch (continuation pattern)
      */
     public function setTask($task, $id, $param1 = null)
     {
@@ -232,10 +209,10 @@ class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
     /**
      * Set the plugin loader to load the tasks
      *
-     * @param \MUtil_Loader_PluginLoader $taskLoader
-     * @return \MUtil_Task_TaskBatch (continuation pattern)
+     * @param \MUtil\Loader\PluginLoader $taskLoader
+     * @return \MUtil\Task\TaskBatch (continuation pattern)
      */
-    public function setTaskLoader(\MUtil_Loader_PluginLoader $taskLoader)
+    public function setTaskLoader(\MUtil\Loader\PluginLoader $taskLoader)
     {
         $this->taskLoader = $taskLoader;
         return $this;
@@ -245,7 +222,7 @@ class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
      * Set the directories to be used by this instance
      *
      * @param array $dirs An array containing the classPrefix => classPath values
-     * @return \MUtil_Task_TaskBatch (continuation pattern)
+     * @return \MUtil\Task\TaskBatch (continuation pattern)
      */
     public function setTaskLoaderPrefixDirectories(array $dirs)
     {
@@ -260,7 +237,7 @@ class MUtil_Task_TaskBatch extends \MUtil_Batch_BatchAbstract
      *
      * @param string $name Name of the variable
      * @param mixed $variable Something that can be serialized
-     * @return \MUtil_Batch_BatchAbstract (continuation pattern)
+     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
      */
     public function setVariable($name, $variable)
     {

@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of the <organization> nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -33,6 +9,8 @@
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
  */
+
+namespace MUtil\Model;
 
 /**
  * JoinModel is a model that allows requesting, editing, inserting and
@@ -48,7 +26,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
+class JoinModel extends \MUtil\Model\DatabaseModelAbstract
 {
     /**
      * @var array from field => joining field (with two from fields for a composite join)
@@ -224,7 +202,7 @@ class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
         $saveTables = $this->_checkSaveTables($saveTables);
         $oldChanged = $this->getChanged();
 
-        // \MUtil_Echo::track($newValues, $filter, $saveTables, $this->_joinFields);
+        // \MUtil\EchoOut\EchoOut::track($newValues, $filter, $saveTables, $this->_joinFields);
 
         $oldValues = $newValues;
         foreach ($saveTables as $tableName => $saveMode) {
@@ -235,8 +213,8 @@ class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
                 if (is_string($target)) {
                     if (! (isset($newValues[$target]) && $newValues[$target])) {
                         if (! (isset($newValues[$source]) && $newValues[$source])) {
-                            if (\MUtil_Model::$verbose) {
-                                \MUtil_Echo::r('Missing: ' . $source . ' -> ' . $target, 'ERROR!');
+                            if (\MUtil\Model::$verbose) {
+                                \MUtil\EchoOut\EchoOut::r('Missing: ' . $source . ' -> ' . $target, 'ERROR!');
                             }
                             continue;
                         }
@@ -269,7 +247,7 @@ class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
             //$this->_saveTableData returns the new row values, including any automatic changes.
             $newValues = $this->_saveTableData($this->_tables[$tableName], $newValues, $filter, $saveMode)
                     + $oldValues;
-            // \MUtil_Echo::track($oldValues, $newValues, $filter);
+            // \MUtil\EchoOut\EchoOut::track($oldValues, $newValues, $filter);
             $oldValues = $newValues;
         }
 
@@ -310,7 +288,7 @@ class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
      * @param mixed $table      The name of the table to join or a table object or an array(corr_name => tablename) or array(int => tablename, corr_name)
      * @param array $joinFields Array of source->dest primary keys for this join
      * @param mixed $saveable   Will changes to this table be saved, true or a combination of SAVE_MODE constants
-     * @return \MUtil_Model_JoinModel
+     * @return \MUtil\Model\JoinModel
      */
     public function addLeftTable($table, array $joinFields, $saveable = false)
     {
@@ -325,7 +303,7 @@ class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
      * @param array $joinFields Array of source->dest primary keys for this join
      * @param mixed $saveable   Will changes to this table be saved, true or a combination of SAVE_MODE constants
      *
-     * @return \MUtil_Model_JoinModel
+     * @return \MUtil\Model\JoinModel
      */
     public function addRightTable($table, array $joinFields, $saveable = false)
     {
@@ -340,7 +318,7 @@ class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
      * @param array $joinFields Array of source->dest primary keys for this join
      * @param mixed $saveable   Will changes to this table be saved, true or a combination of SAVE_MODE constants
      *
-     * @return \Gems_Model_JoinModel
+     * @return \Gems\Model\JoinModel
      */
     public function addTable($table, array $joinFields, $saveable = false)
     {
@@ -403,7 +381,7 @@ class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
                     }
                 }
 
-                // \MUtil_Echo::r($table_filter, $tableName);
+                // \MUtil\EchoOut\EchoOut::r($table_filter, $tableName);
                 if ($delete && $table_filter) {
                     $changed = max($changed, $this->_deleteTableData($this->_tables[$tableName], $table_filter));
                 }
@@ -480,7 +458,7 @@ class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
     /**
      *
      * @param string $tableName Does not test for existence
-     * @return \MUtil_Model_JoinModel (continuation pattern)
+     * @return \MUtil\Model\JoinModel (continuation pattern)
      */
     public function setTableKeysToJoin($tableName)
     {
@@ -512,7 +490,7 @@ class MUtil_Model_JoinModel extends \MUtil_Model_DatabaseModelAbstract
      *
      * @param string $tableName     Does not test for existence
      * @param mixed  $saveable      Will changes to this table be saved, true or a combination of SAVE_MODE constants
-     * @return \MUtil_Model_JoinModel (continuation pattern)
+     * @return \MUtil\Model\JoinModel (continuation pattern)
      */
     public function setTableSaveable($tableName, $saveable = true)
     {

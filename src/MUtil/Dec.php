@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil;
+
 /**
  * Decimal calculation utilities
  *
@@ -30,7 +32,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.5
  */
-class MUtil_Dec
+class Dec
 {
     /**
      * Get the ceiling using the specified precision

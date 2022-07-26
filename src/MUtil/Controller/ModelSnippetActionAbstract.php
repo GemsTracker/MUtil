@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Controller;
+
 /**
  * Controller class with standard model and snippet based browse (index), IN THE NEAR FUTURE show, edit and delete actions.
  *
@@ -20,7 +22,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.4.2
  */
-abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Controller_Action
+abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
 {
     /**
      * Default parameters for the autofilter action. Can be overruled
@@ -101,7 +103,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * Always retrieve using $this->getModel().
      *
-     * $var \MUtil_Model_ModelAbstract $_model The model in use
+     * $var \MUtil\Model\ModelAbstract $_model The model in use
      */
     private $_model;
 
@@ -391,7 +393,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      */
     protected function _getIdParam(): ?string
     {
-        return $this->request->getAttribute(\MUtil_Model::REQUEST_ID);
+        return $this->request->getAttribute(\MUtil\Model::REQUEST_ID);
     }
 
     /**
@@ -438,10 +440,10 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
     /**
      * Apply this source to the target.
      *
-     * @param \MUtil_Registry_TargetInterface $target
+     * @param \MUtil\Registry\TargetInterface $target
      * @return boolean True if $target is OK with loaded requests
      */
-    public function applySource(\MUtil_Registry_TargetInterface $target)
+    public function applySource(\MUtil\Registry\TargetInterface $target)
     {
         return $this->getSnippetLoader()->getSource()->applySource($target);
     }
@@ -454,7 +456,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      */
     public function autofilterAction($resetMvc = true)
     {
-        // \MUtil_Model::$verbose = true;
+        // \MUtil\Model::$verbose = true;
 
         // We do not need to return the layout, just the above table
         if ($resetMvc) {
@@ -473,7 +475,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
         if ($resetMvc) {
             // Lazy call here, because any echo calls in the snippets have not yet been
             // performed. so they will appear only in the next call when not lazy.
-            $this->html->raw(\MUtil_Lazy::call(array('MUtil_Echo', 'out')));
+            $this->html->raw(\MUtil\Lazy::call(array('\\MUtil\\EchoOut\\EchoOut', 'out')));
         }
     }
 
@@ -498,7 +500,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      *
      * @param boolean $detailed True when the current action is not in $summarizedActions.
      * @param string $action The current action.
-     * @return \MUtil_Model_ModelAbstract
+     * @return \MUtil\Model\ModelAbstract
      */
     abstract protected function createModel($detailed, $action);
 
@@ -583,11 +585,11 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
     /**
      * Get the possible translators for the import snippet.
      *
-     * @return array of \MUtil_Model_ModelTranslatorInterface objects
+     * @return array of \MUtil\Model\ModelTranslatorInterface objects
      */
     public function getImportTranslators()
     {
-        $trs = new \MUtil_Model_Translator_StraightTranslator($this->_('Direct import'));
+        $trs = new \MUtil\Model\Translator\StraightTranslator($this->_('Direct import'));
         $this->applySource($trs);
 
         return array('default' => $trs);
@@ -609,7 +611,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
      * parameter was added, because the most common use of action is a split between detailed
      * and summarized actions.
      *
-     * @return \MUtil_Model_ModelAbstract
+     * @return \MUtil\Model\ModelAbstract
      */
     protected function getModel()
     {
@@ -622,7 +624,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
         if (! ($this->_model && $this->_model->isMeta('action', $action))) {
             $detailed = ! $this->isSummarized($action);
 
-            \MUtil_Model::getSource()->addRegistryContainer(array(
+            \MUtil\Model::getSource()->addRegistryContainer(array(
                 'action'   => $action,
                 'detailed' => $detailed,
                 'forForm'  => $this->forForm($action),
@@ -682,7 +684,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
         $searchSession = new \Zend_Session_Namespace('ModelSnippetActionAbstract_getSearchData');
         if (isset($searchSession->$sessionId)) {
             $sessionData = $searchSession->$sessionId;
-            // \MUtil_Echo::track($sessionData);
+            // \MUtil\EchoOut\EchoOut::track($sessionData);
         } else {
             $sessionData = [];
         }
@@ -693,17 +695,17 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
             $data = $this->request->getQueryParams();
             $data += $this->request->getParsedBody();
 
-            if (isset($data[\MUtil_Model::AUTOSEARCH_RESET]) && $data[\MUtil_Model::AUTOSEARCH_RESET]) {
+            if (isset($data[\MUtil\Model::AUTOSEARCH_RESET]) && $data[\MUtil\Model::AUTOSEARCH_RESET]) {
                 // Clean up values
                 $sessionData = [];
 
-                //$request->setParam(\MUtil_Model::AUTOSEARCH_RESET, null);
+                //$request->setParam(\MUtil\Model::AUTOSEARCH_RESET, null);
             } else {
                 $data = $data + $sessionData;
             }
 
             // Always remove
-            unset($data[\MUtil_Model::AUTOSEARCH_RESET]);
+            unset($data[\MUtil\Model::AUTOSEARCH_RESET]);
 
             // Store cleaned values in session (we do not store the defaults now as they may change
             // depending on the request and this way the filter data responds to that).
@@ -726,7 +728,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
             $data = $data + $defaults;
         }
 
-        // \MUtil_Echo::track($data, $this->searchSessionId);
+        // \MUtil\EchoOut\EchoOut::track($data, $this->searchSessionId);
 
         // Remove empty strings and nulls HERE as they are not part of
         // the filter itself, but the values should be stored in the session.
@@ -734,7 +736,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
         // Remove all empty values (but not arrays) from the filter
         $this->_searchData = array_filter($data, function($i) { return is_array($i) || strlen($i); });
 
-        // \MUtil_Echo::track($this->_searchData, $this->searchSessionId);
+        // \MUtil\EchoOut\EchoOut::track($this->_searchData, $this->searchSessionId);
 
         return $this->_searchData;
     }
@@ -774,7 +776,7 @@ abstract class MUtil_Controller_ModelSnippetActionAbstract extends \MUtil_Contro
             $this->_searchFilter[$field] = $value;
         }
 
-        // \MUtil_Echo::track($this->_searchFilter);
+        // \MUtil\EchoOut\EchoOut::track($this->_searchFilter);
 
         return $this->_searchFilter;
     }

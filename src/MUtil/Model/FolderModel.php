@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Model;
+
 /**
  * A model for listing files in directory structures
  *
@@ -16,9 +18,9 @@
  * @subpackage Model
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.3
+ * @since      Class available since \MUtil version 1.3
  */
-class MUtil_Model_FolderModel extends \MUtil_Model_ArrayModelAbstract
+class FolderModel extends \MUtil\Model\ArrayModelAbstract
 {
     /**
      * The directory to list
@@ -67,8 +69,8 @@ class MUtil_Model_FolderModel extends \MUtil_Model_ArrayModelAbstract
         $this->dir = $dir;
 
         if (is_array($extensionsOrMask)) {
-            $this->extensions = array_unique(\MUtil_Ra::flatten($extensionsOrMask), SORT_STRING);
-            $this->mask = \MUtil_File::createMask($extensionsOrMask);
+            $this->extensions = array_unique(\MUtil\Ra::flatten($extensionsOrMask), SORT_STRING);
+            $this->mask = \MUtil\File::createMask($extensionsOrMask);
         } else {
             $this->mask = $extensionsOrMask;
         }
@@ -77,15 +79,15 @@ class MUtil_Model_FolderModel extends \MUtil_Model_ArrayModelAbstract
 
         $this->followSymlinks = $followSymlinks;
 
-        $this->set('fullpath',     'type', \MUtil_Model::TYPE_STRING);
-        $this->set('path',         'type', \MUtil_Model::TYPE_STRING);
-        $this->set('filename',     'type', \MUtil_Model::TYPE_STRING);
-        $this->set('relpath',      'type', \MUtil_Model::TYPE_STRING);
-        $this->set('urlpath',      'type', \MUtil_Model::TYPE_STRING);
-        $this->set('extension',    'type', \MUtil_Model::TYPE_STRING);
-        $this->set('content',      'type', \MUtil_Model::TYPE_STRING);
-        $this->set('size',         'type', \MUtil_Model::TYPE_NUMERIC);
-        $this->set('changed',      'type', \MUtil_Model::TYPE_DATETIME);
+        $this->set('fullpath',     'type', \MUtil\Model::TYPE_STRING);
+        $this->set('path',         'type', \MUtil\Model::TYPE_STRING);
+        $this->set('filename',     'type', \MUtil\Model::TYPE_STRING);
+        $this->set('relpath',      'type', \MUtil\Model::TYPE_STRING);
+        $this->set('urlpath',      'type', \MUtil\Model::TYPE_STRING);
+        $this->set('extension',    'type', \MUtil\Model::TYPE_STRING);
+        $this->set('content',      'type', \MUtil\Model::TYPE_STRING);
+        $this->set('size',         'type', \MUtil\Model::TYPE_NUMERIC);
+        $this->set('changed',      'type', \MUtil\Model::TYPE_DATETIME);
 
         $this->setKeys(array('urlpath'));
     }
@@ -117,7 +119,7 @@ class MUtil_Model_FolderModel extends \MUtil_Model_ArrayModelAbstract
             $dirIter = new \FilesystemIterator($this->dir, \FilesystemIterator::CURRENT_AS_FILEINFO);
         }
 
-        $modelIter = new \MUtil_Model_Iterator_FolderModelIterator($dirIter, $this->dir, $this->mask);
+        $modelIter = new \MUtil\Model\Iterator\FolderModelIterator($dirIter, $this->dir, $this->mask);
 
         return $modelIter;
     }
@@ -142,10 +144,10 @@ class MUtil_Model_FolderModel extends \MUtil_Model_ArrayModelAbstract
             if (unlink($fileData['fullpath'])) {
                 $count = $count + 1;
             } elseif (file_exists($fileData['fullpath'])) {
-                throw new \MUtil_Model_ModelException(sprintf(
+                throw new \MUtil\Model\ModelException(sprintf(
                         'Unable to delete %s: %s',
                         $fileData['fullpath'],
-                        \MUtil_Error::getLastPhpErrorMessage('reason unknown')
+                        \MUtil\Error::getLastPhpErrorMessage('reason unknown')
                         ));
             }
         }
@@ -189,7 +191,7 @@ class MUtil_Model_FolderModel extends \MUtil_Model_ArrayModelAbstract
         }
 
         if (! $filename) {
-            throw new \MUtil_Model_ModelException('Cannot save file: no filename known');
+            throw new \MUtil\Model\ModelException('Cannot save file: no filename known');
         }
 
         $filename = trim($filename, '\\/');
@@ -200,13 +202,13 @@ class MUtil_Model_FolderModel extends \MUtil_Model_ArrayModelAbstract
 
         $content = isset($newValues['content']) ? $newValues['content'] : '';
 
-        \MUtil_File::ensureDir(dirname($filename));
+        \MUtil\File::ensureDir(dirname($filename));
 
         if (false === file_put_contents($filename, $content) || (!file_exists($filename))) {
-            throw new \MUtil_Model_ModelException(sprintf(
+            throw new \MUtil\Model\ModelException(sprintf(
                     'Unable to save %s: %s',
                     $filename,
-                    \MUtil_Error::getLastPhpErrorMessage('reason unknown')
+                    \MUtil\Error::getLastPhpErrorMessage('reason unknown')
                     ));
         }
         $this->setChanged(1);

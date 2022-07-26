@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2014, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,13 +8,14 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2014 Erasmus MC
  * @license    New BSD License
- * @version    $Id: ChangeTracker.php 1748 2014-02-19 18:09:41Z matijsdejong $
  */
+
+namespace MUtil\Model\Type;
 
 /**
  * A type that allows you to check after the save() if a field value was changed.
  *
- * After applying this you need to add all fields in $model->getMeta(\MUtil_Model_Type_ChangeTracker::HIDDEN_FIELDS)
+ * After applying this you need to add all fields in $model->getMeta(\MUtil\Model\Type\ChangeTracker::HIDDEN_FIELDS)
  * as hidden fields to the form.
  *
  * @package    MUtil
@@ -47,7 +24,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.4
  */
-class MUtil_Model_Type_ChangeTracker
+class ChangeTracker
 {
     /**
      * Constant for model META tag
@@ -68,7 +45,7 @@ class MUtil_Model_Type_ChangeTracker
 
     /**
      *
-     * @var \MUtil_Model_ModelAbstract
+     * @var \MUtil\Model\ModelAbstract
      */
     private $_model;
 
@@ -81,11 +58,11 @@ class MUtil_Model_Type_ChangeTracker
 
     /**
      *
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $model
      * @param mixed $changedValue The value to store when the tracked field has changed
      * @param mixed $unchangedValue The value to store when the tracked field did not change
      */
-    public function __construct(\MUtil_Model_ModelAbstract $model, $changedValue = true, $unchangedValue = false)
+    public function __construct(\MUtil\Model\ModelAbstract $model, $changedValue = true, $unchangedValue = false)
     {
         $this->_model          = $model;
         $this->_changedValue   = $changedValue;
@@ -141,7 +118,7 @@ class MUtil_Model_Type_ChangeTracker
     /**
      * A ModelAbstract->setOnLoad() function that copies the value from the original
      *
-     * @see \MUtil_Model_ModelAbstract
+     * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
      * @param boolean $isNew True when a new item is being saved
@@ -167,7 +144,7 @@ class MUtil_Model_Type_ChangeTracker
     /**
      * A ModelAbstract->setOnSave() function that tracks the change
      *
-     * @see \MUtil_Model_ModelAbstract
+     * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
      * @param boolean $isNew True when a new item is being saved
@@ -177,7 +154,7 @@ class MUtil_Model_Type_ChangeTracker
      */
     public function saveValue($value, $isNew = false, $name = null, array $context = array())
     {
-        // \MUtil_Echo::track($value, $this->_changedValue);
+        // \MUtil\EchoOut\EchoOut::track($value, $this->_changedValue);
 
         // Once the value is set (and e.g. stored in the database) do not overwrite it
         if ($this->_changedValue == $value) {
@@ -209,27 +186,27 @@ class MUtil_Model_Type_ChangeTracker
         if ($context[$oldValueField] instanceof \Zend_Date) {
             $oldValue = $context[$oldValueField];
         } else {
-            $oldValue = new \MUtil_Date($context[$oldValueField], $storageFormat);
+            $oldValue = new \MUtil\Date($context[$oldValueField], $storageFormat);
         }
 
         if ($context[$trackedField] instanceof \Zend_Date) {
             $currentValue = $context[$trackedField];
         } elseif (\Zend_Date::isDate($context[$trackedField], $storageFormat)) {
-            $currentValue = new \MUtil_Date($context[$trackedField], $storageFormat);
+            $currentValue = new \MUtil\Date($context[$trackedField], $storageFormat);
         } else {
             if ($this->_model->has($trackedField, 'dateFormat')) {
                 $secondFormat = $this->_model->get($trackedField, 'dateFormat');
             } else {
-                $secondFormat = \MUtil_Model_Bridge_FormBridge::getFixedOption('date', 'dateFormat');
+                $secondFormat = \MUtil\Model\Bridge\FormBridge::getFixedOption('date', 'dateFormat');
             }
             if (! \Zend_Date::isDate($context[$trackedField], $secondFormat)) {
                 // Cannot compare, do nothing
                 return $value;
             }
-            $currentValue  = new \MUtil_Date($context[$trackedField], $secondFormat);
+            $currentValue  = new \MUtil\Date($context[$trackedField], $secondFormat);
         }
 
-        // \MUtil_Echo::track($trackedField, $oldValueField, $oldValue->toString(), $currentValue->toString(), $oldValue->getTimestamp() === $currentValue->getTimestamp());
+        // \MUtil\EchoOut\EchoOut::track($trackedField, $oldValueField, $oldValue->toString(), $currentValue->toString(), $oldValue->getTimestamp() === $currentValue->getTimestamp());
 
         return $oldValue->getTimestamp() === $currentValue->getTimestamp() ?
                 $this->_unchangedValue :

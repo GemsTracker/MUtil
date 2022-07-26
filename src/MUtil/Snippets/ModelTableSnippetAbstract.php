@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Snippets;
+
 /**
  * Displays multiple items in a model below each other in an Html table.
  *
@@ -22,11 +24,11 @@
  * @license    New BSD License
  * @since      Class available since version 1.3
  */
-abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_ModelSnippetAbstract
+abstract class ModelTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbstract
 {
     /**
      *
-     * @var \MUtil_Html_Marker Class for marking text in the output
+     * @var \MUtil\Html\Marker Class for marking text in the output
      */
     protected $_marker;
 
@@ -38,11 +40,11 @@ abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_
     public $baseUrl;
 
     /**
-     * One of the \MUtil_Model_Bridge_BridgeAbstract MODE constants
+     * One of the \MUtil\Model\Bridge\BridgeAbstract MODE constants
      *
      * @var int
      */
-    protected $bridgeMode = \MUtil_Model_Bridge_BridgeAbstract::MODE_LAZY;
+    protected $bridgeMode = \MUtil\Model\Bridge\BridgeAbstract::MODE_LAZY;
 
     /**
      * Sets pagination on or off.
@@ -101,11 +103,11 @@ abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_
      * Overrule this function to add different columns to the browse table, without
      * having to recode the core table building code.
      *
-     * @param \MUtil_Model_Bridge_TableBridge $bridge
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\Bridge\TableBridge $bridge
+     * @param \MUtil\Model\ModelAbstract $model
      * @return void
      */
-    protected function addBrowseTableColumns(\MUtil_Model_Bridge_TableBridge $bridge, \MUtil_Model_ModelAbstract $model)
+    protected function addBrowseTableColumns(\MUtil\Model\Bridge\TableBridge $bridge, \MUtil\Model\ModelAbstract $model)
     {
         if ($this->columns) {
             foreach ($this->columns as $column) {
@@ -134,23 +136,23 @@ abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_
      * Only called when $this->browse is true. Overrule this function
      * to define your own method.
      *
-     * @param \MUtil_Html_TableElement $table
+     * @param \MUtil\Html\TableElement $table
      * $param \Zend_Paginator $paginator
      */
-    protected function addPaginator(\MUtil_Html_TableElement $table, \Zend_Paginator $paginator)
+    protected function addPaginator(\MUtil\Html\TableElement $table, \Zend_Paginator $paginator)
     {
         //$table->tfrow()->pagePanel($paginator, null, array('baseUrl' => $this->baseUrl));
     }
 
     /**
-     * Creates from the model a \MUtil_Html_TableElement that can display multiple items.
+     * Creates from the model a \MUtil\Html\TableElement that can display multiple items.
      *
      * Allows overruling
      *
-     * @param \MUtil_Model_ModelAbstract $model
-     * @return \MUtil_Html_TableElement
+     * @param \MUtil\Model\ModelAbstract $model
+     * @return \MUtil\Html\TableElement
      */
-    public function getBrowseTable(\MUtil_Model_ModelAbstract $model)
+    public function getBrowseTable(\MUtil\Model\ModelAbstract $model)
     {
         $bridge = $model->getBridgeFor('table');
 
@@ -177,7 +179,7 @@ abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_
      * This is a stub function either override getHtmlOutput() or override render()
      *
      * @param \Zend_View_Abstract $view Just in case it is needed here
-     * @return \MUtil_Html_HtmlInterface Something that can be rendered
+     * @return \MUtil\Html\HtmlInterface Something that can be rendered
      */
     public function getHtmlOutput(\Zend_View_Abstract $view)
     {
@@ -193,9 +195,9 @@ abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_
                 $paginator = $model->loadPaginator();
                 $table->setRepeater($paginator);
                 $this->addPaginator($table, $paginator);
-            } elseif ($this->bridgeMode === \MUtil_Model_Bridge_BridgeAbstract::MODE_LAZY) {
+            } elseif ($this->bridgeMode === \MUtil\Model\Bridge\BridgeAbstract::MODE_LAZY) {
                 $table->setRepeater($model->loadRepeatable());
-            } elseif ($this->bridgeMode === \MUtil_Model_Bridge_BridgeAbstract::MODE_SINGLE_ROW) {
+            } elseif ($this->bridgeMode === \MUtil\Model\Bridge\BridgeAbstract::MODE_SINGLE_ROW) {
                 $table->setRepeater(array($model->loadFirst()));
             } else {
                 $table->setRepeater($model->load());
@@ -208,9 +210,9 @@ abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_
     /**
      * Overrule to implement snippet specific filtering and sorting.
      *
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $model
      */
-    protected function processFilterAndSort(\MUtil_Model_ModelAbstract $model)
+    protected function processFilterAndSort(\MUtil\Model\ModelAbstract $model)
     {
         parent::processFilterAndSort($model);
 
@@ -219,8 +221,8 @@ abstract class MUtil_Snippets_ModelTableSnippetAbstract extends \MUtil_Snippets_
         $queryParams = $this->requestInfo->getRequestQueryParams();
         if (isset($queryParams[$textKey])) {
             $searchText = $queryParams[$textKey];
-            // \MUtil_Echo::r($textKey . '[' . $searchText . ']');
-            $this->_marker = new \MUtil_Html_Marker($model->getTextSearches($searchText), 'strong', 'UTF-8');
+            // \MUtil\EchoOut\EchoOut::r($textKey . '[' . $searchText . ']');
+            $this->_marker = new \MUtil\Html\Marker($model->getTextSearches($searchText), 'strong', 'UTF-8');
 
             foreach ($model->getItemNames() as $name) {
                 if ($model->get($name, 'label') && (!$model->is($name, 'no_text_search', true))) {

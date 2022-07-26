@@ -7,30 +7,6 @@ use MUtilTest\Test\ZendDbMigrateFromTestSql;
 use MUtilTest\Test\ZendDbTestCase;
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -38,7 +14,6 @@ use MUtilTest\Test\ZendDbTestCase;
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
 
 /**
@@ -57,21 +32,21 @@ class NestedModelTest extends ZendDbTestCase
 
     /**
      *
-     * @var \MUtil_Model_TableModel
+     * @var \MUtil\Model\TableModel
      */
     private $_nestedModel;
 
     /**
      * Create the model
      *
-     * @return \MUtil_Model_ModelAbstract
+     * @return \MUtil\Model\ModelAbstract
      */
     protected function getNestedModel()
     {
         if (! $this->_nestedModel) {
-            $this->_nestedModel = new \MUtil_Model_TableModel('n1');
+            $this->_nestedModel = new \MUtil\Model\TableModel('n1');
 
-            $sub = new \MUtil_Model_TableModel('n2');
+            $sub = new \MUtil\Model\TableModel('n2');
 
             $this->_nestedModel->addModel($sub, array('id' => 'pid'));
         }
@@ -83,9 +58,9 @@ class NestedModelTest extends ZendDbTestCase
     {
         $this->insertFixtures([NestedModelFixtures::class]);
 
-        $main = new \MUtil_Model_TableModel('n1');
-        $sub = new \MUtil_Model_TableModel('n2');
-        $transformer = new \MUtil_Model_Transform_JoinTransformer();
+        $main = new \MUtil\Model\TableModel('n1');
+        $sub = new \MUtil\Model\TableModel('n2');
+        $transformer = new \MUtil\Model\Transform\JoinTransformer();
         $transformer->addModel($sub, array('id' => 'pid'));
 
         $main->addTransformer($transformer);
@@ -109,7 +84,7 @@ class NestedModelTest extends ZendDbTestCase
         $this->assertCount(0, $rows[1]['n2']);
         $this->assertCount(3, $rows[2]['n2']);
 
-        $model = new \MUtil_Model_TableModel('n2');
+        $model = new \MUtil\Model\TableModel('n2');
         $rows  = $model->load();
         $this->assertCount(5, $rows);
     }

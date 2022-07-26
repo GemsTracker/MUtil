@@ -21,7 +21,7 @@ namespace MUtil\Model\Dependency;
  * @license    New BSD License
  * @since      Class available since version 1.5
  */
-abstract class DependencyAbstract extends \MUtil_Translate_TranslateableAbstract implements DependencyInterface
+abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract implements DependencyInterface
 {
     /**
      * Array of setting => setting of setting changed by this dependency
@@ -95,7 +95,7 @@ abstract class DependencyAbstract extends \MUtil_Translate_TranslateableAbstract
      */
     public function addDependsOn($dependsOn)
     {
-        $dependsOn = \MUtil_Ra::flatten(func_get_args());
+        $dependsOn = \MUtil\Ra::flatten(func_get_args());
 
         foreach ($dependsOn as $dependOn) {
             $this->_dependentOn[$dependOn] = $dependOn;
@@ -119,7 +119,7 @@ abstract class DependencyAbstract extends \MUtil_Translate_TranslateableAbstract
         if ($effectedSettings) {
             foreach ((array) $effectedSettings as $setting) {
                 if (is_array($setting)) {
-                    \MUtil_Echo::track($setting);
+                    \MUtil\EchoOut\EchoOut::track($setting);
                 }
                 $this->_effecteds[$effectedField][$setting] = $setting;
             }
@@ -154,9 +154,9 @@ abstract class DependencyAbstract extends \MUtil_Translate_TranslateableAbstract
     /**
      * Use this function for a default application of this dependency to the model
      *
-     * @param \MUtil_Model_ModelAbstract $model Try not to store the model as variabe in the dependency (keep it simple)
+     * @param \MUtil\Model\ModelAbstract $model Try not to store the model as variabe in the dependency (keep it simple)
      */
-    public function applyToModel(\MUtil_Model_ModelAbstract $model)
+    public function applyToModel(\MUtil\Model\ModelAbstract $model)
     {
         if ($this->applyOnChange) {
             foreach ($this->getDependsOn() as $name) {

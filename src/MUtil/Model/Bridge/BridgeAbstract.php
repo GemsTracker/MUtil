@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Model\Bridge;
+
 use MUtil\Model\Bridge\LazyBridgeFormat;
 
 /**
@@ -20,8 +22,8 @@ use MUtil\Model\Bridge\LazyBridgeFormat;
  * @license    New BSD License
  * @since      Class available since 2014 $(date} 22:00:02
  */
-abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_TranslateableAbstract
-    implements \MUtil_Model_Bridge_BridgeInterface
+abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
+    implements \MUtil\Model\Bridge\BridgeInterface
 {
     /**
      * Mode when all output is lazy until rendering
@@ -40,7 +42,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
 
     /**
      *
-     * @var \MUtil_Model_Bridge_BridgeAbstract
+     * @var \MUtil\Model\Bridge\BridgeAbstract
      */
     protected $_chainedBridge;
 
@@ -61,7 +63,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
     /**
      * A lazy repeater
      *
-     * @var \MUtil_Lazy_RepeatableInterface
+     * @var \MUtil\Lazy\RepeatableInterface
      */
     protected $_repeater;
 
@@ -74,7 +76,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
 
     /**
      *
-     * @var \MUtil_Model_ModelAbstract
+     * @var \MUtil\Model\ModelAbstract
      */
     protected $model;
 
@@ -84,9 +86,9 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      * Extra parameters can be added in subclasses, but the first parameter
      * must remain the model.
      *
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $model
      */
-    public function __construct(\MUtil_Model_ModelAbstract $model)
+    public function __construct(\MUtil\Model\ModelAbstract $model)
     {
         $this->setModel($model);
     }
@@ -97,7 +99,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      *
      * @param string $name The field name or key name
      * @return mixed Lazy unless in single row mode
-     * @throws \MUtil_Model_ModelException
+     * @throws \MUtil\Model\ModelException
      */
     public function __get($name)
     {
@@ -110,7 +112,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      * @param string $name The field name or key name
      * @param boolean $throwError By default we throw an error until rendering
      * @return string The real name and not e.g. the key id
-     * @throws \MUtil_Model_ModelException
+     * @throws \MUtil\Model\ModelException
      */
     protected function _checkName($name, $throwError = true)
     {
@@ -124,7 +126,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
         }
 
         if ($throwError) {
-            throw new \MUtil_Model_ModelException(
+            throw new \MUtil\Model\ModelException(
                     sprintf('Request for unknown item %s from model %s.', $name, $this->model->getName())
                     );
         }
@@ -190,7 +192,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      *
      * @param string $name The field name or key name
      * @return mixed Lazy unless in single row mode
-     * @throws \MUtil_Model_ModelException
+     * @throws \MUtil\Model\ModelException
      */
     public function getFormatted($name)
     {
@@ -220,14 +222,14 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      * Return the lazy value without any processing.
      *
      * @param string $name The field name or key name
-     * @return \MUtil_Lazy_Call
+     * @return \MUtil\Lazy\Call
      */
     public function getLazy($name)
     {
         // Make sure data is loaded
         $this->model->get($name);
 
-        return \MUtil_Lazy::call(array($this, 'getLazyValue'), $name);
+        return \MUtil\Lazy::call(array($this, 'getLazyValue'), $name);
     }
 
     /**
@@ -262,7 +264,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
 
     /**
      *
-     * @return \MUtil_Model_ModelAbstract
+     * @return \MUtil\Model\ModelAbstract
      */
     public function getModel()
     {
@@ -272,7 +274,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
     /**
      * Get the repeater source for the lazy data
      *
-     * @return \MUtil_Lazy_RepeatableInterface
+     * @return \MUtil\Lazy\RepeatableInterface
      */
     public function getRepeater()
     {
@@ -291,7 +293,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      * Switch to single row mode and return that row.
      *
      * @return array or false when no row was found
-     * @throws \MUtil_Model_ModelException
+     * @throws \MUtil\Model\ModelException
      */
     public function getRow()
     {
@@ -308,7 +310,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      * Switch to multi rows mode and return that the rows.
      *
      * @return array Nested or empty when no rows were found
-     * @throws \MUtil_Model_ModelException
+     * @throws \MUtil\Model\ModelException
      */
     public function getRows()
     {
@@ -360,7 +362,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      */
     public function hasRepeater()
     {
-        return $this->_repeater instanceof \MUtil_Lazy_RepeatableInterface ||
+        return $this->_repeater instanceof \MUtil\Lazy\RepeatableInterface ||
                 ($this->_chainedBridge && $this->_chainedBridge->hasRepeater());
     }
 
@@ -368,8 +370,8 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      * Set the mode to one of Lazy (works with any other mode), one single row or multi row mode.
      *
      * @param int $mode On of the MODE_ constants
-     * @return \MUtil_Model_Format_DisplayFormatter (continuation pattern)
-     * @throws \MUtil_Model_ModelException The mode can only be set once
+     * @return \MUtil\Model_Format_DisplayFormatter (continuation pattern)
+     * @throws \MUtil\Model\ModelException The mode can only be set once
      */
     public function setMode($mode)
     {
@@ -383,7 +385,7 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
             return $this;
         }
 
-        throw new \MUtil_Model_ModelException("Illegal bridge mode set after mode had already been set.");
+        throw new \MUtil\Model\ModelException("Illegal bridge mode set after mode had already been set.");
     }
 
     /**
@@ -391,10 +393,10 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      *
      * This method exist to allow overruling in implementation classes
      *
-     * @param \MUtil_Model_ModelAbstract $model
-     * @return \MUtil_Model_Bridge_BridgeAbstract (continuation pattern)
+     * @param \MUtil\Model\ModelAbstract $model
+     * @return \MUtil\Model\Bridge\BridgeAbstract (continuation pattern)
      */
-    public function setModel(\MUtil_Model_ModelAbstract $model)
+    public function setModel(\MUtil\Model\ModelAbstract $model)
     {
         $this->model = $model;
 
@@ -404,13 +406,13 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
     /**
      * Set the repeater source for the lazy data
      *
-     * @param mixed $repeater \MUtil_Lazy_RepeatableInterface or something that can be made into one.
-     * @return \MUtil_Model_Format_DisplayFormatter (continuation pattern)
+     * @param mixed $repeater \MUtil\Lazy\RepeatableInterface or something that can be made into one.
+     * @return \MUtil\Model_Format_DisplayFormatter (continuation pattern)
      */
     public function setRepeater($repeater)
     {
-        if (! $repeater instanceof \MUtil_Lazy_RepeatableInterface) {
-            $repeater = new \MUtil_Lazy_Repeatable($repeater);
+        if (! $repeater instanceof \MUtil\Lazy\RepeatableInterface) {
+            $repeater = new \MUtil\Lazy\Repeatable($repeater);
         }
         $this->_repeater = $repeater;
         if ($this->_chainedBridge) {
@@ -424,8 +426,8 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      * Switch to single row mode and set that row.
      *
      * @param array $row Or load from model
-     * @return \MUtil_Model_Format_DisplayFormatter (continuation pattern)
-     * @throws \MUtil_Model_ModelException
+     * @return \MUtil\Model_Format_DisplayFormatter (continuation pattern)
+     * @throws \MUtil\Model\ModelException
      */
     public function setRow(array $row = null)
     {
@@ -456,8 +458,8 @@ abstract class MUtil_Model_Bridge_BridgeAbstract extends \MUtil_Translate_Transl
      * Switch to multi rows mode and set those rows.
      *
      * @param array $rows Or load from model
-     * @return \MUtil_Model_Format_DisplayFormatter (continuation pattern)
-     * @throws \MUtil_Model_ModelException
+     * @return \MUtil\Model_Format_DisplayFormatter (continuation pattern)
+     * @throws \MUtil\Model\ModelException
      */
     public function setRows(array $rows = null)
     {

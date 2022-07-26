@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Task\File;
+
 /**
  *
  *
@@ -16,9 +18,9 @@
  * @subpackage Task
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.3
+ * @since      Class available since \MUtil version 1.3
  */
-class MUtil_Task_File_CopyFileWhenTask extends \MUtil_Task_TaskAbstract
+class CopyFileWhenTask extends \MUtil\Task\TaskAbstract
 {
     /**
      * Should handle execution of the task, taking as much (optional) parameters as needed
@@ -53,7 +55,7 @@ class MUtil_Task_File_CopyFileWhenTask extends \MUtil_Task_TaskAbstract
         if (is_dir($destination)) {
             $destination = $destination . DIRECTORY_SEPARATOR . basename($file);
         }
-        \MUtil_File::ensureDir(dirname($destination));
+        \MUtil\File::ensureDir(dirname($destination));
 
         if (@copy($file, $destination)) {
             $batch->addMessage(sprintf($this->_('Copied file to "%s".'), basename($destination)));

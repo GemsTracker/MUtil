@@ -32,7 +32,7 @@ class Rewrite extends \Zend_Controller_Router_Rewrite
      *
      * Module name, controller name and action name
      *
-     * @param Zend_Controller_Request_Abstract $request
+     * @param \Zend_Controller_Request_Abstract $request
      * @param array                            $params
      */
     protected function _setRequestParams($request, $params)

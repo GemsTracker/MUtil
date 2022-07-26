@@ -12,7 +12,7 @@ namespace MUtil\Model\Iterator;
 /**
  * ArrayIteratorTellable
  *
- * This is needed for the ArrayIterator that is does not retain
+ * This is needed for the \ArrayIterator that is does not retain
  * its position after serialization.
  *
  * @package    MUtil

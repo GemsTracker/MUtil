@@ -36,7 +36,7 @@ class ArrayIteratorTest extends TestCase
     }
 
     /**
-     * If this test fails, the normal ArrayIterator retains it's position
+     * If this test fails, the normal \ArrayIterator retains it's position
      * after serialization and then we can remove our own extension
      */
     public function testBasicArrayIterator()
@@ -69,9 +69,9 @@ class ArrayIteratorTest extends TestCase
         $actual = $newIterator->current();
         try {
             $this->assertEquals($expected, $actual);
-            $this->markTestSkipped("Current PHP version " . phpversion() . " handles serializing ArrayIterator correct\n");
+            $this->markTestSkipped("Current PHP version " . phpversion() . " handles serializing \ArrayIterator correct\n");
         } catch (\PHPUnit_Framework_ExpectationFailedException $exc) {
-            $this->markTestSkipped("Current PHP version " . phpversion() . " does not handle serializing ArrayIterator correct, keep using ArrayIteratorTellable\n");
+            $this->markTestSkipped("Current PHP version " . phpversion() . " does not handle serializing \ArrayIterator correct, keep using ArrayIteratorTellable\n");
         }        
     }
 

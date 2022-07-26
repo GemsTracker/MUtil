@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Controller\Action\Helper;
+
 /**
  * An extension to Zend Flashmessenger to allow for status updates in a flash message.
  * Each Message will be shown as a seperate message. You can group Messages in one status by passing it as an Array.
@@ -18,7 +20,7 @@
  * @copyright  Copyright (c) 2014 Erasmus MC
  * @license    New BSD License
  */
-class MUtil_Controller_Action_Helper_FlashMessenger extends \Zend_Controller_Action_Helper_FlashMessenger
+class FlashMessenger extends \Zend_Controller_Action_Helper_FlashMessenger
 {
 	/**
 	 * @var string The default status, if no status has been set.
@@ -75,7 +77,7 @@ class MUtil_Controller_Action_Helper_FlashMessenger extends \Zend_Controller_Act
             $output[] = $message;
         }
 
-        return \MUtil_Ra::flatten($output);
+        return \MUtil\Ra::flatten($output);
     }
 
     /**
@@ -96,8 +98,8 @@ class MUtil_Controller_Action_Helper_FlashMessenger extends \Zend_Controller_Act
 
 
         if ($messages) {
-            $errorContainer = \MUtil_Html::create()->div(array('class' => 'errors'));
-            $errorClose = \MUtil_Html::create()->button(array('type' => 'button','class' => 'close', 'data-dismiss' => 'alert'));
+            $errorContainer = \MUtil\Html::create()->div(array('class' => 'errors'));
+            $errorClose = \MUtil\Html::create()->button(array('type' => 'button','class' => 'close', 'data-dismiss' => 'alert'));
             $errorClose->raw('&times;');
 
             foreach ($messages as $message) {
@@ -113,7 +115,7 @@ class MUtil_Controller_Action_Helper_FlashMessenger extends \Zend_Controller_Act
                     if (is_array($message)) {
                         // Use array_values to remove string keys (as those are interpreted
                         // as attributes
-                    	$message = \MUtil_Html::create()->ul(array_values($message));
+                    	$message = \MUtil\Html::create()->ul(array_values($message));
                     }
                 }
 

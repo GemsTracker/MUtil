@@ -9,7 +9,7 @@ class ModelTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->model = $this->getMockForAbstractClass('MUtil_Model_ModelAbstract', ['testAbstractModel']);
+        $this->model = $this->getMockForAbstractClass('\\MUtil\\Model\\ModelAbstract', ['testAbstractModel']);
     }
        
     /**

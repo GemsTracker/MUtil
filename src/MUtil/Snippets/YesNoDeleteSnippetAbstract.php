@@ -18,9 +18,9 @@ namespace MUtil\Snippets;
  * @subpackage YesNoDeleteSnippet
  * @copyright  Copyright (c) 2016 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.8.2 Sep 7, 2016 5:39:53 PM
+ * @since      Class available since \MUtil version 1.8.2 Sep 7, 2016 5:39:53 PM
  */
-abstract class YesNoDeleteSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
+abstract class YesNoDeleteSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
 {
     /**
      * The controller to go to when the user clicks 'No'.
@@ -113,7 +113,7 @@ abstract class YesNoDeleteSnippetAbstract extends \MUtil_Snippets_SnippetAbstrac
      * This is a stub function either override getHtmlOutput() or override render()
      *
      * @param \Zend_View_Abstract $view Just in case it is needed here
-     * @return \MUtil_Html_HtmlInterface Something that can be rendered
+     * @return \MUtil\Html\HtmlInterface Something that can be rendered
      */
     public function getHtmlOutput(\Zend_View_Abstract $view)
     {
@@ -175,7 +175,7 @@ abstract class YesNoDeleteSnippetAbstract extends \MUtil_Snippets_SnippetAbstrac
      * When invalid data should result in an error, you can throw it
      * here but you can also perform the check in the
      * checkRegistryRequestsAnswers() function from the
-     * {@see \MUtil_Registry_TargetInterface}.
+     * {@see \MUtil\Registry\TargetInterface}.
      *
      * @return boolean
      */

@@ -9,13 +9,15 @@
  * @license    New BSD License
  */
 
+namespace MUtil;
+
 /**
  * A model combines knowedge about a set of data with knowledge required to manipulate
  * that set of data. I.e. it can store data about fields such as type, label, length,
  * etc... and meta data about the object like the current query filter and sort order,
  * with manipulation methods like save(), load(), loadNew() and delete().
  *
- * @see \MUtil_Model_ModelAbstract
+ * @see \MUtil\Model\ModelAbstract
  *
  * @package    MUtil
  * @subpackage Model
@@ -23,7 +25,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Model
+class Model
 {
     /**
      * Url parameter to reset searches
@@ -126,7 +128,7 @@ class MUtil_Model
 
     /**
      *
-     * @var array of \MUtil_Loader_PluginLoader
+     * @var array of \MUtil\Loader\PluginLoader
      */
     private static $_loaders = array();
 
@@ -138,20 +140,20 @@ class MUtil_Model
 
     /**
      *
-     * @var \MUtil_Registry_SourceInterface
+     * @var \MUtil\Registry\SourceInterface
      */
     private static $_source;
 
     /**
      * Static variable for debuggging purposes. Toggles the echoing of e.g. of sql
-     * select statements, using \MUtil_Echo.
+     * select statements, using \MUtil\EchoOut\EchoOut.
      *
      * Implemention classes can use this variable to determine whether to display
      * extra debugging information or not. Please be considerate in what you display:
      * be as succint as possible.
      *
      * Use:
-     *     \MUtil_Model::$verbose = true;
+     *     \MUtil\Model::$verbose = true;
      * to enable.
      *
      * @var boolean $verbose If true echo retrieval statements.
@@ -170,7 +172,7 @@ class MUtil_Model
             self::$_nameSpaces[] = $nameSpace;
 
             foreach (self::$_loaders as $subClass => $loader) {
-                if ($loader instanceof \MUtil_Loader_PluginLoader) {
+                if ($loader instanceof \MUtil\Loader\PluginLoader) {
                     $loader->addPrefixPath(
                             $nameSpace . '_Model_' . $subClass,
                             $nameSpace . DIRECTORY_SEPARATOR . 'Model' . DIRECTORY_SEPARATOR . $subClass);
@@ -184,7 +186,7 @@ class MUtil_Model
     /**
      * Returns the plugin loader for bridges
      *
-     * @return \MUtil_Loader_PluginLoader
+     * @return \MUtil\Loader\PluginLoader
      */
     public static function getBridgeLoader()
     {
@@ -205,7 +207,7 @@ class MUtil_Model
     /**
      * Returns the plugin loader for dependencies
      *
-     * @return \MUtil_Loader_PluginLoader
+     * @return \MUtil\Loader\PluginLoader
      */
     public static function getDependencyLoader()
     {
@@ -216,12 +218,12 @@ class MUtil_Model
      * Returns a subClass plugin loader
      *
      * @param string $prefix The prefix to load the loader for. Is CamelCased and should not contain an '_', '/' or '\'.
-     * @return \MUtil_Loader_PluginLoader
+     * @return \MUtil\Loader\PluginLoader
      */
     public static function getLoader($prefix)
     {
         if (! isset(self::$_loaders[$prefix])) {
-            $loader = new \MUtil_Loader_SourcePluginLoader();
+            $loader = new \MUtil\Loader\SourcePluginLoader();
             
             foreach (self::$_nameSpaces as $nameSpace) {
                 $loader->addPrefixPath(
@@ -241,12 +243,12 @@ class MUtil_Model
     /**
      * Get or create the current source
      *
-     * @return \MUtil_Registry_SourceInterface
+     * @return \MUtil\Registry\SourceInterface
      */
     public static function getSource()
     {
-        if (! self::$_source instanceof \MUtil_Registry_SourceInterface) {
-            self::setSource(new \MUtil_Registry_Source());
+        if (! self::$_source instanceof \MUtil\Registry\SourceInterface) {
+            self::setSource(new \MUtil\Registry\Source());
         }
 
         return self::$_source;
@@ -259,15 +261,15 @@ class MUtil_Model
      */
     public static function hasSource()
     {
-        return self::$_source instanceof \MUtil_Registry_SourceInterface;
+        return self::$_source instanceof \MUtil\Registry\SourceInterface;
     }
 
     /**
      * Sets the plugin loader for bridges
      *
-     * @param \MUtil_Loader_PluginLoader $loader
+     * @param \MUtil\Loader\PluginLoader $loader
      */
-    public static function setBridgeLoader(\MUtil_Loader_PluginLoader $loader)
+    public static function setBridgeLoader(\MUtil\Loader\PluginLoader $loader)
     {
         self::setLoader($loader, 'Bridge');
     }
@@ -275,9 +277,9 @@ class MUtil_Model
     /**
      * Sets the plugin loader for dependencies
      *
-     * @param \MUtil_Loader_PluginLoader $loader
+     * @param \MUtil\Loader\PluginLoader $loader
      */
-    public static function setDependencyLoader(\MUtil_Loader_PluginLoader $loader)
+    public static function setDependencyLoader(\MUtil\Loader\PluginLoader $loader)
     {
         self::setLoader($loader, 'Dependency');
     }
@@ -285,10 +287,10 @@ class MUtil_Model
     /**
      * Sets the plugin loader for a subclass
      *
-     * @param \MUtil_Loader_PluginLoader $loader
+     * @param \MUtil\Loader\PluginLoader $loader
      * @param string $prefix The prefix to set  the loader for. Is CamelCased and should not contain an '_', '/' or '\'.
      */
-    public static function setLoader(\MUtil_Loader_PluginLoader $loader, $prefix)
+    public static function setLoader(\MUtil\Loader\PluginLoader $loader, $prefix)
     {
         self::$_loaders[$prefix] = $loader;
     }
@@ -296,17 +298,17 @@ class MUtil_Model
     /**
      * Set the current source for loaders
      *
-     * @param \MUtil_Registry_SourceInterface $source
+     * @param \MUtil\Registry\SourceInterface $source
      * @param boolean $setExisting When true the source is set for all exiting loaders
      * @return void
      */
-    public static function setSource(\MUtil_Registry_SourceInterface $source, $setExisting = true)
+    public static function setSource(\MUtil\Registry\SourceInterface $source, $setExisting = true)
     {
         self::$_source = $source;
 
         if ($setExisting) {
             foreach (self::$_loaders as $loader) {
-                if ($loader instanceof \MUtil_Loader_SourcePluginLoader) {
+                if ($loader instanceof \MUtil\Loader\SourcePluginLoader) {
                     $loader->setSource($source);
                 }
             }

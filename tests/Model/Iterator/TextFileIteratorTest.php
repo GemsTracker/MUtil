@@ -28,18 +28,18 @@ class TextFileIteratorTest extends TestCase
      * @param string $filename
      * @param string $split
      * @param string $encoding
-     * @return \MUtil_Model_Iterator_TextFileIterator
+     * @return \MUtil\Model\Iterator\TextFileIterator
      */
-    protected function getIterator(string $filename, string $split = ',', string $encoding = ''): \MUtil_Model_Iterator_TextFileIterator
+    protected function getIterator(string $filename, string $split = ',', string $encoding = ''): \MUtil\Model\Iterator\TextFileIterator
     {
-        $splitObject = new \MUtil_Model_Iterator_TextLineSplitter($split, $encoding);
+        $splitObject = new \MUtil\Model\Iterator\TextLineSplitter($split, $encoding);
         if ($encoding) {
             $splitFunc = array($splitObject, 'splitRecoded');
         } else {
             $splitFunc = array($splitObject, 'split');
         }
 
-        $iterator = new \MUtil_Model_Iterator_TextFileIterator($filename, $splitFunc);
+        $iterator = new \MUtil\Model\Iterator\TextFileIterator($filename, $splitFunc);
 
         return $iterator;
     }

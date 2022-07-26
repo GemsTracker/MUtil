@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2013, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @version    $Id: StackAbstract.php 2394 2015-01-15 14:30:10Z matijsdejong $
  */
+
+namespace MUtil\Batch\Stack;
 
 /**
  *
@@ -41,14 +18,14 @@
  * @subpackage Batch
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.3
+ * @since      Class available since \MUtil version 1.3
  */
-abstract class MUtil_Batch_Stack_StackAbstract implements \MUtil_Batch_Stack_Stackinterface
+abstract class StackAbstract implements \MUtil\Batch\Stack\Stackinterface
 {
     /**
      * The classes allowed in the stack
      *
-     * @var \MUtil_Util_ClassList
+     * @var \MUtil\Util\ClassList
      */
     protected $_allowedClasses;
 
@@ -63,26 +40,26 @@ abstract class MUtil_Batch_Stack_StackAbstract implements \MUtil_Batch_Stack_Sta
 
     protected function _checkParams(array $params)
     {
-        $checks = \MUtil_Ra::nonScalars($params);
+        $checks = \MUtil\Ra::nonScalars($params);
         if ($this->_allowedClasses) {
-            $checks = \MUtil_Ra::nonScalars($params);
+            $checks = \MUtil\Ra::nonScalars($params);
             if (is_array($checks)) {
                 foreach ($checks as $object) {
                     if (! $this->_allowedClasses->get($object)) {
                         $name   = get_class($object);
                         $method = reset($params);
-                        throw new \MUtil_Batch_BatchException("Not allowed batch class $name parameter for method: '$method'.");
+                        throw new \MUtil\Batch\BatchException("Not allowed batch class $name parameter for method: '$method'.");
                     }
                 }
             }
 
-        } elseif (! \MUtil_Ra::isScalar($params)) {
-            $checks = \MUtil_Ra::nonScalars($params);
+        } elseif (! \MUtil\Ra::isScalar($params)) {
+            $checks = \MUtil\Ra::nonScalars($params);
             if (is_array($checks)) {
                 $object = reset($checks);
                 $name   = get_class($object);
                 $method = reset($params);
-                throw new \MUtil_Batch_BatchException("Not allowed batch class $name parameter for method: '$method'.");
+                throw new \MUtil\Batch\BatchException("Not allowed batch class $name parameter for method: '$method'.");
             }
         }
     }
@@ -95,7 +72,7 @@ abstract class MUtil_Batch_Stack_StackAbstract implements \MUtil_Batch_Stack_Sta
     protected function _ensureAllowedClassList()
     {
         if (! $this->_allowedClasses) {
-            $this->_allowedClasses = new \MUtil_Util_ClassList();
+            $this->_allowedClasses = new \MUtil\Util\ClassList();
         }
     }
 
@@ -123,7 +100,7 @@ abstract class MUtil_Batch_Stack_StackAbstract implements \MUtil_Batch_Stack_Sta
     /**
      * Run the next command
      *
-     * @param mixed $batch Should be \MUtil_Batch_BatchAbstract but could be changed in implementations
+     * @param mixed $batch Should be \MUtil\Batch\BatchAbstract but could be changed in implementations
      * @return void
      */
     // public function gotoNext($batch);
@@ -139,7 +116,7 @@ abstract class MUtil_Batch_Stack_StackAbstract implements \MUtil_Batch_Stack_Sta
      * Register a class as being allowed in the stack
      *
      * @param string $className
-     * @return \MUtil_Batch_Stack_StackAbstract (continuation pattern)
+     * @return \MUtil\Batch\Stack\StackAbstract (continuation pattern)
      */
     public function registerAllowedClass($className)
     {
@@ -157,7 +134,7 @@ abstract class MUtil_Batch_Stack_StackAbstract implements \MUtil_Batch_Stack_Sta
     /**
      * Reset the stack
      *
-     * @return \MUtil_Batch_Stack_Stackinterface (continuation pattern)
+     * @return \MUtil\Batch\Stack\Stackinterface (continuation pattern)
      */
     // public function reset()
 

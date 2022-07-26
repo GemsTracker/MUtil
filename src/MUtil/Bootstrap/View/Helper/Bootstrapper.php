@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Bootstrap\View\Helper;
+
 use MUtil\Javascript;
 
 /**
@@ -19,7 +21,7 @@ use MUtil\Javascript;
  * @license    New BSD License
  * @since      Class available since version 1.5
  */
-class MUtil_Bootstrap_View_Helper_Bootstrapper
+class Bootstrapper
 {
     protected $_bootstrapScriptPath;
 
@@ -39,8 +41,8 @@ class MUtil_Bootstrap_View_Helper_Bootstrapper
      *
      * @var String
      */
-    protected $_version = \MUtil_Bootstrap::DEFAULT_BOOTSTRAP_VERSION;
-    protected $_fontawesomeVersion = \MUtil_Bootstrap::DEFAULT_FONTAWESOME_VERSION;
+    protected $_version = \MUtil\Bootstrap::DEFAULT_BOOTSTRAP_VERSION;
+    protected $_fontawesomeVersion = \MUtil\Bootstrap::DEFAULT_FONTAWESOME_VERSION;
 
     /**
      * View Instance
@@ -51,8 +53,8 @@ class MUtil_Bootstrap_View_Helper_Bootstrapper
 
     protected function _getBootstrapCdnPath()
     {
-        $protocol = Zend_Controller_Front::getInstance()->getRequest()->isSecure() ? 'https:' : 'http:';
-        return $protocol . \MUtil_Bootstrap::CDN_BASE;
+        $protocol = \Zend_Controller_Front::getInstance()->getRequest()->isSecure() ? 'https:' : 'http:';
+        return $protocol . \MUtil\Bootstrap::CDN_BASE;
     }
 
     /**
@@ -68,7 +70,7 @@ class MUtil_Bootstrap_View_Helper_Bootstrapper
             $baseUri = $this->_getBootstrapCdnPath();
             $source  = $baseUri
                      . $this->getVersion()
-                     . \MUtil_Bootstrap::CDN_JS;
+                     . \MUtil\Bootstrap::CDN_JS;
         }
 
         return $source;
@@ -76,8 +78,8 @@ class MUtil_Bootstrap_View_Helper_Bootstrapper
 
     protected function _getFontAwesomeCdnPath()
     {
-        $protocol = Zend_Controller_Front::getInstance()->getRequest()->isSecure() ? 'https:' : 'http:';
-        return $protocol . \MUtil_Bootstrap::CDN_FONTAWESOME_BASE;
+        $protocol = \Zend_Controller_Front::getInstance()->getRequest()->isSecure() ? 'https:' : 'http:';
+        return $protocol . \MUtil\Bootstrap::CDN_FONTAWESOME_BASE;
     }
 
     /**
@@ -93,7 +95,7 @@ class MUtil_Bootstrap_View_Helper_Bootstrapper
             $baseUri = $this->_getBootstrapCdnPath();
             $source  = $baseUri
                      . $this->getVersion()
-                     . \MUtil_Bootstrap::CDN_CSS;
+                     . \MUtil\Bootstrap::CDN_CSS;
         }
 
         return $source;
@@ -107,7 +109,7 @@ class MUtil_Bootstrap_View_Helper_Bootstrapper
             $baseUri = $this->_getFontAwesomeCdnPath();
             $source  = $baseUri
                      . $this->getFontAwesomeVersion()
-                     . \MUtil_Bootstrap::CDN_FONTAWESOME_CSS;
+                     . \MUtil\Bootstrap::CDN_FONTAWESOME_CSS;
         }
 
         return $source;
@@ -155,7 +157,7 @@ class MUtil_Bootstrap_View_Helper_Bootstrapper
         // disable the stylesheat loader for bootstrap now that it gets compiled with the style
         $style = ''; //'<link rel="stylesheet" href="'.$stylesheet.'" type="text/css" media="screen"' . $closingBracket . PHP_EOL;
 
-        if (\MUtil_Bootstrap::$fontawesome === true) {
+        if (\MUtil\Bootstrap::$fontawesome === true) {
             $fontawesomeStylesheet = $this->_getFontAwesomeStylesheet();
 
             $style .= '<link rel="stylesheet" href="'.$fontawesomeStylesheet.'" type="text/css"' . $closingBracket . PHP_EOL;
@@ -186,7 +188,7 @@ class MUtil_Bootstrap_View_Helper_Bootstrapper
      * Set Use SSL on CDN Flag
      *
      * @param bool $flag
-     * @return \MUtil_Bootstrap_View_Helper_Bootstrapper (continuation pattern)
+     * @return \MUtil\Bootstrap\View\Helper\Bootstrapper (continuation pattern)
      */
     public function setCdnSsl($flag)
     {
@@ -207,7 +209,7 @@ class MUtil_Bootstrap_View_Helper_Bootstrapper
      * Set view object
      *
      * @param  \Zend_View_Interface $view
-     * @return \MUtil_Bootstrap_View_Helper_Bootstrapper (continuation pattern)
+     * @return \MUtil\Bootstrap\View\Helper\Bootstrapper (continuation pattern)
      */
     public function setView(\Zend_View_Interface $view)
     {

@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2012, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2012 Erasmus MC
  * @license    New BSD License
- * @version    $Id: NestedTransformer.php 203 2012-01-01t 12:51:32Z matijs $
  */
+
+namespace MUtil\Model\Transform;
 
 /**
  * Transform that can be used to put nested submodels in a model
@@ -42,9 +19,9 @@
  * @subpackage Model
  * @copyright  Copyright (c) 2012 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.6.2
+ * @since      Class available since \MUtil version 1.6.2
  */
-class MUtil_Model_Transform_NestedTransformer extends \MUtil_Model_SubmodelTransformerAbstract
+class NestedTransformer extends \MUtil\Model\SubmodelTransformerAbstract
 {
     /**
      * Set to true when a submodel should not be saved
@@ -59,10 +36,10 @@ class MUtil_Model_Transform_NestedTransformer extends \MUtil_Model_SubmodelTrans
      * know which fields to add by then (optionally using the model
      * for that).
      *
-     * @param \MUtil_Model_ModelAbstract $model The parent model
+     * @param \MUtil\Model\ModelAbstract $model The parent model
      * @return array Of filedname => set() values
      */
-    public function getFieldInfo(\MUtil_Model_ModelAbstract $model)
+    public function getFieldInfo(\MUtil\Model\ModelAbstract $model)
     {
         $data = array();
         foreach ($this->_subModels as $sub) {
@@ -77,8 +54,8 @@ class MUtil_Model_Transform_NestedTransformer extends \MUtil_Model_SubmodelTrans
                     $data[$name]['elementClass'] = 'None';
 
                     // Remove the submodel's own transformers to prevent changed/created to show up in the data array instead of only in the nested info
-                    unset($data[$name][\MUtil_Model_ModelAbstract::LOAD_TRANSFORMER]);
-                    unset($data[$name][\MUtil_Model_ModelAbstract::SAVE_TRANSFORMER]);
+                    unset($data[$name][\MUtil\Model\ModelAbstract::LOAD_TRANSFORMER]);
+                    unset($data[$name][\MUtil\Model\ModelAbstract::SAVE_TRANSFORMER]);
                 }
             }
         }
@@ -88,8 +65,8 @@ class MUtil_Model_Transform_NestedTransformer extends \MUtil_Model_SubmodelTrans
     /**
      * Function to allow overruling of transform for certain models
      *
-     * @param \MUtil_Model_ModelAbstract $model Parent model
-     * @param \MUtil_Model_ModelAbstract $sub Sub model
+     * @param \MUtil\Model\ModelAbstract $model Parent model
+     * @param \MUtil\Model\ModelAbstract $sub Sub model
      * @param array $data The nested data rows
      * @param array $join The join array
      * @param string $name Name of sub model
@@ -97,7 +74,7 @@ class MUtil_Model_Transform_NestedTransformer extends \MUtil_Model_SubmodelTrans
      * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
      */
     protected function transformLoadSubModel(
-            \MUtil_Model_ModelAbstract $model, \MUtil_Model_ModelAbstract $sub, array &$data, array $join,
+            \MUtil\Model\ModelAbstract $model, \MUtil\Model\ModelAbstract $sub, array &$data, array $join,
             $name, $new, $isPostData)
     {
         foreach ($data as $key => $row) {
@@ -129,14 +106,14 @@ class MUtil_Model_Transform_NestedTransformer extends \MUtil_Model_SubmodelTrans
     /**
      * Function to allow overruling of transform for certain models
      *
-     * @param \MUtil_Model_ModelAbstract $model
-     * @param \MUtil_Model_ModelAbstract $sub
+     * @param \MUtil\Model\ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $sub
      * @param array $data
      * @param array $join
      * @param string $name
      */
     protected function transformSaveSubModel(
-            \MUtil_Model_ModelAbstract $model, \MUtil_Model_ModelAbstract $sub, array &$row, array $join, $name)
+            \MUtil\Model\ModelAbstract $model, \MUtil\Model\ModelAbstract $sub, array &$row, array $join, $name)
     {
         if ($this->skipSave) {
             return;
@@ -174,11 +151,11 @@ class MUtil_Model_Transform_NestedTransformer extends \MUtil_Model_SubmodelTrans
      * a) remove sorts from the main model that are not possible
      * b) add sorts that are required needed
      *
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $model
      * @param array $sort
      * @return array The (optionally changed) sort
      */
-    public function transformSort(\MUtil_Model_ModelAbstract $model, array $sort)
+    public function transformSort(\MUtil\Model\ModelAbstract $model, array $sort)
     {
         foreach ($this->_subModels as $sub) {
             foreach ($sort as $key => $value) {

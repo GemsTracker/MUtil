@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Model;
+
 /**
  * A model that takes any \Zend_Db_Select statement as a source
  *
@@ -18,7 +20,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Model_SelectModel extends \MUtil_Model_DatabaseModelAbstract
+class SelectModel extends \MUtil\Model\DatabaseModelAbstract
 {
     /**
      * Child classes may technically be able or not able to add extra rows,
@@ -98,7 +100,7 @@ class MUtil_Model_SelectModel extends \MUtil_Model_DatabaseModelAbstract
      * @param string|\Zend_Db_Expr $column
      * @param string $columnName
      * @param string $orignalColumn
-     * @return \MUtil_Model_DatabaseModelAbstract Provides a fluent interface
+     * @return \MUtil\Model\DatabaseModelAbstract Provides a fluent interface
      */
     public function addColumn($column, $columnName = null, $orignalColumn = null)
     {

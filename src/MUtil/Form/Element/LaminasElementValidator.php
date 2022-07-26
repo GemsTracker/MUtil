@@ -29,7 +29,7 @@ trait LaminasElementValidator
                 'options'             => $options,
             ];
         } else {
-            throw new \Zend_Form_Exception('Invalid validator provided to addValidator; must be string or Zend_Validate_Interface');
+            throw new \Zend_Form_Exception('Invalid validator provided to addValidator; must be string or \Zend_Validate_Interface');
         }
 
 

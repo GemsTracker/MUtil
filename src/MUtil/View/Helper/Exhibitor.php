@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\View\Helper;
+
 /**
  *
  * @package    MUtil
@@ -17,7 +19,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_View_Helper_Exhibitor extends \Zend_View_Helper_FormElement
+class Exhibitor extends \Zend_View_Helper_FormElement
 {
     /**
      * Generates a fake element that just displays the item with a hidden extra value field.
@@ -74,7 +76,7 @@ class MUtil_View_Helper_Exhibitor extends \Zend_View_Helper_FormElement
             $dateFormat    = $attribs['dateFormat'];
             $storageFormat = isset($attribs['storageFormat']) ? $attribs['storageFormat'] : null;
 
-            $result = \MUtil_Date::format($result, $dateFormat, $storageFormat);
+            $result = \MUtil\Date::format($result, $dateFormat, $storageFormat);
 
             if ($storageFormat && ($value instanceof \Zend_Date)) {
                 $value = $value->toString($storageFormat);
@@ -89,7 +91,7 @@ class MUtil_View_Helper_Exhibitor extends \Zend_View_Helper_FormElement
 
             } elseif (is_object($function)) {
 
-                if (($function instanceof \MUtil_Html_ElementInterface)
+                if (($function instanceof \MUtil\Html\ElementInterface)
                     || method_exists($function, 'append')) {
 
                     $object = clone $function;
@@ -100,11 +102,11 @@ class MUtil_View_Helper_Exhibitor extends \Zend_View_Helper_FormElement
             } elseif (is_string($function)) {
                 // Assume it is a html tag when a string
 
-                $result = \MUtil_Html::create($function, $result);
+                $result = \MUtil\Html::create($function, $result);
             }
         }
 
-        if ($result instanceof \MUtil_Html_HtmlInterface) {
+        if ($result instanceof \MUtil\Html\HtmlInterface) {
             $escape = false;    // Html should not be escaped!
             $result = $result->render($this->view);
         }

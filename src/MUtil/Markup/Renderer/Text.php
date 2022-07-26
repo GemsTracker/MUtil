@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Markup\Renderer;
+
 /**
  * Markup renderer that outputs the input as flat text.
  *
@@ -20,7 +22,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.1
  */
-class MUtil_Markup_Renderer_Text extends \Zend_Markup_Renderer_RendererAbstract
+class Text extends \Zend_Markup_Renderer_RendererAbstract
 {
     /**
      * Element groups
@@ -57,7 +59,7 @@ class MUtil_Markup_Renderer_Text extends \Zend_Markup_Renderer_RendererAbstract
         }
 
         $this->_pluginLoader = new \Zend_Loader_PluginLoader(array(
-            'MUtil_Markup_Renderer_Text' => 'MUtil/Markup/Renderer/Text/'
+            '\\MUtil\\Markup\\Renderer\\Text' => 'MUtil/Markup/Renderer/Text/'
         ));
 
         $this->_defineDefaultMarkups();
@@ -301,7 +303,7 @@ class MUtil_Markup_Renderer_Text extends \Zend_Markup_Renderer_RendererAbstract
     /**
      * Execute a replace token
      *
-     * @param  Zend_Markup_Token $token
+     * @param  \Zend_Markup_Token $token
      * @param  array $tag
      * @return string
      */
@@ -320,7 +322,7 @@ class MUtil_Markup_Renderer_Text extends \Zend_Markup_Renderer_RendererAbstract
     /**
      * Execute a single replace token
      *
-     * @param  Zend_Markup_Token $token
+     * @param  \Zend_Markup_Token $token
      * @param  array $tag
      * @return string
      */

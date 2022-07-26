@@ -9,12 +9,14 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Snippets;
+
 /**
  * Contains base functionality to use a model in a snippet.
  *
  * A snippet is a piece of html output that is reused on multiple places in the code.
  *
- * Variables are intialized using the {@see \MUtil_Registry_TargetInterface} mechanism.
+ * Variables are intialized using the {@see \MUtil\Registry\TargetInterface} mechanism.
  * Description of ModelSnippet
  *
  * @package    MUtil
@@ -23,7 +25,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.1
  */
-abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
+abstract class ModelSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
 {
     /**
      * Set a fixed model filter.
@@ -46,7 +48,7 @@ abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_Snipp
     /**
      * The model, use $this->getModel() to fill
      *
-     * @var \MUtil_Model_ModelAbstract
+     * @var \MUtil\Model\ModelAbstract
      */
     private $_model;
 
@@ -106,14 +108,14 @@ abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_Snipp
     /**
      * Creates the model
      *
-     * @return \MUtil_Model_ModelAbstract
+     * @return \MUtil\Model\ModelAbstract
      */
     abstract protected function createModel();
 
     /**
      * Returns the model, always use this function
      *
-     * @return \MUtil_Model_ModelAbstract
+     * @return \MUtil\Model\ModelAbstract
      */
     protected function getModel()
     {
@@ -133,7 +135,7 @@ abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_Snipp
      * When invalid data should result in an error, you can throw it
      * here but you can also perform the check in the
      * checkRegistryRequestsAnswers() function from the
-     * {@see \MUtil_Registry_TargetInterface}.
+     * {@see \MUtil\Registry\TargetInterface}.
      *
      * @return boolean
      */
@@ -145,9 +147,9 @@ abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_Snipp
     /**
      * Default processing of $model from standard settings
      *
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $model
      */
-    protected final function prepareModel(\MUtil_Model_ModelAbstract $model)
+    protected final function prepareModel(\MUtil\Model\ModelAbstract $model)
     {
         if ($this->sortParamAsc) {
             $model->setSortParamAsc($this->sortParamAsc);
@@ -175,9 +177,9 @@ abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_Snipp
     /**
      * Overrule to implement snippet specific filtering and sorting.
      *
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $model
      */
-    protected function processFilterAndSort(\MUtil_Model_ModelAbstract $model)
+    protected function processFilterAndSort(\MUtil\Model\ModelAbstract $model)
     {
         if (false !== $this->searchFilter) {
             if (isset($this->searchFilter['limit'])) {
@@ -206,9 +208,9 @@ abstract class MUtil_Snippets_ModelSnippetAbstract extends \MUtil_Snippets_Snipp
      *
      * Overrule to implement snippet specific filtering and sorting.
      *
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\ModelAbstract $model
      */
-    protected function processSortOnly(\MUtil_Model_ModelAbstract $model)
+    protected function processSortOnly(\MUtil\Model\ModelAbstract $model)
     {
         if (count($this->requestInfo->getRequestQueryParams())) {
             $queryParams = $this->requestInfo->getRequestQueryParams();

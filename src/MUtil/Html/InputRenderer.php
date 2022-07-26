@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Html;
+
 /**
  * This class handles the rendering of input elements.
  *
@@ -22,7 +24,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
+class InputRenderer implements \MUtil\Html\HtmlInterface
 {
     const MODE_COMPLETE = 'complete';
     const MODE_DISPLAY_GROUP = 'displayGroup';
@@ -34,7 +36,7 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
     const MODE_UNTIL = 'until';
     const MODE_UPTO = 'upto';
 
-    const ARGUMENT_ERROR = 'Invalid argument of type %s in %s. Only \Zend_Form and \Zend_Form_Element objects are allowed and \MUtil_Lazy_LazyInterface objects as long as they devolve to \Zend_Form or \Zend_Form_Element.';
+    const ARGUMENT_ERROR = 'Invalid argument of type %s in %s. Only \Zend_Form and \Zend_Form_Element objects are allowed and \MUtil\Lazy\LazyInterface objects as long as they devolve to \Zend_Form or \Zend_Form_Element.';
 
     private $_decorators;
     private $_element;
@@ -42,7 +44,7 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
 
     /**
      *
-     * @param \Zend_Form|\Zend_Form_Element|\MUtil_Lazy_LazyInterface $element
+     * @param \Zend_Form|\Zend_Form_Element|\MUtil\Lazy\LazyInterface $element
      * @param $mode One of the class MODE_ constants
      * @param array of string|array|\Zend_Form_Decorator_Interface $decorators Optional An arrya that contains values
      * that are either a string value that identifies an existing decorator or an array that creates an new decorator
@@ -53,7 +55,7 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
         if (($element instanceof \Zend_Form_Element) ||
                 ($element instanceof \Zend_Form_DisplayGroup) ||
                 ($element instanceof \Zend_Form) ||
-                ($element instanceof \MUtil_Lazy_LazyInterface)) {
+                ($element instanceof \MUtil\Lazy\LazyInterface)) {
 
             switch ($mode) {
                 case self::MODE_COMPLETE:
@@ -61,7 +63,7 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
                 case self::MODE_ELEMENT:
                 case self::MODE_FORM:
                     if ($decorators) {
-                        throw new \MUtil_Html_HtmlException('Invalid mode for ' . __CLASS__ .
+                        throw new \MUtil\Html\HtmlException('Invalid mode for ' . __CLASS__ .
                                 ' constructor. With decorators the mode argument ' . $mode . ' is not allowed.');
                     }
                     break;
@@ -71,14 +73,14 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
                 case self::MODE_UNTIL:
                 case self::MODE_UPTO:
                     if (! $decorators) {
-                        throw new \MUtil_Html_HtmlException('Invalid mode ' . $mode . ' for ' . __CLASS__ .
+                        throw new \MUtil\Html\HtmlException('Invalid mode ' . $mode . ' for ' . __CLASS__ .
                                 ' constructor. Without decorators the only allowed mode argument is ' .
                                 self::MODE_COMPLETE . '.');
                     }
                     break;
 
                 default:
-                    throw new \MUtil_Html_HtmlException('Unknown mode ' . $mode . ' for ' . __CLASS__ .
+                    throw new \MUtil\Html\HtmlException('Unknown mode ' . $mode . ' for ' . __CLASS__ .
                             ' constructor.');
             }
             $this->_element    = $element;
@@ -96,12 +98,12 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
             }
             if (is_array($args)) {
                 // Treat this as a standard Html Element
-                $this->_element = new \MUtil_Html_HtmlElement('input', $args);
+                $this->_element = new \MUtil\Html\HtmlElement('input', $args);
                 $this->_mode = self::MODE_HTML;
 
-                // \MUtil_Echo::track($args);
+                // \MUtil\EchoOut\EchoOut::track($args);
              } else {
-                throw new \MUtil_Html_HtmlException(sprintf(
+                throw new \MUtil\Html\HtmlException(sprintf(
                         self::ARGUMENT_ERROR,
                         (is_object($element) ? get_class($element) : gettype($element)),
                         __CLASS__ . ' constructor'
@@ -112,8 +114,8 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
 
     private static function _checkElement($element, $function)
     {
-        if ($element instanceof \MUtil_Lazy_LazyInterface) {
-            $element = \MUtil_Lazy::rise($element);
+        if ($element instanceof \MUtil\Lazy\LazyInterface) {
+            $element = \MUtil\Lazy::rise($element);
         }
 
         if (($element instanceof \Zend_Form_Element) ||
@@ -123,7 +125,7 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
             return $element;
         }
 
-        throw new \MUtil_Html_HtmlException(sprintf(self::ARGUMENT_ERROR, get_class($element), __CLASS__ . '::' .
+        throw new \MUtil\Html\HtmlException(sprintf(self::ARGUMENT_ERROR, get_class($element), __CLASS__ . '::' .
                 $function . '()'));
     }
 
@@ -160,8 +162,8 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
             $element->getName() . '</strong> of type ' . get_class($element) .
             ' in ' . __CLASS__ . '::' . $function . "().<br>\n" . $stoppers . $found;
 
-        // \MUtil_Echo::r($message);
-        throw new \MUtil_Html_HtmlException($message);
+        // \MUtil\EchoOut\EchoOut::r($message);
+        throw new \MUtil\Html\HtmlException($message);
 
     }
 
@@ -228,7 +230,7 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
     public static function inputLabel($arg_array = array())
     {
         $args = func_get_args();
-        return new \MUtil_Html_LabelElement('label', $args);
+        return new \MUtil\Html\LabelElement('label', $args);
     }
 
 
@@ -318,8 +320,8 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
         return self::renderUntil($view, $element, array(
             'Zend_Form_Decorator_ViewHelper',
             'Zend_Form_Decorator_File',
-            'MUtil_Form_Decorator_Table',
-            'MUtil_Form_Decorator_Subforms'
+            '\\MUtil\\Form\\Decorator\\Table',
+            '\\MUtil\\Form\\Decorator\\Subforms'
             ));
     }
 
@@ -350,7 +352,7 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
 
     public static function renderForm(\Zend_View_Abstract $view, \Zend_Form $form)
     {
-        if ($form instanceof \MUtil_Form && $form->isLazy()) {
+        if ($form instanceof \MUtil\Form && $form->isLazy()) {
             return self::renderUntil($view, $form, array('Zend_Form_Decorator_Form'));
         } else {
             return self::renderComplete($view, $form);
@@ -406,7 +408,7 @@ class MUtil_Html_InputRenderer implements \MUtil_Html_HtmlInterface
 
             foreach ($until_decorators as $until_decorator) {
                 if (($until_decorator == $name) || ($decorator instanceof $until_decorator)) {
-                    // \MUtil_Echo::r('<strong>' . $element->getName() . ', ' . $until_decorator . '</strong>' . htmlentities($content));
+                    // \MUtil\EchoOut\EchoOut::r('<strong>' . $element->getName() . ', ' . $until_decorator . '</strong>' . htmlentities($content));
                     return $content;
                 }
             }

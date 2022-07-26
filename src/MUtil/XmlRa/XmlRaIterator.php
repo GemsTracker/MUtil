@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2013, MagnaFacta BV
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of MagnaFacta BV nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * XmlRa class: pronouce "Ra" as "array" except on 19 september, then it is "ahrrray".
  *
@@ -33,8 +9,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2013 MagnaFacta BV
  * @license    New BSD License
- * @version    $Id: XmlRaIterator.php 938 2012-09-11 14:00:57Z matijsdejong $
  */
+
+namespace MUtil\XmlRa;
 
 /**
  * Basic iterator over the child elements of an XmlRa element.
@@ -45,7 +22,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.3
  */
-class MUtil_XmlRa_XmlRaIterator implements \Iterator
+class XmlRaIterator implements \Iterator
 {
     /**
      * The position of the current node
@@ -57,7 +34,7 @@ class MUtil_XmlRa_XmlRaIterator implements \Iterator
     /**
      * The current xml item
      *
-     * @var \MUtil_XmlRa
+     * @var \MUtil\XmlRa
      */
     private $_currentNode;
 
@@ -65,7 +42,7 @@ class MUtil_XmlRa_XmlRaIterator implements \Iterator
      * Function for filtering the output results.
      *
      * Signature must be: function(mixed $value) where $value is
-     * a \MUtil_XmlRa::_returnValue output and returns a boolean.
+     * a \MUtil\XmlRa::_returnValue output and returns a boolean.
      *
      * @var callable
      */
@@ -75,7 +52,7 @@ class MUtil_XmlRa_XmlRaIterator implements \Iterator
      * Function for transforming the outpur result.
      *
      * Signature must be: function(mixed $value) where $value is
-     * a \MUtil_XmlRa::_returnValue output.
+     * a \MUtil\XmlRa::_returnValue output.
      *
      * @var callable
      */
@@ -84,16 +61,16 @@ class MUtil_XmlRa_XmlRaIterator implements \Iterator
     /**
      * The start, i.e. parent xml item
      *
-     * @var \MUtil_XmlRa
+     * @var \MUtil\XmlRa
      */
     private $_startNode;
 
     /**
      * Initialize the iterator
      *
-     * @param \MUtil_XmlRa $xmlra
+     * @param \MUtil\XmlRa $xmlra
      */
-    public function __construct(\MUtil_XmlRa $xmlra)
+    public function __construct(\MUtil\XmlRa $xmlra)
     {
         $this->_startNode = $xmlra;
     }
@@ -109,7 +86,7 @@ class MUtil_XmlRa_XmlRaIterator implements \Iterator
     /**
      * \Iterator implementation for current child item
      *
-     * @return \MUtil_XmlRa
+     * @return \MUtil\XmlRa
      */
     public function current()
     {
@@ -172,11 +149,11 @@ class MUtil_XmlRa_XmlRaIterator implements \Iterator
      * Set function for filtering the output results.
      *
      * Signature must be: function(mixed $value) where $value is
-     * a \MUtil_XmlRa::_returnValue output and returns a boolean.
+     * a \MUtil\XmlRa::_returnValue output and returns a boolean.
      *
      *
      * @param callable $function function()
-     * @return \MUtil_XmlRa_XmlRaIterator (continuation pattern)
+     * @return \MUtil\XmlRa\XmlRaIterator (continuation pattern)
      */
     public function setFilterFunction($function)
     {
@@ -188,10 +165,10 @@ class MUtil_XmlRa_XmlRaIterator implements \Iterator
      * Set function for transforming the outpur result.
      *
      * Signature must be: function(mixed $value) where $value is
-     * a \MUtil_XmlRa::_returnValue output.
+     * a \MUtil\XmlRa::_returnValue output.
      *
      * @param callable $function function()
-     * @return \MUtil_XmlRa_XmlRaIterator (continuation pattern)
+     * @return \MUtil\XmlRa\XmlRaIterator (continuation pattern)
      */
     public function setMapFunction($function)
     {
