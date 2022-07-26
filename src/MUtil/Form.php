@@ -391,7 +391,9 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
             ];
         $element = parent::createElement($type, $name, $options);
 
-        $element->setPluginLoader($this->getPluginLoader(self::DECORATOR), self::DECORATOR);
+        foreach ([self::DECORATOR, \Zend_Form_Element::FILTER, \Zend_Form_Element::VALIDATE] as $loadId) {
+            $element->setPluginLoader($this->getPluginLoader($loadId), $loadId);
+        }
         
         return $element;
     }
@@ -502,6 +504,12 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
         $type = strtoupper($type);
         if (!isset($this->_loaders[$type])) {
             switch ($type) {
+                case \Zend_Form_Element::FILTER:
+                case \Zend_Form_Element::VALIDATE:
+                    $prefixSegment = ucfirst(strtolower($type));
+                    $pathSegment   = $prefixSegment;
+                    break;
+                    
                 case self::DECORATOR:
                     $prefixSegment = 'Form_Decorator';
                     $pathSegment   = 'Form/Decorator';
