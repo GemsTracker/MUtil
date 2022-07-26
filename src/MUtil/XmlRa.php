@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2013, MagnaFacta BV
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of MagnaFacta BV nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * XmlRa class: pronouce "Ra" as "array" except on 19 september, then it is "ahrrray".
  *
@@ -33,8 +9,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2013 MagnaFacta BV
  * @license    New BSD License
- * @version    $Id: Ra.php 938 2012-09-11 14:00:57Z matijsdejong $
  */
+
+namespace MUtil;
 
 /**
  * XmlRa was inspired by SimpleXml, but extends it enabling the
@@ -49,7 +26,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.3
  */
-class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
+class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
 {
     /**
      * Marker for search anything
@@ -459,7 +436,7 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
         } elseif (count($this->_nodes)) {
             $n = $this->_nodes[0];
         } else {
-            throw new \MUtil_XmlRa_XmlRaException('No parent node available to append to.');
+            throw new \MUtil\XmlRa\XmlRaException('No parent node available to append to.');
         }
 
 
@@ -472,7 +449,7 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
                 self::appendNode($n, $newval->_nodes[$i]);
             }
         } else {
-            throw new \MUtil_XmlRa_XmlRaException('Cannot (yet) append a value of a ' . get_class($newval) . ' type.');
+            throw new \MUtil\XmlRa\XmlRaException('Cannot (yet) append a value of a ' . get_class($newval) . ' type.');
         }
     }
 
@@ -490,7 +467,7 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
                 }
             }
         } else {
-            throw new \MUtil_XmlRa_XmlRaException('Cannot (yet) append to parent node of the ' . get_class($parent) . ' type.');
+            throw new \MUtil\XmlRa\XmlRaException('Cannot (yet) append to parent node of the ' . get_class($parent) . ' type.');
         }
     }
 
@@ -536,14 +513,14 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @param int $errno
      * @param string $errstr
-     * @throws \MUtil_XmlRa_XmlRaException
+     * @throws \MUtil\XmlRa\XmlRaException
      */
     public static function errorCallback($errno, $errstr, $errfile, $errline, array $errcontext)
     {
         self::_errorInterceptionOff();
 
         // echo "XML ERROR:\n" . implode("\n", func_get_args()) . "\n";
-        throw new \MUtil_XmlRa_XmlRaException($errstr, $errno);
+        throw new \MUtil\XmlRa\XmlRaException($errstr, $errno);
     }
 
     /**
@@ -569,9 +546,9 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * Returns the \DOMDocument of this XmlRa object.
      *
      * Only the document class of all XmlRa objects is of the
-     * \DOMDoucment child class MUtil_XmlRa_XmlRaDocument.
+     * \DOMDoucment child class MUtil\XmlRa\XmlRaDocument.
      *
-     * @return \MUtil_XmlRa_XmlRaDocument
+     * @return \MUtil\XmlRa\XmlRaDocument
      */
     public function getDocument()
     {
@@ -581,7 +558,7 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
             $n = $this->_getFirstElement();
         }
 
-        if ($n instanceof \MUtil_XmlRa_XmlRaDocument) {
+        if ($n instanceof \MUtil\XmlRa\XmlRaDocument) {
             return $n;
         } else {
             return $n->ownerDocument;
@@ -592,11 +569,11 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * \ArrayAccess iterator implementation, returns an iterator over
      * all the node children of this item.
      *
-     * @return \MUtil_XmlRa_XmlRaIterator
+     * @return \MUtil\XmlRa\XmlRaIterator
      */
     public function getElementIterator()
     {
-        $iter = new \MUtil_XmlRa_XmlRaIterator($this);
+        $iter = new \MUtil\XmlRa\XmlRaIterator($this);
         $iter->setFilterFunction(array(__CLASS__, 'isElement'));
 
         return $iter;
@@ -606,11 +583,11 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * \ArrayAccess iterator implementation, returns an iterator over
      * all the node children of this item.
      *
-     * @return \MUtil_XmlRa_XmlRaIterator
+     * @return \MUtil\XmlRa\XmlRaIterator
      */
     public function getIterator()
     {
-        return new \MUtil_XmlRa_XmlRaIterator($this);
+        return new \MUtil\XmlRa\XmlRaIterator($this);
     }
 
     /**
@@ -787,13 +764,13 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * @param string $filename
      * @param string $xpath
      * @return self
-     * @throws \MUtil_XmlRa_XmlRaException
+     * @throws \MUtil\XmlRa\XmlRaException
      */
     public static function loadFile($filename, $xpath = null)
     {
         self::_errorInterceptionOn();
 
-        $doc = new \MUtil_XmlRa_XmlRaDocument();
+        $doc = new \MUtil\XmlRa\XmlRaDocument();
         $loaded = $doc->load($filename);
 
         self::_errorInterceptionOff();
@@ -807,7 +784,7 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
                 return $ra;
             }
         } else {
-            throw new \MUtil_XmlRa_XmlRaException('Document: "' . $filename . '" failed to load.');
+            throw new \MUtil\XmlRa\XmlRaException('Document: "' . $filename . '" failed to load.');
         }
     }
 
@@ -821,7 +798,7 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public static function loadString($string)
     {
-        $doc = new \MUtil_XmlRa_XmlRaDocument();
+        $doc = new \MUtil\XmlRa\XmlRaDocument();
         $doc->loadXML($string);
         return self::_createForChildren($doc);
     }
@@ -846,7 +823,7 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function offsetGet($index)
     {
-        // \MUtil_Echo::track("Get $index");
+        // \MUtil\EchoOut\EchoOut::track("Get $index");
         return $this->_returnValue($this->getNode($index, true));
     }
 
@@ -856,7 +833,7 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
     {
         if ($value) {
             if ($index) {
-                throw new \MUtil_XmlRa_XmlRaException('Cannot (yet) set the value of an indexed item.');
+                throw new \MUtil\XmlRa\XmlRaException('Cannot (yet) set the value of an indexed item.');
             } else {
                 $this->append($value);
             }
@@ -867,7 +844,7 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
     // void void \ArrayObject::offsetUnset ( mixed $index )
     public function offsetUnset($index)
     {
-        throw new \MUtil_XmlRa_XmlRaException('Cannot (yet) unset the value of an indexed item.');
+        throw new \MUtil\XmlRa\XmlRaException('Cannot (yet) unset the value of an indexed item.');
     }
 
     /* public function saveToFile($filename) {
@@ -991,15 +968,15 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * If two items have the same name, all values will be combined in an array.
      *
      * <code>
-     *  $x = \MUtil_XmlRa::loadString('&lt;a b="c"&gt;&lt;d&gt;e&lt;/d&gt;&lt;f&gt;g&lt;/f&gt;&lt;f&gt;h&lt;/f&gt;&lt;/a&gt;');
-     *  print_r(\MUtil_XmlRa::toArray($x));
+     *  $x = \MUtil\XmlRa::loadString('&lt;a b="c"&gt;&lt;d&gt;e&lt;/d&gt;&lt;f&gt;g&lt;/f&gt;&lt;f&gt;h&lt;/f&gt;&lt;/a&gt;');
+     *  print_r(\MUtil\XmlRa::toArray($x));
      * </code>
      * Will output:
      * <code>
      * array{'@b' => 'c', 'd' => 'e', 'f' => array(0 => 'g', 1 => 'h');
      * </code>
      *
-     * @param \MUtil_XmlRa $value
+     * @param \MUtil\XmlRa $value
      * @return array name -> value[s]
      */
     public static function toArray(self $value)
@@ -1046,7 +1023,7 @@ class MUtil_XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
             }
         }
 
-        // \MUtil_Echo::track($results);
+        // \MUtil\EchoOut\EchoOut::track($results);
 
         return $results;
     }

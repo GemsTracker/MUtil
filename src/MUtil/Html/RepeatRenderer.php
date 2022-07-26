@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Html;
 
 /**
  * RepeatRenderer wraps itself around some content and returns at rendering
@@ -45,7 +22,7 @@
  * throw errors if you try to use them in ways that the actual $_content does
  * not allow.
  *
- * @see \MUtil_Lazy_Repeatable
+ * @see \MUtil\Lazy\Repeatable
  *
  * @package    MUtil
  * @subpackage Html
@@ -53,7 +30,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Html_RepeatRenderer implements \MUtil_Html_ElementInterface
+class RepeatRenderer implements \MUtil\Html\ElementInterface
 {
     /**
      * The content to be repeated.
@@ -79,16 +56,16 @@ class MUtil_Html_RepeatRenderer implements \MUtil_Html_ElementInterface
     /**
      * The repeater containing a dataset
      *
-     * @var \MUtil_Lazy_RepeatableInterface
+     * @var \MUtil\Lazy\RepeatableInterface
      */
     protected $_repeater;
 
     /**
      *
-     * @param \MUtil_Lazy_RepeatableInterface $repeater
+     * @param \MUtil\Lazy\RepeatableInterface $repeater
      * @param string $glue Optional, content to display between repeated instances
      */
-    public function __construct(\MUtil_Lazy_RepeatableInterface $repeater, $glue = null)
+    public function __construct(\MUtil\Lazy\RepeatableInterface $repeater, $glue = null)
     {
         $this->setRepeater($repeater);
         $this->setGlue($glue);
@@ -113,7 +90,7 @@ class MUtil_Html_RepeatRenderer implements \MUtil_Html_ElementInterface
 
     public function getIterator()
     {
-        return new ArrayIterator($this->_content);
+        return new \ArrayIterator($this->_content);
     }
 
     public function getOnEmpty()
@@ -123,7 +100,7 @@ class MUtil_Html_RepeatRenderer implements \MUtil_Html_ElementInterface
 
     public function getTagName()
     {
-        if ($this->_content instanceof \MUtil_Html_ElementInterface) {
+        if ($this->_content instanceof \MUtil\Html\ElementInterface) {
             return $this->_content->getTagName();
         }
         return null;
@@ -169,7 +146,7 @@ class MUtil_Html_RepeatRenderer implements \MUtil_Html_ElementInterface
      */
     public function render(\Zend_View_Abstract $view)
     {
-        $renderer = \MUtil_Html::getRenderer();
+        $renderer = \MUtil\Html::getRenderer();
         if ($this->hasRepeater() && $this->_content) {
             $data = $this->getRepeater();
             if ($data->__start()) {
@@ -196,7 +173,7 @@ class MUtil_Html_RepeatRenderer implements \MUtil_Html_ElementInterface
         return $this;
     }
 
-    private function setRepeater(\MUtil_Lazy_RepeatableInterface $data)
+    private function setRepeater(\MUtil\Lazy\RepeatableInterface $data)
     {
         $this->_repeater = $data;
         return $this;

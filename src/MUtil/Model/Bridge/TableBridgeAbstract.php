@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Model\Bridge;
+
 /**
  *
  * @package    MUtil
@@ -17,12 +19,12 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-abstract class MUtil_Model_Bridge_TableBridgeAbstract extends \MUtil_Model_Bridge_BridgeAbstract
+abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
 {
     /**
      * The actual table
      *
-     * @var \MUtil_Html_TableElement
+     * @var \MUtil\Html\TableElement
      */
     protected $table;
 
@@ -41,22 +43,22 @@ abstract class MUtil_Model_Bridge_TableBridgeAbstract extends \MUtil_Model_Bridg
     /**
      * Constructs a bridge for a model
      *
-     * @param \MUtil_Model_ModelAbstract $model The model it is all about
-     * @param \MUtil_Html_ElementInterface $args_array
+     * @param \MUtil\Model\ModelAbstract $model The model it is all about
+     * @param \MUtil\Html\ElementInterface $args_array
      */
-    public function __construct(\MUtil_Model_ModelAbstract $model, $args_array = null)
+    public function __construct(\MUtil\Model\ModelAbstract $model, $args_array = null)
     {
         parent::__construct($model);
 
         $this->_chainedBridge = $model->getBridgeFor('display');
 
-        if ($args_array instanceof \MUtil_Html_ElementInterface) {
+        if ($args_array instanceof \MUtil\Html\ElementInterface) {
             $this->table = $args_array;
         } else {
             $args = func_get_args();
-            $args = \MUtil_Ra::args($args, 1);
+            $args = \MUtil\Ra::args($args, 1);
 
-            $this->table = \MUtil_Html::table($args);
+            $this->table = \MUtil\Html::table($args);
         }
     }
 
@@ -66,17 +68,17 @@ abstract class MUtil_Model_Bridge_TableBridgeAbstract extends \MUtil_Model_Bridg
      * @param mixed $item
      * @param mxied $function When array each element is applied, when function it is executed,
      * otherwise it is added to an HtmlElement
-     * @return \MUtil_Html_ElementInterface
+     * @return \MUtil\Html\ElementInterface
      */
     private static function _applyDisplayFunction($item, $function)
     {
-        // \MUtil_Echo::track($function);
+        // \MUtil\EchoOut\EchoOut::track($function);
         if (is_callable($function)) {
             return call_user_func($function, $item);
         }
 
         if (is_object($function)) {
-            if (($function instanceof \MUtil_Html_ElementInterface)
+            if (($function instanceof \MUtil\Html\ElementInterface)
                 || method_exists($function, 'append')) {
 
                 $object = clone $function;
@@ -90,7 +92,7 @@ abstract class MUtil_Model_Bridge_TableBridgeAbstract extends \MUtil_Model_Bridg
         // Assume it is a html tag when a string
         if (is_string($function)) {
 
-            return \MUtil_Html::create($function, $item);
+            return \MUtil\Html::create($function, $item);
 
         } elseif (is_array($function)) {
             foreach ($function as $display) {
@@ -164,7 +166,7 @@ abstract class MUtil_Model_Bridge_TableBridgeAbstract extends \MUtil_Model_Bridg
     /**
      *
      * @param string $name
-     * @return \MUtil_Lazy_LazyAbstract
+     * @return \MUtil\Lazy\LazyAbstract
      */
     protected function _getLazyName($name)
     {
@@ -178,7 +180,7 @@ abstract class MUtil_Model_Bridge_TableBridgeAbstract extends \MUtil_Model_Bridg
     /**
      * Get the repeater source for the lazy data
      *
-     * @return \MUtil_Lazy_RepeatableInterface
+     * @return \MUtil\Lazy\RepeatableInterface
      */
     public function getRepeater()
     {
@@ -200,7 +202,7 @@ abstract class MUtil_Model_Bridge_TableBridgeAbstract extends \MUtil_Model_Bridg
     /**
      * Get the actual table
      *
-     * @return \MUtil_Html_TableElement
+     * @return \MUtil\Html\TableElement
      */
     abstract public function getTable();
 
@@ -227,8 +229,8 @@ abstract class MUtil_Model_Bridge_TableBridgeAbstract extends \MUtil_Model_Bridg
     /**
      * Set the repeater source for the lazy data
      *
-     * @param mixed $repeater \MUtil_Lazy_RepeatableInterface or something that can be made into one.
-     * @return \MUtil_Model_Format_DisplayFormatter (continuation pattern)
+     * @param mixed $repeater \MUtil\Lazy\RepeatableInterface or something that can be made into one.
+     * @return \MUtil\Model_Format_DisplayFormatter (continuation pattern)
      */
     public function setRepeater($repeater)
     {

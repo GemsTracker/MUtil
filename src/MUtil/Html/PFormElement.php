@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Html;
 
 /**
  * Interface extensions that allows HtmlElements to define how to display
@@ -45,7 +22,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.5.3
  */
-class MUtil_Html_PFormElement extends \MUtil_Html_HtmlElement implements \MUtil_Html_FormLayout
+class PFormElement extends \MUtil\Html\HtmlElement implements \MUtil\Html\FormLayout
 {
     /**
      * Can process form elements
@@ -65,16 +42,16 @@ class MUtil_Html_PFormElement extends \MUtil_Html_HtmlElement implements \MUtil_
 
     public function __construct($arg_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         parent::__construct('p', $args);
     }
 
     /**
-     * Static helper function for creation, used by @see \MUtil_Html_Creator.
+     * Static helper function for creation, used by @see \MUtil\Html\Creator.
      *
-     * @param mixed $arg_array Optional \MUtil_Ra::args processed settings
-     * @return \MUtil_Html_PFormElement
+     * @param mixed $arg_array Optional \MUtil\Ra::args processed settings
+     * @return \MUtil\Html\PFormElement
      */
     public static function pForm($arg_array = null)
     {
@@ -89,7 +66,7 @@ class MUtil_Html_PFormElement extends \MUtil_Html_HtmlElement implements \MUtil_
      * @param mixed $width The style.width content for the labels
      * @param array $order The display order of the elements
      * @param string $errorClass Class name to display all errors in
-     * @return \MUtil_Html_DlElement
+     * @return \MUtil\Html\DlElement
      */
     public function setAsFormLayout(\Zend_Form $form, $width = null,
             $order = array('label', 'element', 'description'), $errorClass = 'errors')
@@ -98,7 +75,7 @@ class MUtil_Html_PFormElement extends \MUtil_Html_HtmlElement implements \MUtil_
         $prependErrors     = $errorClass;
 
         // Make a Lazy repeater for the form elements and set it as the element repeater
-        $formrep = new \MUtil_Lazy_RepeatableFormElements($form);
+        $formrep = new \MUtil\Lazy\RepeatableFormElements($form);
         $formrep->setSplitHidden(true); // These are treated separately
         $this->setRepeater($formrep);
 
@@ -124,11 +101,11 @@ class MUtil_Html_PFormElement extends \MUtil_Html_HtmlElement implements \MUtil_
         }
 
         // Set this element as the form decorator
-        $decorator = new \MUtil_Html_ElementDecorator();
+        $decorator = new \MUtil\Html\ElementDecorator();
         $decorator->setHtmlElement($this);
         $decorator->setPrologue($formrep);  // Renders hidden elements before this element
         if ($prependErrors) {
-            $decorator->setPrependErrors(\MUtil_Html_ListElement::ul(
+            $decorator->setPrependErrors(\MUtil\Html\ListElement::ul(
                     array('class' => $errorClass, 'style' => array('margin-left' => $width))
                     ));
         }
@@ -143,7 +120,7 @@ class MUtil_Html_PFormElement extends \MUtil_Html_HtmlElement implements \MUtil_
      * @param \Zend_Form $form
      * @param float $factor To multiply the widest nummers of letters in the labels with to calculate the width in em at drawing time
      * @param array $order The display order of the elements
-     * @return \MUtil_Html_PFormElement
+     * @return \MUtil\Html\PFormElement
      */
     public function setAutoWidthFormLayout(\Zend_Form $form, $factor = 1,
             array $order = array('label', 'element', 'description'))
@@ -151,7 +128,7 @@ class MUtil_Html_PFormElement extends \MUtil_Html_HtmlElement implements \MUtil_
         // Lazy call becase the form might not be completed at this stage.
         return $this->setAsFormLayout(
                 $form,
-                \MUtil_Lazy::call(array('MUtil_Html_DlElement', 'calculateAutoWidthFormLayout'), $form, $factor),
+                \MUtil\Lazy::call(array('\\MUtil\\Html\\DlElement', 'calculateAutoWidthFormLayout'), $form, $factor),
                 $order
                 );
     }

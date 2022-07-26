@@ -9,8 +9,10 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Registry;
+
 /**
- * Standard Source for \MUtil_Registry_TargetInterface objects.
+ * Standard Source for \MUtil\Registry\TargetInterface objects.
  *
  * The source can be loaded with multiple objects or array's and
  * the public properties and the keys of an array are used as
@@ -19,15 +21,15 @@
  * This allows sources of values, e.g. the \Zend_Registry, to be injected
  * automatically in a Target Object by calling $this->applySource().
  *
- * @see \MUtil_Registry_TargetInterface
+ * @see \MUtil\Registry\TargetInterface
  *
  * @package    MUtil
  * @subpackage Registry
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.1
+ * @since      Class available since \MUtil version 1.1
  */
-class MUtil_Registry_Source implements \MUtil_Registry_SourceInterface
+class Source implements \MUtil\Registry\SourceInterface
 {
     /**
      * An array of container objects, each containing resources.
@@ -64,18 +66,18 @@ class MUtil_Registry_Source implements \MUtil_Registry_SourceInterface
 
     /**
      *
-     * @param \MUtil_Registry_TargetInterface $target
+     * @param \MUtil\Registry\TargetInterface $target
      * @param string $name
      * @return boolean A correct match was found
      */
-    protected function _applySourceContainers(\MUtil_Registry_TargetInterface $target, $name)
+    protected function _applySourceContainers(\MUtil\Registry\TargetInterface $target, $name)
     {
         foreach ($this->_containers as $container) {
             if (isset($container->$name)) {
                 $resource = $container->$name;
                 if ($target->answerRegistryRequest($name, $resource)) {
                     if (self::$verbose) {
-                        \MUtil_Echo::r('Resource set: ' . get_class($target) . '->' . $name .
+                        \MUtil\EchoOut\EchoOut::r('Resource set: ' . get_class($target) . '->' . $name .
                                 ' type "' . (is_object($resource) ? get_class($resource) : gettype($resource)) .
                                 '" from ' . get_class($container));
                     }
@@ -92,7 +94,7 @@ class MUtil_Registry_Source implements \MUtil_Registry_SourceInterface
      *
      * @param mixed $container \Zend_Config, array or \ArrayObject
      * @param string $name An optional name to identify the container
-     * @return \MUtil_Registry_Source
+     * @return \MUtil\Registry\Source
      */
     public function addRegistryContainer($container, $name = null)
     {
@@ -119,15 +121,15 @@ class MUtil_Registry_Source implements \MUtil_Registry_SourceInterface
     /**
      * Apply this source to the target.
      *
-     * @param \MUtil_Registry_TargetInterface $target
+     * @param \MUtil\Registry\TargetInterface $target
      * @return boolean True if $target is OK with loaded requests
      */
-    public function applySource(\MUtil_Registry_TargetInterface $target)
+    public function applySource(\MUtil\Registry\TargetInterface $target)
     {
         foreach ($target->getRegistryRequests() as $name) {
             if (! $this->_applySourceContainers($target, $name)) {
                 if (self::$verbose) {
-                    \MUtil_Echo::r('Missed resource: ' . get_class($target) . '->' . $name);
+                    \MUtil\EchoOut\EchoOut::r('Missed resource: ' . get_class($target) . '->' . $name);
                 } /* else {
                 echo '<br/>missed ' . $name . "\n";
                 } // */
@@ -145,7 +147,7 @@ class MUtil_Registry_Source implements \MUtil_Registry_SourceInterface
      * Removes a source container from this object.
      *
      * @param string $name The name to identify the container
-     * @return \MUtil_Registry_Source
+     * @return \MUtil\Registry\Source
      */
     public function removeRegistryContainer($name)
     {

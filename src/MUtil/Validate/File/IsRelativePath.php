@@ -11,7 +11,7 @@ use MUtil\Validate\Regexclude;
  * @subpackage Validate
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.3
+ * @since      Class available since \MUtil version 1.3
  */
 class IsRelativePath extends Regexclude
 {

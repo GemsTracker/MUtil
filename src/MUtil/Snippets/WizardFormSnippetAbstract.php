@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Snippets;
+
 /**
  * Generic wizard snippet.
  *
@@ -18,9 +20,9 @@
  * @subpackage Snippets
  * @copyright  Copyright (c) 2013 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.3
+ * @since      Class available since \MUtil version 1.3
  */
-abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_ModelFormSnippetAbstract
+abstract class WizardFormSnippetAbstract extends \MUtil\Snippets\ModelFormSnippetAbstract
 {
     /**
      *
@@ -206,7 +208,7 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
         $this->addPreviousButton();
         $this->addNextButton();
 
-        $element = new \MUtil_Form_Element_Html('button_spacer');
+        $element = new \MUtil\Form\Element\Html('button_spacer');
         $element->raw('&nbsp;');
         $element->setDecorators(array('ViewHelper'));
 
@@ -233,7 +235,7 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
      */
     protected function addCancelButton()
     {
-        $class = 'MUtil_Form_Element_FakeSubmit';
+        $class = '\\MUtil\\Form\\Element\\FakeSubmit';
         $this->_addButton($this->_cancelButton, $this->cancelButtonId, $this->cancelLabel, $this->_('Cancel'), $class);
     }
 
@@ -243,11 +245,11 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
      * Overrule this function to add different elements to the browse table, without
      * having to recode the core table building code.
      *
-     * @param \MUtil_Model_Bridge_FormBridgeInterface $bridge
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\Bridge\FormBridgeInterface $bridge
+     * @param \MUtil\Model\ModelAbstract $model
      * @param int $step The current step
      */
-    protected function addFormElementsFor(\MUtil_Model_Bridge_FormBridgeInterface $bridge, \MUtil_Model_ModelAbstract $model, $step)
+    protected function addFormElementsFor(\MUtil\Model\Bridge\FormBridgeInterface $bridge, \MUtil\Model\ModelAbstract $model, $step)
     {
         //Get all elements in the model if not already done
         $this->initItems();
@@ -267,7 +269,7 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
     protected function addFinishButton()
     {
         $last  = $this->currentStep == $this->getStepCount();
-        $class = $last ? 'Zend_Form_Element_Submit' : 'MUtil_Form_Element_FakeSubmit';
+        $class = $last ? 'Zend_Form_Element_Submit' : '\\MUtil\\Form\\Element\\FakeSubmit';
 
         $this->_addButton($this->_finishButton, $this->finishButtonId, $this->finishLabel, $this->_('Finish'), $class);
         if ($this->nextDisabled || !$last) {
@@ -280,20 +282,20 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
     /**
      * Add items in hidden form to the bridge, and remove them from the items array
      *
-     * @param \MUtil_Model_Bridge_FormBridgeInterface $bridge
+     * @param \MUtil\Model\Bridge\FormBridgeInterface $bridge
      * @param string $element1
      *
      * @return void
      */
-    protected function addItemsHidden(\MUtil_Model_Bridge_FormBridgeInterface $bridge, $element1)
+    protected function addItemsHidden(\MUtil\Model\Bridge\FormBridgeInterface $bridge, $element1)
     {
         $args = func_get_args();
         if (count($args)<2) {
-            throw new \Gems_Exception_Coding('Use at least 2 arguments, first the bridge and then one or more individual items');
+            throw new \Gems\Exception\Coding('Use at least 2 arguments, first the bridge and then one or more individual items');
         }
 
         $bridge   = array_shift($args);
-        $elements = \MUtil_Ra::flatten($args);
+        $elements = \MUtil\Ra::flatten($args);
         $form     = $bridge->getForm();
 
         //Remove the elements from the _items variable
@@ -312,7 +314,7 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
     protected function addNextButton()
     {
         $last  = $this->currentStep == $this->getStepCount();
-        $class = !$last ? 'Zend_Form_Element_Submit' : 'MUtil_Form_Element_FakeSubmit';
+        $class = !$last ? 'Zend_Form_Element_Submit' : '\\MUtil\\Form\\Element\\FakeSubmit';
 
         $this->_addButton($this->_nextButton, $this->nextButtonId, $this->nextLabel, $this->_("Next >"), $class);
 
@@ -328,7 +330,7 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
      */
     protected function addPreviousButton()
     {
-        $class = 'MUtil_Form_Element_FakeSubmit';
+        $class = '\\MUtil\\Form\\Element\\FakeSubmit';
         $this->_addButton(
                 $this->_previousButton,
                 $this->previousButtonId,
@@ -346,11 +348,11 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
     /**
      * Add the elements from the model to the bridge for the current step
      *
-     * @param \MUtil_Model_Bridge_FormBridgeInterface $bridge
-     * @param \MUtil_Model_ModelAbstract $model
+     * @param \MUtil\Model\Bridge\FormBridgeInterface $bridge
+     * @param \MUtil\Model\ModelAbstract $model
      * @param int $step The current step
      */
-    abstract protected function addStepElementsFor(\MUtil_Model_Bridge_FormBridgeInterface $bridge, \MUtil_Model_ModelAbstract $model, $step);
+    abstract protected function addStepElementsFor(\MUtil\Model\Bridge\FormBridgeInterface $bridge, \MUtil\Model\ModelAbstract $model, $step);
 
     /**
      * Overrule this function for any activities you want to take place
@@ -543,7 +545,7 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
         $this->loadFormFor($this->currentStep);
 
         if ($this->requestInfo->isPost()) {
-            // \MUtil_Echo::track($this->formData);
+            // \MUtil\EchoOut\EchoOut::track($this->formData);
             if ($this->_cancelButton && $this->_cancelButton->isChecked()) {
                 $this->setAfterSaveRoute();
 
@@ -586,7 +588,7 @@ abstract class MUtil_Snippets_WizardFormSnippetAbstract extends \MUtil_Snippets_
     /**
      * Set what to do when the form is 'finished' or 'cancelled'.
      *
-     * @return \MUtil_Snippets_Standard_ModelImportSnippet
+     * @return \MUtil\Snippets\Standard\ModelImportSnippet
      */
     protected function setAfterSaveRoute()
     {

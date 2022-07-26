@@ -20,20 +20,20 @@ use MUtil\Snippets\ModelConfirmDataChangeSnippetAbstract;
  * @subpackage Snippets\Standard
  * @copyright  Copyright (c) 2015 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.7.2 30-sep-2015 19:15:02
+ * @since      Class available since \MUtil version 1.7.2 30-sep-2015 19:15:02
  */
 class ModelConfirmDataChangeSnippet extends ModelConfirmDataChangeSnippetAbstract
 {
     /**
      *
-     * @var \MUtil_Model_ModelAbstract
+     * @var \MUtil\Model\ModelAbstract
      */
     protected $model;
 
     /**
      * Creates the model
      *
-     * @return \MUtil_Model_ModelAbstract
+     * @return \MUtil\Model\ModelAbstract
      */
     protected function createModel()
     {

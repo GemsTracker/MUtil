@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\View\Helper;
+
 /**
  * Array values switching to hidden now have the correct output
  *
@@ -18,7 +20,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.7.1
  */
-class MUtil_View_Helper_FormHidden extends \Zend_View_Helper_FormElement
+class FormHidden extends \Zend_View_Helper_FormElement
 {
     private function _arrayHidden($name, array $value, array $attribs)
     {
@@ -60,7 +62,7 @@ class MUtil_View_Helper_FormHidden extends \Zend_View_Helper_FormElement
             return $this->_hidden($name, $value->toString('yyyy-MM-dd HH:mm:ss'), $attribs);
         }
         
-        // \MUtil_Echo::track($value, $attribs['multiOptions']);
+        // \MUtil\EchoOut\EchoOut::track($value, $attribs['multiOptions']);
         unset($attribs['multiOptions']);
         if (! is_array($value)) {
             return $this->_hidden($name, $value, $attribs);

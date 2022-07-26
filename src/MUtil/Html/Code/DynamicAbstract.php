@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Html\Code;
 
 /**
  *
@@ -44,12 +21,12 @@
  * @license    New BSD License
  * @since      Class available since version 1.5
  */
-abstract class MUtil_Html_Code_DynamicAbstract implements \MUtil_Html_HtmlInterface
+abstract class DynamicAbstract implements \MUtil\Html\HtmlInterface
 {
     /**
      * Contains the content to output. Can be a mix of filenames and string content.
      *
-     * @var array Numeric array of strings or \MUtil_Html_HtmlInterface elements
+     * @var array Numeric array of strings or \MUtil\Html\HtmlInterface elements
      */
     protected $_content = array();
 
@@ -70,11 +47,11 @@ abstract class MUtil_Html_Code_DynamicAbstract implements \MUtil_Html_HtmlInterf
      * Creates the object storing any values with a name as a field, unless
      * there exists a set{Name} function. Other values are treated as content.
      *
-     * @param mixed $args_array \MUtil_Ra::args() parameters
+     * @param mixed $args_array \MUtil\Ra::args() parameters
      */
     public function __construct($args_array = null)
     {
-        $args = \MUtil_Ra::args(func_get_args());
+        $args = \MUtil\Ra::args(func_get_args());
 
         foreach ($args as $name => $value) {
             if (is_integer($name))  {
@@ -114,7 +91,7 @@ abstract class MUtil_Html_Code_DynamicAbstract implements \MUtil_Html_HtmlInterf
 
         $output = array();
 
-        $renderer = \MUtil_Html::getRenderer();
+        $renderer = \MUtil\Html::getRenderer();
         foreach ($this->_content as $content) {
             if (! is_string($content)) {
                 $content = $renderer->renderAny($view, $content);
@@ -174,7 +151,7 @@ abstract class MUtil_Html_Code_DynamicAbstract implements \MUtil_Html_HtmlInterf
      *
      * @param string $name Full name to replace.
      * @param string $value The value placed.
-     * @return \MUtil_Html_Link_LinkAbstract (continuation pattern)
+     * @return \MUtil\Html_Link_LinkAbstract (continuation pattern)
      */
     public function setDefault($name, $value)
     {
@@ -192,7 +169,7 @@ abstract class MUtil_Html_Code_DynamicAbstract implements \MUtil_Html_HtmlInterf
      *
      * @param string $name Full name to replace.
      * @param string $value The value placed.
-     * @return \MUtil_Html_Link_LinkAbstract (continuation pattern)
+     * @return \MUtil\Html_Link_LinkAbstract (continuation pattern)
      */
     public function setField($name, $value)
     {
@@ -203,7 +180,7 @@ abstract class MUtil_Html_Code_DynamicAbstract implements \MUtil_Html_HtmlInterf
     /**
      *
      * @param string $seperator
-     * @return \MUtil_Html_Link_LinkAbstract (continuation pattern)
+     * @return \MUtil\Html_Link_LinkAbstract (continuation pattern)
      */
     public function setSeperator($seperator)
     {

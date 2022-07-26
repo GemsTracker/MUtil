@@ -18,7 +18,7 @@ namespace MUtil\Model\Dependency;
  * @subpackage OnOffElementsDependency
  * @copyright  Copyright (c) 2015 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.7 27-apr-2015 18:50:11
+ * @since      Class available since \MUtil version 1.7 27-apr-2015 18:50:11
  */
 class OffOnElementsDependency extends OnOffElementsDependency
 {

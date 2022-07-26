@@ -26,11 +26,11 @@ class CsvFileIteratorTest extends TestCase
     /**
      * 
      * @param string $filename
-     * @return \MUtil_Model_Iterator_CsvFileIterator
+     * @return \MUtil\Model\Iterator\CsvFileIterator
      */
     protected function getIterator($filename)
     {
-        $iterator = new \MUtil_Model_Iterator_CsvFileIterator($filename);
+        $iterator = new \MUtil\Model\Iterator\CsvFileIterator($filename);
 
         return $iterator;
     }

@@ -1,12 +1,14 @@
 <?php
 
 
-class MUtil_Controller_Action_Helper_Redirector extends \Zend_Controller_Action_Helper_Redirector
+namespace MUtil\Controller\Action\Helper;
+
+class Redirector extends \Zend_Controller_Action_Helper_Redirector
 {
     /**
      * getRequest() -
      *
-     * @return Zend_Controller_Request_Abstract $request
+     * @return \Zend_Controller_Request_Abstract $request
      */
     public function getRequest()
     {
@@ -16,7 +18,7 @@ class MUtil_Controller_Action_Helper_Redirector extends \Zend_Controller_Action_
     /**
      * getResponse() -
      *
-     * @return Zend_Controller_Response_Abstract $response
+     * @return \Zend_Controller_Response_Abstract $response
      */
     public function getResponse()
     {
@@ -32,8 +34,8 @@ class MUtil_Controller_Action_Helper_Redirector extends \Zend_Controller_Action_
     {
         if ($this->getCloseSessionOnExit()) {
             // Close session, if started
-            if (class_exists('Zend_Session', false) && Zend_Session::isStarted()) {
-                Zend_Session::writeClose();
+            if (class_exists('Zend_Session', false) && \Zend_Session::isStarted()) {
+                \Zend_Session::writeClose();
             } elseif (isset($_SESSION)) {
                 session_write_close();
             }

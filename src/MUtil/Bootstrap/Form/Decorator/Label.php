@@ -1,6 +1,8 @@
 <?php
 
-class MUtil_Form_Decorator_Label extends \Zend_Form_Decorator_Label
+namespace MUtil\Form\Decorator;
+
+class Label extends \Zend_Form_Decorator_Label
 {
     /**
      * Get label to render

@@ -18,9 +18,11 @@
  * jsPath: path where the Select2 js files can be found
  * addDefaultDecorators: should the default decorators be loaded to style this element?
  *
- * Class MUtil_Form_Decorator_Select2
+ * Class \MUtil\Form\Decorator\Select2
  */
-class MUtil_Form_Decorator_Select2 extends \Zend_Form_Decorator_Abstract
+namespace MUtil\Form\Decorator;
+
+class Select2 extends \Zend_Form_Decorator_Abstract
 {
     /**
      * Default basedir for js files. Can be overwritten through the Decorator options.

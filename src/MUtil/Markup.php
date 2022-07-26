@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil;
+
 /**
  * Extends \Zend_Markup with extra utility functions
  *
@@ -18,7 +20,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Markup extends \Zend_Markup
+class Markup extends \Zend_Markup
 {
     /**
      * Factory pattern
@@ -42,14 +44,14 @@ class MUtil_Markup extends \Zend_Markup
                 'email',
                 \Zend_Markup_Renderer_RendererAbstract::TYPE_CALLBACK,
                 array(
-                    'callback' => new \MUtil_Markup_Renderer_Html_Email(),
+                    'callback' => new \MUtil\Markup\Renderer\Html\Email(),
                     'group' => 'inline',)
             );
             $rendererObject->addMarkup(
                 'url',
                 \Zend_Markup_Renderer_RendererAbstract::TYPE_CALLBACK,
                 array(
-                    'callback' => new \MUtil_Markup_Renderer_Html_Url(),
+                    'callback' => new \MUtil\Markup\Renderer\Html\Url(),
                     'group' => 'inline',)
             );
         } else {
@@ -57,14 +59,14 @@ class MUtil_Markup extends \Zend_Markup
                 'email',
                 \Zend_Markup_Renderer_RendererAbstract::TYPE_CALLBACK,
                 array(
-                    'callback' => new \MUtil_Markup_Renderer_Text_Email(),
+                    'callback' => new \MUtil\Markup\Renderer\Text\Email(),
                     'group' => 'inline',)
             );
             $rendererObject->addMarkup(
                 'url',
                 \Zend_Markup_Renderer_RendererAbstract::TYPE_CALLBACK,
                 array(
-                    'callback' => new \MUtil_Markup_Renderer_Text_Url(),
+                    'callback' => new \MUtil\Markup\Renderer\Text\Url(),
                     'group' => 'inline',)
             );
         }
@@ -82,7 +84,7 @@ class MUtil_Markup extends \Zend_Markup
         if (!(self::$_rendererLoader instanceof \Zend_Loader_PluginLoader)) {
             self::$_rendererLoader = new \Zend_Loader_PluginLoader(array(
                 'Zend_Markup_Renderer'  => 'Zend/Markup/Renderer/',
-                'MUtil_Markup_Renderer' => 'MUtil/Markup/Renderer/',
+                'MUtil\Markup_Renderer' => 'MUtil/Markup/Renderer/',
             ));
         }
 
@@ -132,7 +134,7 @@ class MUtil_Markup extends \Zend_Markup
     public static function render($content, $parser, $renderer = 'Html', array $options = array())
     {
         if ($content) {
-            $renderer = \MUtil_Markup::factory($parser, $renderer, $options);
+            $renderer = \MUtil\Markup::factory($parser, $renderer, $options);
             return $renderer->render($content);
         }
         return '';

@@ -22,7 +22,7 @@ use Psr\Cache\CacheItemPoolInterface;
  * @license    New BSD License
  * @since      Class available since 1.7.2
  */
-abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
+abstract class FormSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
 {
     /**
      * Optional csrf element
@@ -92,10 +92,10 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
 
     /**
      * As it is better for translation utilities to set the labels etc. translated,
-     * the MUtil default is to disable translation.
+     * the \MUtil default is to disable translation.
      *
      * However, this also disables the translation of validation messages, which we
-     * cannot set translated. The MUtil form is extended so it can make this switch.
+     * cannot set translated. The \MUtil form is extended so it can make this switch.
      *
      * @var boolean True
      */
@@ -263,7 +263,7 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
         }
 
         if ($this->layoutAutoWidthFactor || $this->layoutFixedWidth) {
-            $div = new \MUtil_Html_DivFormElement();
+            $div = new \MUtil\Html\DivFormElement();
 
             if ($this->layoutFixedWidth) {
                 $div->setAsFormLayout($this->_form, $this->layoutFixedWidth);
@@ -291,7 +291,7 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
      */
     protected function createForm($options = null)
     {
-        $form = new \MUtil_Form($options);
+        $form = new \MUtil\Form($options);
 
         return $form;
     }
@@ -312,7 +312,7 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
      * This is a stub function either override getHtmlOutput() or override render()
      *
      * @param \Zend_View_Abstract $view Just in case it is needed here
-     * @return \MUtil_Html_HtmlInterface Something that can be rendered
+     * @return \MUtil\Html\HtmlInterface Something that can be rendered
      */
     public function getHtmlOutput(\Zend_View_Abstract $view)
     {
@@ -330,7 +330,7 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
      *
      * When hasHtmlOutput() is true this functions should not be called.
      *
-     * @see Zend_Controller_Action_Helper_Redirector
+     * @see \Zend_Controller_Action_Helper_Redirector
      *
      * @return mixed Nothing or either an array or a string that is acceptable for Redector->gotoRoute()
      */
@@ -357,7 +357,7 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
      * When invalid data should result in an error, you can throw it
      * here but you can also perform the check in the
      * checkRegistryRequestsAnswers() function from the
-     * {@see MUtil_Registry_TargetInterface}.
+     * {@see MUtil\Registry\TargetInterface}.
      *
      * @return boolean
      */
@@ -531,7 +531,7 @@ abstract class FormSnippetAbstract extends \MUtil_Snippets_SnippetAbstract
      */
     protected function validateForm()
     {
-        // Note we use an MUtil_Form
+        // Note we use an \MUtil\Form
         return $this->_form->isValid($this->formData, $this->disableValidatorTranslation);
     }
 }

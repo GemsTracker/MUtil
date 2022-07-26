@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil;
+
 /**
  * By enabling Less for a view each .less css file is compiled to .css and output as such
  *
@@ -18,7 +20,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.6.5
  */
-class MUtil_Less
+class Less
 {
     /**
      * Less-enable a view instance
@@ -28,8 +30,8 @@ class MUtil_Less
      */
     public static function enableView(\Zend_View_Interface $view)
     {
-        if (false === $view->getPluginLoader('helper')->getPaths('MUtil_Less_View_Helper')) {
-            $view->addHelperPath('MUtil/Less/View/Helper', 'MUtil_Less_View_Helper');
+        if (false === $view->getPluginLoader('helper')->getPaths('MUtil\Less_View_Helper')) {
+            $view->addHelperPath('MUtil/Less/View/Helper', 'MUtil\Less_View_Helper');
         }
     }
 }

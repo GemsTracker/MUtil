@@ -5,7 +5,7 @@ namespace MUtilTest;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Unit test for class MUtil_Html
+ * Unit test for class MUtil\Html
  *
  * @author     Michiel Rook <info@touchdownconsulting.nl>
  * @package    MUtil
@@ -15,23 +15,23 @@ class HtmlTest extends TestCase
 {
     public function testValidCreator()
     {
-        $creator = \MUtil_Html::getCreator();
+        $creator = \MUtil\Html::getCreator();
         
-        $this->assertInstanceOf('MUtil_Html_Creator', $creator);
+        $this->assertInstanceOf('\\MUtil\\Html\\Creator', $creator);
     }
     
     public function testValidRenderer()
     {
-        $renderer = \MUtil_Html::getRenderer();
+        $renderer = \MUtil\Html::getRenderer();
         
-        $this->assertInstanceOf('MUtil_Html_Renderer', $renderer);
+        $this->assertInstanceOf('\\MUtil\\Html\\Renderer', $renderer);
     }
     
     public function testDiv()
     {
-        $div = \MUtil_Html::div('bar', ['id' => 'foo']);
+        $div = \MUtil\Html::div('bar', ['id' => 'foo']);
         
-        $this->assertInstanceOf('MUtil_Html_HtmlElement', $div);
+        $this->assertInstanceOf('\\MUtil\\Html\\HtmlElement', $div);
         $this->assertEquals('div', $div->getTagName());
         $this->assertEquals('foo', $div->getAttrib('id'));
     }

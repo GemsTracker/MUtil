@@ -12,7 +12,7 @@ use Laminas\Validator\Exception\RuntimeException;
  * @subpackage Validate
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.0
+ * @since      Class available since \MUtil version 1.0
  */
 class UniqueValue extends NoRecordExists
 {
@@ -169,7 +169,7 @@ class UniqueValue extends NoRecordExists
         // Clear cached query
         $this->select = null;
 
-        // \MUtil_Echo::track($this->_exclude, $this->_checkFields, $this->_keyFields, $context, $_POST);
+        // \MUtil\EchoOut\EchoOut::track($this->_exclude, $this->_checkFields, $this->_keyFields, $context, $_POST);
 
         return parent::isValid($value);
     }

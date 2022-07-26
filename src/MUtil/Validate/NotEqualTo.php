@@ -14,7 +14,7 @@ use Laminas\Validator\Exception\InvalidArgumentException;
  * @subpackage Validate
  * @copyright  Copyright (c) 2014 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.4 17-okt-2014 15:23:24
+ * @since      Class available since \MUtil version 1.4 17-okt-2014 15:23:24
  */
 class NotEqualTo extends AbstractValidator
 {

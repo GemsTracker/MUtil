@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Controller\Response;
+
 /**
  * Command line response client for Zend. Thanks to
  * http://stackoverflow.com/questions/2325338/running-a-zend-framework-action-from-command-line
@@ -17,9 +19,9 @@
  * @subpackage Controller
  * @copyright  Copyright (c) 2012 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil version 1.2
+ * @since      Class available since \MUtil version 1.2
  */
-class MUtil_Controller_Response_Cli extends \Zend_Controller_Response_Cli
+class Cli extends \Zend_Controller_Response_Cli
 {
     /**
      * Send all headers

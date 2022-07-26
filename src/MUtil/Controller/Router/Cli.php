@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Controller\Router;
+
 /**
  * Command line router client for Zend. Thanks to
  * http://stackoverflow.com/questions/2325338/running-a-zend-framework-action-from-command-line
@@ -17,9 +19,9 @@
  * @subpackage Controller
  * @copyright  Copyright (c) 2012 Erasmus MC
  * @license    New BSD License
- * @since      Class available since MUtil 1.2
+ * @since      Class available since \MUtil 1.2
  */
-class MUtil_Controller_Router_Cli extends \Zend_Controller_Router_Abstract
+class Cli extends \Zend_Controller_Router_Abstract
 {
     /**
      *
@@ -109,7 +111,7 @@ name=value (string)  Zero or more name=value parameter pairs, without the
             exit;
         }
 
-        if ($request instanceof \MUtil_Controller_Request_Cli) {
+        if ($request instanceof \MUtil\Controller\Request\Cli) {
             $request->setUserLogin(
                     $getopt->getOption('u'),
                     $getopt->getOption('o'),
@@ -135,7 +137,7 @@ name=value (string)  Zero or more name=value parameter pairs, without the
                 $params[$request->getActionKey()]     = $action;
 
                 foreach ($arguments as $arg) {
-                    if (\MUtil_String::contains($arg, '=')) {
+                    if (\MUtil\StringUtil\StringUtil::contains($arg, '=')) {
                         list($name, $value) = explode('=', $arg, 2);
                     } else {
                         $name  = $arg;

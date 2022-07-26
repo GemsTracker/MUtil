@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Html\Code;
+
 /**
  *
  *
@@ -18,7 +20,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.5
  */
-class MUtil_Html_Code_JavaScript extends \MUtil_Html_Code_DynamicAbstract
+class JavaScript extends \MUtil\Html\Code\DynamicAbstract
 {
     protected $_inHeader = true;
 
@@ -30,8 +32,8 @@ class MUtil_Html_Code_JavaScript extends \MUtil_Html_Code_DynamicAbstract
      */
     public function getInHeader()
     {
-        if ($this->_inHeader instanceof \MUtil_Lazy_LazyInterface) {
-            return (boolean) \MUtil_Lazy::raise($this->_inHeader);
+        if ($this->_inHeader instanceof \MUtil\Lazy\LazyInterface) {
+            return (boolean) \MUtil\Lazy::raise($this->_inHeader);
         } else {
             return (boolean) $this->_inHeader;
         }
@@ -66,7 +68,7 @@ class MUtil_Html_Code_JavaScript extends \MUtil_Html_Code_DynamicAbstract
      * otherwise in the BODY.
      *
      * @param boolean $value
-     * @return \MUtil_Html_Code_JavaScript (continuation pattern)
+     * @return \MUtil\Html\Code\JavaScript (continuation pattern)
      */
     public function setInHeader($value = true)
     {

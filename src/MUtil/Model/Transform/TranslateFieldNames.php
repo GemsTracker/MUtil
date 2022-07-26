@@ -2,7 +2,7 @@
 
 namespace MUtil\Model\Transform;
 
-class TranslateFieldNames extends \MUtil_Model_ModelTransformerAbstract
+class TranslateFieldNames extends \MUtil\Model\ModelTransformerAbstract
 {
     /**
      * @var array List of field translations. Key is the name in the database, value is the translated name
@@ -20,7 +20,7 @@ class TranslateFieldNames extends \MUtil_Model_ModelTransformerAbstract
         $this->removeOldFieldNames = $removeOldFieldNames;
     }
 
-    public function transformLoad(\MUtil_Model_ModelAbstract $model, array $data, $new = false, $isPostData = false): array
+    public function transformLoad(\MUtil\Model\ModelAbstract $model, array $data, $new = false, $isPostData = false): array
     {
         foreach($data as $key => $row) {
             foreach ($this->fieldTranslations as $oldFieldName => $newFieldName) {
@@ -36,7 +36,7 @@ class TranslateFieldNames extends \MUtil_Model_ModelTransformerAbstract
         return $data;
     }
 
-    public function transformRowBeforeSave(\MUtil_Model_ModelAbstract $model, array $row): array
+    public function transformRowBeforeSave(\MUtil\Model\ModelAbstract $model, array $row): array
     {
         foreach ($this->fieldTranslations as $newFieldName => $oldFieldName) {
             if (array_key_exists($oldFieldName, $row)) {

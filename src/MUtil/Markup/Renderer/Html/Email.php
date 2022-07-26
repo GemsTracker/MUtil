@@ -10,6 +10,8 @@
  */
 
 
+namespace MUtil\Markup\Renderer\Html;
+
 /**
  *
  * @package    MUtil
@@ -17,7 +19,7 @@
  * @license    No free license, do not copy
  * @since      Class available since version 1.8.8
  */
-class MUtil_Markup_Renderer_Html_Email implements \Zend_Markup_Renderer_TokenConverterInterface
+class Email implements \Zend_Markup_Renderer_TokenConverterInterface
 {
     /**
      * @inheritDoc

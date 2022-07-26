@@ -9,6 +9,8 @@
  * @license    New BSD License
  */
 
+namespace MUtil\Form\Decorator;
+
 use MUtil\Bootstrap\Form\Element\Hidden as BootstrapHidden;
 use MUtil\Form\Element\Hidden as BaseHidden;
 
@@ -21,7 +23,7 @@ use MUtil\Form\Element\Hidden as BaseHidden;
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Form_Decorator_AutoFocus extends \Zend_Form_Decorator_Abstract
+class AutoFocus extends \Zend_Form_Decorator_Abstract
 {
     /**
      * @param mixed $element
@@ -29,14 +31,14 @@ class MUtil_Form_Decorator_AutoFocus extends \Zend_Form_Decorator_Abstract
      */
     private function _getAllowed($element, array &$allowedElements)
     {
-        // \MUtil_Echo::r(get_class($element));
-        if ($element instanceof \MUtil_Form_Element_SubFocusInterface) {
+        // \MUtil\EchoOut\EchoOut::r(get_class($element));
+        if ($element instanceof \MUtil\Form\Element\SubFocusInterface) {
             foreach ($element->getSubFocusElements() as $subElement) {
                 $this->_getAllowed($subElement, $allowedElements);
             }
         } elseif ($element instanceof \Zend_Form_Element) {
             if (($element instanceof \Zend_Form_Element_Hidden) ||
-                ($element instanceof \MUtil_Form_Element_NoFocusInterface) ||
+                ($element instanceof \MUtil\Form\Element\NoFocusInterface) ||
                 ($element->getAttrib('readonly')) ||
                 ($element->helper == 'Button') ||
                 ($element->helper == 'formSubmit') ||
@@ -71,8 +73,8 @@ class MUtil_Form_Decorator_AutoFocus extends \Zend_Form_Decorator_Abstract
      */
     private function _getFocus($element)
     {
-        // \MUtil_Echo::r(get_class($element));
-        if ($element instanceof \MUtil_Form_Element_SubFocusInterface) {
+        // \MUtil\EchoOut\EchoOut::r(get_class($element));
+        if ($element instanceof \MUtil\Form\Element\SubFocusInterface) {
             foreach ($element->getSubFocusElements() as $subelement) {
                 if ($focus = $this->_getFocus($subelement)) {
                     return $focus;
@@ -80,7 +82,7 @@ class MUtil_Form_Decorator_AutoFocus extends \Zend_Form_Decorator_Abstract
             }
         } elseif ($element instanceof \Zend_Form_Element) {
             if (($element instanceof \Zend_Form_Element_Hidden) ||
-                ($element instanceof \MUtil_Form_Element_NoFocusInterface) ||
+                ($element instanceof \MUtil\Form\Element\NoFocusInterface) ||
                 ($element->getAttrib('readonly')) ||
                 ($element->helper == 'Button') ||
                 ($element->helper == 'formSubmit') ||

@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Copyright (c) 2011, Erasmus MC
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the name of Erasmus MC nor the
- *      names of its contributors may be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
  * @package    MUtil
@@ -32,8 +8,9 @@
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @version    $Id$
  */
+
+namespace MUtil\Html;
 
 /**
  * Parent class for all array based attribute classes.
@@ -41,7 +18,7 @@
  * Useable as is, using spaces as value separators by default.
  *
  * Parameter setting checks for the addition of special types,
- * just as \MUtil_Html_HtmlElement.
+ * just as \MUtil\Html\HtmlElement.
  *
  * @package    MUtil
  * @subpackage Html
@@ -49,7 +26,7 @@
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
+class ArrayAttribute extends \MUtil\Html\AttributeAbstract
     implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
@@ -96,7 +73,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
             $this->_specialTypes = $this->_specialTypesDefault;
         }
 
-        $value = \MUtil_Ra::args(func_get_args(), 1);
+        $value = \MUtil\Ra::args(func_get_args(), 1);
 
         parent::__construct($name, $value);
     }
@@ -108,7 +85,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      */
     protected function _getArrayRendered()
     {
-        return \MUtil_Html::getRenderer()->renderArray($this->getView(), $this->getArray(), false);
+        return \MUtil\Html::getRenderer()->renderArray($this->getView(), $this->getArray(), false);
     }
 
     /**
@@ -146,7 +123,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      *
      * @param scalar $key
      * @param mixed $value
-     * @return \MUtil_Html_ArrayAttribute (continuation pattern)
+     * @return \MUtil\Html\ArrayAttribute (continuation pattern)
      */
     protected function _setItem($key, $value)
     {
@@ -166,7 +143,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      *
      * @param mixed $keyOrValue The key if a second parameter is specified, otherwise a value
      * @param mixed $valueIfKey Optional, the value if a key is specified
-     * @return \MUtil_Html_ArrayAttribute (continuation pattern)
+     * @return \MUtil\Html\ArrayAttribute (continuation pattern)
      */
      public function add($keyOrValue, $valueIfKey = null)
     {
@@ -179,7 +156,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
             $value  = $valueIfKey;
         }
 
-        if (is_array($value) || (($value instanceof \Traversable) && (! $value instanceof \MUtil_Lazy_LazyInterface))) {
+        if (is_array($value) || (($value instanceof \Traversable) && (! $value instanceof \MUtil\Lazy\LazyInterface))) {
             foreach ($value as $key => $item) {
                 $this->_setItem($key, $item);
             }
@@ -235,9 +212,9 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      *
      * @return \ArrayIterator
      */
-    public function getIterator(): Traversable
+    public function getIterator(): \Traversable
     {
-        return new ArrayIterator($this->_values);
+        return new \ArrayIterator($this->_values);
     }
 
     /**
@@ -319,7 +296,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      *
      * @param mixed $keyOrValue The key if a second parameter is specified, otherwise a value
      * @param mixed $valueIfKey Optional, the value if a key is specified
-     * @return \MUtil_Html_ArrayAttribute (continuation pattern)
+     * @return \MUtil\Html\ArrayAttribute (continuation pattern)
      */
    public function set($keyOrValue, $valueIfKey = null)
     {
@@ -334,7 +311,7 @@ class MUtil_Html_ArrayAttribute extends \MUtil_Html_AttributeAbstract
      * Set the String used to glue items together
      *
      * @param string $separator
-     * @return \MUtil_Html_ArrayAttribute (continuation pattern)
+     * @return \MUtil\Html\ArrayAttribute (continuation pattern)
      */
     public function setSeparator($separator)
     {
