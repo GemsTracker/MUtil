@@ -24,7 +24,8 @@ namespace MUtil\Bootstrap\Form\Element;
  */
 class Checkbox extends \Zend_Form_Element_Checkbox
 {
-    use MUtil\Form\Element\LaminasElementValidator;
+    use \MUtil\Form\Element\LaminasElementValidator;
+    
     /**
      * Constructor
      *

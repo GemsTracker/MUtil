@@ -23,7 +23,7 @@ namespace MUtil\Bootstrap\Form\Element;
  */
 class Password extends \Zend_Form_Element_Password
 {
-    use MUtil\Form\Element\LaminasElementValidator;
+    use \MUtil\Form\Element\LaminasElementValidator;
 
 	/**
 	 * Bootstrap class for an input tag. Remove if you want the normal layout.
