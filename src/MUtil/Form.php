@@ -387,7 +387,11 @@ class MUtil_Form extends \Zend_Form implements \MUtil_Registry_TargetInterface
         $options = (array) $options + [
                 'disableTranslator' => $this->translatorIsDisabled()
             ];
-        return parent::createElement($type, $name, $options);
+        $element = parent::createElement($type, $name, $options);
+
+        $element->setPluginLoader($this->getPluginLoader(self::DECORATOR), self::DECORATOR);
+        
+        return $element;
     }
 
     /**
