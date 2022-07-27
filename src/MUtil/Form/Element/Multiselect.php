@@ -23,6 +23,8 @@ namespace MUtil\Form\Element;
  */
 class Multiselect extends \Zend_Form_Element_Multiselect
 {
+    use LaminasElementValidator;
+
     /**
      * Use formSelect view helper by default
      * @var string

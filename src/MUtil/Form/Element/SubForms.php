@@ -24,6 +24,8 @@ namespace MUtil\Form\Element;
  */
 class SubForms extends \Zend_Form_Element_Xhtml implements \MUtil\Form\Element\SubFocusInterface
 {
+    use LaminasElementValidator;
+
     /**
      * Use no view helper by default
      *

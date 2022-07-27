@@ -29,7 +29,7 @@ trait LaminasElementValidator
                 'options'             => $options,
             ];
         } else {
-            throw new \Zend_Form_Exception('Invalid validator provided to addValidator; must be string or \Zend_Validate_Interface');
+            throw new \Zend_Form_Exception('Invalid validator provided to addValidator; must be string or \\Laminas\\Validator\\ValidatorInterface');
         }
 
 
@@ -81,10 +81,62 @@ trait LaminasElementValidator
                 }
             } else {
                 require_once 'Zend/Form/Exception.php';
-                throw new \Zend_Form_Exception('Invalid validator passed to addValidators()');
+                throw new \Zend_Form_Exception('Invalid validator passed to addValidators() ' . get_class($validatorInfo));
             }
         }
 
         return $this;
+    }
+    
+    /**
+     * Retrieve all validators
+     *
+     * @return array
+     */
+    public function getValidators()
+    {
+        $validators = [];
+        foreach ($this->_validators as $key => $value) {
+            if ($value instanceof ValidatorInterface) {
+                $validators[$key] = $value;
+                continue;
+            }
+            $validator = $this->_loadValidator($value);
+            $validators[get_class($validator)] = $validator;
+        }
+        return $validators;
+    }
+
+    /**
+     * Get status of auto-register inArray validator flag
+     *
+     * @return bool
+     */
+    public function registerInArrayValidator()
+    {
+        if (! (isset($this->_registerInArrayValidator) && $this->_registerInArrayValidator)) {
+            return false;
+        }
+        
+        $multiOptions = $this->getMultiOptions();
+        $options      = [];
+
+        foreach ($multiOptions as $opt_value => $opt_label) {
+            // optgroup instead of option label
+            if (is_array($opt_label)) {
+                $options = array_merge($options, array_keys($opt_label));
+            }
+            else {
+                $options[] = $opt_value;
+            }
+        }
+
+        $this->addValidator(
+            'InArray',
+            true,
+            ['haystack' => $options]
+        );
+            
+        return true;
     }
 }

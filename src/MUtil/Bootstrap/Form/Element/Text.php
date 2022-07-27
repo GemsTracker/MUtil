@@ -27,6 +27,7 @@ use MUtil\Form\Element\Text as BaseText;
 class Text extends BaseText
 {
     use LaminasElementValidator;
+    
 	/**
 	 * Bootstrap class for an input tag. Remove if you want the normal layout.
 	 * @var string

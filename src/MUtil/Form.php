@@ -118,7 +118,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
      */
     public function __construct($options = null)
     {
-        $this->addElementPrefixPath('MUtil\Form_Decorator', 'MUtil/Form/Decorator',  \Zend_Form_Element::DECORATOR);
+        $this->addElementPrefixPath('MUtil_Form_Decorator', 'MUtil/Form/Decorator',  \Zend_Form_Element::DECORATOR);
         $this->addElementPrefixPath('MUtil_Validate',       'MUtil/Validate/',       \Zend_Form_Element::VALIDATE);
 
         parent::__construct($options);
@@ -504,8 +504,18 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
         $type = strtoupper($type);
         if (!isset($this->_loaders[$type])) {
             switch ($type) {
-                case \Zend_Form_Element::FILTER:
                 case \Zend_Form_Element::VALIDATE:
+                    $prefixSegment = ucfirst(strtolower($type));
+                    $pathSegment   = $prefixSegment;
+                    $this->_loaders[$type] = new \MUtil\Loader\PluginLoader(array(
+                        'Laminas_Validator_' => realpath(__DIR__ . '/../../../../laminas/laminas-validator/src/'),
+                        'MUtil_' . $prefixSegment . '_' => 'MUtil/' . $pathSegment . '/',
+                    ));
+                    // $this->_loaders[$type]->removePrefixPath('Zend_' . $prefixSegment . '_');
+                    return $this->_loaders[$type];
+                    break;
+
+                case \Zend_Form_Element::FILTER:
                     $prefixSegment = ucfirst(strtolower($type));
                     $pathSegment   = $prefixSegment;
                     break;

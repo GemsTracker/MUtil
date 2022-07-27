@@ -216,7 +216,7 @@ class PluginLoader extends \Zend_Loader_PluginLoader
     public static function getAbsolutePaths($path)
     {
         static $includePaths;
-
+        
         if ($path) {
             // Try to see if the path is an absolute path. Some exotic absolute paths can fail this test,
             // but it is more error prone to test for them here than to loop through them afterwards.
