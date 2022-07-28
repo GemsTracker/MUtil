@@ -456,7 +456,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
                 $className  = (string) $dependency;
             }
 
-            $dependency = $loader->createClass($className, $parameters);
+            $dependency = $loader->create($className, ...$parameters);
         }
         if (null !== $dependsOn) {
             $dependency->addDependsOn($dependsOn);
@@ -947,7 +947,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
         // First parameter is always the model, using + replaces that value
         $params = array($this) + func_get_args();
         $loader = \MUtil\Model::getBridgeLoader();
-        $bridge = $loader->createClass($bridges[$identifier], $params);
+        $bridge = $loader->create($bridges[$identifier], ...$params);
 
         return $bridge;
     }

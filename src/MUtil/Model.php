@@ -11,6 +11,10 @@
 
 namespace MUtil;
 
+use _PHPStan_9a6ded56a\Nette\Neon\Exception;
+use Zalt\Loader\ProjectOverloader;
+
+
 /**
  * A model combines knowedge about a set of data with knowledge required to manipulate
  * that set of data. I.e. it can store data about fields such as type, label, length,
@@ -140,7 +144,7 @@ class Model
 
     /**
      *
-     * @var \MUtil\Registry\SourceInterface
+     * @var ProjectOverloader
      */
     private static $_source;
 
@@ -207,7 +211,7 @@ class Model
     /**
      * Returns the plugin loader for dependencies
      *
-     * @return \MUtil\Loader\PluginLoader
+     * @return ProjectOverloader
      */
     public static function getDependencyLoader()
     {
@@ -218,22 +222,14 @@ class Model
      * Returns a subClass plugin loader
      *
      * @param string $prefix The prefix to load the loader for. Is CamelCased and should not contain an '_', '/' or '\'.
-     * @return \MUtil\Loader\PluginLoader
+     * @return ProjectOverloader
      */
     public static function getLoader($prefix)
     {
         if (! isset(self::$_loaders[$prefix])) {
-            $loader = new \MUtil\Loader\SourcePluginLoader();
             
-            foreach (self::$_nameSpaces as $nameSpace) {
-                $loader->addPrefixPath(
-                        $nameSpace . '_Model_' . ucfirst($prefix),
-                        $nameSpace . DIRECTORY_SEPARATOR . 'Model' . DIRECTORY_SEPARATOR . ucfirst($prefix));
-            }
-            $loader->addFallBackPath();
-
-            $loader->setSource(self::getSource());
-
+            $loader = self::getSource()->createSubFolderOverloader(ucfirst($prefix));
+            
             self::$_loaders[$prefix] = $loader;
         }
 
@@ -243,12 +239,13 @@ class Model
     /**
      * Get or create the current source
      *
-     * @return \MUtil\Registry\SourceInterface
+     * @return ProjectOverloader
      */
     public static function getSource()
     {
-        if (! self::$_source instanceof \MUtil\Registry\SourceInterface) {
-            self::setSource(new \MUtil\Registry\Source());
+        if (! self::$_source instanceof ProjectOverloader) {
+            // Autoload?
+            throw new Exception("Use of MUtil\Model->getSource() while no ProjectOverloader set!");
         }
 
         return self::$_source;
@@ -277,9 +274,9 @@ class Model
     /**
      * Sets the plugin loader for dependencies
      *
-     * @param \MUtil\Loader\PluginLoader $loader
+     * @param PluginLoader $loader
      */
-    public static function setDependencyLoader(\MUtil\Loader\PluginLoader $loader)
+    public static function setDependencyLoader(PluginLoader $loader)
     {
         self::setLoader($loader, 'Dependency');
     }
@@ -287,10 +284,10 @@ class Model
     /**
      * Sets the plugin loader for a subclass
      *
-     * @param \MUtil\Loader\PluginLoader $loader
+     * @param \Zalt\Loader\ProjectOverloader $loader
      * @param string $prefix The prefix to set  the loader for. Is CamelCased and should not contain an '_', '/' or '\'.
      */
-    public static function setLoader(\MUtil\Loader\PluginLoader $loader, $prefix)
+    public static function setLoader(ProjectOverloader $loader, $prefix)
     {
         self::$_loaders[$prefix] = $loader;
     }
@@ -298,17 +295,17 @@ class Model
     /**
      * Set the current source for loaders
      *
-     * @param \MUtil\Registry\SourceInterface $source
+     * @param ProjectOverloader $source
      * @param boolean $setExisting When true the source is set for all exiting loaders
      * @return void
      */
-    public static function setSource(\MUtil\Registry\SourceInterface $source, $setExisting = true)
+    public static function setSource(ProjectOverloader $source, $setExisting = true)
     {
         self::$_source = $source;
 
         if ($setExisting) {
             foreach (self::$_loaders as $loader) {
-                if ($loader instanceof \MUtil\Loader\SourcePluginLoader) {
+                if ($loader instanceof ProjectOverloader) {
                     $loader->setSource($source);
                 }
             }

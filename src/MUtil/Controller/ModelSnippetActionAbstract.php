@@ -11,6 +11,8 @@
 
 namespace MUtil\Controller;
 
+use Laminas\ServiceManager\ServiceManager;
+
 /**
  * Controller class with standard model and snippet based browse (index), IN THE NEAR FUTURE show, edit and delete actions.
  *
@@ -624,11 +626,12 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
         if (! ($this->_model && $this->_model->isMeta('action', $action))) {
             $detailed = ! $this->isSummarized($action);
 
-            \MUtil\Model::getSource()->addRegistryContainer(array(
-                'action'   => $action,
-                'detailed' => $detailed,
-                'forForm'  => $this->forForm($action),
-                ), 'actionVariables');
+            $container = \MUtil\Model::getSource()->getContainer();
+            if ($container instanceof ServiceManager) {
+                $container->setService('action', $action);
+                $container->setService('detailed', $detailed);
+                $container->setService('forForm', $this->forForm($action));
+            }            
 
             $this->_model = $this->createModel($detailed, $action);
             $this->_model->setMeta('action', $action);

@@ -221,7 +221,7 @@ abstract class Action
      * @param \MUtil\Ra::pairs $parameter_value_pairs name/value pairs ot add to the source for this snippet
      * @return \MUtil\Snippets\SnippetInterface The snippet if content was possibly added.
      */
-    public function addSnippet(string $filename, $parameter_value_pairs = null): ?MUtil\Snippets\SnippetInterface
+    public function addSnippet(string $filename, $parameter_value_pairs = null): ?\MUtil\Snippets\SnippetInterface
     {
         $extraSource = \MUtil\Ra::pairs(func_get_args(), 1);
         $results     = $this->addSnippets([$filename], $extraSource);
