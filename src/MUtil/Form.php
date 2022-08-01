@@ -233,8 +233,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
     public function activateBootstrap()
     {
         if ($this->_no_bootstrap) {
-
-            $this->addPrefixPath('MUtil\Bootstrap_Form_Element', 'MUtil/Bootstrap/Form/Element/', \Zend_Form::ELEMENT);
+            $this->addPrefixPath('MUtil_Bootstrap_Form_Element', 'MUtil/Bootstrap/Form/Element/', \Zend_Form::ELEMENT);
             $this->_no_bootstrap = false;
             $this->_defaultDisplayGroupClass = '\\MUtil\\Bootstrap\\Form\\DisplayGroup';
         }
@@ -261,6 +260,56 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Add prefix path for plugin loader
+     *
+     * If no $type specified, assumes it is a base path for both filters and
+     * validators, and sets each according to the following rules:
+     * - decorators: $prefix = $prefix . '_Decorator'
+     * - elements: $prefix = $prefix . '_Element'
+     *
+     * Otherwise, the path prefix is set on the appropriate plugin loader.
+     *
+     * If $type is 'decorator', sets the path in the decorator plugin loader
+     * for all elements. Additionally, if no $type is provided,
+     * the prefix and path is added to both decorator and element
+     * plugin loader with following settings:
+     * $prefix . '_Decorator', $path . '/Decorator/'
+     * $prefix . '_Element', $path . '/Element/'
+     *
+     * @param  string $prefix
+     * @param  string $path
+     * @param  string $type
+     * @return static
+     * @throws Zend_Form_Exception for invalid type
+     */
+    public function addPrefixPath($prefix, $path, $type = null)
+    {
+        $type = strtoupper($type);
+        switch ($type) {
+            case self::DECORATOR:
+            case self::ELEMENT:
+                $loader = $this->getPluginLoader($type);
+                $loader->addPrefixPath($prefix, $path);
+                return $this;
+            case null:
+                $nsSeparator = (false !== strpos($prefix, '\\'))?'\\':'_';
+                $prefix = rtrim($prefix, $nsSeparator);
+                $path   = rtrim($path, DIRECTORY_SEPARATOR);
+                foreach ([self::DECORATOR, self::ELEMENT, \Zend_Form_Element::FILTER, \Zend_Form_Element::VALIDATE] as $type) {
+                    $cType        = ucfirst(strtolower($type));
+                    $pluginPath   = $path . DIRECTORY_SEPARATOR . $cType . DIRECTORY_SEPARATOR;
+                    $pluginPrefix = $prefix . $nsSeparator . $cType;
+                    $loader       = $this->getPluginLoader($type);
+                    $loader->addPrefixPath($pluginPrefix, $pluginPath);
+                }
+                return $this;
+            default:
+                require_once 'Zend/Form/Exception.php';
+                throw new Zend_Form_Exception(sprintf('Invalid type "%s" provided to getPluginLoader()', $type));
+        }
     }
 
     /**
@@ -308,7 +357,14 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
         if ($element instanceof \Zend_Form_Element_File) {
             $this->setAttrib('enctype', 'multipart/form-data');
         }
+        if ($element instanceof \Zend_Form_Element_File) {
+            $this->setAttrib('enctype', 'multipart/form-data');
+        }
         $element->setDisableTranslator($this->translatorIsDisabled());
+
+        foreach ([self::DECORATOR, \Zend_Form_Element::FILTER, \Zend_Form_Element::VALIDATE] as $loadId) {
+            $element->setPluginLoader($this->getPluginLoader($loadId), $loadId);
+        }
 
         if (isset($options['addDecorators'])) {
             $element->addDecorators($options['addDecorators']);

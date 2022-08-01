@@ -249,6 +249,8 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
             }
         }
 
+        /*
+         * These language files are no longer available in jQuery
         if ($locale = \Zend_Registry::get('Zend_Locale')) {
             $language = $locale->getLanguage();
             // We have a language, but only when not english
@@ -276,7 +278,7 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
 
                 // TODO: Option 3: enable language setting for each individual date
             }
-        }
+        } // */
 
         return $element;
     }

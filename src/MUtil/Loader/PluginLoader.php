@@ -266,8 +266,13 @@ class PluginLoader extends \Zend_Loader_PluginLoader
      */
     public function getPaths($prefix = null)
     {
-        // To return the same result as in the past.
-        return array_reverse(parent::getPaths($prefix));
+        $output = parent::getPaths($prefix);
+        if (is_array($output)) {
+            // To return the same result as in the past.
+            return array_reverse($output);
+        }
+        
+        return $output;
     }
 
     /**

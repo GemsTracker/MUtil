@@ -4,7 +4,7 @@
  *
  * Short description of file
  *
- * @package    Gems
+ * @package    MUtil
  * @subpackage JQuery
  * @author     Menno Dekker <menno.dekker@erasmusmc.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
@@ -18,7 +18,7 @@ namespace MUtil\Bootstrap\Form\Element;
  *
  * Long description for class ToggleCheckboxes (if any)...
  *
- * @package    Gems
+ * @package    MUtil
  * @subpackage JQuery
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
@@ -60,6 +60,9 @@ class ToggleCheckboxes extends \MUtil\Bootstrap\Form\Element\Button
     {
         $element = parent::setView($view);
         if (null !== $view) {
+            if (false === $view->getPluginLoader('helper')->getPaths('MUtil_Bootstrap_View_Helper')) {
+                $view->addHelperPath('MUtil/Bootstrap/View/Helper', 'MUtil_Bootstrap_View_Helper');
+            }
             if (false === $view->getPluginLoader('helper')->getPaths('Gems_JQuery_View_Helper')) {
                 $view->addHelperPath('Gems/JQuery/View/Helper', 'Gems_JQuery_View_Helper');
             }
