@@ -167,10 +167,6 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
         }
 
         \MUtil\JQuery::enableView($view);
-
-        if (false === $view->getPluginLoader('helper')->getPaths('MUtil\JQuery_View_Helper')) {
-            $view->addHelperPath('MUtil/JQuery/View/Helper', 'MUtil\JQuery_View_Helper');
-        }
     }
 
     /**
