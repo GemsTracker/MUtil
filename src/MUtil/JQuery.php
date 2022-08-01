@@ -54,9 +54,8 @@ class JQuery extends \ZendX_JQuery
      */
     public static function enableView(\Zend_View_Interface $view)
     {
-        if (false === $view->getPluginLoader('helper')->getPaths('MUtil_JQuery_View_Helper')) {
+        if (false === $view->getPluginLoader('helper')->getPaths('ZendX_JQuery_View_Helper')) {
             $view->addHelperPath('ZendX/JQuery/View/Helper', 'ZendX_JQuery_View_Helper');
-            $view->addHelperPath('MUtil/JQuery/View/Helper', 'MUtil_JQuery_View_Helper');
         }
     }
 
@@ -71,7 +70,7 @@ class JQuery extends \ZendX_JQuery
         static $jquery;
 
         if (! $jquery) {
-            $helper = new \MUtil\JQuery\View\Helper\JQuery();
+            $helper = new \MUtil\View\Helper\JQuery();
             $jquery = $helper->jQuery();
         }
 

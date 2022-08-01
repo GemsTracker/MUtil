@@ -3,20 +3,20 @@
 /**
  *
  * @package    MUtil
- * @subpackage JQuery
+ * @subpackage View\Helper
  * @author     Jasper van Gestel <jappie@dse.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
  */
 
-namespace MUtil\JQuery\View\Helper\JQuery;
+namespace MUtil\View\Helper\JQuery;
 
 use MUtil\Javascript;
 
 /**
  *
  * @package    MUtil
- * @subpackage JQuery
+ * @subpackage View\Helper
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
  * @since      Class available since version 1.6.5

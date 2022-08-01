@@ -10,7 +10,7 @@
  * @license    New BSD License
  */
 
-namespace MUtil\Bootstrap\View\Helper;
+namespace MUtil\View\Helper;
 
 /**
  *
@@ -23,7 +23,7 @@ namespace MUtil\Bootstrap\View\Helper;
 class Bootstrap extends \Zend_View_Helper_Abstract
 {
     /**
-     * @var \MUtil\Bootstrap\View\Helper\Bootstrapper
+     * @var \MUtil\View\Helper\Bootstrapper
      */
     private $_bootstrapper;
 
@@ -39,7 +39,7 @@ class Bootstrap extends \Zend_View_Helper_Abstract
     {
         $registry = \Zend_Registry::getInstance();
         if (!isset($registry[__CLASS__])) {
-            $container = new \MUtil\Bootstrap\View\Helper\Bootstrapper();
+            $container = new Bootstrapper();
             $registry[__CLASS__] = $container;
         }
         $this->_bootstrapper = $registry[__CLASS__];

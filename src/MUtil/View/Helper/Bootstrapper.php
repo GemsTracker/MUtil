@@ -3,20 +3,20 @@
 /**
  *
  * @package    MUtil
- * @subpackage Bootstrap
+ * @subpackage View\Helper
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2014 Erasmus MC
  * @license    New BSD License
  */
 
-namespace MUtil\Bootstrap\View\Helper;
+namespace MUtil\View\Helper;
 
 use MUtil\Javascript;
 
 /**
  *
  * @package    MUtil
- * @subpackage Bootstrap
+ * @subpackage View\Helper
  * @copyright  Copyright (c) 2014 Erasmus MC
  * @license    New BSD License
  * @since      Class available since version 1.5
@@ -188,7 +188,7 @@ class Bootstrapper
      * Set Use SSL on CDN Flag
      *
      * @param bool $flag
-     * @return \MUtil\Bootstrap\View\Helper\Bootstrapper (continuation pattern)
+     * @return \MUtil\View\Helper\Bootstrapper (continuation pattern)
      */
     public function setCdnSsl($flag)
     {
@@ -209,22 +209,11 @@ class Bootstrapper
      * Set view object
      *
      * @param  \Zend_View_Interface $view
-     * @return \MUtil\Bootstrap\View\Helper\Bootstrapper (continuation pattern)
+     * @return \MUtil\View\Helper\Bootstrapper (continuation pattern)
      */
     public function setView(\Zend_View_Interface $view)
     {
         $this->view = $view;
-        /*$doctype = $this->_view->doctype();
-
-        if ($doctype instanceof \Zend_View_Helper_Doctype) {
-            if (! $doctype->isHtml5()) {
-                if ($doctype->isXhtml()) {
-                    $doctype->setDoctype(\Zend_View_Helper_Doctype::XHTML5);
-                } else {
-                    $doctype->setDoctype(\Zend_View_Helper_Doctype::HTML5);
-                }
-            }
-        }*/
 
         return $this;
     }

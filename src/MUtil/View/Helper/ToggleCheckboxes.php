@@ -3,12 +3,12 @@
 /**
  *
  * @package    MUtil
- * @subpackage JQuery
+ * @subpackage View\Helper
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
  */
 
-namespace MUtil\Bootstrap\View\Helper;
+namespace MUtil\View\Helper;
 
 /**
  * Short description for ToggleCheckboxes
@@ -16,7 +16,7 @@ namespace MUtil\Bootstrap\View\Helper;
  * Long description for class ToggleCheckboxes (if any)...
  *
  * @package    MUtil
- * @subpackage JQuery
+ * @subpackage View\Helper
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
  * @since      Class available since version 1.5

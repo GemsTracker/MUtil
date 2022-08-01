@@ -59,7 +59,7 @@ class Bootstrap
     /**
      * Bootsrap view helper
      *
-     * @var \MUtil\Bootstrap\View\Helper\Bootstrap
+     * @var \MUtil\View\Helper\Bootstrap
      */
     private static $_bootstrap;
 
@@ -68,8 +68,8 @@ class Bootstrap
     /**
      * Returns the Bootstrapper object assigned to the view helper.
      *
-     * @staticvar \MUtil\Bootstrap\View\Helper\Bootstrapper $bootstrap
-     * @return \MUtil\Bootstrap\View\Helper\Bootstrapper
+     * @staticvar \MUtil\View\Helper\Bootstrapper $bootstrap
+     * @return \MUtil\View\Helper\Bootstrapper
      */
     public static function bootstrap($options=array())
     {
@@ -130,7 +130,7 @@ class Bootstrap
      */
     public static function enabled()
     {
-        return self::$_bootstrap instanceof \MUtil\Bootstrap\View\Helper\Bootstrapper;
+        return self::$_bootstrap instanceof \MUtil\View\Helper\Bootstrapper;
     }
 
     /**

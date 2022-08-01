@@ -4,18 +4,18 @@
  *
  *
  * @package    MUtil
- * @subpackage JQuery
+ * @subpackage View\Helper
  * @author     Matijs de Jong <mjong@magnafacta.nl>
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
  */
 
-namespace MUtil\JQuery\View\Helper;
+namespace MUtil\View\Helper;
 
 /**
  *
  * @package    MUtil
- * @subpackage JQuery
+ * @subpackage View\Helper
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
  * @since      Class available since version 1.0
@@ -38,6 +38,12 @@ class DatePicker extends \ZendX_JQuery_View_Helper_DatePicker
     public function datePicker($id, $value = null, array $params = array(), array $attribs = array())
     {
         static $sayThisOnlyOnce = true;
+
+        if (isset($attribs['class'])) {
+            $attribs['class'] .= ' form-control';
+        } else {
+            $attribs['class'] = ' form-control';
+        }
 
         $attribs = $this->_prepareAttributes($id, $value, $attribs);
         $picker  = 'datepicker';
@@ -73,13 +79,14 @@ class DatePicker extends \ZendX_JQuery_View_Helper_DatePicker
         if ($formatTime && $sayThisOnlyOnce) {
 
             $files[] = 'jquery-ui-timepicker-addon.js';
+            /*
             if ($locale = \Zend_Registry::get('Zend_Locale')) {
                 $language = $locale->getLanguage();
                 // We have a language, but only when not english
                 if ($language && $language != 'en') {
                     $files[] = sprintf('i18n/jquery-ui-timepicker-addon-%s.js', $language);
                 }
-            }
+            } // */
 
             if ($baseurl) {
                 foreach ($files as $file) {
@@ -107,7 +114,12 @@ class DatePicker extends \ZendX_JQuery_View_Helper_DatePicker
 
         $onload->render($this->view);
 
-        return $this->view->formText($id, $value, $attribs);
+        $datePicker = '<div class="input-group date">'
+            . $this->view->formText($id, $value, $attribs)
+            . '<label for="' . $attribs['id'] . '" class="input-group-addon date"><i class="fa fa-calendar"></i></label>'
+            . '</div>';
+
+        return $datePicker;
     }
 
     /**
