@@ -42,7 +42,9 @@ abstract class Action
      *
      * @var \Mezzio\Flash\FlashMessagesInterface
      */
-    private $_messenger;
+    protected $messenger;
+
+    public static string $messengerKey = 'action-messages';
 
     /**
      * Created when $useHtmlView is true or initHtml() is run.
@@ -206,10 +208,12 @@ abstract class Action
      * @param string|null $status Optional message status, one of: success, info, warning or danger
      * @return \MUtil\Controller\Action
      */
-    public function addMessage(mixed $message, ?string $status = null)
+    public function addMessage(mixed $message, string $status = 'warning')
     {
         $messenger = $this->getMessenger();
-        $messenger->addMessage($message, $status);
+        $messages = $messenger->getFlash(static::$messengerKey, []);
+        $messages = array_merge($messages, [$message, $status]);
+        $messenger->flash(static::$messengerKey, $messages);
 
         return $this;
     }
@@ -318,11 +322,11 @@ abstract class Action
      */
     public function getMessenger(): \Mezzio\Flash\FlashMessagesInterface
     {
-        if (! $this->_messenger) {
-            $this->request->getAttribute('flash');
+        if (! $this->messenger) {
+            $this->messenger =  $this->request->getAttribute('flash');
         }
 
-        return $this->_messenger;
+        return $this->messenger;
     }
 
     public function getRedirectUrl(): ?string
@@ -523,7 +527,7 @@ abstract class Action
      */
     public function setMessenger(\Zend_Controller_Action_Helper_FlashMessenger $messenger): self
     {
-        $this->_messenger = $messenger;
+        $this->messenger = $messenger;
 
         return $this;
     }
