@@ -93,7 +93,7 @@ abstract class Action
      */
     public $translate;
 
-    protected \Mezzio\Helper\UrlHelper $urlHelper;
+    protected Mezzio\Helper\UrlHelper $urlHelper;
 
     /**
      * Set to true in child class for automatic creation of $this->html.
@@ -212,7 +212,7 @@ abstract class Action
     {
         $messenger = $this->getMessenger();
         $messages = $messenger->getFlash(static::$messengerKey, []);
-        $messages = array_merge($messages, [$message, $status]);
+        $messages[] = [$message, $status];
         $messenger->flash(static::$messengerKey, $messages);
 
         return $this;
