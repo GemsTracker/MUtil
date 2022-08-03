@@ -2,7 +2,7 @@
 
 namespace MUtil\Request;
 
-use Mezzio\Router\Route;
+use Mezzio\Router\RouteResult;
 
 class RequestInfo
 {
@@ -16,7 +16,7 @@ class RequestInfo
      */
     protected ?string $currentController = null;
 
-    protected ?Route $currentRoute = null;
+    protected ?RouteResult $currentRouteResult = null;
 
     /**
      * @var bool Is the current request a POST request?
@@ -55,9 +55,9 @@ class RequestInfo
         $this->currentController = $currentController;
     }
 
-    public function setCurrentRoute(Route $route): void
+    public function setCurrentRouteResult(RouteResult $route): void
     {
-        $this->currentRoute = $route;
+        $this->currentRouteResult = $route;
     }
 
     /**
@@ -112,9 +112,9 @@ class RequestInfo
         return $this->currentController;
     }
 
-    public function getCurrentRoute(): ?Route
+    public function getCurrentRouteResult(): ?RouteResult
     {
-        return $this->route;
+        return $this->currentRouteResult;
     }
 
     /**

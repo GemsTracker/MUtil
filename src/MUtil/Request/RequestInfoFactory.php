@@ -25,7 +25,7 @@ class RequestInfoFactory
         $requestInfo->setIsPost($this->requestHelper->isPost());
         $requestInfo->setRequestQueryParams($this->request->getQueryParams());
         $requestInfo->setRequestPost($this->request->getParsedBody());
-        $requestInfo->setCurrentRoute($this->requestHelper->getRouteResult()->getMatchedRoute());
+        $requestInfo->setCurrentRouteResult($this->requestHelper->getRouteResult());
 
         $routeResult = $this->requestHelper->getRouteResult();
         $requestInfo->setRequestMatchedParams($routeResult->getMatchedParams());
