@@ -31,9 +31,6 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "MUtil_": "src/"
-        },
         "psr-4": {
             "MUtil\\": "src/MUtil"
         }
