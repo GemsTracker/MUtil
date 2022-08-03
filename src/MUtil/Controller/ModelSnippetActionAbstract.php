@@ -96,6 +96,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
     private $_defaultParameters = [
         'cacheTags'             => 'getCacheTags',
         'includeNumericFilters' => 'getIncludeNumericFilters',
+        '_messenger'             => 'getMessenger',
         'model'                 => 'getModel',
         'requestInfo'           => 'getRequestInfo',
     ];
