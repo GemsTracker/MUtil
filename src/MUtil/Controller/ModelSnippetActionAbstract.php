@@ -12,6 +12,7 @@
 namespace MUtil\Controller;
 
 use Laminas\ServiceManager\ServiceManager;
+use Mezzio\Session\SessionInterface;
 
 /**
  * Controller class with standard model and snippet based browse (index), IN THE NEAR FUTURE show, edit and delete actions.
@@ -632,7 +633,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
                 $container->setService('action', $action);
                 $container->setService('detailed', $detailed);
                 $container->setService('forForm', $this->forForm($action));
-            }            
+            }
 
             $this->_model = $this->createModel($detailed, $action);
             $this->_model->setMeta('action', $action);
@@ -678,19 +679,22 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
             return $this->_searchData;
         }
 
+        $sessionId = 'ModelSnippetActionAbstract_getSearchData';
         if ($this->searchSessionId) {
-            $sessionId = $this->searchSessionId;
+            $sessionId .= $this->searchSessionId;
         } else {
             // Always use a search id
-            $sessionId = get_class($this);
+            $sessionId .= get_class($this);
         }
 
-        $searchSession = new \Zend_Session_Namespace('ModelSnippetActionAbstract_getSearchData');
-        if (isset($searchSession->$sessionId)) {
-            $sessionData = $searchSession->$sessionId;
-            // \MUtil\EchoOut\EchoOut::track($sessionData);
-        } else {
-            $sessionData = [];
+        /**
+         * @var $session SessionInterface
+         */
+        $session = $this->request->getAttribute(SessionInterface::class);
+
+        $sessionData = [];
+        if ($session->has($sessionId)) {
+            $sessionData = $session->get($sessionId);
         }
 
         $defaults = $this->getSearchDefaults();
@@ -722,7 +726,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
                     $tmp[$k] = $v;
                 }
             }
-            $searchSession->$sessionId = $tmp;
+            $session->set($sessionId, $tmp);
         } else {
             $data = $sessionData;
         }
@@ -804,8 +808,8 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
     {
         if ($this->indexStartSnippets || $this->indexStopSnippets) {
             $params = $this->_processParameters(
-                    $this->indexParameters + $this->autofilterParameters + $this->_defaultAutofilterParameters
-                    );
+                $this->indexParameters + $this->autofilterParameters + $this->_defaultAutofilterParameters
+            );
 
             if ($this->indexStartSnippets) {
                 $this->addSnippets($this->indexStartSnippets, $params);
