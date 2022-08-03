@@ -2,6 +2,8 @@
 
 namespace MUtil\Request;
 
+use Mezzio\Router\Route;
+
 class RequestInfo
 {
     /**
@@ -13,6 +15,8 @@ class RequestInfo
      * @var string|null Name of the current controller
      */
     protected ?string $currentController = null;
+
+    protected ?Route $currentRoute = null;
 
     /**
      * @var bool Is the current request a POST request?
@@ -49,6 +53,11 @@ class RequestInfo
     public function setCurrentController(?string $currentController): void
     {
         $this->currentController = $currentController;
+    }
+
+    public function setCurrentRoute(Route $route): void
+    {
+        $this->currentRoute = $route;
     }
 
     /**
@@ -101,6 +110,11 @@ class RequestInfo
     public function getCurrentController(): ?string
     {
         return $this->currentController;
+    }
+
+    public function getCurrentRoute(): ?Route
+    {
+        return $this->route;
     }
 
     /**
