@@ -12,6 +12,11 @@
 namespace MUtil\Controller;
 
 use MUtil\Translate\Translator;
+use Psr\Http\Message\ServerRequestInterface;
+use MUtil\Legacy\RequestHelper;
+use Mezzio\Helper\UrlHelper;
+use Mezzio\Flash\FlashMessagesInterface;
+
 
 /**
  * Extends \Zend_Controller_Action with basic functionality and \MUtil\Html
@@ -40,7 +45,7 @@ abstract class Action
      *
      * Standard the flash messenger for storing messages
      *
-     * @var \Mezzio\Flash\FlashMessagesInterface
+     * @var FlashMessagesInterface
      */
     protected $messenger;
 
@@ -60,16 +65,16 @@ abstract class Action
     /**
      * PSR-7 Request
      *
-     * @var \Psr\Http\Message\ServerRequestInterface
+     * @var ServerRequestInterface
      */
-    protected \Psr\Http\Message\ServerRequestInterface $request;
+    protected ServerRequestInterface $request;
 
     /**
      * Helper class for retrieving legacy data from a PSR-7 Request
      *
-     * @var \MUtil\Legacy\RequestHelper
+     * @var RequestHelper
      */
-    protected \MUtil\Legacy\RequestHelper $requestHelper;
+    protected RequestHelper $requestHelper;
 
     /**
      * The loader for snippets.
@@ -93,7 +98,7 @@ abstract class Action
      */
     public $translate;
 
-    protected Mezzio\Helper\UrlHelper $urlHelper;
+    protected UrlHelper $urlHelper;
 
     /**
      * Set to true in child class for automatic creation of $this->html.
@@ -119,10 +124,10 @@ abstract class Action
      */
     public $useRawOutput = false;
 
-    public function __construct(\Psr\Http\Message\ServerRequestInterface $request, \Mezzio\Helper\UrlHelper $urlHelper, $init = true)
+    public function __construct(ServerRequestInterface $request, UrlHelper $urlHelper, $init = true)
     {
         $this->request = $request;
-        $this->requestHelper = new \MUtil\Legacy\RequestHelper($request);
+        $this->requestHelper = new RequestHelper($request);
         $this->urlHelper = $urlHelper;
 
         //$this->_helper = new \Zend_Controller_Action_HelperBroker($this);
