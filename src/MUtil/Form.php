@@ -279,12 +279,14 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
      * @param  string $path
      * @param  string $type
      * @return static
-     * @throws Zend_Form_Exception for invalid type
+     * @throws \Zend_Form_Exception for invalid type
      */
     public function addPrefixPath($prefix, $path, $type = null)
     {
         $type = strtoupper($type);
         switch ($type) {
+            case \Zend_Form_Element::VALIDATE:
+            case \Zend_Form_Element::FILTER:
             case self::DECORATOR:
             case self::ELEMENT:
                 $loader = $this->getPluginLoader($type);
@@ -303,8 +305,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
                 }
                 return $this;
             default:
-                require_once 'Zend/Form/Exception.php';
-                throw new Zend_Form_Exception(sprintf('Invalid type "%s" provided to getPluginLoader()', $type));
+                throw new \Zend_Form_Exception(sprintf('Invalid type "%s" provided to getPluginLoader()', $type));
         }
     }
 
@@ -560,7 +561,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
                     $prefixSegment = ucfirst(strtolower($type));
                     $pathSegment   = $prefixSegment;
                     $this->_loaders[$type] = new \MUtil\Loader\PluginLoader(array(
-                        'Laminas_Validator_' => realpath(__DIR__ . '/../../../../laminas/laminas-validator/src/'),
+                        'Laminas_Validator_' => realpath(__DIR__ . '/../../../../../vendor/laminas/laminas-validator/src/'),
                         'MUtil_' . $prefixSegment . '_' => 'MUtil/' . $pathSegment . '/',
                     ));
                     // $this->_loaders[$type]->removePrefixPath('Zend_' . $prefixSegment . '_');
