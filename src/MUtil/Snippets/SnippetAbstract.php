@@ -11,6 +11,8 @@
 
 namespace MUtil\Snippets;
 
+use MUtil\Controller\Action;
+
 /**
  * An abstract class for building snippets. Sub classes should override at least
  * getHtmlOutput() or render() to generate output.
@@ -33,9 +35,9 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
 {
     /**
      *
-     * @var \Zend_Controller_Action_Helper_FlashMessenger
+     * @var \Mezzio\Flash\FlashMessagesInterface
      */
-    private $_messenger;
+    private $messenger;
 
     /**
      * Attributes (e.g. class) for the main html element
@@ -70,13 +72,12 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param mixed $message_args Can be an array or multiple argemuents. Each sub element is a single message string
      * @return self (continuation pattern)
      */
-    public function addMessage($message_args)
+    public function addMessage(mixed $message, string $status = 'warning')
     {
-        $messages  = \MUtil\Ra::flatten(func_get_args());
-        $messenger = $this->getMessenger();
-
-        foreach ($messages as $message) {
-            $messenger->addMessage($message);
+        if ($this->messenger) {
+            $messages = $this->messenger->getFlash(Action::$messengerKey, []);
+            $messages[] = [$message, $status];
+            $this->messenger->flash(Action::$messengerKey, $messages);
         }
 
         return $this;
@@ -123,19 +124,6 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
     protected function getHtmlSequence()
     {
         return new \MUtil\Html\Sequence();
-    }
-
-    /**
-     * Retrieves the messenger
-     *
-     * @return \Zend_Controller_Action_Helper_FlashMessenger
-     */
-    protected function getMessenger()
-    {
-        if (! isset($this->_messenger)) {
-            $this->_messenger = new \MUtil\Controller\Action\Helper\FlashMessenger();
-        }
-        return $this->_messenger;
     }
 
     /**
