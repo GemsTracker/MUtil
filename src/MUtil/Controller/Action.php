@@ -279,7 +279,13 @@ abstract class Action
                     $routeNameParts[] = $redirectParts['action'];
                     $newRouteName = join('.', $routeNameParts);
 
-                    $url = $this->urlHelper->generate($newRouteName);
+                    $nonParams = [
+                        'controller' => true,
+                        'action' => true,
+                    ];
+                    $params = array_diff_key($redirectParts, $nonParams);
+
+                    $url = $this->urlHelper->generate($newRouteName, $params);
                     $this->redirectUrl = $url;
                     return null;
                 }
