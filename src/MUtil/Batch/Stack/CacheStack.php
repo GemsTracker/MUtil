@@ -12,6 +12,9 @@
 
 namespace MUtil\Batch\Stack;
 
+use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Contracts\Cache\ItemInterface;
+
 /**
  * A command stack that uses the cache system to store the data. The advantage over
  * a session is that each sets of commands is stored in a separate file. meaning
@@ -23,40 +26,29 @@ namespace MUtil\Batch\Stack;
  * @license    New BSD License
  * @since      Class available since \MUtil version 1.3
  */
-class CacheStack extends \MUtil\Batch\Stack\StackAbstract
+class CacheStack extends StackAbstract
 {
-    /**
-     *
-     * @var \Psr\Cache\CacheItemPoolInterface
-     */
-    private $_cache;
+    private CacheItemPoolInterface $cache;
 
-    /**
-     *
-     * @var string
-     */
-    private $_cacheId;
+    private string $cacheId;
 
-    /**
-     *
-     * @var array
-     */
-    private $_commands;
+    private array $commands;
 
     /**
      *
      * @param string $id A unique name identifying the batch
      */
-    public function __construct($id, \Psr\Cache\CacheItemPoolInterface $cache)
+    public function __construct(string $id, CacheItemPoolInterface $cache)
     {
-        $this->_cacheId  = 'batch_' . session_id() . '_' . $id;
-        $this->_cache    = $cache;
-        $item = $this->_cache->getItem($this->_cacheId);
-        $this->_commands = $item->get();
+        $this->cacheId  = 'batch_' . session_id() . '_' . $id;
+        $this->cache    = $cache;
+        $item = $this->cache->getItem($this->cacheId);
+        $commands = $item->get();
 
-        if (! $this->_commands) {
-            $this->_commands = [];
+        if (! $commands) {
+            $commands = [];
         }
+        $this->commands = $commands;
     }
 
     /**
@@ -65,15 +57,15 @@ class CacheStack extends \MUtil\Batch\Stack\StackAbstract
     public function __destruct()
     {
         // \MUtil\EchoOut\EchoOut::track(count($this->_commands));
-        if ($this->_commands) {
-            $item = $this->_cache->getItem($this->_cacheId);
-            $item->set($this->_commands);
-            if ($item instanceof \Symfony\Contracts\Cache\ItemInterface) {
+        if ($this->commands) {
+            $item = $this->cache->getItem($this->cacheId);
+            $item->set($this->commands);
+            if ($item instanceof ItemInterface) {
                 $item->tag(['batch', 'sess_' . session_id()]);
             }
-            $this->_cache->save($item);
+            $this->cache->save($item);
         } else {
-            $this->_cache->deleteItem($this->_cacheId);
+            $this->cache->deleteItem($this->cacheId);
         }
     }
 
@@ -84,14 +76,14 @@ class CacheStack extends \MUtil\Batch\Stack\StackAbstract
      * @param string $id Optional id to repeat double execution
      * @return boolean When true, increment the number of commands, otherwise the command existed
      */
-    protected function _addCommand(array $command, $id = null)
+    protected function _addCommand(array $command, ?string $id = null): bool
     {
-        $result = (null === $id) || !isset($this->_commands[$id]);
+        $result = (null === $id) || !isset($this->commands[$id]);
 
         if (null === $id) {
-            $this->_commands[] = $command;
+            $this->commands[] = $command;
         } else {
-            $this->_commands[$id] = $command;
+            $this->commands[$id] = $command;
         }
 
         return $result;
@@ -102,9 +94,9 @@ class CacheStack extends \MUtil\Batch\Stack\StackAbstract
      *
      * @return array 0 => command, 1 => params
      */
-    public function getNext()
+    public function getNext(): array
     {
-        return reset($this->_commands);
+        return reset($this->commands);
     }
 
     /**
@@ -112,9 +104,9 @@ class CacheStack extends \MUtil\Batch\Stack\StackAbstract
      *
      * @return void
      */
-    public function gotoNext()
+    public function gotoNext(): void
     {
-        array_shift($this->_commands);
+        array_shift($this->commands);
     }
 
     /**
@@ -122,19 +114,19 @@ class CacheStack extends \MUtil\Batch\Stack\StackAbstract
      *
      * @return boolean
      */
-    public function hasNext()
+    public function hasNext(): bool
     {
-        return (boolean) $this->_commands;
+        return (boolean) $this->commands;
     }
 
     /**
      * Reset the stack
      *
-     * @return \MUtil\Batch\Stack\Stackinterface (continuation pattern)
+     * @return self
      */
-    public function reset()
+    public function reset(): self
     {
-        $this->_commands = array();
+        $this->commands = [];
 
         return $this;
     }

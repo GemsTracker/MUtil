@@ -30,43 +30,43 @@ interface Stackinterface
      * @param array  $params Array with scalars, as many parameters as needed allowed
      * @return boolean When true, increment the number of commands, otherwise the command existed
      */
-    public function addStep($method, array $params);
+    public function addStep(string $method, array $params): bool;
 
     /**
      * Return true when there still exist unexecuted commands
      *
      * @return boolean
      */
-    public function hasNext();
+    public function hasNext(): bool;
 
     /**
      * Return the next command
      *
      * @return array 0 => command, 1 => params
      */
-    public function getNext();
+    public function getNext(): array;
 
     /**
      * Run the next command
      *
      * @return void
      */
-    public function gotoNext();
+    public function gotoNext(): void;
 
     /**
      * Register a class as being allowed in the stack
      *
      * @param string $className
-     * @return \MUtil_Batch_Stack_StackInterface (continuation pattern)
+     * @return self
      */
-    public function registerAllowedClass($className);
+    public function registerAllowedClass(string $className): self;
 
     /**
      * Reset the stack
      *
-     * @return \MUtil\Batch\Stack\Stackinterface (continuation pattern)
+     * @return self
      */
-    public function reset();
+    public function reset(): self;
 
     /**
      * Add/set an execution step to the command stack. Named to prevent double addition.
@@ -76,5 +76,5 @@ interface Stackinterface
      * @param array  $params Array with scalars, as many parameters as needed allowed
      * @return boolean When true, increment the number of commands, otherwise the command existed
      */
-    public function setStep($method, $id, $params);
+    public function setStep(string $method, ?string $id, array $params): bool;
 }

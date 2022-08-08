@@ -21,5 +21,5 @@ namespace MUtil\Batch;
  * @license    New BSD License
  * @since      Class available since version 1.5
  */
-class BatchException extends \Zend_Exception
+class BatchException extends \Exception
 { }

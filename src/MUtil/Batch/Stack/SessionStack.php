@@ -12,6 +12,8 @@
 
 namespace MUtil\Batch\Stack;
 
+use Mezzio\Session\SessionInterface;
+
 /**
  * A default command stack that uses the session ot store the commands to
  * execute.
@@ -22,45 +24,47 @@ namespace MUtil\Batch\Stack;
  * @license    New BSD License
  * @since      Class available since \MUtil version 1.3
  */
-class SessionStack extends \MUtil\Batch\Stack\StackAbstract
+class SessionStack extends StackAbstract
 {
-    /**
-     *
-     * @var \Zend_Session_Namespace
-     */
-    private $_session;
+    private string $sessionId;
+
+    private SessionInterface $session;
 
     /**
      *
      * @param string $id A unique name identifying the batch
      */
-    public function __construct($id)
+    public function __construct(string $id, SessionInterface $session)
     {
-        $this->_session = new \Zend_Session_Namespace(get_class($this) . '_' . $id);
-
-        if (! isset($this->_session->commands)) {
-            $this->_session->commands = array();
-        }
+        $this->sessionId = sprintf('%s_%s_commands', get_class($this), $id);
+        $this->session = $session;
     }
 
     /**
      * Add/set the command to the stack
      *
      * @param array $command
-     * @param string $id Optional id to repeat double execution
+     * @param string|null $id Optional id to repeat double execution
      * @return boolean When true, increment the number of commands, otherwise the command existed
      */
-    protected function _addCommand(array $command, $id = null)
+    protected function _addCommand(array $command, ?string $id = null): bool
     {
-        $result = (null === $id) || !isset($this->_session->commands[$id]);
+        $commands = $this->getCommands();
+        $result = (null === $id) || !isset($commands[$id]);
 
         if (null === $id) {
-            $this->_session->commands[] = $command;
+            $commands[] = $command;
         } else {
-            $this->_session->commands[$id] = $command;
+            $commands[$id] = $command;
         }
+        $this->session->set($this->sessionId, $commands);
 
         return $result;
+    }
+
+    public function getCommands(): array
+    {
+        return $this->session->get($this->sessionId, []);
     }
 
     /**
@@ -68,9 +72,10 @@ class SessionStack extends \MUtil\Batch\Stack\StackAbstract
      *
      * @return array 0 => command, 1 => params
      */
-    public function getNext()
+    public function getNext(): array
     {
-        return reset($this->_session->commands);
+        $commands = $this->getCommands();
+        return reset($commands);
     }
 
     /**
@@ -78,9 +83,11 @@ class SessionStack extends \MUtil\Batch\Stack\StackAbstract
      *
      * @return void
      */
-    public function gotoNext()
+    public function gotoNext(): void
     {
-        array_shift($this->_session->commands);
+        $commands = $this->getCommands();
+        array_shift($commands);
+        $this->session->set($this->sessionId, $commands);
     }
 
     /**
@@ -88,19 +95,21 @@ class SessionStack extends \MUtil\Batch\Stack\StackAbstract
      *
      * @return boolean
      */
-    public function hasNext()
+    public function hasNext(): bool
     {
-        return (boolean) $this->_session->commands;
+        $commands = $this->getCommands();
+
+        return (count($commands) > 0);
     }
 
     /**
      * Reset the stack
      *
-     * @return \MUtil\Batch\Stack\Stackinterface (continuation pattern)
+     * @return self
      */
-    public function reset()
+    public function reset(): self
     {
-        $this->_session->commands = array();
+        $this->session->unset($this->sessionId);
 
         return $this;
     }

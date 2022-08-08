@@ -11,6 +11,13 @@
 
 namespace MUtil\Batch;
 
+use Mezzio\Session\SessionInterface;
+use MUtil\Batch\Stack\Stackinterface;
+use MUtil\Registry\TargetAbstract;
+use Psr\Log\LoggerInterface;
+use Exception;
+use Countable;
+
 /**
  * The Batch package is for the sequential processing of commands which may
  * take to long to execute in a single request.
@@ -55,7 +62,7 @@ namespace MUtil\Batch;
  * @license    New BSD License
  * @since      Class available since version 1.2
  */
-abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \Countable
+abstract class BatchAbstract extends TargetAbstract implements Countable
 {
     /**
      * Constant for using console method = run batch in one long run from the console
@@ -72,7 +79,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      */
     const PUSH = 'Push';
 
-    protected $_buttonClass = 'btn';
+    protected string $_buttonClass = 'btn';
 
     /**
      *
@@ -99,14 +106,14 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @var string Unique id
      */
-    private $_id;
+    private string $id;
 
     /**
      * Stack to keep existing id's.
      *
      * @var array
      */
-    private static $_idStack = array();
+    private static $_idStack = [];
 
     /**
      * Holds the last message set by the batch job
@@ -114,12 +121,6 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @var string
      */
     private $_lastMessage = null;
-
-    /**
-     *
-     * @var array of callables for logging addMessage messages
-     */
-    private $_loggers = array();
 
     /**
      *
@@ -131,13 +132,13 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @var boolean
      */
-    private $_messageLogWhenAdding = false;
+    private bool $_messageLogWhenAdding = false;
 
     /**
      *
      * @var boolean
      */
-    private $_messageLogWhenSetting = false;
+    private bool $_messageLogWhenSetting = false;
 
     /**
      * Progress template
@@ -151,21 +152,14 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @var string
      */
-    private $_progressTemplate = "{percent}% {msg}";
-
-    /**
-     * Session for storage of output results
-     *
-     * @var \Zend_Session_Namespace
-     */
-    private $_session;
+    private string $_progressTemplate = "{percent}% {msg}";
 
     /**
      * When true the progressbar should start immediately. When false the user has to perform an action.
      *
      * @var boolean
      */
-    public $autoStart = false;
+    public bool $autoStart = false;
 
     /**
      * The number of bytes to pad during push communication in Kilobytes.
@@ -176,7 +170,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @var int
      */
-    public $extraPushPaddingKb = 0;
+    public int $extraPushPaddingKb = 0;
 
     /**
      * Manual set of the finish url. Setting an empty string will disable the finish redirect
@@ -194,44 +188,30 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @var int
      */
-    public $initialPushPaddingKb = 0;
+    public int $initialPushPaddingKb = 0;
 
-    /**
-     * @var \Zend_Locale
-     */
-    protected $locale;
-
-    /**
-     *
-     * @var \Zend_Log
-     */
-    protected $log;
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
+    protected ?LoggerInterface $logger;
 
     /**
      * The mode to use for the panel: PUSH or PULL
      *
      * @var string
      */
-    protected $method = self::PULL;
+    protected string $method = self::PULL;
 
     /**
      * Date format for logging messages
      *
      * @var string
      */
-    protected $messageLogDateFormat = 'Y-m-d H:i:s';
+    protected string $messageLogDateFormat = 'Y-m-d H:i:s';
 
     /**
      * Message log format string for date string and message string
      *
      * @var string
      */
-    protected $messageLogFormatString = '[%s]: %s';
+    protected string $messageLogFormatString = '[%s]: %s';
 
     /**
      * The minimal time used between send progress reports.
@@ -243,7 +223,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @var int
      */
-    public $minimalStepDurationMs = 1000;
+    public int $minimalStepDurationMs = 1000;
 
     /**
      *
@@ -262,14 +242,14 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @var string
      */
-    public $progressParameterName = 'progress';
+    public string $progressParameterName = 'progress';
 
     /**
      * The value required for the progress panel to report and reset
      *
      * @var string
      */
-    public $progressParameterReportValue = 'report';
+    public string $progressParameterReportValue = 'report';
 
     /**
      * The value required for the progress panel to restart
@@ -279,21 +259,28 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @var string
      */
-    public $progressParameterRestartValue = 'restart';
+    public string $progressParameterRestartValue = 'restart';
 
     /**
      * The value required for the progress panel to start running
      *
      * @var string
      */
-    public $progressParameterRunValue = 'run';
+    public string $progressParameterRunValue = 'run';
+
+    /**
+     * @var SessionInterface
+     */
+    protected SessionInterface $session;
+
+    protected string $sessionId;
 
     /**
      * The command stack
      *
-     * @var \MUtil\Batch\Stack\Stackinterface
+     * @var Stackinterface
      */
-    protected $stack;
+    protected Stackinterface $stack;
 
     /**
      * The place to store new variables for the source
@@ -307,23 +294,15 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @param string $id A unique name identifying this batch
      * @param \MUtil\Batch\Stack\Stackinterface $stack Optional different stack than session stack
      */
-    public function __construct($id, \MUtil\Batch\Stack\Stackinterface $stack = null)
+    public function __construct($id, SessionInterface $session, Stackinterface $stack = null, LoggerInterface $logger = null)
     {
-        $id = preg_replace('/[^a-zA-Z0-9_]/', '', $id);
-
-        if (isset(self::$_idStack[$id])) {
-            throw new \MUtil\Batch\BatchException("Duplicate batch id created: '$id'");
-        }
-        self::$_idStack[$id] = $id;
-
-        $this->_id = $id;
-
-        if (null === $stack) {
-            $stack = new \MUtil\Batch\Stack\SessionStack($id);
-        }
-        $this->stack = $stack;
+        $this->setBatchId($id);
+        $this->session = $session;
+        $this->setSessionId($id);
+        $this->setStack($stack);
 
         $this->_initSession($id);
+        $this->logger = $logger;
 
         if (\MUtil\Console::isConsole()) {
             $this->method = self::CONS;
@@ -335,10 +314,11 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return boolean True when application should report to the user
      */
-    private function _checkReport()
+    private function _checkReport(): bool
     {
+        $batchInfo = $this->getBatchInfo();
         // @TODO Might be confusing if one of the first steps adds more steps, make this optional?
-        if (1 === $this->_session->processed) {
+        if (isset($batchInfo['processed']) && $batchInfo['processed'] === 1) {
             return true;
         }
 
@@ -358,18 +338,24 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
     /**
      * Signal an loop item has to be run again.
      */
-    protected function _extraRun()
+    protected function _extraRun(): void
     {
-        $this->_session->count = $this->_session->count + 1;
-        $this->_session->processed = $this->_session->processed + 1;
+        $batchInfo = $this->getBatchInfo();
+        $batchInfo['count'] += 1;
+        $batchInfo['processed'] += 1;
+
+        $this->session->set($this->sessionId, $batchInfo);
     }
 
     /**
      * Helper function to complete the progressbar.
      */
-    protected function _finishBar()
+    protected function _finishBar(): void
     {
-        $this->_session->finished  = true;
+        $batchInfo = $this->getBatchInfo();
+        $batchInfo['finished'] = true;
+
+        $this->session->set($this->sessionId, $batchInfo);
 
         $bar = $this->getProgressBar();
         $bar->finish();
@@ -380,11 +366,11 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @param string $name The id of this batch
      */
-    private function _initSession($id)
+    private function _initSession(string $id): void
     {
-        $this->_session = new \Zend_Session_Namespace(get_class($this) . '_' . $id);
+        $batchInfo = $this->getBatchInfo();
 
-        if (! isset($this->_session->processed)) {
+        if (! isset($batchInfo['processed'])) {
             $this->reset();
         }
     }
@@ -392,24 +378,25 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
     /**
      * Helper function to update the progressbar.
      */
-    protected function _updateBar()
+    protected function _updateBar(): void
     {
         $this->getProgressBar()->update($this->getProgressPercentage(), $this->getLastMessage());
     }
 
     /**
      * Add to exception store
-     * @param \Exception $e
-     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
+     * @param Exception $e
+     * @return self
      */
-    public function addException(\Exception $e)
+    public function addException(Exception $e): self
     {
         $message = $e->getMessage();
 
         $this->addMessage($message);
-        $this->_session->exceptions[] = $message;
+        $batchInfo = $this->getBatchInfo();
+        $batchInfo['exceptions'][] = $message;
 
-        if ($this->log instanceof \Zend_Log) {
+        if ($this->logger instanceof LoggerInterface) {
             $messages[] = $message;
 
             $previous = $e->getPrevious();
@@ -419,20 +406,8 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
             }
             $messages[] = $e->getTraceAsString();
 
-            $this->log->log(implode("\n", $messages), \Zend_Log::ERR);
+            $this->logger->error(implode("\n", $messages));
         }
-        return $this;
-    }
-
-    /**
-     *
-     * @param callable $function Function to call with text message
-     * @return $this
-     */
-    public function addLogFunction($function)
-    {
-        $this->_loggers[] = $function;
-
         return $this;
     }
 
@@ -442,9 +417,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @param string $method Name of a method of this object
      * @param mixed $param1 Optional scalar or array with scalars, as many parameters as needed allowed
      * @param mixed $param2 ...
-     * @return \MUtil\Task\TaskBatch (continuation pattern)
+     * @return self
      */
-    protected function addStep($method, $param1 = null)
+    protected function addStep(string $method, mixed $param1 = null): self
     {
         if (! method_exists($this, $method)) {
             throw new \MUtil\Batch\BatchException("Invalid batch method: '$method'.");
@@ -453,7 +428,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
         $params = array_slice(func_get_args(), 1);
 
         if ($this->stack->addStep($method, $params)) {
-            $this->_session->count = $this->_session->count + 1;
+            $this->addStepCount(1);
         }
 
         return $this;
@@ -466,10 +441,12 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @param int $number
      */
-    public function addStepCount($number)
+    public function addStepCount(int $number): void
     {
         if ($number > 0) {
-            $this->_session->count = $this->_session->count + $number;
+            $batchInfo = $this->getBatchInfo();
+            $batchInfo['count'] += 1;
+            $this->session->set($this->sessionId, $batchInfo);
         }
     }
 
@@ -477,19 +454,18 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * Add a message to the message stack.
      *
      * @param string $text A message to the user
-     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
+     * @return self
      */
-    public function addMessage($text)
+    public function addMessage($text): self
     {
-        $this->_session->messages[] = $text;
+        $batchInfo = $this->getBatchInfo();
+        $batchInfo['messages'][] = $text;
+        $this->session->set($this->sessionId, $batchInfo);
+
         $this->_lastMessage = $text;
 
         if ($this->_messageLogWhenAdding) {
             $this->logMessage($text);
-        }
-
-        foreach ($this->_loggers as $function) {
-            call_user_func($function, $text);
         }
 
         return $this;
@@ -504,12 +480,13 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      */
     public function addToCounter($name, $add = 1)
     {
-        if (! isset($this->_session->counters[$name])) {
-            $this->_session->counters[$name] = 0;
+        $batchInfo = $this->getBatchInfo();
+        if (! isset($batchInfo['counters'][$name])) {
+            $batchInfo['counters'][$name] = 0;
         }
-        $this->_session->counters[$name] += $add;
+        $batchInfo['counters'][$name] += $add;
 
-        return $this->_session->counters[$name];
+        return $batchInfo['counters'][$name];
     }
 
     /**
@@ -518,9 +495,15 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
-        return $this->_session->count;
+        $batchInfo = $this->getBatchInfo();
+        return $batchInfo['count'];
+    }
+
+    public function getBatchInfo(): array
+    {
+        return $this->session->get($this->sessionId, []);
     }
 
     /**
@@ -529,10 +512,11 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @param string $name
      * @return integer
      */
-    public function getCounter($name)
+    public function getCounter($name): int
     {
-        if (isset($this->_session->counters[$name])) {
-            return $this->_session->counters[$name];
+        $batchInfo = $this->getBatchInfo();
+        if (isset($batchInfo['counters'][$name])) {
+            return $batchInfo['counters'][$name];
         }
 
         return 0;
@@ -543,9 +527,10 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return array of \Exceptions
      */
-    public function getExceptions()
+    public function getExceptions(): array
     {
-        return $this->_session->exceptions;
+        $batchInfo = $this->getBatchInfo();
+        return $batchInfo['exceptions'];
     }
 
     /**
@@ -553,7 +538,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return string
      */
-    public function getFormId()
+    public function getFormId(): string
     {
         return $this->_formId;
     }
@@ -568,10 +553,10 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return string
      */
-    protected function getFunctionPrefix()
+    protected function getFunctionPrefix(): string
     {
         if (! $this->_functionPrefix) {
-            $this->setFunctionPrefix(get_class($this) . '_' . $this->_id . '_');
+            $this->setFunctionPrefix(get_class($this) . '_' . $this->id . '_');
         }
 
         return (string) $this->_functionPrefix;
@@ -582,16 +567,16 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
-        return $this->_id;
+        return $this->id;
     }
 
     /**
      * Returns the lat message set for feedback to the user.
      * @return string
      */
-    public function getLastMessage()
+    public function getLastMessage(): string
     {
         return $this->_lastMessage;
     }
@@ -603,10 +588,11 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @param string $default A default message
      * @return string
      */
-    public function getMessage($id, $default = null)
+    public function getMessage(string $id, ?string $default = null): ?string
     {
-        if (array_key_exists($id, $this->_session->messages)) {
-            return $this->_session->messages[$id];
+        $batchInfo = $this->getBatchInfo();
+        if (array_key_exists($id, $batchInfo['messages'])) {
+            return $batchInfo['messages'][$id];
         } else {
             return $default;
         }
@@ -621,9 +607,10 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @param boolean $reset When true the batch is reset afterwards
      * @return array
      */
-    public function getMessages($reset = false)
+    public function getMessages(bool $reset = false): array
     {
-        $messages = $this->_session->messages;
+        $batchInfo = $this->getBatchInfo();
+        $messages = $batchInfo['messages'];
 
         if ($reset) {
             $this->reset();
@@ -656,13 +643,13 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
         $urlRun    = $view->url(array($this->progressParameterName => $this->progressParameterRunValue));
 
         $panel = new \MUtil\Html\ProgressPanel($args);
-        $panel->id = $this->_id;
+        $panel->id = $this->id;
 
         $js = new \MUtil\Html\Code\JavaScript(dirname(__FILE__) . '/Batch' . $this->method . '.js');
         $js->setInHeader(false);
         // Set the fields, in case they where not set earlier
         $js->setDefault('__AUTOSTART__', $this->autoStart ? 'true' : 'false');
-        $js->setDefault('{PANEL_ID}', '#' . $this->_id);
+        $js->setDefault('{PANEL_ID}', '#' . $this->id);
         $js->setDefault('{FORM_ID}', $this->_formId);
         $js->setDefault('{TEMPLATE}', $this->_progressTemplate);
         $js->setDefault('{TEXT_ID}', $panel->getDefaultChildTag() . '.' . $panel->progressTextClass);
@@ -684,9 +671,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
     public function getProgressBar()
     {
         if (! $this->progressBar instanceof \Zend_ProgressBar) {
-            $this->setProgressBar(
+            /*$this->setProgressBar(
                 new \Zend_ProgressBar($this->getProgressBarAdapter(), 0, 100, $this->_session->getNamespace() . '_pb')
-            );
+            );*/
         }
         return $this->progressBar;
     }
@@ -732,11 +719,12 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return float
      */
-    public function getProgressPercentage()
+    public function getProgressPercentage(): float
     {
+        $batchInfo = $this->getBatchInfo();
         // Use number format to correctly round the number without floating number precision errors
         // Output is json so always use digital dot!
-        $value = $this->_session->processed / max($this->_session->count, 1) * 100;
+        $value = $batchInfo['processed'] / max($batchInfo['count'], 1) * 100;
         return number_format($value, 2, '.','');
     }
 
@@ -780,12 +768,13 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * Return a variable from the session store.
      *
      * @param string $name Name of the variable
-     * @return mixed (continuation pattern)
+     * @return mixed
      */
-    public function getSessionVariable($name)
+    public function getSessionVariable(string $name): mixed
     {
-        if (isset($this->_session->source, $this->_session->source[$name])) {
-            return $this->_session->source[$name];
+        $batchInfo = $this->getBatchInfo();
+        if (isset($batchInfo['source'], $batchInfo['source'][$name])) {
+            return $batchInfo['source'][$name];
         }
         return null;
     }
@@ -793,12 +782,13 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
     /**
      * Return the variables from the session store.
      *
-     * @return \ArrayObject or null
+     * @return array|null
      */
-    protected function getSessionVariables()
+    protected function getSessionVariables(): ?array
     {
-        if (isset($this->_session->source)) {
-            return $this->_session->source;
+        $batchInfo = $this->getBatchInfo();
+        if (isset($batchInfo['source'])) {
+            return $batchInfo['source'];
         }
         return null;
     }
@@ -806,9 +796,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
     /**
      * Get the current stack
      *
-     * @return \MUtil\Batch\Stack\Stackinterface
+     * @return Stackinterface
      */
-    public function getStack()
+    public function getStack(): Stackinterface
     {
         return $this->stack;
     }
@@ -837,7 +827,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @param string $name Name of the variable
      * @return mixed (continuation pattern)
      */
-    public function getVariable($name)
+    public function getVariable(string $name): mixed
     {
         if (isset($this->variables[$name])) {
             return $this->variables[$name];
@@ -851,9 +841,10 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @param string $name Name of the variable
      * @return boolean
      */
-    public function hasSessionVariable($name)
+    public function hasSessionVariable(string $name): bool
     {
-        return isset($this->_session->source, $this->_session->source[$name]);
+        $batchInfo = $this->getBatchInfo();
+        return isset($batchInfo['source'], $batchInfo['source'][$name]);
     }
 
     /**
@@ -862,7 +853,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @param string $name Name of the variable
      * @return boolean
      */
-    public function hasVariable($name)
+    public function hasVariable(string $name): bool
     {
         return isset($this->variables[$name]) || $this->hasSessionVariable($name);
     }
@@ -872,7 +863,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return boolean
      */
-    public function isConsole()
+    public function isConsole(): bool
     {
         return self::CONS === $this->method;
     }
@@ -882,9 +873,10 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return boolean
      */
-    public function isFinished()
+    public function isFinished(): bool
     {
-        return $this->_session->finished;
+        $batchInfo = $this->getBatchInfo();
+        return $batchInfo['finished'];
     }
 
     /**
@@ -892,9 +884,10 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return boolean
      */
-    public function isLoaded()
+    public function isLoaded(): bool
     {
-        return $this->_session->count || $this->_session->processed;
+        $batchInfo = $this->getBatchInfo();
+        return ($batchInfo['count'] > 0 || $batchInfo['processed'] > 0);
     }
 
     /**
@@ -902,7 +895,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return boolean
      */
-    public function isPull()
+    public function isPull(): bool
     {
         return $this->method === self::PULL;
     }
@@ -912,7 +905,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return boolean
      */
-    public function isPush()
+    public function isPush(): bool
     {
         return $this->method === self::PUSH;
     }
@@ -920,9 +913,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
     /**
      *
      * @param string $text Line to log
-     * @return $this
+     * @return self
      */
-    public function logMessage($text = null)
+    public function logMessage(?string $text = null): self
     {
         if ($this->_messageLogFile) {
             if ($text) {
@@ -940,18 +933,20 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
     /**
      * Reset and empty the session storage
      *
-     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
+     * @return self
      */
-    public function reset()
+    public function reset(): self
     {
-        $this->_session->unsetAll();
+        $batchInfo = [
+            'count' => 0,
+            'counters' => [],
+            'exceptions' => [],
+            'finished' => false,
+            'messages' => [],
+            'processed' => 0,
+        ];
 
-        $this->_session->count      = 0;
-        $this->_session->counters   = array();
-        $this->_session->exceptions = array();
-        $this->_session->finished   = false;
-        $this->_session->messages   = array();
-        $this->_session->processed  = 0;
+        $this->session->set($this->sessionId, $batchInfo);
 
         $this->stack->reset();
 
@@ -962,11 +957,13 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * Reset a named counter
      *
      * @param string $name
-     * @return $this
+     * @return self
      */
-    public function resetCounter($name)
+    public function resetCounter(string $name): self
     {
-        unset($this->_session->counters[$name]);
+        $batchInfo = $this->getBatchInfo();
+        unset($batchInfo['counters'][$name]);
+        $this->session->set($this->sessionId, $batchInfo);
 
         return $this;
     }
@@ -975,11 +972,13 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * Reset a message on the message stack with a specific id.
      *
      * @param scalar $id
-     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
+     * @return self
      */
-    public function resetMessage($id)
+    public function resetMessage(string $id): self
     {
-        unset($this->_session->messages[$id]);
+        $batchInfo = $this->getBatchInfo();
+        unset($batchInfo['messages'][$id]);
+        $this->session->set($this->sessionId, $batchInfo);
 
         return $this;
     }
@@ -993,7 +992,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @param array Request query params
      * @return boolean True when something ran
      */
-    public function run(array $requestQueryParams)
+    public function run(array $requestQueryParams): bool
     {
         // Check for run url
         if (isset($requestQueryParams[$this->progressParameterName]) && $requestQueryParams[$this->progressParameterName] === $this->progressParameterRunValue) {
@@ -1035,7 +1034,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return int Number of steps taken
      */
-    public function runAll()
+    public function runAll(): int
     {
         // [Try to] remove the maxumum execution time for this session
         @ini_set("max_execution_time", 0);
@@ -1043,7 +1042,8 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
 
         while ($this->step());
 
-        return $this->_session->processed;
+        $batchInfo = $this->getBatchInfo();
+        return $batchInfo['processed'];
     }
 
     /**
@@ -1051,7 +1051,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return boolean True when something ran
      */
-    public function runContinuous()
+    public function runContinuous(): bool
     {
         // Is there something to run?
         if ($this->isFinished() || (! $this->isLoaded())) {
@@ -1074,13 +1074,25 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
         return true;
     }
 
+    protected function setBatchId(string $id): void
+    {
+        $id = preg_replace('/[^a-zA-Z0-9_]/', '', $id);
+
+        if (isset(self::$_idStack[$id])) {
+            throw new \MUtil\Batch\BatchException("Duplicate batch id created: '$id'");
+        }
+        self::$_idStack[$id] = $id;
+
+        $this->id = $id;
+    }
+
     /**
      * Set the optional form id, for using extra params from the form during batch execution.
      *
      * @param string $id
-     * @return \MUtil\Html\ProgressPanel (continuation pattern)
+     * @return self
      */
-    public function setFormId($id)
+    public function setFormId(string $id): self
     {
         $this->_formId = $id;
         return $this;
@@ -1093,9 +1105,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * in case of name clashes.
      *
      * @param string $prefix
-     * @return \MUtil\Html\ProgressPanel (continuation pattern)
+     * @return self
      */
-    public function setFunctionPrefix($prefix)
+    public function setFunctionPrefix(string $prefix): self
     {
         $this->_functionPrefix = $prefix;
         return $this;
@@ -1106,11 +1118,14 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @param scalar $id
      * @param string $text A message to the user
-     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
+     * @return self
      */
-    public function setMessage($id, $text)
+    public function setMessage(string $id, string $text): self
     {
-        $this->_session->messages[$id] = $text;
+        $batchInfo = $this->getBatchInfo();
+        $batchInfo[$id] = $text;
+        $this->session->set($this->sessionId, $batchInfo);
+
         $this->_lastMessage = $text;
 
         if ($this->_messageLogWhenSetting && $this->_messageLogFile) {
@@ -1127,7 +1142,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @param boolean $logAdd Log addMessage calls
      * @return $this
      */
-    public function setMessageLogFile($filename, $logSet = true, $logAdd = true)
+    public function setMessageLogFile(string $filename, bool $logSet = true, bool $logAdd = true): self
     {
         $this->_messageLogFile        = $filename;
         $this->_messageLogWhenSetting = $logSet && $filename;
@@ -1136,7 +1151,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
         return $this;
     }
 
-    public function setMessageLogger(\Psr\Log\LoggerInterface $logger)
+    public function setMessageLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
@@ -1145,9 +1160,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * Sets the communication method for progress reporting.
      *
      * @param string $method One of the constants of this object
-     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
+     * @return self
      */
-    public function setMethod($method)
+    public function setMethod(string $method): self
     {
         switch ($method) {
             case self::PULL:
@@ -1166,9 +1181,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * This is the most stable method as it works independently of
      * server settings. Therefore it is the default method.
      *
-     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
+     * @return self
      */
-    public function setMethodPull()
+    public function setMethodPull(): self
     {
         $this->setMethod(self::PULL);
 
@@ -1201,9 +1216,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * Just increase it until it works.
      *
      * @param int $extraPaddingKb
-     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
+     * @return self
      */
-    public function setMethodPush($extraPaddingKb = null)
+    public function setMethodPush(?int $extraPaddingKb = null)
     {
         $this->setMethod(self::PUSH);
 
@@ -1219,9 +1234,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * an adapter interface.
      *
      * @param \Zend_ProgressBar $progressBar
-     * @return \MUtil\Html\ProgressPanel (continuation pattern)
+     * @return self
      */
-    public function setProgressBar(\Zend_ProgressBar $progressBar)
+    public function setProgressBar(\Zend_ProgressBar $progressBar): self
     {
         $this->progressBar = $progressBar;
         return $this;
@@ -1231,9 +1246,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * The communication adapter for the ProgressBar.
      *
      * @param \Zend_ProgressBar_Adapter_Interface $adapter
-     * @return \MUtil\Html\ProgressPanel (continuation pattern)
+     * @return self
      */
-    public function setProgressBarAdapter(\Zend_ProgressBar_Adapter $adapter)
+    public function setProgressBarAdapter(\Zend_ProgressBar_Adapter $adapter): self
     {
         if ($adapter instanceof \Zend_ProgressBar_Adapter_JsPush) {
             $prefix = $this->getFunctionPrefix();
@@ -1259,9 +1274,14 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @var string
      */
-    public function setProgressTemplate($template)
+    public function setProgressTemplate(string $template): void
     {
         $this->_progressTemplate = $template;
+    }
+
+    protected function setSessionId(string $id): void
+    {
+        $this->sessionId = get_class($this) . '_' . $id;
     }
 
     /**
@@ -1269,16 +1289,27 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @param string $name Name of the variable
      * @param mixed $variable Something that can be serialized
-     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
+     * @return self
      */
-    public function setSessionVariable($name, $variable)
+    public function setSessionVariable(string $name, mixed $variable): self
     {
-        if (! isset($this->_session->source)) {
-            $this->_session->source = new \ArrayObject();
+        $batchInfo = $this->getBatchInfo();
+        if (!isset($batchInfo['source'])) {
+            $batchInfo['source'] = [];
         }
 
-        $this->_session->source[$name] = $variable;
+        $batchInfo['source'][$name] = $variable;
+        $this->session->set($this->sessionId, $batchInfo);
+
         return $this;
+    }
+
+    protected function setStack(?Stackinterface $stack): void
+    {
+        if (null === $stack) {
+            $stack = new \MUtil\Batch\Stack\SessionStack($this->id, $this->session);
+        }
+        $this->stack = $stack;
     }
 
     /**
@@ -1287,9 +1318,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      * @param string $method Name of a method of this object
      * @param mixed $id A unique id to prevent double adding of something to do
      * @param mixed $param1 Scalar or array with scalars, as many parameters as needed allowed
-     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
+     * @return self
      */
-    protected function setStep($method, $id, $param1 = null)
+    protected function setStep(string $method, ?string $id, mixed $param1 = null): self
     {
         if (! method_exists($this, $method)) {
             throw new \MUtil\Batch\BatchException("Invalid batch method: '$method'.");
@@ -1298,7 +1329,7 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
         $params = array_slice(func_get_args(), 2);
 
         if ($this->stack->setStep($method, $id, $params)) {
-            $this->_session->count = $this->_session->count + 1;
+            $this->addStepCount(1);
         }
 
         return $this;
@@ -1311,9 +1342,9 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @param string $name Name of the variable
      * @param mixed $variable Something that can be serialized
-     * @return \MUtil\Batch\BatchAbstract (continuation pattern)
+     * @return self
      */
-    public function setVariable($name, $variable)
+    public function setVariable(string $name, mixed $variable): self
     {
         if (null === $this->variables) {
             $this->variables = new \ArrayObject();
@@ -1328,25 +1359,27 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @return boolean
      */
-    protected function step()
+    protected function step(): bool
     {
         if ($this->stack->hasNext()) {
 
             try {
                 $command = $this->stack->getNext();
                 if (! isset($command[0], $command[1])) {
-                    throw new \MUtil\Batch\BatchException("Invalid batch command: '$command'.");
+                    throw new BatchException("Invalid batch command: '$command[0]'.");
                 }
                 list($method, $params) = $command;
 
                 if (! method_exists($this, $method)) {
-                    throw new \MUtil\Batch\BatchException("Invalid batch method: '$method'.");
+                    throw new BatchException("Invalid batch method: '$method'.");
                 }
 
                 if (call_user_func_array(array($this, $method), $params)) {
                     $this->stack->gotoNext();
                 }
-                $this->_session->processed = $this->_session->processed + 1;
+                $batchInfo = $this->getBatchInfo();
+                $batchInfo['processed'] += 1;
+                $this->session->set($this->sessionId, $batchInfo);
 
             } catch (\Exception $e) {
                 $this->addMessage('ERROR!!!');
@@ -1364,10 +1397,12 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
         }
     }
 
-    public function stopBatch($message)
+    public function stopBatch(string $message): void
     {
         // Set to stopped
-        $this->_session->finished = true;
+        $batchInfo = $this->getBatchInfo();
+        $batchInfo['finished'] = true;
+        $this->session->set($this->sessionId, $batchInfo);
 
         // Cleanup stack
         $this->stack->reset();
@@ -1382,7 +1417,8 @@ abstract class BatchAbstract extends \MUtil\Registry\TargetAbstract implements \
      *
      * @param string $id
      */
-    public static function unload($id) {
+    public static function unload(string $id): void
+    {
         unset(self::$_idStack[$id]);
     }
 }
