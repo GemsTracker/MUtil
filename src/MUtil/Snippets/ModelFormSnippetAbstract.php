@@ -11,6 +11,8 @@
 
 namespace MUtil\Snippets;
 
+use Mezzio\Csrf\CsrfGuardInterface;
+
 /**
  * Abstract class for creating & processing a form based on a model. To use this
  * class either subclass or use the existing default ModelFormSnippet.
@@ -93,6 +95,11 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
      * @var boolean
      */
     protected $createData = false;
+
+    /**
+     * @var CsrfGuardInterface
+     */
+    protected $csrfGuard;
 
     /**
      * Field id for crsf protection field.
@@ -180,12 +187,13 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
      */
     protected function addCsrf()
     {
-        if (! $this->_csrf) {
-            $this->_form->addElement('hash', $this->csrfId, array(
-                'salt' => 'mutil_' . $this->requestInfo->getCurrentController() . '_' . $this->requestInfo->getCurrentAction(),
-                'timeout' => $this->csrfTimeout,
-                ));
-            $this->_csrf = $this->_form->getElement($this->csrfId);
+        if (! $this->_csrf && $this->csrfGuard) {
+            $csrfToken = $this->csrfGuard->generateToken();
+            $element = $this->_form->createElement('hidden', $this->csrfId);
+            $element->setValue($csrfToken);
+
+            $this->_form->addElement($element);
+            $this->_csrf = $element;
         }
 
         return $this;
@@ -359,10 +367,6 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
 
         // Hook for subclasses
         $this->beforeDisplay();
-
-        if ($this->_csrf) {
-            $this->_csrf->initCsrfToken();
-        }
 
         return $this->_form;
     }
@@ -544,7 +548,9 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
             // If there is a save button it should be checked, otherwise just validate
             if ((! $this->_saveButton) || $this->_saveButton->isChecked()) {
 
-                if ($this->validateForm()) {
+                $validCsrf = (!$this->useCsrf || (isset($this->formData[$this->csrfId]) && $this->csrfGuard->validateToken($this->formData[$this->csrfId])));
+
+                if ($validCsrf && $this->validateForm()) {
                     // Remove all unwanted data
                     $this->cleanFormData();
 
