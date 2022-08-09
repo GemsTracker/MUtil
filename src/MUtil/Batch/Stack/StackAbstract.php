@@ -83,7 +83,7 @@ abstract class StackAbstract implements \MUtil\Batch\Stack\Stackinterface
      * @param array  $params Array with scalars, as many parameters as needed allowed
      * @return boolean When true, increment the number of commands, otherwise the command existed
      */
-    public function addStep($method, array $params)
+    public function addStep(string $method, array $params): bool
     {
         $this->_checkParams($params);
 
@@ -95,7 +95,7 @@ abstract class StackAbstract implements \MUtil\Batch\Stack\Stackinterface
      *
      * @return array()
      */
-    // public function getNext();
+    // public function getNext(): array;
 
     /**
      * Run the next command
@@ -103,22 +103,22 @@ abstract class StackAbstract implements \MUtil\Batch\Stack\Stackinterface
      * @param mixed $batch Should be \MUtil\Batch\BatchAbstract but could be changed in implementations
      * @return void
      */
-    // public function gotoNext($batch);
+    // public function gotoNext($batch): void;
 
     /**
      * Return true when there still exist unexecuted commands
      *
      * @return boolean
      */
-    // public function hasNext()
+    // public function hasNext(): bool
 
     /**
      * Register a class as being allowed in the stack
      *
      * @param string $className
-     * @return \MUtil\Batch\Stack\StackAbstract (continuation pattern)
+     * @return self
      */
-    public function registerAllowedClass($className)
+    public function registerAllowedClass(string $className): self
     {
         if (! $this->_allowedClasses) {
             $this->_ensureAllowedClassList();
@@ -146,7 +146,7 @@ abstract class StackAbstract implements \MUtil\Batch\Stack\Stackinterface
      * @param array  $params Array with scalars, as many parameters as needed allowed
      * @return boolean When true, increment the number of commands, otherwise the command existed
      */
-    public function setStep($method, $id, $params)
+    public function setStep(string $method, ?string $id, array $params): bool
     {
         $this->_checkParams($params);
 
