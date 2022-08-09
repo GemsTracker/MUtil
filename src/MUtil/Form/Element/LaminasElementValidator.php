@@ -2,6 +2,7 @@
 
 namespace MUtil\Form\Element;
 
+use Laminas\Validator\AbstractValidator;
 use Laminas\Validator\ValidatorInterface;
 
 trait LaminasElementValidator
@@ -105,6 +106,127 @@ trait LaminasElementValidator
             $validators[get_class($validator)] = $validator;
         }
         return $validators;
+    }
+
+    /**
+     * Validate element value
+     *
+     * If a translation adapter is registered, any error messages will be
+     * translated according to the current locale, using the given error code;
+     * if no matching translation is found, the original message will be
+     * utilized.
+     *
+     * Note: The *filtered* value is validated.
+     *
+     * @param  mixed $value
+     * @param  mixed $context
+     * @return boolean
+     */
+    public function isValid($value, $context = null)
+    {
+        $this->setValue($value);
+        $value = $this->getValue();
+
+        if ((('' === $value) || (null === $value))
+            && !$this->isRequired()
+            && $this->getAllowEmpty()
+        ) {
+            return true;
+        }
+
+        if ($this->isRequired()
+            && $this->autoInsertNotEmptyValidator()
+            && !$this->getValidator('NotEmpty'))
+        {
+            $validators = $this->getValidators();
+            $notEmpty   = ['validator' => 'NotEmpty', 'breakChainOnFailure' => true];
+            array_unshift($validators, $notEmpty);
+            $this->setValidators($validators);
+        }
+
+        // Find the correct translator. Zend_Validate_Abstract::getDefaultTranslator()
+        // will get either the static translator attached to Zend_Validate_Abstract
+        // or the 'Zend_Translate' from Zend_Registry.
+        if (\Zend_Validate_Abstract::hasDefaultTranslator() &&
+            !\Zend_Form::hasDefaultTranslator())
+        {
+            $translator = \Zend_Validate_Abstract::getDefaultTranslator();
+            if ($this->hasTranslator()) {
+                // only pick up this element's translator if it was attached directly.
+                $translator = $this->getTranslator();
+            }
+        } else {
+            $translator = $this->getTranslator();
+        }
+
+        $this->_messages = [];
+        $this->_errors   = [];
+        $result          = true;
+        $isArray         = $this->isArray();
+        foreach ($this->getValidators() as $key => $validator) {
+            if (method_exists($validator, 'setTranslator')) {
+                if (method_exists($validator, 'hasTranslator')) {
+                    if (!$validator->hasTranslator()) {
+                        $validator->setTranslator($translator);
+                    }
+                } else {
+                    $validator->setTranslator($translator);
+                }
+            }
+
+            if (method_exists($validator, 'setDisableTranslator')) {
+                $validator->setDisableTranslator($this->translatorIsDisabled());
+            }
+
+            if ($isArray && is_array($value)) {
+                $messages = [];
+                $errors   = [];
+                if (empty($value)) {
+                    if ($this->isRequired()
+                        || (!$this->isRequired() && !$this->getAllowEmpty())
+                    ) {
+                        $value = '';
+                    }
+                }
+                foreach ((array)$value as $val) {
+                    if (!$validator->isValid($val, $context)) {
+                        $result = false;
+                        if ($this->_hasErrorMessages()) {
+                            $messages = $this->_getErrorMessages();
+                            $errors   = $messages;
+                        } else {
+                            $messages = array_merge($messages, $validator->getMessages());
+                            $errors   = array_merge($errors,   $validator->getErrors());
+                        }
+                    }
+                }
+                if ($result) {
+                    continue;
+                }
+            } elseif ($validator->isValid($value, $context)) {
+                continue;
+            } else {
+                $result = false;
+                if ($this->_hasErrorMessages()) {
+                    $messages = $this->_getErrorMessages();
+                    $errors   = $messages;
+                } else {
+                    $messages = $validator->getMessages();
+                    $errors   = array_keys($messages);
+                }
+            }
+
+            $result          = false;
+            $this->_messages = array_merge($this->_messages, $messages);
+            $this->_errors   = array_merge($this->_errors,   $errors);
+        }
+
+        // If element manually flagged as invalid, return false
+        if ($this->_isErrorForced) {
+            return false;
+        }
+
+        return $result;
     }
 
     /**
