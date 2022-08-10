@@ -11,7 +11,9 @@
 
 namespace MUtil\Controller;
 
+use MUtil\Ra;
 use MUtil\Translate\Translator;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use MUtil\Legacy\RequestHelper;
 use Mezzio\Helper\UrlHelper;
@@ -248,7 +250,7 @@ abstract class Action
     public function addSnippets(mixed $filenames, $parameter_value_pairs = null): ?array
     {
         if ($filenames) {
-            $extraSource = \MUtil\Ra::pairs(func_get_args(), 1);
+            $extraSource = Ra::pairs(func_get_args(), 1);
 
             if (is_string($filenames)) {
                 $filenames = [$filenames];
@@ -258,6 +260,9 @@ abstract class Action
             $snippets = $this->getSnippets($filenames, $extraSource);
             foreach ($snippets as $filename => $snippet) {
 
+                if ($response = $snippet->getResponse() instanceof ResponseInterface) {
+                    return $response;
+                }
                 if ($snippet->hasHtmlOutput()) {
                     if (isset($this->html[$filename])) {
                         $this->html[] = $snippet;

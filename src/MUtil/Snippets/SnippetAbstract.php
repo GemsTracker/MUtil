@@ -12,6 +12,7 @@
 namespace MUtil\Snippets;
 
 use MUtil\Controller\Action;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * An abstract class for building snippets. Sub classes should override at least
@@ -154,6 +155,11 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      */
     public function getRedirectRoute()
     { }
+
+    public function getResponse(): ?ResponseInterface
+    {
+        return null;
+    }
 
     /**
      * The place to check if the data set in the snippet is valid
