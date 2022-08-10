@@ -425,6 +425,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         if ($number > 0) {
             $batchInfo = $this->getBatchInfo();
             $batchInfo['count'] += 1;
+            $this->progress->setCount($batchInfo['count']);
             $this->session->set($this->sessionId, $batchInfo);
         }
     }
