@@ -118,7 +118,7 @@ class Sprintf extends \ArrayObject implements \MUtil\Html\ElementInterface
         }
     }
 
-    public function offsetSet($index, $newval)
+    public function offsetSet(mixed $index,mixed $newval): void
     {
         if ($index && (! is_numeric($index))) {
             if (method_exists($this, $fname = 'set' . $index)) {
@@ -140,7 +140,7 @@ class Sprintf extends \ArrayObject implements \MUtil\Html\ElementInterface
             }
         }
 
-        return parent::offsetSet($index, $newval);
+        parent::offsetSet($index, $newval);
     }
 
     /**
