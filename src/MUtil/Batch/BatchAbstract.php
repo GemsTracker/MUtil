@@ -64,20 +64,6 @@ use Countable;
  */
 abstract class BatchAbstract extends TargetAbstract implements Countable
 {
-    /**
-     * Constant for using console method = run batch in one long run from the console
-     */
-    const CONS = 'Cons';
-
-    /**
-     * Constant for using push method = run batch by short separate ajax calls from the browser
-     */
-    const PULL = 'Pull';
-
-    /**
-     * Constant for using push method = run batch one long run in an iframe receiving javescript commands
-     */
-    const PUSH = 'Push';
 
     protected string $_buttonClass = 'btn';
 
@@ -193,13 +179,6 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     protected ?LoggerInterface $logger;
 
     /**
-     * The mode to use for the panel: PUSH or PULL
-     *
-     * @var string
-     */
-    protected string $method = self::PULL;
-
-    /**
      * Date format for logging messages
      *
      * @var string
@@ -226,16 +205,9 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     public int $minimalStepDurationMs = 1000;
 
     /**
-     *
-     * @var \Zend_ProgressBar
+     * @var Progress
      */
-    protected $progressBar;
-
-    /**
-     *
-     * @var \Zend_ProgressBar_Adapter
-     */
-    protected $progressBarAdapter;
+    protected $progress;
 
     /**
      * The name of the parameter used for progress panel signals
@@ -304,9 +276,8 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         $this->_initSession($id);
         $this->logger = $logger;
 
-        if (\MUtil\Console::isConsole()) {
-            $this->method = self::CONS;
-        }
+        $this->progress = new Progress(100);
+        $this->_updateProgress();
     }
 
     /**
@@ -350,15 +321,14 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     /**
      * Helper function to complete the progressbar.
      */
-    protected function _finishBar(): void
+    protected function _finishProgress(): void
     {
         $batchInfo = $this->getBatchInfo();
         $batchInfo['finished'] = true;
 
         $this->session->set($this->sessionId, $batchInfo);
 
-        $bar = $this->getProgressBar();
-        $bar->finish();
+        $this->progress->finish();
     }
 
     /**
@@ -378,9 +348,11 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     /**
      * Helper function to update the progressbar.
      */
-    protected function _updateBar(): void
+    protected function _updateProgress(): void
     {
-        $this->getProgressBar()->update($this->getProgressPercentage(), $this->getLastMessage());
+        $this->progress->setProgress($this->getProgressPercentage());
+
+        //$this->getProgressBar()->update($this->getProgressPercentage(), $this->getLastMessage());
     }
 
     /**
@@ -666,52 +638,11 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      * The Zend ProgressBar handles the communication through
      * an adapter interface.
      *
-     * @return \Zend_ProgressBar
+     * @return Progress
      */
-    public function getProgressBar()
+    public function getProgress(): Progress
     {
-        if (! $this->progressBar instanceof \Zend_ProgressBar) {
-            /*$this->setProgressBar(
-                new \Zend_ProgressBar($this->getProgressBarAdapter(), 0, 100, $this->_session->getNamespace() . '_pb')
-            );*/
-        }
-        return $this->progressBar;
-    }
-
-    /**
-     * The communication adapter for the ProgressBar.
-     *
-     * @return \Zend_ProgressBar_Adapter
-     */
-    public function getProgressBarAdapter()
-    {
-        // Create the current adapter when it does not exist or does not accord with the method.
-        switch ($this->method) {
-            case self::CONS:
-                if (! $this->progressBarAdapter instanceof \Zend_ProgressBar_Adapter_Console) {
-                    $this->setProgressBarAdapter(new \Zend_ProgressBar_Adapter_Console());
-                }
-                break;
-
-            case self::PULL:
-                if (! $this->progressBarAdapter instanceof \Zend_ProgressBar_Adapter_JsPull) {
-                    $this->setProgressBarAdapter(new \Zend_ProgressBar_Adapter_JsPull());
-                }
-                break;
-
-            default:
-                if (! $this->progressBarAdapter instanceof \Zend_ProgressBar_Adapter_JsPush) {
-                    $this->setProgressBarAdapter(new \MUtil\ProgressBar\Adapter\JsPush());
-                }
-        }
-
-        // Check for extra padding
-        if ($this->progressBarAdapter instanceof \MUtil\ProgressBar\Adapter\JsPush) {
-            $this->progressBarAdapter->initialPaddingKb = $this->initialPushPaddingKb;
-            $this->progressBarAdapter->extraPaddingKb   = $this->extraPushPaddingKb;
-        }
-
-        return $this->progressBarAdapter;
+        return $this->progress;
     }
 
     /**
@@ -859,16 +790,6 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     }
 
     /**
-     * Return true if running in console mode.
-     *
-     * @return boolean
-     */
-    public function isConsole(): bool
-    {
-        return self::CONS === $this->method;
-    }
-
-    /**
      * Return true after commands all have been ran.
      *
      * @return boolean
@@ -888,26 +809,6 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     {
         $batchInfo = $this->getBatchInfo();
         return ($batchInfo['count'] > 0 || $batchInfo['processed'] > 0);
-    }
-
-    /**
-     * Does the batch use the PULL method for communication.
-     *
-     * @return boolean
-     */
-    public function isPull(): bool
-    {
-        return $this->method === self::PULL;
-    }
-
-    /**
-     * Does the batch use the PUSH method for communication.
-     *
-     * @return boolean
-     */
-    public function isPush(): bool
-    {
-        return $this->method === self::PUSH;
     }
 
     /**
@@ -1013,13 +914,13 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
                 // error_log('Cur: ' . microtime(true) . ' report is '. (microtime(true) > $reportRun ? 'true' : 'false'));
                 if ($this->_checkReport()) {
                     // Communicate progress
-                    $this->_updateBar();
+                    $this->_updateProgress();
                     return true;
                 }
             }
 
             // Only reached when at end of commands
-            $this->_finishBar();
+            $this->_finishProgress();
 
             // There is progressBar output
             return true;
@@ -1065,11 +966,11 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         while ($this->step()) {
             if ($this->_checkReport()) {
                 // Communicate progress
-                $this->_updateBar();
+                $this->_updateProgress();
             }
         }
-        $this->_updateBar();
-        $this->_finishBar();
+        $this->_updateProgress();
+        $this->_finishProgress();
 
         return true;
     }
@@ -1154,112 +1055,6 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     public function setMessageLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
-    }
-
-    /**
-     * Sets the communication method for progress reporting.
-     *
-     * @param string $method One of the constants of this object
-     * @return self
-     */
-    public function setMethod(string $method): self
-    {
-        switch ($method) {
-            case self::PULL:
-            case self::PUSH:
-                $this->method = $method;
-                return $this;
-
-            default:
-                throw new \MUtil\Batch\BatchException("Invalid batch usage method '$method'.");
-        }
-    }
-
-    /**
-     * Set the communication method used by this batch to PULL.
-     *
-     * This is the most stable method as it works independently of
-     * server settings. Therefore it is the default method.
-     *
-     * @return self
-     */
-    public function setMethodPull(): self
-    {
-        $this->setMethod(self::PULL);
-
-        return $this;
-    }
-
-    /**
-     * Set the communication method used by this batch to PUSH.
-     *
-     * I.e. the start page opens an iFrame, the url of the iFrame calls the
-     * batch with the RUN parameter and the process returns JavaScript tags
-     * that handle the progress reporting.
-     *
-     * This is a very fast and resource inexpensive method for batch processing
-     * but it is only suitable for short running processes as servers tend to
-     * cut off http calls that take more than some fixed period of time to run -
-     * even when those processes keep returning data.
-     *
-     * Another problem with this method is buffering, i.e. the tendency of servers
-     * to wait sending data back until a process has been completed or enough data
-     * has been send.
-     *
-     * E.g. on IIS 7 you have to adjust the file %windir%\System32\inetsrv\config\applicationHost.config
-     * and add the attribute responseBufferLimit="1024" twice, both to
-     * ../handlers/add name="PHP_via_FastCGI" and to ../handlers/add name="CGI-exe".
-     *
-     * Still the above works only partially, IIS tends to wait longer before sending the
-     * first batch of data. The trick is to add extra spaces to the output until the
-     * threshold is reached. This is done by specifying the $extraPaddingKb parameter.
-     * Just increase it until it works.
-     *
-     * @param int $extraPaddingKb
-     * @return self
-     */
-    public function setMethodPush(?int $extraPaddingKb = null)
-    {
-        $this->setMethod(self::PUSH);
-
-        if ((null !== $extraPaddingKb) && is_numeric($extraPaddingKb)) {
-            $this->extraPushPaddingKb = $extraPaddingKb;
-        }
-
-        return $this;
-    }
-
-    /**
-     * The Zend ProgressBar handles the communication through
-     * an adapter interface.
-     *
-     * @param \Zend_ProgressBar $progressBar
-     * @return self
-     */
-    public function setProgressBar(\Zend_ProgressBar $progressBar): self
-    {
-        $this->progressBar = $progressBar;
-        return $this;
-    }
-
-    /**
-     * The communication adapter for the ProgressBar.
-     *
-     * @param \Zend_ProgressBar_Adapter_Interface $adapter
-     * @return self
-     */
-    public function setProgressBarAdapter(\Zend_ProgressBar_Adapter $adapter): self
-    {
-        if ($adapter instanceof \Zend_ProgressBar_Adapter_JsPush) {
-            $prefix = $this->getFunctionPrefix();
-
-            // Set the fields, in case they where not set earlier
-            $adapter->setUpdateMethodName($prefix . 'Update');
-            $adapter->setFinishMethodName($prefix . 'Finish');
-        }
-
-        $this->progressBarAdapter = $adapter;
-        return $this;
     }
 
     /**
