@@ -5,15 +5,15 @@ namespace MUtil\Batch;
 class Progress
 {
 
+    private int $count;
     private bool $finish = false;
-    private int $max;
     private float $percent;
     private int $startTime = 0;
     private int $step = 0;
 
-    public function __construct(int $max = 0)
+    public function __construct(int $count = 0)
     {
-        $this->max = $max;
+        $this->count = $count;
     }
 
     public function advance(int $steps = 1)
@@ -26,13 +26,18 @@ class Progress
         $this->finish = true;
     }
 
+    public function getCount(): int
+    {
+        return $this->count;
+    }
+
     public function getEstimated(): float
     {
         if (!$this->step) {
             return 0;
         }
 
-        return round((time() - $this->startTime) / $this->step * $this->max);
+        return round((time() - $this->startTime) / $this->step * $this->count);
     }
 
     /**
@@ -49,25 +54,12 @@ class Progress
             return 0;
         }
 
-        return round((time() - $this->startTime) / $this->step * ($this->max - $this->step));
+        return round((time() - $this->startTime) / $this->step * ($this->count - $this->step));
     }
 
-
-    public function start(): void
+    public function getStep(): int
     {
-        $this->startTime = time();
-        $this->step = 0;
-    }
-
-    public function setProgress(int $step)
-    {
-        if ($this->max && $step > $this->max) {
-            $this->max = $step;
-        } elseif ($step < 0) {
-            $step = 0;
-        }
-
-        $this->percent = $this->max ? (float) $this->step / $this->max : 0;
+        return $this->step;
     }
 
     /**
@@ -77,7 +69,7 @@ class Progress
      */
     public function iterate(iterable $iterable, int $max = null): iterable
     {
-        $this->max = ($max ?? (is_countable($iterable) ? \count($iterable) : 0));
+        $this->count = ($max ?? (is_countable($iterable) ? \count($iterable) : 0));
 
         foreach ($iterable as $key => $value) {
             yield $key => $value;
@@ -86,5 +78,38 @@ class Progress
         }
 
         $this->finish();
+    }
+
+    public function isFinished(): bool
+    {
+        return $this->finish;
+    }
+
+    public function reset(): void
+    {
+        $this->finish = false;
+        $this->setProgress(0);
+    }
+
+    public function setCount(int $count): void
+    {
+        $this->count = $count;
+    }
+
+    public function setProgress(int $step): void
+    {
+        if ($this->count && $step > $this->count) {
+            $this->count = $step;
+        } elseif ($step < 0) {
+            $step = 0;
+        }
+
+        $this->percent = $this->count ? (float) $this->step / $this->count : 0;
+    }
+
+    public function start(): void
+    {
+        $this->startTime = time();
+        $this->step = 0;
     }
 }

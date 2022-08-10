@@ -276,7 +276,14 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         $this->_initSession($id);
         $this->logger = $logger;
 
-        $this->progress = new Progress(100);
+        $batchInfo = $this->getBatchInfo();
+
+        $this->progress = new Progress($batchInfo['count']);
+        if ($batchInfo['finished'] === true) {
+            $this->progress->finish();
+        }
+        $this->progress->setProgress($batchInfo['processed']);
+
         $this->_updateProgress();
     }
 
@@ -350,9 +357,9 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      */
     protected function _updateProgress(): void
     {
-        $this->progress->setProgress($this->getProgressPercentage());
-
-        //$this->getProgressBar()->update($this->getProgressPercentage(), $this->getLastMessage());
+        $batchInfo = $this->getBatchInfo();
+        $this->progress->setProgress($batchInfo['processed']);
+        $this->progress->setCount($batchInfo['count']);
     }
 
     /**
@@ -796,8 +803,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      */
     public function isFinished(): bool
     {
-        $batchInfo = $this->getBatchInfo();
-        return $batchInfo['finished'];
+        return $this->progress->isFinished();
     }
 
     /**
@@ -807,8 +813,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      */
     public function isLoaded(): bool
     {
-        $batchInfo = $this->getBatchInfo();
-        return ($batchInfo['count'] > 0 || $batchInfo['processed'] > 0);
+        return ($this->progress->getCount() > 0 || $this->progress->getStep() > 0);
     }
 
     /**
@@ -848,6 +853,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         ];
 
         $this->session->set($this->sessionId, $batchInfo);
+        $this->progress->reset();
 
         $this->stack->reset();
 
