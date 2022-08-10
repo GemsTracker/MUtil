@@ -11,10 +11,12 @@
 
 namespace MUtil\Translate;
 
+use InvalidArgumentException;
+
 /**
  * Add auto translate functions to a class
  *
- * Can be implemented as Traight in PHP 5.4 or copied into source
+ * Can be implemented as Trait in PHP 5.4 or copied into source
  *
  * @package    MUtil
  * @subpackage Translate
@@ -66,12 +68,12 @@ trait TranslateableTrait
      *
      * @see https://en.wikipedia.org/wiki/ISO_31-11
      *
-     * @param string      $id         The message id (may also be an object that can be cast to string)
+     * @param string|null      $id         The message id (may also be an object that can be cast to string)
      * @param array       $parameters An array of parameters for the message
      * @param string|null $domain     The domain for the message or null to use the default
      * @param string|null $locale     The locale or null to use the default
      *
-     * @throws \InvalidArgumentException If the locale contains invalid characters
+     * @throws InvalidArgumentException If the locale contains invalid characters
      */
     public function _(?string $id, array $parameters = [], string $domain = null, string $locale = null): string
     {
@@ -89,8 +91,8 @@ trait TranslateableTrait
      * @param string|null        $locale   The locale or null to use the default
      * @return string
      */
-    public function plural($singular, $plural, $number, $locale = null)
+    public function plural(string $singular, string $plural, int $number, ?string $locale = null): string
     {
-        $this->translate->plural($singular, $plural, $number, $locale);
+        return $this->translate->plural($singular, $plural, $number, $locale);
     }
 }
