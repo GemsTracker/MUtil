@@ -36,7 +36,7 @@ abstract class StackAbstract implements \MUtil\Batch\Stack\Stackinterface
      * @param string $id Optional id to repeat double execution
      * @return boolean When true, increment the number of commands, otherwise the command existed
      */
-    abstract protected function _addCommand(array $command, $id = null);
+    abstract protected function _addCommand(array $command, ?string $id = null): bool;
 
     protected function _checkParams(array $params)
     {
