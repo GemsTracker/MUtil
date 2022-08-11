@@ -526,7 +526,7 @@ abstract class Action
      */
     public function plural($singular, $plural, $number, $locale = null)
     {
-        $this->translate->plural($singular, $plural, $number, $locale);
+        return $this->translate->plural($singular, $plural, $number, $locale);
     }
 
     /* currently not in use
