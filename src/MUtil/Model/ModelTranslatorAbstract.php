@@ -11,6 +11,8 @@
 
 namespace MUtil\Model;
 
+use MUtil\Model;
+
 /**
  * Translators can translate the data from one model to be saved using another
  * model.
@@ -91,28 +93,21 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      *
      * @var array
      */
-    public $dateFormats = array('yyyy-MM-dd');
-
-   /**
-    * Optional locale for date interpretations
-    *
-    * @var \Zend_Locale or string to create locale
-    */
-    public $dateLocale;
+    public $dateFormats = array('Y-m-d');
 
     /**
      * Datetime import formats
      *
      * @var array
      */
-    public $datetimeFormats = array(\Zend_Date::ISO_8601);
+    public $datetimeFormats = array('Y-m-d H:i:s');
 
     /**
      * Time import formats
      *
      * @var array
      */
-    public $timeFormats = array(\Zend_Date::TIMES);
+    public $timeFormats = array('H:i:s');
 
     /**
      * The string value used for NULL values
@@ -357,12 +352,17 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
                 $formats = false;
             }
 
-            if ($this->dateLocale && is_string($this->dateLocale)) {
-                $this->dateLocale = new \Zend_Locale($this->dateLocale);
-            }
-
             if ($formats) {
-                $value = \MUtil\Date::ifDate(trim($value), $formats);
+                if (! $value instanceof DateTimeInterface) {
+                    $date = false;
+                    foreach ($formats as $format) {
+                        $date = DateTimeImmutable::createFromFormat($format, trim($value));
+                        if ($date) {
+                            $value = $date;
+                            return;
+                        }
+                    }
+                }
                 return;
             }
 

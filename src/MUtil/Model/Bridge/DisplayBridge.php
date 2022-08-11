@@ -11,6 +11,9 @@
 
 namespace MUtil\Model\Bridge;
 
+use \DateTimeImmutable;
+use \DateTimeInterface;
+
 /**
  *
  * @package    MUtil
@@ -52,7 +55,16 @@ class DisplayBridge extends \MUtil\Model\Bridge\BridgeAbstract
             } else {
                 $storageFormat = $this->model->get($name, 'storageFormat');
                 $output['dateFormat'] = function ($value) use ($format, $storageFormat) {
-                    return \MUtil\Date::format($value, $format, $storageFormat);
+                    if ($value instanceof DateTimeInterface) {
+                        $date = $value;
+                    } else {
+                        $date = DateTimeImmutable::createFromFormat($storageFormat, $value);
+                    }                        
+                    if ($date) {
+                        return $date->format($format);
+                    } else {
+                        return null;
+                    }
                 };
             }
         } elseif ($this->model->has($name, 'numberFormat')) {

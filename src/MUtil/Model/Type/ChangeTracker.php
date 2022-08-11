@@ -12,6 +12,9 @@
 
 namespace MUtil\Model\Type;
 
+use \DateTimeImmutable;
+use \DateTimeInterface;
+
 /**
  * A type that allows you to check after the save() if a field value was changed.
  *
@@ -183,27 +186,24 @@ class ChangeTracker
             return $context[$trackedField] == $context[$oldValueField] ? $this->_unchangedValue : $this->_changedValue;
         }
 
-        if ($context[$oldValueField] instanceof \Zend_Date) {
+        if ($context[$oldValueField] instanceof DateTimeInterface) {
             $oldValue = $context[$oldValueField];
         } else {
-            $oldValue = new \MUtil\Date($context[$oldValueField], $storageFormat);
+            $oldValue = DateTimeImmutable::createFromFormat($storageFormat, $context[$oldValueField]);
         }
 
-        if ($context[$trackedField] instanceof \Zend_Date) {
+        if ($context[$trackedField] instanceof DateTimeInterface) {
             $currentValue = $context[$trackedField];
-        } elseif (\Zend_Date::isDate($context[$trackedField], $storageFormat)) {
-            $currentValue = new \MUtil\Date($context[$trackedField], $storageFormat);
         } else {
-            if ($this->_model->has($trackedField, 'dateFormat')) {
-                $secondFormat = $this->_model->get($trackedField, 'dateFormat');
-            } else {
-                $secondFormat = \MUtil\Model\Bridge\FormBridge::getFixedOption('date', 'dateFormat');
+            $currentValue = DateTimeImmutable::createFromFormat($storageFormat, $context[$trackedField]);
+            if (! $currentValue) {
+                if ($this->_model->has($trackedField, 'dateFormat')) {
+                    $secondFormat = $this->_model->get($trackedField, 'dateFormat');
+                    $currentValue = DateTimeImmutable::createFromFormat($secondFormat, $context[$trackedField]);
+                } else {
+                    return flase;
+                }
             }
-            if (! \Zend_Date::isDate($context[$trackedField], $secondFormat)) {
-                // Cannot compare, do nothing
-                return $value;
-            }
-            $currentValue  = new \MUtil\Date($context[$trackedField], $secondFormat);
         }
 
         // \MUtil\EchoOut\EchoOut::track($trackedField, $oldValueField, $oldValue->toString(), $currentValue->toString(), $oldValue->getTimestamp() === $currentValue->getTimestamp());

@@ -150,20 +150,12 @@ class DatePicker extends \ZendX_JQuery_View_Helper_DatePicker
      * No date formats are allowed after the start of the time parts. (A future extension
      * might be to allow either option, but datetimepicker does not understand that.)
      *
-     * Some examples:
-     *  - "yyyy-MM-dd HH:mm"  => array("yy-mm-dd", " ", "hh:mm")
-     *  - "X yyyy-MM-dd X"    => array("X yy-mm-dd X", false, false)
-     *  - "yy \"hi': mm\" MM" => array("y 'hi'': mm' mm", false, false)
-     *  - "yyyy-MM-dd 'date: yyyy-MM-dd' HH:mm 'time'': hh:mm' HH:mm Q", => array("yy-mm-dd", " 'date: yyyy-MM-dd' ", "HH:mm 'time'': HH:mm' z Q")
-     *  - "HH:mm:ss"          => array(false, false, "HH:mm:ss")
-     *  - \Zend_Date::ISO_8601 => array("ISO_8601", "T", "HH:mm:ssZ")
-     *
      * @deprecated since version 1.4
      * @param string $format Or \Zend_Locale_Format::getDateFormat($locale)
      * @return array dateFormat, seperator, timeFormat
      */
     public static function splitZendLocaleToDateTimePickerFormat($format=null)
     {
-        return \MUtil\Date\Format::splitDateTimeFormat($format);
+        return \MUtil\JQuery\Form\Element\DatePicker::splitTojQueryDateTimeFormat($format);
     }
 }

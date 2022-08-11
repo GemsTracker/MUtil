@@ -68,7 +68,7 @@ class Log extends \Zend_Log
         $this->_logFileName = $this->_getLogFileName();
 
         // Empty the file if it is on rotation after a year
-        $this->_checkLogOverwrite();
+        // $this->_checkLogOverwrite(); NEVER IMPLEMENTED
 
         try {
             $writer = new \Zend_Log_Writer_Stream($this->_logFileName);
@@ -87,30 +87,6 @@ class Log extends \Zend_Log
 
         if (null !== $priority) {
             $this->setLogPriority($priority);
-        }
-    }
-
-    protected function _checkLogOverwrite()
-    {
-        switch ($this->_logRotate) {
-            case self::ROTATE_PER_MONTH:
-                $now = new \MUtil\Date();
-                $now->subMonth(10);
-                break;
-
-            case self::ROTATE_PER_MONTH:
-                $now = new \MUtil\Date();
-                $now->subWeek(50)->subDay(1);
-                break;
-
-            default:
-                return;
-
-        }
-
-        $fileTime = new \MUtil\Date(filectime($this->_logFileName));
-        if ($fileTime) {
-
         }
     }
 

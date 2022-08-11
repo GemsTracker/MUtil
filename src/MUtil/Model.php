@@ -12,6 +12,9 @@
 namespace MUtil;
 
 use _PHPStan_9a6ded56a\Nette\Neon\Exception;
+
+use DateTimeImmutable;
+use DateTimeInterface;
 use Zalt\Loader\ProjectOverloader;
 
 
@@ -149,6 +152,12 @@ class Model
     private static $_source;
 
     /**
+     *
+     * @var array ['type' => ['key' => 'value']]
+     */
+    private static $_typeDefaults = [];
+    
+    /**
      * Static variable for debuggging purposes. Toggles the echoing of e.g. of sql
      * select statements, using \MUtil\EchoOut\EchoOut.
      *
@@ -187,6 +196,20 @@ class Model
         }
     }
 
+    public static function addTypeDefaults(int $type, array $defaults = [])
+    {
+        foreach ($defaults as $key => $value) {
+            self::$_typeDefaults[$type][$key] = $value;
+        }
+    }
+
+    public static function addTypesDefaults(array $typeDefaults = [])
+    {
+        foreach ($typeDefaults as $type => $defaults) {
+            self::addTypeDefaults($type, $defaults);
+        }
+    }
+
     /**
      * Returns the plugin loader for bridges
      *
@@ -195,6 +218,49 @@ class Model
     public static function getBridgeLoader()
     {
         return self::getLoader('Bridge');
+    }
+
+    public static function getDateTimeInterface($dateValue, $fromStorage = true) : ?DateTimeInterface
+    {
+        if (! $dateValue) {
+            return null;
+        }
+        if ($dateValue instanceof DateTimeInterface) {
+            return $dateValue;
+        }
+        if ($dateValue instanceof \MUtil\Date) {
+            return $dateValue->getDateTime();
+        }
+        if ($dateValue instanceof \Zend_Date) {
+            $now = new DateTimeImmutable();
+            return $now->setTimestamp($dateValue->getTimestamp());
+        }
+        if (is_int($dateValue)) {
+            $now = new DateTimeImmutable();
+            return $now->setTimestamp($dateValue);
+        }
+        
+        if ($fromStorage) {
+            $formats = [
+                self::getTypeDefault(self::TYPE_DATETIME, 'storageFormat'),
+                self::getTypeDefault(self::TYPE_DATE, 'storageFormat'),
+                self::getTypeDefault(self::TYPE_TIME, 'storageFormat'),
+            ];
+        } else {
+            $formats = [
+                self::getTypeDefault(self::TYPE_DATETIME, 'dateFormat'),
+                self::getTypeDefault(self::TYPE_DATE, 'dateFormat'),
+                self::getTypeDefault(self::TYPE_TIME, 'dateFormat'),
+            ];
+        }
+        foreach ((array) $formats as $format) {
+            $date = DateTimeImmutable::createFromFormat($format, trim($value));
+            if ($date) {
+                return $date;
+            }
+        }
+        
+        return null;
     }
 
     /**
@@ -251,6 +317,22 @@ class Model
         return self::$_source;
     }
 
+    public static function getTypeDefault(int $type, string $key)
+    {
+        if (isset(self::$_typeDefaults[$type][$key])) {
+            return self::$_typeDefaults[$type][$key];
+        }
+        return [];
+    }
+
+    public static function getTypeDefaults(int $type): array
+    {
+        if (isset(self::$_typeDefaults[$type])) {
+            return self::$_typeDefaults[$type]; 
+        }
+        return [];
+    }
+
     /**
      * Is a source available
      *
@@ -261,6 +343,43 @@ class Model
         return self::$_source instanceof \MUtil\Registry\SourceInterface;
     }
 
+    /**
+     * @param mixed $value
+     * @param array|string|null $inFormat
+     * @param array|string|null $outFormat
+     * @return string|null
+     */
+    public static function reformatDate($value, $inFormat = null, $outFormat = null): ?string
+    {
+        if ($value instanceof DateTimeInterface) {
+            $date = $value;
+        } else {
+            if (! $inFormat) {
+                $inFormat = [
+                    self::getTypeDefault(self::TYPE_DATETIME, 'dateFormat'),
+                    self::getTypeDefault(self::TYPE_DATE, 'dateFormat'),
+                    self::getTypeDefault(self::TYPE_TIME, 'dateFormat'),
+                ];
+            }
+            foreach ((array) $inFormat as $currentType => $format) {
+                $date = DateTimeImmutable::createFromFormat($format, trim($value));
+                if ($date) {
+                    break;
+                }
+            }
+        }
+        
+        if (! isset($date)) {
+            return null;
+        }
+        
+        if (! $outFormat) {
+            $outFormat = self::getTypeDefault($currentType, 'storageFormat');
+        }
+        
+        return $date->format($outFormat);
+    }
+    
     /**
      * Sets the plugin loader for bridges
      *

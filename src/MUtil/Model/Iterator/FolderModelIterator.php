@@ -12,6 +12,8 @@
 
 namespace MUtil\Model\Iterator;
 
+use \DateTimeImmutable;
+
 /**
  *
  *
@@ -57,7 +59,7 @@ class FolderModelIterator extends \FilterIterator
     }
 
     /**
-     * \FilterIterator::accept — Check whether the current element of the iterator is acceptable
+     * \FilterIterator::accept Check whether the current element of the iterator is acceptable
      *
      * @return boolean
      */
@@ -85,7 +87,7 @@ class FolderModelIterator extends \FilterIterator
     }
 
     /**
-     * FilesystemIterator::current — The current file
+     * FilesystemIterator::current The current file
      *
      * @return mixed null or artray
      */
@@ -111,6 +113,8 @@ class FolderModelIterator extends \FilterIterator
             $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
         }
 
+        $date = new \DateTimeImmutable();
+        
         return array(
             'fullpath'  => $real,
             'relpath'   => $rel,
@@ -120,7 +124,7 @@ class FolderModelIterator extends \FilterIterator
             'extension' => $extension,
             'content'   => \MUtil\Lazy::call('file_get_contents', $real),
             'size'      => $file->getSize(),
-            'changed'   => new \MUtil\Date($file->getMTime()),
+            'changed'   => $date->setTimestamp($file->getMTime()),
             );
     }
 

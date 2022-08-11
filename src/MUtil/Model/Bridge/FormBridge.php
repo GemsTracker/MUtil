@@ -359,10 +359,6 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
         $options = $this->_mergeOptions($name, $options,
             self::DATE_OPTIONS, self::DISPLAY_OPTIONS, self::JQUERY_OPTIONS, self::TEXT_OPTIONS);
 
-        // Allow centrally set options
-        $type = \MUtil\Date\Format::getDateTimeType(isset($options['dateFormat']) ? $options['dateFormat'] : null);
-        self::applyFixedOptions($type, $options);
-
         if (isset($options['dateFormat'])) {
             // Make sure the model knows the dateFormat (can be important for storage).
             $this->getModel()->set($name, 'dateFormat', $options['dateFormat']);

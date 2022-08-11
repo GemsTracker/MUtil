@@ -11,6 +11,9 @@
 
 namespace MUtil\View\Helper;
 
+use \DateTimeImmutable;
+use \DateTimeInterface;
+
 /**
  *
  * @package    MUtil
@@ -76,10 +79,17 @@ class Exhibitor extends \Zend_View_Helper_FormElement
             $dateFormat    = $attribs['dateFormat'];
             $storageFormat = isset($attribs['storageFormat']) ? $attribs['storageFormat'] : null;
 
-            $result = \MUtil\Date::format($result, $dateFormat, $storageFormat);
+            if (! $result instanceof DateTimeInterface) {
+                $date = DateTimeImmutable::createFromFormat($storageFormat, $result);
+                if ($date) {
+                    $result = $date->format($dateFormat);
+                } else {
+                    $result = null;
+                }
+            }
 
-            if ($storageFormat && ($value instanceof \Zend_Date)) {
-                $value = $value->toString($storageFormat);
+            if ($storageFormat && ($value instanceof DateTimeInterface)) {
+                $value = $value->format($storageFormat);
             }
         }
 
@@ -124,8 +134,8 @@ class Exhibitor extends \Zend_View_Helper_FormElement
         if (isset($attribs['nohidden']) && $attribs['nohidden'] || is_array($value)) {
             return $result;
         } else {
-            if ($value instanceof \Zend_Date) {
-                $value = $value->toString('yyyy-MM-dd HH:mm:ss');
+            if ($value instanceof DateTimeInterface) {
+                $value = $value->toString('Y-m-d H:i:s');
             }
             return $this->_hidden($name, $value) . $result;
         }

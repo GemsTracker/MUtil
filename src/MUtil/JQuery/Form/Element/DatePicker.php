@@ -11,6 +11,7 @@
 
 namespace MUtil\JQuery\Form\Element;
 
+use DateTimeInterface;
 use MUtil\Form\Element\NoTagsElementTrait;
 
 /**
@@ -37,7 +38,7 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
 
     /**
      *
-     * @var \Zend_Date The underlying value as a date object
+     * @var DateTimeInterface The underlying value as a date object
      */
     protected $_dateValue;
 
@@ -55,8 +56,8 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
      */
     protected function _applyDateFormat()
     {
-        if ($this->_dateValue instanceof \Zend_Date) {
-            parent::setValue($this->_dateValue->toString($this->getDateFormat()));
+        if ($this->_dateValue instanceof DateTimeInterface) {
+            parent::setValue($this->_dateValue->format($this->getDateFormat()));
         }
         return $this;
     }
@@ -74,9 +75,9 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
     /**
      * Return the value as a date object
      *
-     * @return \Zend_Date
+     * @return ?DateTimeInterface
      */
-    public function getDateValue()
+    public function getDateValue(): ?DateTimeInterface
     {
         if ($this->_value && (! $this->_dateValue)) {
             $this->setDateValue($this->_value);
@@ -144,7 +145,7 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
     {
         $view = $this->getView();
 
-        list($dateFormat, $separator, $timeFormat) = \MUtil\Date\Format::splitDateTimeFormat($format);
+        list($dateFormat, $separator, $timeFormat) = self::splitTojQueryDateTimeFormat($format);
 
         if ($dateFormat) {
             $this->setJQueryParam('dateFormat', $dateFormat);
@@ -174,8 +175,13 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
         if (null === $value || '' === $value) {
             $this->_dateValue = null;
         } else {
-            if ($value instanceof \Zend_Date) {
+            if ($value instanceof DateTimeInterface) {
                 $this->_dateValue = $value;
+            } elseif ($value instanceof \MUtil\Date) {
+                $this->_dateValue = $value->getDateTime();
+            } elseif ($value instanceof \Zend_Date) {
+                $date = new \DateTimeImmutable();
+                $this->_dateValue = $date->setTimestamp($value->getTimestamp());
             } else {
                 $format = $this->getDateFormat();
                 if ($format && \Zend_Date::isDate($value, $format)) {
@@ -200,7 +206,7 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
                 }
             }
         }
-        if ($this->_dateValue instanceof \Zend_Date) {
+        if ($this->_dateValue instanceof DateTimeInterface) {
             $this->_applyDateFormat();
         } else {
             parent::setValue($value);
@@ -281,5 +287,103 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
         } // */
 
         return $element;
+    }
+    
+    /**
+     * This function splits a date time format into a date, separator and time part; the last two
+     * only when there are time parts in the format.
+     *
+     * The results are formats readable by the jQuery Date/Time Picker.
+     *
+     * No date formats are allowed after the start of the time parts. (A future extension
+     * might be to allow either option, but datetimepicker does not understand that.)
+     *
+     * @param string $format 
+     * @return array dateFormat, seperator, timeFormat
+     */
+    public static function splitTojQueryDateTimeFormat($format)
+    {
+        $fullDates = array(
+            'c' => ['YYYY-MM-dd', 'T', 'HH:mm:ss'],
+            'r' => ['ddd, d MMM YYYY', ' ', 'HH:mm:ss'],
+            'd-m-Y' => ['dd-MM-YYYY', '', ''],
+            'd-m-Y H:i' => ['dd-MM-YYYY', ' ', 'HH:mm'],
+            'H:i' => ['', '', 'HH:mm'],
+        );
+
+        if (isset($fullDates[$format])) {
+            return $fullDates[$format];
+        }
+
+        $dateFormats = array(
+            'd' => 'dd', 'D' => 'ddd', 'j' => 'd', 'l' => 'dddd', 'N' => '', 'S' => '', 'w' => '', 'z' => '',
+            'W' => '',
+            'F' => 'MMMM', 'm' => 'MM', 'M' => 'MMM', 'n' => 'M', 't' => '',
+            'L' => '', 'X' => 'YYYY', 'x' => 'YYYY', 'Y' => 'YYYY', 'y' => 'YY',
+        );
+        $timeFormats = array(
+            'a' => 'tt', 'A' => 'tt', 'B' => '',
+            'g' => 'h', 'G' => 'hh', 'h' => 'h', 'H' => 'hh',
+            'i' => 'mm', 's' => 'ss', 'u' => '', 'v' => '',
+            'e' => '', 'I' => '', 'P' => '', 'p' => '', 'T' => '', 'Z' => '',
+        );
+
+        $pregs[] = '"[^"]*"'; // Literal text
+        $pregs[] = "'[^']*'"; // Literal text
+        $pregs   = array_merge($pregs, array_keys($dateFormats), array_keys($timeFormats)); // Add key words
+        $preg    = sprintf('/(%s)/', implode('|', $pregs));
+
+        $parts = preg_split($preg, $format, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+
+        $cache      = '';
+        $dateFormat = false;
+        $separator  = false;
+        $timeFormat = false;
+
+        foreach ($parts as $part) {
+            if (isset($dateFormats[$part])) {
+                if (false !== $timeFormat) {
+                    throw new \Zend_Form_Element_Exception(sprintf(
+                                                               'Date format specifier %s not allowed after time specifier in %s in format mask %s.',
+                                                               $part,
+                                                               $timeFormat,
+                                                               $format
+                                                           ));
+                }
+                $dateFormat .= $cache . $dateFormats[$part];
+                $cache      = '';
+
+            } elseif (isset($timeFormats[$part])) {
+                // Switching to time format mode
+                if (false === $timeFormat) {
+                    if ($dateFormat) {
+                        $separator  = $cache;
+                        $timeFormat = $timeFormats[$part];
+                    } else {
+                        $timeFormat = $cache . $timeFormats[$part];
+                    }
+                } else {
+                    $timeFormat .= $cache . $timeFormats[$part];
+                }
+                $cache = '';
+
+            } elseif ('"' === $part[0]) {
+                // Replace double quotes with single quotes, single quotes in string with two single quotes
+                $cache .= strtr($part, array('"' => "'", "'" => "''"));
+
+            } else {
+                $cache .= $part;
+            }
+        }
+        if ($cache) {
+            if (false === $timeFormat) {
+                $dateFormat .= $cache;
+            } else {
+                $timeFormat .= $cache;
+            }
+        }
+
+        // \MUtil\EchoOut\EchoOut::track($preg);
+        return array($dateFormat, $separator, $timeFormat);
     }
 }

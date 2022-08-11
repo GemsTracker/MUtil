@@ -11,6 +11,7 @@
 namespace MUtil\Model;
 
 use MUtil\Iterator\ItemCallbackIterator;
+use MUtil\Model;
 use MUtil\Model\Dependency\DependencyInterface;
 
 /**
@@ -2046,6 +2047,16 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
                     }
                 } else {
                     $this->_model[$name][$key] = $value;
+                    if ('type' == $key) {
+                        $defaults = Model::getTypeDefaults($value);
+                        if ($defaults) {
+                            foreach ($defaults as $dKey => $value) {
+                                if (! array_key_exists($dKey, $this->_model[$name])) {
+                                    $this->_model[$name][$dKey] = $value;
+                                }
+                            }
+                        }
+                    } 
                 }
             }
         } elseif (!array_key_exists($name, $this->_model)) {

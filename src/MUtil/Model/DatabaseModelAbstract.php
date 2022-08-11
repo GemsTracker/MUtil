@@ -413,23 +413,20 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
 
             switch (strtolower($field['DATA_TYPE'])) {
                 case 'date':
-                    $finfo['type']          = \MUtil\Model::TYPE_DATE;
-                    $finfo['storageFormat'] = 'yyyy-MM-dd';
+                    $finfo['type'] = \MUtil\Model::TYPE_DATE;
                     $this->setOnSave($name, array($this, 'formatSaveDate'));
                     $this->setOnLoad($name, array($this, 'formatLoadDate'));
                     break;
 
                 case 'datetime':
                 case 'timestamp':
-                    $finfo['type']          = \MUtil\Model::TYPE_DATETIME;
-                    $finfo['storageFormat'] = 'yyyy-MM-dd HH:mm:ss';
+                    $finfo['type'] = \MUtil\Model::TYPE_DATETIME;
                     $this->setOnSave($name, array($this, 'formatSaveDate'));
                     $this->setOnLoad($name, array($this, 'formatLoadDate'));
                     break;
 
                 case 'time':
-                    $finfo['type']          = \MUtil\Model::TYPE_TIME;
-                    $finfo['storageFormat'] = 'HH:mm:ss';
+                    $finfo['type'] = \MUtil\Model::TYPE_TIME;
                     $this->setOnSave($name, array($this, 'formatSaveDate'));
                     $this->setOnLoad($name, array($this, 'formatLoadDate'));
                     break;
@@ -806,32 +803,40 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
      * @param boolean $isPost True when passing on post data
-     * @return \MUtil\Date|\Zend_Db_Expr|null
+     * @return \DateTimeImmutable|\Zend_Db_Expr|null
      */
     public function formatLoadDate($value, $isNew = false, $name = null, array $context = array(), $isPost = false)
     {
-        static $formats;
-
         // If not empty or zend_db_expression and not already a zend date, we
         // transform to a \Zend_Date using the stored formats
-        if ((null === $value) || ($value instanceof \Zend_Date) || ($value instanceof \Zend_Db_Expr)) {
+        if ((null === $value) || ($value instanceof \DateTimeImmutable) || ($value instanceof \Zend_Db_Expr)) {
             return $value;
+        } elseif ($value instanceof \DateTimeInterface) {
+            return \DateTimeImmutable::createFromInterface($value);
+        } elseif ($value instanceof \MUtil\Date) {
+            return \DateTimeImmutable::createFromInterface($value->getDateTime());
+        } elseif ($value instanceof \Zend_Date) {
+            $date = new \DateTimeImmutable();
+            return $date->setTimestamp($value->getTimestamp());
         }
 
-        if (! isset($formats[$name][$isPost])) {
-            // Stored the used formats (as they are usually used often within a model)
-            if ($isPost) {
-                // Add possible custom format
-                $formats[$name][$isPost][] = $this->_getKeyValue($name, 'dateFormat');
+        if ($isPost) {
+            // First try dateFormat when posting
+            $dateTime = \DateTimeImmutable::createFromFormat($this->_getKeyValue($name, 'dateFormat'), $value);
 
-                // Add default format as a fallback
-                $type = \MUtil\Date\Format::getDateTimeType($this->_getKeyValue($name, 'dateFormat'));
-                $formats[$name][$isPost][] = \MUtil\Model\Bridge\FormBridge::getFixedOption($type, 'dateFormat');
+            if ($dateTime) {
+                return $dateTime;
             }
-            $formats[$name][$isPost][] = $this->_getKeyValue($name, 'storageFormat');
         }
-
-        return \MUtil\Date::ifDate($value, $formats[$name][$isPost]);
+        
+        // Second try or first when loading
+        $dateTime = \DateTimeImmutable::createFromFormat($this->_getKeyValue($name, 'storageFormat'), $value);
+        if ($dateTime) {
+            return $dateTime;
+        }
+        
+        // Well we tried
+        return new \DateTimeImmutable($value);
     }
 
     /**
@@ -844,31 +849,32 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * @param boolean $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
-     * @return \Zend_Date
+     * @return \DateTimeImmutable|\Zend_Db_Expr|null
      */
     public function formatSaveDate($value, $isNew = false, $name = null, array $context = array())
     {
-        if ($name &&
-                (! ((null === $value) ||
-                        ($value instanceof \Zend_Db_Expr) ||
-                        \MUtil\StringUtil\StringUtil::startsWith($value, 'current_', true))
-                )) {
-            $saveFormat = $this->getWithDefault($name, 'storageFormat', \Zend_Date::ISO_8601);
+        if ((null === $value) || ('' == $value) || ($value instanceof \Zend_Db_Expr) || (! $name)) {
+            return $value;
+        } 
+        if (is_string($value) && str_starts_with(strtolower($value), 'current')) {
+            return $value;
+        }
 
-            if ($value instanceof \Zend_Date) {
-                return $value->toString($saveFormat);
+        $saveFormat = $this->getWithDefault($name, 'storageFormat', 'c');
 
-            } else {
-                $displayFormat = $this->get($name, 'dateFormat');
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format($saveFormat);
 
-                try {
-                    return \MUtil\Date::format($value, $saveFormat, $displayFormat);
-                } catch (\Zend_Exception $e) {
-                    if (\Zend_Date::isDate($value, $saveFormat)) {
-                        return $value;
-                    }
-                    throw $e;
+        } else {
+            $displayFormat = $this->get($name, 'dateFormat');
+
+            try {
+                return \MUtil\Date::format($value, $saveFormat, $displayFormat);
+            } catch (\Zend_Exception $e) {
+                if (\Zend_Date::isDate($value, $saveFormat)) {
+                    return $value;
                 }
+                throw $e;
             }
         }
 
