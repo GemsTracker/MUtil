@@ -273,16 +273,16 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         $this->setSessionId($id);
         $this->setStack($stack);
 
+        $this->progress = new Progress();
+
         $this->_initSession($id);
         $this->logger = $logger;
 
         $batchInfo = $this->getBatchInfo();
 
-        $this->progress = new Progress($batchInfo['count']);
         if ($batchInfo['finished'] === true) {
             $this->progress->finish();
         }
-        $this->progress->setProgress($batchInfo['processed']);
 
         $this->_updateProgress();
     }
