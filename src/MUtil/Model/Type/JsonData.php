@@ -11,6 +11,9 @@
 
 namespace MUtil\Model\Type;
 
+use MUtil\Html\HtmlElement;
+use MUtil\Model\ModelAbstract;
+
 /**
  *
  * @package    MUtil
@@ -25,21 +28,21 @@ class JsonData
      * Maximum number of items in table display
      * @var int
      */
-    private $_maxTable = 3;
+    private int $_maxTable = 3;
 
     /**
      * Show there are more items
      *
      * @var string
      */
-    private $_more = '...';
+    private string $_more = '...';
 
     /**
      * The separator for the table items
      *
      * @var string
      */
-    private $_separator;
+    private string $_separator;
 
     /**
      *
@@ -47,7 +50,7 @@ class JsonData
      * @param string $separator Separator in table display
      * @param string $more There is more in table display
      */
-    public function __construct($maxTable = 3, $separator = '<br />', $more = '...')
+    public function __construct(int $maxTable = 3, string $separator = '<br />', string $more = '...')
     {
         $this->_maxTable  = $maxTable;
         $this->_more      = $more;
@@ -60,27 +63,26 @@ class JsonData
      * @param \MUtil\Model\ModelAbstract $model
      * @param string $name The field to set the seperator character
      * @param boolean $detailed When true show detailed information
-     * @return \MUtil\Model\Type\JsonData (continuation pattern)
      */
-    public function apply(\MUtil\Model\ModelAbstract $model, $name, $detailed)
+    public function apply(ModelAbstract $model, string $name, bool $detailed): void
     {
         if ($detailed) {
             $formatFunction = 'formatDetailed';
         } else {
             $formatFunction = 'formatTable';
         }
-        $model->set($name, 'formatFunction', array($this, $formatFunction));
-        $model->setOnLoad($name, array($this, 'loadValue'));
-        $model->setOnSave($name, array($this, 'saveValue'));
+        $model->set($name, 'formatFunction', [$this, $formatFunction]);
+        $model->setOnLoad($name, [$this, 'loadValue']);
+        $model->setOnSave($name, [$this, 'saveValue']);
     }
 
     /**
      * Displays the content
      *
      * @param string $value
-     * @return string
+     * @return string|HtmlElement
      */
-    public function formatDetailed($value)
+    public function formatDetailed(string $value): string|HtmlElement
     {
         if ((null === $value) || is_scalar($value)) {
             return $value;
@@ -95,7 +97,7 @@ class JsonData
                         ->appendAttrib('class', 'jsonNestedArray');
             }
         }
-        return \MUtil\Html::create('ul', $value, array('class' => 'jsonArrayList'));
+        return \MUtil\Html::create('ul', $value, ['class' => 'jsonArrayList']);
     }
 
     /**
@@ -104,7 +106,7 @@ class JsonData
      * @param string $value
      * @return string
      */
-    public function formatTable($value)
+    public function formatTable(string $value): string|HtmlElement
     {
         if ((null === $value) || is_scalar($value)) {
             return $value;
@@ -138,8 +140,11 @@ class JsonData
      * @param boolean $isPost True when passing on post data
      * @return array Of the values
      */
-    public function loadValue($value, $isNew = false, $name = null, array $context = array(), $isPost = false)
+    public function loadValue(mixed $value, bool $isNew = false, ?string $name = null, array $context = [], bool $isPost = false): ?array
     {
+        if ($value === null) {
+            return null;
+        }
         return json_decode($value, true);
     }
 
@@ -155,7 +160,7 @@ class JsonData
      * @param array $context Optional, the other values being saved
      * @return string Of the values concatenated
      */
-    public function saveValue($value, $isNew = false, $name = null, array $context = array())
+    public function saveValue(mixed $value, bool$isNew = false, ?string $name = null, array $context = []): ?string
     {
         if ($value === null) {
             return null;
