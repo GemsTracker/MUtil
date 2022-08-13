@@ -239,8 +239,10 @@ class Model
             $now = new DateTimeImmutable();
             return $now->setTimestamp($dateValue);
         }
-        
-        if ($fromStorage) {
+
+        if (is_array($fromStorage)) {
+            $formats = $fromStorage;
+        } elseif ($fromStorage) {
             $formats = [
                 self::getTypeDefault(self::TYPE_DATETIME, 'storageFormat'),
                 self::getTypeDefault(self::TYPE_DATE, 'storageFormat'),
