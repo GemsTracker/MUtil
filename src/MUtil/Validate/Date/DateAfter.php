@@ -12,6 +12,8 @@
 
 namespace MUtil\Validate\Date;
 
+use DateTimeImmutable;
+
 /**
  *
  * @package    MUtil
@@ -20,7 +22,7 @@ namespace MUtil\Validate\Date;
  * @license    New BSD License
  * @since      Class available since \MUtil version 1.0
  */
-class DateAfter extends \MUtil\Validate\Date\DateAbstract
+class DateAfter extends DateAbstract
 {
     /**
      * Error constants
@@ -46,7 +48,7 @@ class DateAfter extends \MUtil\Validate\Date\DateAbstract
     protected $_afterDate;
     protected $_afterValue;
 
-    public function __construct($afterDate = null, $format = 'dd-MM-yyyy')
+    public function __construct($afterDate = null, $format = 'd-m-Y')
     {
         parent::__construct($format);
         $this->_afterDate = $afterDate;
@@ -61,34 +63,34 @@ class DateAfter extends \MUtil\Validate\Date\DateAbstract
      *
      * @param  mixed $value
      * @return boolean
-     * @throws \Zend_Valid_Exception If validation of $value is impossible
      */
     public function isValid($value, $context = null)
     {
+        $format = $this->getDateFormat();
+        
         if (null === $this->_afterDate) {
-            $this->_afterDate = new \Zend_Date();
+            $this->_afterDate = new DateTimeImmutable();
         }
 
-        if ($this->_afterDate instanceof \Zend_Date) {
+        if ($this->_afterDate instanceof \DateTimeInterface) {
             $after = $this->_afterDate;
-        } elseif (isset($context[$this->_afterDate])) {
-            if (empty($context[$this->_afterDate])) {
-                $this->_error(self::NO_VALIDFROM);
-                return false;
-            }
-
-            $after = new \Zend_Date($context[$this->_afterDate], $this->getDateFormat());
-        } elseif (\Zend_Date::isDate($this->_afterDate, $this->getDateFormat())) {
-            $after = new \Zend_Date($this->_afterDate, $this->getDateFormat());
+        } elseif (array_key_exists($this->_afterDate, $context)) {
+            $after = DateTimeImmutable::createFromFormat($format, $context[$this->_afterDate]);
+        } elseif ($this->_afterDate) {
+            $after = DateTimeImmutable::createFromFormat($format, $this->_afterDate);
         } else {
             // No date specified, return true
             return true;
         }
-        $this->_afterValue = $after->toString($this->getDateFormat());
+        if (! $after) {
+            $this->_error(self::NO_VALIDFROM);
+            return false;
+        }
+        $this->_afterValue = $after->format($format);
 
-        $check = new \Zend_Date($value, $this->getDateFormat());
+        $check = DateTimeImmutable::createFromFormat($after, $value);
 
-        if ($check->isEarlier($after)) {
+        if ((! $check) || ($check->getTimestamp() > $after->getTimestamp())) {
             $this->_error(self::NOT_AFTER);
             return false;
         }

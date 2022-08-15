@@ -11,6 +11,8 @@
 
 namespace MUtil\Validate\Date;
 
+use DateTimeImmutable;
+
 /**
  *
  *
@@ -20,7 +22,7 @@ namespace MUtil\Validate\Date;
  * @license    New BSD License
  * @since      Class available since \MUtil version 1.0
  */
-class IsDate extends \MUtil\Validate\Date\DateAbstract
+class IsDate extends DateAbstract
 {
     /**
      * Error constants
@@ -44,24 +46,22 @@ class IsDate extends \MUtil\Validate\Date\DateAbstract
      * validation failed.
      *
      * @param  mixed $value
-     * @return boolean
-     * @throws \Zend_Valid_Exception If validation of $value is impossible
+     * @return bool
      */
-    public function isValid($value, $context = null)
+    public function isValid($value, $context = null): bool
     {
-        try {
-            $date = new \Zend_Date($value, $this->getDateFormat());
-        } catch (\Zend_Date_Exception $e) {
+        $date = DateTimeImmutable::createFromFormat($this->getDateFormat(), $value);
+        if (! $date) {
             $this->_error(self::NOT_VALID_DATE, $value);
             return false;
         }
-        
-        $year = $date->get(\Zend_Date::YEAR);
+
+        $year = $date->format('Y');
 
         /**
          * Prevent extreme dates (also fixes errors when saving to the db)
          */
-        if ($year > 1850 && $year < 2200 && \Zend_Date::isDate($value, $this->getDateFormat())) {
+        if ($year > 1850 && $year < 2200) {
             return true;
         }
 

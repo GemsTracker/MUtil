@@ -11,6 +11,8 @@
 
 namespace MUtil\Model;
 
+use MUtil\Model;
+
 /**
  * Class contains standard helper functions for using models
  * that store information using \Zend_Db_Adapter.
@@ -791,7 +793,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
 
     /**
      * A ModelAbstract->setOnLoad() function that takes care of transforming a
-     * dateformat read from the database to a \Zend_Date format
+     * dateformat read from the database to a DateTimeInterface format
      *
      * If empty or \Zend_Db_Expression (after save) it will return just the value
      * currently there are no checks for a valid date format.
@@ -869,11 +871,8 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
             $displayFormat = $this->get($name, 'dateFormat');
 
             try {
-                return \MUtil\Date::format($value, $saveFormat, $displayFormat);
+                return Model::reformatDate($value, [$displayFormat, $saveFormat], $saveFormat);
             } catch (\Zend_Exception $e) {
-                if (\Zend_Date::isDate($value, $saveFormat)) {
-                    return $value;
-                }
                 throw $e;
             }
         }

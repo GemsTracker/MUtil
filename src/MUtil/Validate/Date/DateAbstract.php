@@ -12,6 +12,8 @@
 
 namespace MUtil\Validate\Date;
 
+use \MUtil\Model;
+
 /**
  *
  * @package    MUtil
@@ -25,7 +27,6 @@ abstract class DateAbstract extends \Zend_Validate_Abstract
 {
     // Always use accossor functions, never reference these vars straight
     private $_dateFormat;
-    private $_locale;
 
     public function __construct($dateFormat = null)
     {
@@ -37,34 +38,15 @@ abstract class DateAbstract extends \Zend_Validate_Abstract
     public function getDateFormat()
     {
         if (! $this->_dateFormat) {
-            if ($locale = $this->getLocale()) {
-                $this->setDateFormat(\Zend_Locale_Format::getDateFormat($locale));
-            } else {
-                $this->setDateFormat(\Zend_Date::DATE_SHORT);
-            }
+            $this->setDateFormat(Model::getTypeDefault(Model::TYPE_DATE, 'dateFormat'));
         }
 
         return $this->_dateFormat;
     }
 
-    public function getLocale()
-    {
-        if ((! $this->_locale) && \Zend_Registry::isRegistered('Zend_Locale')) {
-            $this->setLocale(\Zend_Registry::get('Zend_Locale'));
-        }
-
-        return $this->_locale;
-    }
-
     public function setDateFormat($dateFormat)
     {
         $this->_dateFormat = $dateFormat;
-        return $this;
-    }
-
-    public function setLocale(\Zend_Locale $locale)
-    {
-        $this->_locale = $locale;
         return $this;
     }
 }

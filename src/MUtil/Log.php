@@ -101,8 +101,8 @@ class Log extends \Zend_Log
         switch ($this->_logRotate) {
             case self::ROTATE_PER_MONTH:
                 if (null === $index) {
-                    $now = new \MUtil\Date();
-                    $index = $now->toString(\Zend_Date::MONTH);
+                    $now = new \DateTimeImmutable();
+                    $index = $now->format('M');
                 } elseif ($index < 10) {
                     $index = "0" . $index;
                 }
@@ -111,8 +111,8 @@ class Log extends \Zend_Log
 
             case self::ROTATE_PER_MONTH:
                 if (null === $index) {
-                    $now = new \MUtil\Date();
-                    $index = $now->toString(\Zend_Date::WEEK);
+                    $now = new \DateTimeImmutable();
+                    $index = $now->format('W');
                 } elseif ($index < 10) {
                     $index = "0" . $index;
                 }

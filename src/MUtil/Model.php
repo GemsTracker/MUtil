@@ -247,6 +247,7 @@ class Model
                 self::getTypeDefault(self::TYPE_DATETIME, 'storageFormat'),
                 self::getTypeDefault(self::TYPE_DATE, 'storageFormat'),
                 self::getTypeDefault(self::TYPE_TIME, 'storageFormat'),
+                'c',
             ];
         } else {
             $formats = [

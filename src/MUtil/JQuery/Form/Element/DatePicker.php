@@ -13,6 +13,7 @@ namespace MUtil\JQuery\Form\Element;
 
 use DateTimeInterface;
 use MUtil\Form\Element\NoTagsElementTrait;
+use MUtil\Model;
 
 /**
  * Extension of ZendX DatePicker element that add's locale awareness and input and output date
@@ -164,7 +165,7 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
     }
 
     /**
-     * Set the both he _value (as a string) and the _dateValue (as an \Zend_Date)
+     * Set the both the _value (as a string) and the _dateValue (as an DateTimeInterface)
      *
      * @param string $format
      * @return \MUtil\JQuery\Form\Element\DatePicker (continuation patern)
@@ -177,33 +178,9 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
         } else {
             if ($value instanceof DateTimeInterface) {
                 $this->_dateValue = $value;
-            } elseif ($value instanceof \MUtil\Date) {
-                $this->_dateValue = $value->getDateTime();
-            } elseif ($value instanceof \Zend_Date) {
-                $date = new \DateTimeImmutable();
-                $this->_dateValue = $date->setTimestamp($value->getTimestamp());
             } else {
-                $format = $this->getDateFormat();
-                if ($format && \Zend_Date::isDate($value, $format)) {
-                    $this->_dateValue = new \MUtil\Date($value, $format);
-
-                } else {
-                    $storageFormat = $this->getStorageFormat();
-                    if ($storageFormat && \Zend_Date::isDate($value, $storageFormat)) {
-                        $this->_dateValue = new \MUtil\Date($value, $storageFormat);
-
-                    } elseif ($format || $storageFormat) {
-                        // Invalid dateformat, should be handled by validator, just ignore the datevalue
-                        // but do set the string value so validation runs fine
-                        $this->_dateValue = null;
-                    } else {
-                        try {
-                            $this->_dateValue = new \MUtil\Date($value);
-                        } catch (\Zend_Date_Exception $zde) {
-                            $this->_dateValue = null;
-                        }
-                    }
-                }
+                $date = Model::getDateTimeInterface($value, [$this->getDateFormat(), $this->getStorageFormat()]);
+                $this->_dateValue = $date ?: null;
             }
         }
         if ($this->_dateValue instanceof DateTimeInterface) {
@@ -303,6 +280,7 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
      */
     public static function splitTojQueryDateTimeFormat($format)
     {
+        // The output formats are jQuery DatePicker formats
         $fullDates = array(
             'c' => ['YYYY-MM-dd', 'T', 'HH:mm:ss'],
             'r' => ['ddd, d MMM YYYY', ' ', 'HH:mm:ss'],

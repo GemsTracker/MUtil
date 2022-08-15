@@ -12,6 +12,8 @@
 
 namespace MUtil\Validate\Date;
 
+use DateTimeImmutable;
+
 /**
  *
  * @package    MUtil
@@ -20,18 +22,20 @@ namespace MUtil\Validate\Date;
  * @license    New BSD License
  * @since      Class available since \MUtil version 1.0
  */
-class DateBefore extends \MUtil\Validate\Date\DateAbstract
+class DateBefore extends DateAbstract
 {
     /**
      * Error constants
      */
     const NOT_BEFORE = 'notBefore';
+    const NO_VALIDFROM = 'noValidFrom';
 
     /**
      * @var array Message templates
      */
     protected $_messageTemplates = array(
         self::NOT_BEFORE => "Date should be '%dateBefore%' or earlier.",
+        self::NO_VALIDFROM => "Should be empty if valid after date is not set."
     );
 
     /**
@@ -63,22 +67,31 @@ class DateBefore extends \MUtil\Validate\Date\DateAbstract
      */
     public function isValid($value, $context = null)
     {
+        $format = $this->getDateFormat();
+
         if (null === $this->_beforeDate) {
-            $this->_beforeDate = new \Zend_Date();
+            $this->_beforeDate = new DateTimeImmutable();
         }
 
-        if ($this->_beforeDate instanceof \Zend_Date) {
+        if ($this->_beforeDate instanceof \DateTimeInterface) {
             $before = $this->_beforeDate;
-        } elseif (isset($context[$this->_beforeDate])) {
-            $before = new \Zend_Date($context[$this->_beforeDate], $this->getDateFormat());
+        } elseif (array_key_exists($this->_beforeDate, $context)) {
+            $before = DateTimeImmutable::createFromFormat($format, $context[$this->_beforeDate]);
+        } elseif ($this->_afterDate) {
+            $before = DateTimeImmutable::createFromFormat($format, $this->_beforeDate);
         } else {
-            $before = new \Zend_Date($this->_beforeDate);
+            // No date specified, return true
+            return true;
         }
-        $this->_beforeValue = $before->toString($this->getDateFormat());
+        if (! $before) {
+            $this->_error(self::NO_VALIDFROM);
+            return false;
+        }
+        $this->_beforeValue = $before->format($format);
 
-        $check = new \Zend_Date($value, $this->getDateFormat());
+        $check = DateTimeImmutable::createFromFormat($after, $value);
 
-        if ($check->isLater($before)) {
+        if ((! $check) || ($check->getTimestamp() < $after->getTimestamp())) {
             $this->_error(self::NOT_BEFORE);
             return false;
         }

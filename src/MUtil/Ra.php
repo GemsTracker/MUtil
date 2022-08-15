@@ -47,8 +47,6 @@ class Ra
         'Zend_Controller_Request_Abstract' => 'getParams',
         'Zend_Db_Table_Row_Abstract'       => 'toArray',
         'Zend_Db_Table_Rowset_Abstract'    => 'toArray',
-        'Zend_Date'                        => 'toArray',
-
 
         // Last function to try
         '\\Traversable' => 'iterator_to_array'

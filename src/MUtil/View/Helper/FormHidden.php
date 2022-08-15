@@ -58,8 +58,8 @@ class FormHidden extends \Zend_View_Helper_FormElement
                 $attribs = array('id' => $id);
             }
         }
-        if ($value instanceof \Zend_Date) {
-            return $this->_hidden($name, $value->toString('yyyy-MM-dd HH:mm:ss'), $attribs);
+        if ($value instanceof \DateTimeInterface) {
+            return $this->_hidden($name, $value->format('Y-m-d H:i:s'), $attribs);
         }
         
         // \MUtil\EchoOut\EchoOut::track($value, $attribs['multiOptions']);
