@@ -135,7 +135,7 @@ class Exhibitor extends \Zend_View_Helper_FormElement
             return $result;
         } else {
             if ($value instanceof DateTimeInterface) {
-                $value = $value->toString('Y-m-d H:i:s');
+                $value = $value->format('Y-m-d H:i:s');
             }
             return $this->_hidden($name, $value) . $result;
         }
