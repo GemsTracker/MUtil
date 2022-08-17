@@ -795,7 +795,10 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
     public function del($name, $arrayOrKey1 = null, $key2 = null)
     {
         if (func_num_args() == 1) {
-            unset($this->_model[$name], $this->_model_order[$name], $this->_model_used[$name]);
+            unset($this->_model[$name], $this->_model_order[$name]);
+            if ($this->_model_used) {
+                unset($this->_model_used[$name]);
+            }
         } else {
             $args = func_get_args();
             array_shift($args);

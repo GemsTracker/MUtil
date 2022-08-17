@@ -28,7 +28,7 @@ class RaObject extends \ArrayObject implements \MUtil\Registry\TargetInterface
      *
      * @var array Arrayof object names
      */
-    protected $_varsNotSerialized = array();
+    protected $_varsNotSerialized = [];
 
     /**
      *
@@ -64,7 +64,7 @@ class RaObject extends \ArrayObject implements \MUtil\Registry\TargetInterface
      * @param int $flags Flags to control the behaviour of the \ArrayObject object, STD_PROP_LIST is always set on
      * @param string $iterator_class Specify the class that will be used for iteration of the \ArrayObject object.
      */
-    public function __construct($input = array(), $flags = 0, $iterator_class = "\\ArrayIterator")
+    public function __construct($input = [], $flags = 0, $iterator_class = "\\ArrayIterator")
     {
         parent::__construct($input, $flags | \ArrayObject::STD_PROP_LIST, $iterator_class);
     }
@@ -137,7 +137,7 @@ class RaObject extends \ArrayObject implements \MUtil\Registry\TargetInterface
      */
     public function getRegistryRequests()
     {
-        return array_filter(array_keys(get_object_vars($this)), array($this, 'filterRequestNames'));
+        return array_filter(array_keys(get_object_vars($this)), [$this, 'filterRequestNames']);
     }
 
     /**
@@ -211,7 +211,7 @@ class RaObject extends \ArrayObject implements \MUtil\Registry\TargetInterface
      *
      * @return string The serialized representation of this object
      */
-    public function serialize()
+    public function serialize(): string
     {
         $output = get_object_vars($this);
         foreach ($this->_varsNotSerialized as $name) {
