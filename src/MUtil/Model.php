@@ -257,7 +257,7 @@ class Model
             ];
         }
         foreach ((array) $formats as $format) {
-            $date = DateTimeImmutable::createFromFormat($format, trim($value));
+            $date = DateTimeImmutable::createFromFormat($format, trim($dateValue));
             if ($date) {
                 return $date;
             }
