@@ -79,7 +79,7 @@ class Exhibitor extends \Zend_View_Helper_FormElement
             $dateFormat    = $attribs['dateFormat'];
             $storageFormat = isset($attribs['storageFormat']) ? $attribs['storageFormat'] : null;
 
-            if (! $result instanceof DateTimeInterface) {
+            if ($result !== null && !$result instanceof DateTimeInterface) {
                 $date = DateTimeImmutable::createFromFormat($storageFormat, $result);
                 if ($date) {
                     $result = $date->format($dateFormat);
