@@ -605,7 +605,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
     {
         // Default is just go to the index
         if ($this->routeAction && ($this->requestInfo->getCurrentAction() !== $this->routeAction)) {
-            $this->afterSaveRouteUrl = ['action' => $this->routeAction];
+            $this->afterSaveRouteUrl = $this->requestInfo->getRequestMatchedParams() + ['action' => $this->routeAction];
 
             if ($this->afterSaveRouteKeys) {
                 // Set the key identifiers for the route.
