@@ -88,7 +88,7 @@ class DateAfter extends DateAbstract
         }
         $this->_afterValue = $after->format($format);
 
-        $check = DateTimeImmutable::createFromFormat($after, $value);
+        $check = DateTimeImmutable::createFromFormat($format, $value);
 
         if ((! $check) || ($check->getTimestamp() > $after->getTimestamp())) {
             $this->_error(self::NOT_AFTER);
