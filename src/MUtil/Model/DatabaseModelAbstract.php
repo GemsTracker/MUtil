@@ -501,7 +501,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * @return array The values for this table as they were updated
      */
     protected function _saveTableData(\Zend_Db_Table_Abstract $table, array $newValues,
-            array $oldKeys = null, $saveMode = self::SAVE_MODE_ALL)
+                                      array $oldKeys = null, $saveMode = self::SAVE_MODE_ALL)
     {
         if (! $newValues) {
             return array();
@@ -602,7 +602,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
                             // not disappear, while preventing a difference between an integer
                             // and string input of triggering a false change
                             $noChange = ($returnValues[$name] == $value) &&
-                                    (strlen((string)$returnValues[$name]) == strlen((string)$value));
+                                (strlen((string)$returnValues[$name]) == strlen((string)$value));
                         }
 
                         // Detect change that is not auto update
@@ -617,7 +617,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
                 }
                 // Update the row, if the saveMode allows it
                 if ($save == true && ($saveMode & self::SAVE_MODE_UPDATE) &&
-                        $changed = $table->update($returnValues, $filter)) {
+                    $changed = $table->update($returnValues, $filter)) {
                     $this->addChanged($changed);
                     // Add the old values as we have them and they may be of use later on.
                     $returnValues = $returnValues + $oldValues;
@@ -782,13 +782,13 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
             }
 
             throw new \MUtil\Model\ModelException(
-                    "Cannot create UniqueValue validator as no keys were defined for table $tableName."
-                    );
+                "Cannot create UniqueValue validator as no keys were defined for table $tableName."
+            );
         }
 
         throw new \MUtil\Model\ModelException(
-                "Cannot create UniqueValue validator as no table was defined for field $name."
-                );
+            "Cannot create UniqueValue validator as no table was defined for field $name."
+        );
     }
 
     /**
@@ -813,13 +813,19 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
         // transform to a \Zend_Date using the stored formats
         if ((null === $value) || ($value instanceof \DateTimeImmutable) || ($value instanceof \Zend_Db_Expr)) {
             return $value;
-        } elseif ($value instanceof \DateTimeInterface) {
+        }
+        if ($value instanceof \DateTimeInterface) {
             return \DateTimeImmutable::createFromInterface($value);
-        } elseif ($value instanceof \MUtil\Date) {
+        }
+        if ($value instanceof \MUtil\Date) {
             return \DateTimeImmutable::createFromInterface($value->getDateTime());
-        } elseif ($value instanceof \Zend_Date) {
+        }
+        if ($value instanceof \Zend_Date) {
             $date = new \DateTimeImmutable();
             return $date->setTimestamp($value->getTimestamp());
+        }
+        if ($value === 'CURRENT_TIMESTAMP') {
+            return new \Zend_Db_Expr('CURRENT_TIMESTAMP');
         }
 
         if ($isPost) {
@@ -830,13 +836,13 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
                 return $dateTime;
             }
         }
-        
+
         // Second try or first when loading
         $dateTime = \DateTimeImmutable::createFromFormat($this->_getKeyValue($name, 'storageFormat'), $value);
         if ($dateTime) {
             return $dateTime;
         }
-        
+
         // Well we tried
         return new \DateTimeImmutable($value);
     }
@@ -857,7 +863,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
     {
         if ((null === $value) || ('' == $value) || ($value instanceof \Zend_Db_Expr) || (! $name)) {
             return $value;
-        } 
+        }
         if (is_string($value) && str_starts_with(strtolower($value), 'current')) {
             return $value;
         }
@@ -1066,9 +1072,9 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
     public function loadIterator($filter = true, $sort = true)
     {
         $iter = new \MUtil\Db\Iterator\SelectIterator($this->_createSelect(
-                $this->_checkFilterUsed($filter),
-                $this->_checkSortUsed($sort)
-                ));
+            $this->_checkFilterUsed($filter),
+            $this->_checkSortUsed($sort)
+        ));
 
         if ($iter) {
             $data = $this->processAfterLoad($iter);
@@ -1088,9 +1094,9 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
     public function loadPaginator($filter = true, $sort = true)
     {
         $select  = $this->_createSelect(
-                $this->_checkFilterUsed($filter),
-                $this->_checkSortUsed($sort)
-                );
+            $this->_checkFilterUsed($filter),
+            $this->_checkSortUsed($sort)
+        );
         $adapter = new \MUtil\Model\SelectModelPaginator($select, $this);
 
         return new \Zend_Paginator($adapter);
