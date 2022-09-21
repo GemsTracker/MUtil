@@ -91,7 +91,7 @@ class DateBefore extends DateAbstract
 
         $check = DateTimeImmutable::createFromFormat($format, $value);
 
-        if ((! $check) || ($check->getTimestamp() < $before->getTimestamp())) {
+        if ((! $check) || ($check->getTimestamp() > $before->getTimestamp())) {
             $this->_error(self::NOT_BEFORE);
             return false;
         }
