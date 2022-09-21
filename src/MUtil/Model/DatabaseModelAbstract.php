@@ -814,6 +814,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
         if ((null === $value) || ($value instanceof \DateTimeImmutable) || ($value instanceof \Zend_Db_Expr)) {
             return $value;
         }
+
         if ($value instanceof \DateTimeInterface) {
             return \DateTimeImmutable::createFromInterface($value);
         }
@@ -823,6 +824,9 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
         if ($value instanceof \Zend_Date) {
             $date = new \DateTimeImmutable();
             return $date->setTimestamp($value->getTimestamp());
+        }
+        if ($value === '') {
+            return null;
         }
         if ($value === 'CURRENT_TIMESTAMP') {
             return new \Zend_Db_Expr('CURRENT_TIMESTAMP');
