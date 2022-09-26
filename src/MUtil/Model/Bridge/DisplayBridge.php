@@ -55,6 +55,9 @@ class DisplayBridge extends \MUtil\Model\Bridge\BridgeAbstract
             } else {
                 $storageFormat = $this->model->get($name, 'storageFormat');
                 $output['dateFormat'] = function ($value) use ($format, $storageFormat) {
+                    if ($value === null) {
+                        return null;
+                    }
                     if ($value instanceof DateTimeInterface) {
                         $date = $value;
                     } else {
