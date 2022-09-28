@@ -18,7 +18,7 @@ class Progress
 
     public function advance(int $steps = 1)
     {
-        $this->setProgress = ($this->step + $steps);
+        $this->setProgress($this->step + $steps);
     }
 
     public function finish(): void
@@ -103,6 +103,8 @@ class Progress
         } elseif ($step < 0) {
             $step = 0;
         }
+
+        $this->step = $step;
 
         $this->percent = $this->count ? (float) $this->step / $this->count : 0;
     }

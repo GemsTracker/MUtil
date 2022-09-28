@@ -358,8 +358,8 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     protected function _updateProgress(): void
     {
         $batchInfo = $this->getBatchInfo();
-        $this->progress->setProgress($batchInfo['processed']);
         $this->progress->setCount($batchInfo['count']);
+        $this->progress->setProgress($batchInfo['processed']);
     }
 
     /**
@@ -556,7 +556,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      * Returns the lat message set for feedback to the user.
      * @return string
      */
-    public function getLastMessage(): string
+    public function getLastMessage(): ?string
     {
         return $this->_lastMessage;
     }
@@ -908,9 +908,9 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
             @ini_set("max_execution_time", 0);
             @set_time_limit(0);
 
-            if ($this->isPush()) {
+            /*if ($this->isPush()) {
                 return $this->runContinuous();
-            }
+            }*/
 
             // Is there something to run?
             if ($this->isFinished() || (! $this->isLoaded())) {
@@ -921,7 +921,6 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
                 // error_log('Cur: ' . microtime(true) . ' report is '. (microtime(true) > $reportRun ? 'true' : 'false'));
                 if ($this->_checkReport()) {
                     // Communicate progress
-                    $this->_updateProgress();
                     return true;
                 }
             }
@@ -1182,6 +1181,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
                 $batchInfo = $this->getBatchInfo();
                 $batchInfo['processed'] += 1;
                 $this->session->set($this->sessionId, $batchInfo);
+                $this->_updateProgress();
 
             } catch (\Exception $e) {
                 $this->addMessage('ERROR!!!');
