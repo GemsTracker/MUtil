@@ -778,11 +778,11 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
      * If no $excludes the model creates a filter using the primary key of the table.
      *
      * @param string|array $name The name of a model field in the model or an array of them.
-     * @return \MUtil_Validate_Db_UniqueValue A validator.
+     * @return \MUtil\Validate\Model\UniqueValue A validator.
      */
     public function createUniqueValidator($name)
     {
-        return new \MUtil_Validate_Model_UniqueValue($this, $name);
+        return new \MUtil\Validate\Model\UniqueValue($this, $name);
     }
 
     /**
