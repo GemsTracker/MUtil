@@ -354,6 +354,9 @@ class Model
      */
     public static function reformatDate($value, $inFormat = null, $outFormat = null): ?string
     {
+        if ($value === null) {
+            return null;
+        }
         if ($value instanceof DateTimeInterface) {
             $date = $value;
         } else {
