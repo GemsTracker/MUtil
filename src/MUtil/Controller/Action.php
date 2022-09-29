@@ -247,7 +247,7 @@ abstract class Action
      * @param \MUtil\Ra::pairs $parameter_value_pairs name/value pairs ot add to the source for this snippet
      * @return mixed The snippet if content was possibly added.
      */
-    public function addSnippets(mixed $filenames, $parameter_value_pairs = null): ?array
+    public function addSnippets(mixed $filenames, $parameter_value_pairs = null): mixed
     {
         if ($filenames) {
             $extraSource = Ra::pairs(func_get_args(), 1);
@@ -260,7 +260,8 @@ abstract class Action
             $snippets = $this->getSnippets($filenames, $extraSource);
             foreach ($snippets as $filename => $snippet) {
 
-                if ($response = $snippet->getResponse() instanceof ResponseInterface) {
+                $response = $snippet->getResponse();
+                if ($response instanceof ResponseInterface) {
                     return $response;
                 }
                 if ($snippet->hasHtmlOutput()) {
