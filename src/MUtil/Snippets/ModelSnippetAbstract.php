@@ -188,7 +188,7 @@ abstract class ModelSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
             }
             $model->applyParameters($this->searchFilter, true);
 
-        } elseif (count($this->requestInfo->getRequestQueryParams())) {
+        } else {
             $params = $this->requestInfo->getRequestQueryParams();
             $params += $this->requestInfo->getRequestMatchedParams();
             if (!$this->removePost) {
