@@ -257,12 +257,15 @@ class Model
             ];
         }
         foreach ((array) $formats as $format) {
+            if ($format === null) {
+                continue;
+            }
             $date = DateTimeImmutable::createFromFormat($format, trim($dateValue));
             if ($date) {
                 return $date;
             }
         }
-        
+
         return null;
     }
 
