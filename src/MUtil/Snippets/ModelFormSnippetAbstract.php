@@ -192,6 +192,10 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
             $element = $this->_form->createElement('hidden', $this->csrfId);
             $element->setValue($csrfToken);
 
+            if (isset($this->formData[$this->csrfId])) {
+                $this->formData[$this->csrfId] = $csrfToken;
+            }
+
             $this->_form->addElement($element);
             $this->_csrf = $element;
         }
@@ -536,11 +540,6 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
         // Create $this->_saveButton
         $this->addSaveButton();
 
-        // Use Csrf when enabled
-        if ($this->useCsrf) {
-            $this->addCsrf();
-        }
-
         if ($this->requestInfo->isPost()) {
             //First populate the form, otherwise the saveButton will never be 'checked'!
             $this->populateForm();
@@ -567,6 +566,11 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
                 //The default save button was NOT used, so we have a fakesubmit button
                 $this->onFakeSubmit();
             }
+        }
+
+        // Use Csrf when enabled
+        if ($this->useCsrf) {
+            $this->addCsrf();
         }
 
         return ! $this->getRedirectRoute();
