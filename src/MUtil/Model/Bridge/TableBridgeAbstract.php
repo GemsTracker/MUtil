@@ -24,7 +24,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
     /**
      * The actual table
      *
-     * @var \MUtil\Html\TableElement
+     * @var \Zalt\Html\TableElement
      */
     protected $table;
 
@@ -52,13 +52,13 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
 
         $this->_chainedBridge = $model->getBridgeFor('display');
 
-        if ($args_array instanceof \MUtil\Html\ElementInterface) {
+        if ($args_array instanceof \Zalt\Html\ElementInterface) {
             $this->table = $args_array;
         } else {
             $args = func_get_args();
-            $args = \MUtil\Ra::args($args, 1);
+            $args = \ZAlt\Ra\Ra::args($args, 1);
 
-            $this->table = \MUtil\Html::table($args);
+            $this->table = \Zalt\Html\Html::table($args);
         }
     }
 
@@ -78,7 +78,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
         }
 
         if (is_object($function)) {
-            if (($function instanceof \MUtil\Html\ElementInterface)
+            if (($function instanceof \Zalt\Html\ElementInterface)
                 || method_exists($function, 'append')) {
 
                 $object = clone $function;
@@ -92,7 +92,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
         // Assume it is a html tag when a string
         if (is_string($function)) {
 
-            return \MUtil\Html::create($function, $item);
+            return \Zalt\Html\Html::create($function, $item);
 
         } elseif (is_array($function)) {
             foreach ($function as $display) {
@@ -202,7 +202,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
     /**
      * Get the actual table
      *
-     * @return \MUtil\Html\TableElement
+     * @return \Zalt\Html\TableElement
      */
     abstract public function getTable();
 

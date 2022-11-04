@@ -12,7 +12,10 @@ namespace MUtil\Model;
 
 use MUtil\Iterator\ItemCallbackIterator;
 use MUtil\Model;
-use MUtil\Model\Dependency\DependencyInterface;
+use Zalt\Model\Data\DataReaderInterface;
+use Zalt\Model\Data\FullDataInterface;
+use Zalt\Model\Dependency\DependencyInterface;
+use Zalt\Model\MetaModelInterface;
 
 /**
  * A model combines knowedge about a set of data with knowledge required to manipulate
@@ -36,7 +39,7 @@ use MUtil\Model\Dependency\DependencyInterface;
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
+abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements FullDataInterface, MetaModelInterface
 {
     /**
      * Identifier fro alias fields
@@ -101,7 +104,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
     /**
      * Dependencies that transform the model
      *
-     * @var array order => \MUtil\Model\Dependency\DependencyInterface
+     * @var array order => \Zalt\Model\Dependency\DependencyInterface
      */
     private $_model_dependencies = array();
 
@@ -157,7 +160,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
      * @param array $changes
      * @param array $data Referenced data
      */
-    protected function _applyDependencyChanges(\MUtil\Model\ModelAbstract $model, array $changes, array &$data)
+    protected function _applyDependencyChanges(MetaModelInterface $model, array $changes, array &$data)
     {
         // \MUtil\EchoOut\EchoOut::track($model->getName(), $changes, $data);
 
@@ -437,7 +440,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
      *
      * Dependencies are processed in the order they are added
      *
-     * @param mixed $dependency \MUtil\Model\Dependency\DependencyInterface or string or array to create one
+     * @param mixed $dependency DependencyInterface or string or array to create one
      * @param mixed $dependsOn Optional string field name or array of fields that do the changing
      * @param array $effects Optional array of field => array(setting) of settings are changed, array of whatever
      * the dependency accepts as an addEffects() argument
@@ -550,12 +553,12 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
      * You get a nested join where a set of rows is placed in the $name field
      * of each row of the parent model.
      *
-     * @param \MUtil\Model\ModelAbstract $model
+     * @param DataReaderInterface $model
      * @param array $joins The join fields for the sub model
      * @param string $name Optional 'field' name, otherwise model name is used
      * @return \MUtil\Model\Transform\NestedTransformer The added transformer
      */
-    public function addModel(\MUtil\Model\ModelAbstract $model, array $joins, $name = null)
+    public function addModel(DataReaderInterface $model, array $joins, $name = null)
     {
         if (null === $name) {
             $name = $model->getName();
@@ -1076,9 +1079,9 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
      * Get the current default filter for save/loade
      * @return array
      */
-    public function getFilter()
+    public function getFilter(): array
     {
-        return $this->getMeta('filter', array());
+        return $this->getMeta('filter') ?: [];
     }
 
     /**
@@ -1237,6 +1240,11 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
         return $default;
     }
 
+    public function getMetaModel(): MetaModelInterface
+    {
+        return $this;
+    }
+
     /**
      * The internal name of the model, used for joining models and sub forms, etc...
      *
@@ -1334,22 +1342,22 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
         return array();
     }
 
-    public function getSort()
+    public function getSort(): array
     {
-        return $this->getMeta('sort', array());
+        return $this->getMeta('sort') ?: [];
     }
 
-    public function getSortParamAsc()
+    public function getSortParamAsc(): string
     {
         return $this->getMeta('sortParamAsc', \MUtil\Model::SORT_ASC_PARAM);
     }
 
-    public function getSortParamDesc()
+    public function getSortParamDesc(): string
     {
         return $this->getMeta('sortParamDesc', \MUtil\Model::SORT_DESC_PARAM);
     }
 
-    public function getTextFilter()
+    public function getTextFilter(): string
     {
         return $this->getMeta('textFilter', \MUtil\Model::TEXT_FILTER);
     }
@@ -1481,7 +1489,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
      *
      * @return boolean
      */
-    public function hasFilter()
+    public function hasFilter(): boolean
     {
         return $this->hasMeta('filter');
     }
@@ -1495,13 +1503,6 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
     {
         return (boolean) $this->_model_used;
     }
-
-    /**
-     * True if this model allows the creation of new model items.
-     *
-     * @return boolean
-     */
-    abstract public function hasNew();
 
     /**
      * Does a certain Meta setting exist?
@@ -1541,7 +1542,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
      *
      * @return boolean
      */
-    public function hasSort()
+    public function hasSort(): boolean
     {
         return $this->hasMeta('sort');
     }
@@ -1554,7 +1555,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
      *
      * @return boolean
      */
-    public function hasTextSearchFilter()
+    public function hasTextSearchFilter(): boolean
     {
         return false;
     }
@@ -1620,7 +1621,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return array Nested array or false
      */
-    public function load($filter = true, $sort = true)
+    public function load($filter = true, $sort = true): array
     {
         $data = $this->_load(
                 $this->_checkFilterUsed($filter),
@@ -1651,7 +1652,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return array An array or false
      */
-    public function loadFirst($filter = true, $sort = true)
+    public function loadFirst($filter = true, $sort = true): array
     {
         $row = $this->_loadFirst(
                 $this->_checkFilterUsed($filter),
@@ -1678,7 +1679,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract
      * @param int $count When null a single new item is return, otherwise a nested array with $count new items
      * @return array Nested when $count is not null, otherwise just a simple array
      */
-    public function loadNew($count = null)
+    public function loadNew($count = null): array
     {
         $data  = $this->loadAllNew();
         $empty = reset($data);
