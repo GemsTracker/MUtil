@@ -626,12 +626,10 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      */
     public function __toString()
     {
-        if ($this->view instanceof \Zend_View_Abstract) {
-            return $this->render($this->view);
-
-        } else {
-            return 'String conversions called on ' . __CLASS__ . ' for ' . $this->tagName . ' element, while view was not set.';
+        if (! $this->view instanceof \Zend_View_Abstract) {
+            $this->view = \Zalt\Html\Html::getRenderer()->getView();
         }
+        return $this->render($this->view);
     }
 
     /**

@@ -56,7 +56,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
             $this->table = $args_array;
         } else {
             $args = func_get_args();
-            $args = \ZAlt\Ra\Ra::args($args, 1);
+            $args = \Zalt\Ra\Ra::args($args, 1);
 
             $this->table = \Zalt\Html\Html::table($args);
         }

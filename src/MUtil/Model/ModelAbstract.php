@@ -16,6 +16,7 @@ use Zalt\Model\Data\DataReaderInterface;
 use Zalt\Model\Data\FullDataInterface;
 use Zalt\Model\Dependency\DependencyInterface;
 use Zalt\Model\MetaModelInterface;
+use Zalt\Model\Transformer\ModelTransformerInterface;
 
 /**
  * A model combines knowedge about a set of data with knowledge required to manipulate
@@ -133,7 +134,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
 
     /**
      *
-     * @var array of \MUtil\Model\ModelTransformerInterface
+     * @var array of ModelTransformerInterface
      */
     private $_transformers = array();
 
@@ -491,9 +492,9 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Filters with with a numerical index are just added to the filter.
      *
      * @param array $filter
-     * @return \MUtil\Model\ModelAbstract (continuation pattern)
+     * @return DataReaderInterface (continuation pattern)
      */
-    public function addFilter(array $value)
+    public function addFilter(array $value): DataReaderInterface
     {
         if (\MUtil\Model::$verbose) {
             \MUtil\EchoOut\EchoOut::r($value, 'New filter');
@@ -581,9 +582,9 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Add's one or more sort fields to the standard sort.
      *
      * @param mixed $value Array of sortfield => SORT_ASC|SORT_DESC or single sortfield for ascending sort.
-     * @return \MUtil\Model\ModelAbstract (continuation pattern)
+     * @return DataReaderInterface (continuation pattern)
      */
-    public function addSort($value)
+    public function addSort($value): DataReaderInterface
     {
         $value = $this->_checkSortValue($value);
 
@@ -605,10 +606,10 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     /**
      * Add a model transformer
      *
-     * @param \MUtil\Model\ModelTransformerInterface $transformer
-     * @return \MUtil\Model\ModelAbstract (continuation pattern)
+     * @param ModelTransformerInterface $transformer
+     * @return MetaModelInterface (continuation pattern)
      */
-    public function addTransformer(\MUtil\Model\ModelTransformerInterface $transformer)
+    public function addTransformer(ModelTransformerInterface $transformer): MetaModelInterface
     {
         foreach ($transformer->getFieldInfo($this) as $name => $info) {
             $this->set($name, $info);
@@ -1386,7 +1387,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     /**
      * Get the model transformers
      *
-     * @return array of \MUtil\Model\ModelTransformerInterface
+     * @return array of ModelTransformerInterface
      */
     public function getTransformers()
     {
@@ -1419,7 +1420,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param string $subkey Optional field key
      * @return boolean
      */
-    public function has($name, $subkey = null)
+    public function has(string $name, ?string $subkey = null): bool
     {
         if (null === $subkey) {
             return array_key_exists($name, $this->_model);
@@ -1489,7 +1490,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * @return boolean
      */
-    public function hasFilter(): boolean
+    public function hasFilter(): bool
     {
         return $this->hasMeta('filter');
     }
@@ -1542,7 +1543,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * @return boolean
      */
-    public function hasSort(): boolean
+    public function hasSort(): bool
     {
         return $this->hasMeta('sort');
     }
@@ -1555,7 +1556,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * @return boolean
      */
-    public function hasTextSearchFilter(): boolean
+    public function hasTextSearchFilter(): bool
     {
         return false;
     }
@@ -1780,12 +1781,12 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * @see \MUtil\Model\SelectModelPaginator
      *
-     * @param mxied $data Nested array or \Traversable containing rows or iterator
+     * @param mixed $data Nested array or \Traversable containing rows or iterator
      * @param boolean $new True when it is a new item
      * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
      * @return array or \Traversable Nested
      */
-    public function processAfterLoad($data, $new = false, $isPostData = false)
+    public function processAfterLoad($data, $new = false, $isPostData = false): mixed
     {
         if (($this->_transformers || $isPostData) &&
                 ($data instanceof \Traversable)) {
@@ -1975,7 +1976,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * to decide on update versus insert.
      * @return array The values as they are after saving (they may change).
      */
-    public function save(array $newValues, array $filter = null)
+    public function save(array $newValues, array $filter = null): array
     {
         $beforeValues = $this->processBeforeSave($newValues);
 
@@ -2254,11 +2255,12 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * with the whole row as the parameter value.
      *
      * @param array $filter
-     * @return \MUtil\Model\ModelAbstract (continuation pattern)
+     * @return DataReaderInterface (continuation pattern)
      */
-    public function setFilter(array $filter)
+    public function setFilter(array $filter):DataReaderInterface
     {
-        return $this->setMeta('filter', $filter);
+        $this->setMeta('filter', $filter);
+        return $this;
     }
 
     /**
@@ -2457,7 +2459,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     /**
      * set the model transformers
      *
-     * @param array $transformers of \MUtil\Model\ModelTransformerInterface
+     * @param array $transformers of ModelTransformerInterface
      * @return \MUtil\Model\ModelAbstract (continuation pattern)
      */
     public function setTransformers(array $transformers)
@@ -2470,24 +2472,28 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     }
 
 
-    public function setSort($value)
+    public function setSort($value): DataReaderInterface
     {
-        return $this->setMeta('sort', $this->_checkSortValue($value));
+        $this->setMeta('sort', $this->_checkSortValue($value));
+        return $this;
     }
 
-    public function setSortParamAsc($value)
+    public function setSortParamAsc($value): DataReaderInterface
     {
-        return $this->setMeta('sortParamAsc', $value);
+        $this->setMeta('sortParamAsc', $value);
+        return $this;
     }
 
-    public function setSortParamDesc($value)
+    public function setSortParamDesc($value): DataReaderInterface
     {
-        return $this->setMeta('sortParamDesc', $value);
+        $this->setMeta('sortParamDesc', $value);
+        return $this;
     }
 
-    public function setTextFilter($value)
+    public function setTextFilter($value): DataReaderInterface
     {
-        return $this->setMeta('textFilter', $value);
+        $this->setMeta('textFilter', $value);
+        return $this;
     }
 
     /**
