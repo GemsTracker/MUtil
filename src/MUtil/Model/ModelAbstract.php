@@ -12,6 +12,8 @@ namespace MUtil\Model;
 
 use MUtil\Iterator\ItemCallbackIterator;
 use MUtil\Model;
+use Zalt\Late\Late;
+use Zalt\Late\RepeatableInterface;
 use Zalt\Model\Data\DataReaderInterface;
 use Zalt\Model\Data\FullDataInterface;
 use Zalt\Model\Dependency\DependencyInterface;
@@ -1768,11 +1770,11 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * @param mixed $filter True to use the stored filter, array to specify a different filter
      * @param mixed $sort True to use the stored sort, array to specify a different sort
-     * @return \MUtil\Lazy\RepeatableInterface
+     * @return \Zalt\Late\RepeatableInterface
      */
-    public function loadRepeatable($filter = true, $sort = true)
+    public function loadRepeatable($filter = true, $sort = true): RepeatableInterface
     {
-        return \MUtil\Lazy::repeat($this->loadIterator($filter, $sort));
+        return Late::repeat($this->loadIterator($filter, $sort));
     }
 
 

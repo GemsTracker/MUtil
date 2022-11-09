@@ -325,7 +325,7 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
 
     /**
      *
-     * @param strin $name
+     * @param string $name
      * @return mixed Lazy unless in single row mode
      */
     public function getValue($name)
