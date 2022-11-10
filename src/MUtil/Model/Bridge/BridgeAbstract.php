@@ -12,8 +12,10 @@
 namespace MUtil\Model\Bridge;
 
 use MUtil\Model\Bridge\LazyBridgeFormat;
+use Zalt\Late\RepeatableInterface;
+use Zalt\Model\Bridge\BridgeInterface;
 
-/**
+    /**
  *
  *
  * @package    MUtil
@@ -63,7 +65,7 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
     /**
      * A lazy repeater
      *
-     * @var \MUtil\Lazy\RepeatableInterface
+     * @var \Zalt\Late\RepeatableInterface
      */
     protected $_repeater;
 
@@ -88,7 +90,7 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      *
      * @param \MUtil\Model\ModelAbstract $model
      */
-    public function __construct(\MUtil\Model\ModelAbstract $model)
+    public function __construct(\Zalt\Model\Data\DataReaderInterface $model)
     {
         $this->setModel($model);
     }
@@ -101,7 +103,7 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      * @return mixed Lazy unless in single row mode
      * @throws \MUtil\Model\ModelException
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         return $this->getFormatted($name);
     }
@@ -194,7 +196,7 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      * @return mixed Lazy unless in single row mode
      * @throws \MUtil\Model\ModelException
      */
-    public function getFormatted($name)
+    public function getFormatted(string $name): mixed
     {
         if (isset($this->$name)) {
             return $this->$name;
@@ -250,6 +252,8 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
         if ($current && isset($current[$name])) {
             return $current[$name];
         }
+        
+        return null;
     }
 
     /**
@@ -257,16 +261,16 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      *
      * @return int On of the MODE_ constants
      */
-    public function getMode()
+    public function getMode(): int
     {
         return $this->mode;
     }
 
     /**
      *
-     * @return \MUtil\Model\ModelAbstract
+     * @return \Zalt\Model\Data\DataReaderInterface
      */
-    public function getModel()
+    public function getModel(): \Zalt\Model\Data\DataReaderInterface
     {
         return $this->model;
     }
@@ -274,9 +278,9 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
     /**
      * Get the repeater source for the lazy data
      *
-     * @return \MUtil\Lazy\RepeatableInterface
+     * @return \Zalt\Late\RepeatableInterface
      */
-    public function getRepeater()
+    public function getRepeater(): \Zalt\Late\RepeatableInterface
     {
         if (! $this->_repeater) {
             if ($this->_chainedBridge && $this->_chainedBridge->hasRepeater()) {
@@ -360,7 +364,7 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      *
      * @return boolean
      */
-    public function hasRepeater()
+    public function hasRepeater(): bool
     {
         return $this->_repeater instanceof \MUtil\Lazy\RepeatableInterface ||
                 ($this->_chainedBridge && $this->_chainedBridge->hasRepeater());
@@ -370,10 +374,10 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      * Set the mode to one of Lazy (works with any other mode), one single row or multi row mode.
      *
      * @param int $mode On of the MODE_ constants
-     * @return \MUtil\Model_Format_DisplayFormatter (continuation pattern)
-     * @throws \MUtil\Model\ModelException The mode can only be set once
+     * @return \Zalt\Model\Bridge\BridgeInterface (continuation pattern)
+     * @throws \Zalt\Model\Exceptions\MetaModelException The mode can only be set once
      */
-    public function setMode($mode)
+    public function setMode(int $mode): BridgeInterface
     {
         if (($mode == $this->mode) || (self::MODE_LAZY == $this->mode)) {
             $this->mode = $mode;
@@ -407,9 +411,9 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      * Set the repeater source for the lazy data
      *
      * @param mixed $repeater \MUtil\Lazy\RepeatableInterface or something that can be made into one.
-     * @return \MUtil\Model_Format_DisplayFormatter (continuation pattern)
+     * @return BridgeInterface (continuation pattern)
      */
-    public function setRepeater($repeater)
+    public function setRepeater($repeater): BridgeInterface
     {
         if (! $repeater instanceof \MUtil\Lazy\RepeatableInterface) {
             $repeater = new \MUtil\Lazy\Repeatable($repeater);
@@ -426,7 +430,6 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      * Switch to single row mode and set that row.
      *
      * @param array $row Or load from model
-     * @return \MUtil\Model_Format_DisplayFormatter (continuation pattern)
      * @throws \MUtil\Model\ModelException
      */
     public function setRow(array $row = null)
@@ -458,7 +461,6 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      * Switch to multi rows mode and set those rows.
      *
      * @param array $rows Or load from model
-     * @return \MUtil\Model_Format_DisplayFormatter (continuation pattern)
      * @throws \MUtil\Model\ModelException
      */
     public function setRows(array $rows = null)

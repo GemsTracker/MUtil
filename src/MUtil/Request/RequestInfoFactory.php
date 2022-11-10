@@ -2,6 +2,8 @@
 
 namespace MUtil\Request;
 
+use Mezzio\Router\Route;
+use Mezzio\Router\RouteResult;
 use MUtil\Legacy\RequestHelper;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -19,11 +21,47 @@ class RequestInfoFactory
 
     public function getRequestInfo(): RequestInfo
     {
-        $requestInfo = new RequestInfo();
-        $requestInfo->setCurrentAction($this->requestHelper->getActionName());
-        $requestInfo->setCurrentController($this->requestHelper->getControllerName());
-        $requestInfo->setIsPost($this->requestHelper->isPost());
-        $requestInfo->setRequestQueryParams($this->request->getQueryParams());
+        $actionName         = null;
+        $controllerName     = null;
+        $routeName          = null;
+        $routeMatchedParams = [];
+
+        $path = $this->request->getUri()->getPath();
+        if (pathInfo($path, PATHINFO_EXTENSION)) {
+            $baseUrl = dirname($path);
+        } else {
+            $baseUrl = $path;
+        }
+        // return ($this->getHeader('X_REQUESTED_WITH') == 'XMLHttpRequest')
+
+        $routeResult = $this->request->getAttribute(RouteResult::class);
+        if ($routeResult instanceof RouteResult) {
+            $routeMatchedParams = $routeResult->getMatchedParams();
+
+            $route = $routeResult->getMatchedRoute();
+            if ($route instanceof Route) {
+                $routeName = $route->getName();
+                $options   = $route->getOptions();
+
+                if (isset($options['controller'])) {
+                    $controllerName = $options['controller'];
+                }
+                if (isset($options['action'])) {
+                    $actionName = $options['action'];
+                }
+            }
+        }
+
+        $requestInfo = new RequestInfo(
+            $controllerName,
+            $actionName,
+            $routeName,
+            rtrim($baseUrl, '/\\') ?: '/',
+            'POST' == $this->request->getMethod(),
+            $routeMatchedParams,
+            $this->request->getParsedBody() ?: [],
+            $this->request->getQueryParams()
+        );
         $requestInfo->setRequestPost($this->request->getParsedBody());
         $requestInfo->setCurrentRouteResult($this->requestHelper->getRouteResult());
 

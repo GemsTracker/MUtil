@@ -27,45 +27,6 @@ namespace MUtil\Lazy;
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-interface RepeatableInterface extends \ArrayAccess
+interface RepeatableInterface extends \Zalt\Late\RepeatableInterface
 {
-    /**
-     * Returns the current item. Starts the loop when needed.
-     *
-     * return mixed The current item
-     */
-    public function __current();
-
-    /**
-     * Return a lazy version of the property retrieval
-     *
-     * @return \MUtil\Lazy\LazyInterface
-     */
-    public function __get($name);
-
-    /**
-     * Return the core data in the Repeatable in one go
-     *
-     * @return \Iterator|array
-     */
-    public function __getRepeatable();
-
-    /**
-     * Returns the current item. Starts the loop when needed.
-     *
-     * return mixed The current item
-     */
-    public function __next();
-
-    /**
-     * The functions that starts the loop from the beginning
-     *
-     * @return mixed True if there is data.
-     */
-    public function __start();
-
-    // public function offsetExists($offset);
-    // public function offsetGet($offset);
-    // public function offsetSet($offset, $value);
-    // public function offsetUnset($offset);
 }

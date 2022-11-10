@@ -11,6 +11,8 @@
 
 namespace MUtil\Model\Bridge;
 
+use Zalt\Model\Bridge\BridgeInterface;
+
 /**
  *
  * @package    MUtil
@@ -46,7 +48,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
      * @param \MUtil\Model\ModelAbstract $model The model it is all about
      * @param \MUtil\Html\ElementInterface $args_array
      */
-    public function __construct(\MUtil\Model\ModelAbstract $model, $args_array = null)
+    public function __construct(\Zalt\Model\Data\DataReaderInterface $model, $args_array = null)
     {
         parent::__construct($model);
 
@@ -180,9 +182,9 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
     /**
      * Get the repeater source for the lazy data
      *
-     * @return \MUtil\Lazy\RepeatableInterface
+     * @return \Zalt\Late\RepeatableInterface
      */
-    public function getRepeater()
+    public function getRepeater(): \Zalt\Late\RepeatableInterface
     {
         if ($this->_repeater) {
             return $this->_repeater;
@@ -211,7 +213,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
      *
      * @return boolean
      */
-    public function hasRepeater()
+    public function hasRepeater(): bool
     {
         return parent::hasRepeater() || (boolean) $this->table->getRepeater();
     }
@@ -230,9 +232,8 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
      * Set the repeater source for the lazy data
      *
      * @param mixed $repeater \MUtil\Lazy\RepeatableInterface or something that can be made into one.
-     * @return \MUtil\Model_Format_DisplayFormatter (continuation pattern)
      */
-    public function setRepeater($repeater)
+    public function setRepeater($repeater): BridgeInterface
     {
         parent::setRepeater($repeater);
 

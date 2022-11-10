@@ -902,7 +902,7 @@ class ModelImportSnippet extends \MUtil\Snippets\WizardFormSnippetAbstract
      *
      * @return boolean
      */
-    public function hasHtmlOutput()
+    public function hasHtmlOutput(): bool
     {
         return parent::hasHtmlOutput();
     }

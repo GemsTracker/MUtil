@@ -150,7 +150,7 @@ abstract class ModelYesNoDeleteSnippetAbstract extends \MUtil\Snippets\ModelVert
      *
      * @return mixed Nothing or either an array or a string that is acceptable for Redector->gotoRoute()
      */
-    public function getRedirectRoute()
+    public function getRedirectRoute(): ?string
     {
         return $this->afterSaveRouteUrl;
     }
@@ -166,7 +166,7 @@ abstract class ModelYesNoDeleteSnippetAbstract extends \MUtil\Snippets\ModelVert
      *
      * @return boolean
      */
-    public function hasHtmlOutput()
+    public function hasHtmlOutput(): bool
     {
         $queryParams = $this->requestInfo->getRequestQueryParams();
         if (isset($queryParams[$this->confirmParameter])) {

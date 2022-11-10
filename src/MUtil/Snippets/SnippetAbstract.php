@@ -112,7 +112,7 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param \Zend_View_Abstract $view Just in case it is needed here
      * @return \MUtil\Html\HtmlInterface Something that can be rendered
      */
-    public function getHtmlOutput(\Zend_View_Abstract $view)
+    public function getHtmlOutput(\Zend_View_Abstract $view = null)
     {
         return null;
     }
@@ -153,7 +153,7 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      *
      * @return mixed Nothing or either an array or a string that is acceptable for Redector->gotoRoute()
      */
-    public function getRedirectRoute()
+    public function getRedirectRoute(): ?string
     { }
 
     public function getResponse(): ?ResponseInterface
@@ -172,7 +172,7 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      *
      * @return boolean
      */
-    public function hasHtmlOutput()
+    public function hasHtmlOutput(): bool
     {
         return true;
     }
@@ -203,7 +203,7 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param \Zend_View_Abstract $view
      * @return string Html output
      */
-    public function render(\Zend_View_Abstract $view)
+    public function render(\Zend_View_Abstract $view = null)
     {
         // \MUtil\EchoOut\EchoOut::r(sprintf('Rendering snippet %s.', get_class($this)));
         //

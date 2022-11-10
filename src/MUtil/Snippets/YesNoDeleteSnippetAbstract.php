@@ -115,7 +115,7 @@ abstract class YesNoDeleteSnippetAbstract extends \MUtil\Snippets\SnippetAbstrac
      * @param \Zend_View_Abstract $view Just in case it is needed here
      * @return \MUtil\Html\HtmlInterface Something that can be rendered
      */
-    public function getHtmlOutput(\Zend_View_Abstract $view)
+    public function getHtmlOutput(\Zend_View_Abstract $view = null)
     {
         $div = \Mutil_Html::create('p');
 
@@ -163,7 +163,7 @@ abstract class YesNoDeleteSnippetAbstract extends \MUtil\Snippets\SnippetAbstrac
      *
      * @return mixed Nothing or either an array or a string that is acceptable for Redector->gotoRoute()
      */
-    public function getRedirectRoute()
+    public function getRedirectRoute(): ?string
     {
         return $this->afterSaveRouteUrl;
     }
@@ -179,7 +179,7 @@ abstract class YesNoDeleteSnippetAbstract extends \MUtil\Snippets\SnippetAbstrac
      *
      * @return boolean
      */
-    public function hasHtmlOutput()
+    public function hasHtmlOutput(): bool
     {
         $queryParams = $this->requestInfo->getRequestQueryParams();
         if (isset($queryParams[$this->confirmParameter])) {
