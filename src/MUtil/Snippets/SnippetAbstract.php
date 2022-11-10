@@ -154,7 +154,9 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      * @return mixed Nothing or either an array or a string that is acceptable for Redector->gotoRoute()
      */
     public function getRedirectRoute(): ?string
-    { }
+    { 
+        return null;
+    }
 
     public function getResponse(): ?ResponseInterface
     {
@@ -205,6 +207,8 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      */
     public function render(\Zend_View_Abstract $view = null)
     {
+        $view = \Zalt\Html\Html::getRenderer()->getView();
+        
         // \MUtil\EchoOut\EchoOut::r(sprintf('Rendering snippet %s.', get_class($this)));
         //
         // TODO: Change snippet workings.
