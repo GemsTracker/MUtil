@@ -13,6 +13,7 @@ namespace MUtil\Handler;
 
 use Laminas\ServiceManager\ServiceManager;
 use Mezzio\Session\SessionInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,7 +31,7 @@ use Zalt\SnippetsLoader\SnippetResponderInterface;
  * @subpackage Handlers
  * @since      Class available since version 1.9.2
  */
-class ModelSnippetLegacyHandler implements \Psr\Http\Server\RequestHandlerInterface
+abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterface
 {
     use TranslateableTrait;
 
@@ -562,6 +563,19 @@ class ModelSnippetLegacyHandler implements \Psr\Http\Server\RequestHandlerInterf
             $this->addSnippets($this->createEditSnippets, $params);
         }
     }
+
+    /**
+     * Creates a model for getModel(). Called only for each new $action.
+     *
+     * The parameters allow you to easily adapt the model to the current action. The $detailed
+     * parameter was added, because the most common use of action is a split between detailed
+     * and summarized actions.
+     *
+     * @param boolean $detailed True when the current action is not in $summarizedActions.
+     * @param string $action The current action.
+     * @return \
+     */
+    abstract protected function createModel($detailed, $action);
 
     /**
      * Action for showing a deactivate item page
