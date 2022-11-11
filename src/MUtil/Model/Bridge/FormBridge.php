@@ -11,6 +11,10 @@
 
 namespace MUtil\Model\Bridge;
 
+use Zalt\Late\RepeatableInterface;
+use Zalt\Model\Bridge\BridgeInterface;
+use Zalt\Model\Data\DataReaderInterface;
+
 /**
  * The FormBridge contains utility classes to enable the quick construction of
  * a form using a model.
@@ -85,10 +89,10 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
      * Extra parameters can be added in subclasses, but the first parameter
      * must remain the model.
      *
-     * @param \MUtil\Model\ModelAbstract $model
+     * @param \Zalt\Model\Data\DataReaderInterface $model
      * @param \Zend_Form $form Rquired
      */
-    public function __construct(\MUtil\Model\ModelAbstract $model, \Zend_Form $form = null)
+    public function __construct(DataReaderInterface $model, \Zend_Form $form = null)
     {
         $this->model = $model;
         $this->form  = $form;
@@ -102,6 +106,16 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
         if (! $form->getName()) {
             $form->setName($model->getName());
         }
+    }
+
+    public function __get(string $name) : mixed
+    {
+        $element = $this->form->getElement($name);
+        if ($element) {
+            return $element;
+        }
+
+        return $this->add($name);
     }
 
     /**
@@ -954,6 +968,17 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
         // \MUtil\EchoOut\EchoOut::rs('After', $options, $typeOptions);
     }
 
+    public function format($name, $value)
+    {
+        $element = $this->$name;
+
+        if ($element instanceof \Zend_Form_Element) {
+            $element->setValue($value);
+            return $element->render(\Zalt\Html\Html::getRenderer()->getView());
+        }
+        return null;
+    }
+
     /**
      * Returns the allowed options for a certain key or all options if no
      * key specified
@@ -1016,13 +1041,29 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
         return $this->form;
     }
 
+    public function getFormatted(string $name) : mixed
+    {
+        return \Zalt\Late\Late::method($this, 'format', $name, \Zalt\Late\Late::get($name));
+    }
+
+    public function getMode() : int
+    {
+        // Fixed
+        return BridgeInterface::MODE_SINGLE_ROW;
+    }
+
     /**
      *
-     * @return \MUtil\Model\ModelAbstract
+     * @return \Zalt\Model\Data\DataReaderInterface
      */
-    public function getModel()
+    public function getModel(): DataReaderInterface
     {
         return $this->model;
+    }
+
+    public function getRepeater() : RepeatableInterface
+    {
+        return $this->model->loadRepeatable();
     }
 
     /**
@@ -1036,6 +1077,11 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
         if (method_exists($this->form, 'getTab')) {
             return $this->form->getTab($name);
         }
+    }
+
+    public function hasRepeater() : bool
+    {
+        return (bool) $this->model;
     }
 
     /**
@@ -1055,6 +1101,12 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
         return $this;
     }
 
+    public function setMode(int $mode) : BridgeInterface
+    {
+        // Do nothing
+        return $this;
+    }
+
     /**
      * Set fixed options in the registry.
      *
@@ -1063,5 +1115,11 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
     public static function setFixedOptions($options)
     {
         \Zend_Registry::set(\MUtil\Model\Bridge\FormBridge::REGISTRY_KEY, $options);
+    }
+
+    public function setRepeater($repeater) : BridgeInterface
+    {
+        // Do nothing
+        return $this;
     }
 }
