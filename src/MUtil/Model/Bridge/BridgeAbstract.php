@@ -12,6 +12,8 @@
 namespace MUtil\Model\Bridge;
 
 use MUtil\Model\Bridge\LazyBridgeFormat;
+use Zalt\Late\Late;
+use Zalt\Late\LateCall;
 use Zalt\Late\RepeatableInterface;
 use Zalt\Model\Bridge\BridgeInterface;
 
@@ -218,6 +220,42 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
         }
 
         return $this->$name;
+    }
+
+    /**
+     * Return the lazy value without any processing.
+     *
+     * @param string $name The field name or key name
+     * @return \Zalt\Late\LateCall
+     */
+    public function getLate(string $name): ?LateCall
+    {
+        $name = $this->_checkName($name, false);
+
+        // Make sure data is loaded
+        $this->metaModel->get($name);
+
+        return Late::method($this, 'getLateValue', $name);
+    }
+
+    /**
+     * Get the repeater result for
+     *
+     * @param string $name The field name or key name
+     * @return mixed The result for name
+     */
+    public function getLateValue(string $name): mixed
+    {
+        if (! $this->_repeater) {
+            $this->getRepeater();
+        }
+
+        $current = $this->_repeater->__current();
+        if ($current && isset($current[$name])) {
+            return $current[$name];
+        }
+
+        return null;
     }
 
     /**
