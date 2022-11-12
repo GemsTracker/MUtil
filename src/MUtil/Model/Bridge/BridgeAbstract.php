@@ -337,7 +337,7 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      * @return array or false when no row was found
      * @throws \MUtil\Model\ModelException
      */
-    public function getRow()
+    public function getRow(): mixed
     {
         $this->setMode(self::MODE_SINGLE_ROW);
 

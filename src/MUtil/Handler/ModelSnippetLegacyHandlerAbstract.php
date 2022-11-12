@@ -22,6 +22,7 @@ use Zalt\Base\RequestInfoFactory;
 use Zalt\Base\TranslateableTrait;
 use Zalt\Html\Sequence;
 use Zalt\Ra\Ra;
+use Zalt\Snippets\ModelDetailTableSnippet;
 use Zalt\SnippetsLoader\SnippetLoader;
 use Zalt\SnippetsLoader\SnippetResponderInterface;
 
@@ -398,9 +399,11 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * The snippets used for the show action
      *
-     * @var mixed String or array of snippets name
+     * @var array Array of snippets classes or names
      */
-    protected $showSnippets = 'ModelVerticalTableSnippet';
+    protected $showSnippets = [
+        ModelDetailTableSnippet::class,
+        ];
 
     /**
      * Array of the actions that use a summarized version of the model.
