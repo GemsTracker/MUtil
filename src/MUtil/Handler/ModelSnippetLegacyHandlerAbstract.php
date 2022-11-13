@@ -23,6 +23,7 @@ use Zalt\Base\TranslateableTrait;
 use Zalt\Html\Sequence;
 use Zalt\Ra\Ra;
 use Zalt\Snippets\ModelDetailTableSnippet;
+use Zalt\Snippets\ModelYesNoDeleteSnippet;
 use Zalt\SnippetsLoader\SnippetLoader;
 use Zalt\SnippetsLoader\SnippetResponderInterface;
 
@@ -256,7 +257,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var mixed String or array of snippets name
      */
-    protected $deleteSnippets = 'ModelYesNoDeleteSnippet';
+    protected $deleteSnippets = [
+        ModelYesNoDeleteSnippet::class,
+        ];
 
     /**
      * The parameters used for the edit actions, overrules any values in
@@ -856,7 +859,8 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     {
         $this->request = $request;
         $this->requestInfo = $this->responder->processRequest($request);
-
+        // file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  var_export($this->requestInfo, true) . "\n", FILE_APPEND);
+        
         $action   = $this->requestInfo->getCurrentAction() ?: 'index';
         $function = $action . 'Action';
 
