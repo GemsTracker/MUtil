@@ -274,6 +274,12 @@ abstract class Action
 
                 } elseif ($snippet->getRedirectRoute()) {
                     $redirectParts = $snippet->getRedirectRoute();
+                    
+                    if (is_string($redirectParts)) {
+                        $this->redirectUrl = $redirectParts;
+                        return null;
+                    }
+                    
                     if (isset($redirectParts['routeName'])) {
                         $url = $this->urlHelper->generate($redirectParts['routeName']);
                         $this->redirectUrl = $url;

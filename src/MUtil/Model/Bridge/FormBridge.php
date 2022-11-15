@@ -11,6 +11,7 @@
 
 namespace MUtil\Model\Bridge;
 
+use Zalt\Late\LateCall;
 use Zalt\Late\RepeatableInterface;
 use Zalt\Model\Bridge\BridgeInterface;
 use Zalt\Model\Data\DataReaderInterface;
@@ -1121,5 +1122,20 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
     {
         // Do nothing
         return $this;
+    }
+
+    public function getLate(string $name) : ?LateCall
+    {
+        return new \Zalt\Late\LateProperty($this, $name);
+    }
+
+    public function getLateValue(string $name) : mixed
+    {
+        return $this->$name;
+    }
+
+    public function getRow() : mixed
+    {
+        return [];
     }
 }
