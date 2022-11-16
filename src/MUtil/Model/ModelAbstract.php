@@ -1665,7 +1665,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
 
         if (! is_array($row)) {
             // Return false
-            return false;
+            return [];
         }
 
         // Transform the row

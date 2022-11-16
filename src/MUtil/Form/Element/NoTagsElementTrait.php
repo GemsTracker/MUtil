@@ -11,6 +11,9 @@
 
 namespace MUtil\Form\Element;
 
+use Laminas\Validator\ValidatorInterface;
+use MUtil\Validate\NoTags;
+
 /**
  *
  * @package    MUtil
@@ -19,23 +22,25 @@ namespace MUtil\Form\Element;
  * @license    New BSD License
  * @since      Class available since version 1.8.2 Feb 7, 2017 5:17:48 PM
  */
-trait NoTagsElementTrait
+trait NoTagsElementTrait 
 {
+    use LaminasElementValidator;
+    
     /**
      * Flag indicating whether or not to insert NoTags validator
      * @var bool
      */
     protected $_autoInsertNoTagsValidator = true;
 
-    /**
+    /** 
      * Add no tags validator if not already set
      *
      * @return \MUtil\Form\Element\NoTagsElementTrait
      */
     public function addNoTagsValidator()
     {
-        if (!$this->getValidator('MUtil_Validate_NoTags')) {
-            $this->addValidator('NoTags');
+        if (!$this->getValidator('MUtil\\Validate\\NoTags')) {
+            $this->addValidator(new NoTags());
         }
 
         return $this;
@@ -52,6 +57,28 @@ trait NoTagsElementTrait
     }
 
     /**
+     * Retrieve all validators
+     *
+     * @return array
+     */
+    public function getValidators()
+    {
+        if ($this->autoInsertNoTagsValidator()) {
+            $this->addNoTagsValidator();
+        }
+        $validators = [];
+        foreach ($this->_validators as $key => $value) {
+            if ($value instanceof ValidatorInterface) {
+                $validators[$key] = $value;
+                continue;
+            }
+            $validator = $this->_loadValidator($value);
+            $validators[get_class($validator)] = $validator;
+        }
+        return $validators;
+    }
+
+    /**
      * Validate element value
      *
      * If a translation adapter is registered, any error messages will be
@@ -64,7 +91,7 @@ trait NoTagsElementTrait
      * @param  mixed $value
      * @param  mixed $context
      * @return boolean
-     */
+     * /
     public function isValid($value, $context = null)
     {
         if ($this->autoInsertNoTagsValidator()) {
