@@ -25,6 +25,7 @@ use Zalt\Late\Late;
 use Zalt\Ra\Ra;
 use Zalt\Snippets\ModelDetailTableSnippet;
 use Zalt\Snippets\ModelYesNoDeleteSnippet;
+use Zalt\Snippets\Zend\ZendModelFormSnippet;
 use Zalt\SnippetsLoader\SnippetLoader;
 use Zalt\SnippetsLoader\SnippetResponderInterface;
 
@@ -186,7 +187,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var mixed String or array of snippets name
      */
-    protected $createEditSnippets = 'ModelFormSnippet';
+    protected $createEditSnippets = ZendModelFormSnippet::class;
 
     /**
      * The parameters used for the edit actions, overrules any values in
