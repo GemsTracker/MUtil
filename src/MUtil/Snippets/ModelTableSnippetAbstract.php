@@ -139,10 +139,10 @@ abstract class ModelTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbs
      * Only called when $this->browse is true. Overrule this function
      * to define your own method.
      *
-     * @param \MUtil\Html\TableElement $table
+     * @param mixed $table
      * $param \Zend_Paginator $paginator
      */
-    protected function addPaginator(\MUtil\Html\TableElement $table, \Zend_Paginator $paginator)
+    protected function addPaginator(mixed $table, \Zend_Paginator $paginator)
     {
         //$table->tfrow()->pagePanel($paginator, null, array('baseUrl' => $this->baseUrl));
     }

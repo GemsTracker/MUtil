@@ -127,10 +127,10 @@ class Model
      * @var array string => bridge class
      */
     private static $_bridges = array(
-        'display'   => 'DisplayBridge',
-        'form'      => 'FormBridge',
-        'itemTable' => 'VerticalTableBridge',
-        'table'     => 'TableBridge',
+        'display'   => \Zalt\Model\Bridge\DisplayBridge::class,
+        'form'      => \Zalt\Snippets\ModelBridge\ZendFormBridge::class,
+        'itemTable' => \Zalt\Snippets\ModelBridge\DetailTableBridge::class,
+        'table'     => \Zalt\Snippets\ModelBridge\TableBridge::class,
     );
 
     /**
