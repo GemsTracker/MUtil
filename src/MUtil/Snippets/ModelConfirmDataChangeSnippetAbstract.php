@@ -13,6 +13,8 @@
 namespace MUtil\Snippets;
 
 use Psr\Cache\CacheItemPoolInterface;
+use Zalt\Model\Data\DataReaderInterface;
+use Zalt\Snippets\ModelBridge\DetailTableBridge;
 
 /**
  * A snippet asking for confirmation before performing a save of predertemined data
@@ -242,7 +244,7 @@ abstract class ModelConfirmDataChangeSnippetAbstract extends \MUtil\Snippets\Mod
      * @param \MUtil\Model\ModelAbstract $model
      * @return void
      */
-    protected function setShowTableFooter(\MUtil\Model\Bridge\VerticalTableBridge $bridge, \MUtil\Model\ModelAbstract $model)
+    protected function setShowTableFooter(DetailTableBridge $bridge, DataReaderInterface $model)
     {
         $footer = $bridge->tfrow();
 

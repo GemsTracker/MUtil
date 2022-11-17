@@ -107,10 +107,9 @@ abstract class Action
      *
      * Overrules $useRawOutput.
      *
-     * @see $useRawOutput
-     * @var boolean $useHtmlView
+     * @var bool $useHtmlView
      */
-    public $useHtmlView = false;
+    public bool $useHtmlView = false;
 
     /**
      * Set to true in child class for automatic use of raw (e.g. echo) output only.
@@ -119,7 +118,6 @@ abstract class Action
      *
      * Overruled in initialization if $useHtmlView is true.
      *
-     * @see $useHtmlView
      * @var boolean $useRawOutput
      */
     public $useRawOutput = false;

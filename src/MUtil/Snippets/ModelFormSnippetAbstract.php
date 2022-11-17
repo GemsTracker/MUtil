@@ -466,7 +466,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
      *
      * Or from whatever other source you specify here.
      */
-    protected function loadFormData()
+    protected function loadFormData(): array
     {
         $model = $this->getModel();
 
@@ -487,6 +487,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
                 }
             }
         }
+        return $this->formData;
     }
 
     /**
@@ -583,7 +584,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
      *
      * @see afterSave()
      */
-    protected function saveData()
+    protected function saveData(): int
     {
         $this->beforeSave();
 
@@ -597,7 +598,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
         $changed        = $model->getChanged();
 
         // Message the save
-        $this->afterSave($changed);
+        return $changed;
     }
 
     /**

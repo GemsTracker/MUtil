@@ -12,6 +12,11 @@
 
 namespace MUtil\Controller;
 
+use MUtil\Model\Bridge\FormBridgeInterface;
+use Zalt\Model\Data\DataReaderInterface;
+use Zalt\Model\Data\FullDataInterface;
+use Zalt\Snippets\ModelBridge\TableBridge;
+
 /**
  * Extends Action with code for working with models.
  *
@@ -48,10 +53,9 @@ abstract class ModelActionAbstract extends \MUtil\Controller\Action
     /**
      * Set to true in so $this->html is created at startup.
      *
-     * @var boolean $useHtmlView true
+     * @var bool $useHtmlView true
      */
-    public bool $useHtmlView = true;  // Overrule parent
-
+    public bool $useHtmlView = true; // Overrule parent
 
     /**
      * Created in createModel().
@@ -82,7 +86,7 @@ abstract class ModelActionAbstract extends \MUtil\Controller\Action
      * @param \MUtil\Model\ModelAbstract $model
      * @return void
      */
-    protected function addBrowseTableColumns(\MUtil\Model\Bridge\TableBridge $bridge, \MUtil\Model\ModelAbstract $model): void
+    protected function addBrowseTableColumns(TableBridge $bridge, DataReaderInterface $model): void
     {
         foreach($model->getItemsOrdered() as $name) {
             if ($label = $model->get($name, 'label')) {
@@ -104,7 +108,7 @@ abstract class ModelActionAbstract extends \MUtil\Controller\Action
      * @param boolean $new Form should be for a new element
      * @return void When an array of new values is return, these are used to update the $data array in the calling function
      */
-    protected function addFormElements(\MUtil\Model\Bridge\FormBridgeInterface $bridge, \MUtil\Model\ModelAbstract $model, array $data, $new = false): void
+    protected function addFormElements(FormBridgeInterface $bridge, FullDataInterface $model, array $data, $new = false): void
     {
         foreach($model->getItemsOrdered() as $name) {
             if ($model->has($name, 'label') || $model->has($name, 'elementClass')) {

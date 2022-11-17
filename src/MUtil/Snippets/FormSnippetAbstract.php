@@ -390,7 +390,7 @@ abstract class FormSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
      *
      * Or from whatever other source you specify here.
      */
-    protected function loadFormData()
+    protected function loadFormData(): array
     {
         if ($this->isPost()) {
             $this->formData = $this->getPostData();
@@ -490,7 +490,7 @@ abstract class FormSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
      *
      * @return int The number of "row level" items changed
      */
-    protected function saveData()
+    protected function saveData(): int
     {
         return 0;
     }

@@ -446,7 +446,7 @@ class UnionModel extends \MUtil\Model\ModelAbstract
      *
      * @return boolean
      */
-    public function hasNew()
+    public function hasNew(): bool
     {
         // All sub models must allow new rows
         foreach ($this->_unionModels as $model) {
@@ -466,7 +466,7 @@ class UnionModel extends \MUtil\Model\ModelAbstract
      *
      * @return boolean
      */
-    public function hasTextSearchFilter()
+    public function hasTextSearchFilter(): bool
     {
         // All sub models must allow new rows
         foreach ($this->_unionModels as $model) {

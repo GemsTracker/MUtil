@@ -926,7 +926,7 @@ class ModelImportSnippet extends \MUtil\Snippets\WizardFormSnippetAbstract
      *
      * Or from whatever other source you specify here.
      */
-    protected function loadFormData()
+    protected function loadFormData(): array
     {
         if ($this->isPost()) {
             $this->formData = $this->getRequestPostParams() + $this->formData;
@@ -961,6 +961,7 @@ class ModelImportSnippet extends \MUtil\Snippets\WizardFormSnippetAbstract
         }
 
         // \MUtil\EchoOut\EchoOut::track($_POST, $_FILES, $this->formData);
+        return $this->formData;
     }
 
     /**
@@ -1064,9 +1065,10 @@ class ModelImportSnippet extends \MUtil\Snippets\WizardFormSnippetAbstract
      *
      * @see afterSave()
      */
-    protected function saveData()
+    protected function saveData(): int
     {
         // do nothing, save occurs in batch
+        return 0;
     }
 
     /**

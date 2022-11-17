@@ -2,6 +2,8 @@
 
 namespace MUtil\Model\Transform;
 
+use Zalt\Model\MetaModelInterface;
+
 class TranslateFieldNames extends \MUtil\Model\ModelTransformerAbstract
 {
     /**
@@ -20,7 +22,7 @@ class TranslateFieldNames extends \MUtil\Model\ModelTransformerAbstract
         $this->removeOldFieldNames = $removeOldFieldNames;
     }
 
-    public function transformLoad(\MUtil\Model\ModelAbstract $model, array $data, $new = false, $isPostData = false): array
+    public function transformLoad(MetaModelInterface $model, array $data, $new = false, $isPostData = false): array
     {
         foreach($data as $key => $row) {
             foreach ($this->fieldTranslations as $oldFieldName => $newFieldName) {
@@ -36,7 +38,7 @@ class TranslateFieldNames extends \MUtil\Model\ModelTransformerAbstract
         return $data;
     }
 
-    public function transformRowBeforeSave(\MUtil\Model\ModelAbstract $model, array $row): array
+    public function transformRowBeforeSave(MetaModelInterface $model, array $row): array
     {
         foreach ($this->fieldTranslations as $newFieldName => $oldFieldName) {
             if (array_key_exists($oldFieldName, $row)) {

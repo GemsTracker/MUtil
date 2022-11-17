@@ -11,6 +11,9 @@
 
 namespace MUtil\Snippets;
 
+use Zalt\Model\Data\DataReaderInterface;
+use Zalt\Snippets\ModelBridge\TableBridge;
+
 /**
  * Displays multiple items in a model below each other in an Html table.
  *
@@ -107,7 +110,7 @@ abstract class ModelTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbs
      * @param \MUtil\Model\ModelAbstract $model
      * @return void
      */
-    protected function addBrowseTableColumns(\MUtil\Model\Bridge\TableBridge $bridge, \MUtil\Model\ModelAbstract $model)
+    protected function addBrowseTableColumns(TableBridge $bridge, DataReaderInterface $model)
     {
         if ($this->columns) {
             foreach ($this->columns as $column) {

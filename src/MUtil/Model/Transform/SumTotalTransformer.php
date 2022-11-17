@@ -12,6 +12,8 @@
 
 namespace MUtil\Model\Transform;
 
+use Zalt\Model\MetaModelInterface;
+
 /**
  * Add one or more totals lines to the output, either for the whole or on changes in values of a field.
  *
@@ -131,7 +133,7 @@ class SumTotalTransformer extends \MUtil\Model\ModelTransformerAbstract
      * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
      * @return array Nested array containing (optionally) transformed data
      */
-    public function transformLoad(\MUtil\Model\ModelAbstract $model, array $data, $new = false, $isPostData = false)
+    public function transformLoad(MetaModelInterface $model, array $data, $new = false, $isPostData = false)
     {
         if (! $data) {
             return $data;

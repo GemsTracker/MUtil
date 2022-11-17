@@ -177,7 +177,7 @@ class FolderModel extends \MUtil\Model\ArrayModelAbstract
      * to decide on update versus insert.
      * @return array The values as they are after saving (they may change).
      */
-    public function save(array $newValues, array $filter = null)
+    public function save(array $newValues, array $filter = null): array
     {
         $filename = false;
         if ($this->recursive) {

@@ -12,6 +12,8 @@
 
 namespace MUtil\Model;
 
+use Zalt\Model\MetaModelInterface;
+
 /**
  *
  *
@@ -82,7 +84,7 @@ abstract class SubmodelTransformerAbstract implements \MUtil\Model\ModelTransfor
      * @param \MUtil\Model\ModelAbstract $model The parent model
      * @return array Of filedname => set() values
      */
-    public function getFieldInfo(\MUtil\Model\ModelAbstract $model)
+    public function getFieldInfo(MetaModelInterface $model)
     {
         $data = array();
         foreach ($this->_subModels as $sub) {
@@ -108,7 +110,7 @@ abstract class SubmodelTransformerAbstract implements \MUtil\Model\ModelTransfor
      * @param array $filter
      * @return array The (optionally changed) filter
      */
-    public function transformFilter(\MUtil\Model\ModelAbstract $model, array $filter)
+    public function transformFilter(MetaModelInterface $model, array $filter)
     {
         // Make sure the join fields are in the result set
         foreach ($this->_joins as $joins) {
@@ -151,7 +153,7 @@ abstract class SubmodelTransformerAbstract implements \MUtil\Model\ModelTransfor
      * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
      * @return array Nested array containing (optionally) transformed data
      */
-    public function transformLoad(\MUtil\Model\ModelAbstract $model, array $data, $new = false, $isPostData = false)
+    public function transformLoad(MetaModelInterface $model, array $data, $new = false, $isPostData = false)
     {
         if (! $data) {
             return $data;
@@ -188,7 +190,7 @@ abstract class SubmodelTransformerAbstract implements \MUtil\Model\ModelTransfor
      * @param array $row Array containing row
      * @return array Row array containing (optionally) transformed data
      */
-    public function transformRowAfterSave(\MUtil\Model\ModelAbstract $model, array $row)
+    public function transformRowAfterSave(MetaModelInterface $model, array $row)
     {
         if (! $row) {
             return $row;
@@ -211,7 +213,7 @@ abstract class SubmodelTransformerAbstract implements \MUtil\Model\ModelTransfor
      * @param array $row Array containing row
      * @return array Row array containing (optionally) transformed data
      */
-    public function transformRowBeforeSave(\MUtil\Model\ModelAbstract $model, array $row)
+    public function transformRowBeforeSave(MetaModelInterface $model, array $row)
     {
         // No changes
         return $row;
@@ -238,7 +240,7 @@ abstract class SubmodelTransformerAbstract implements \MUtil\Model\ModelTransfor
      * @param array $sort
      * @return array The (optionally changed) sort
      */
-    public function transformSort(\MUtil\Model\ModelAbstract $model, array $sort)
+    public function transformSort(MetaModelInterface $model, array $sort)
     {
         foreach ($this->_subModels as $sub) {
             foreach ($sort as $key => $value) {

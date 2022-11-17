@@ -427,7 +427,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var boolean $useHtmlView true
      */
-    public $useHtmlView = true;  // Overrule parent
+    public bool $useHtmlView = true;  // Overrule parent
 
     public function __construct(
         protected SnippetResponderInterface $responder,
