@@ -93,14 +93,14 @@ class TableBridge extends \MUtil\Model\Bridge\TableBridgeAbstract
 
         if ($this->useRowHref) {
             if ($this->row_href) {
-                if ($link instanceof \MUtil\Html\HtmlElement) {
+                if ($link instanceof \Zalt\Html\HtmlElement) {
                     $tds[0]->onclick = array('location.href=\'', $link->href, '\';');
                 } else {
                     $tds[0]->onclick = '// Dummy on click';
                 }
                 $this->has_multi_refs = true;
             } else {
-                if ($link instanceof \MUtil\Html\HtmlElement) {
+                if ($link instanceof \Zalt\Html\HtmlElement) {
                     $this->row_href = $link->href;
                 }
             }
@@ -231,13 +231,13 @@ class TableBridge extends \MUtil\Model\Bridge\TableBridgeAbstract
         // $sortUrl['RouteReset'] = false; // Prevents tabs from being communicated
         $sortUrl = $sortUrl + $this->baseUrl;
 
-        return \MUtil\Html::create()->a($sortUrl, array('class' => $class, 'title' => $this->model->get($name, 'description')), $label);
+        return \Zalt\Html\Html::create()->a($sortUrl, array('class' => $class, 'title' => $this->model->get($name, 'description')), $label);
     }
 
     /**
      *
      * @param array $data
-     * @return \MUtil\Html\TableElement
+     * @return \ZAlt\Html\TableElement
      */
     public function displayListTable($data)
     {
@@ -250,7 +250,7 @@ class TableBridge extends \MUtil\Model\Bridge\TableBridgeAbstract
     /**
      *
      * @param array $data
-     * @return \MUtil\Html\TableElement
+     * @return \Zalt\Html\TableElement
      */
     public function displaySubTable($data)
     {
@@ -273,7 +273,7 @@ class TableBridge extends \MUtil\Model\Bridge\TableBridgeAbstract
     /**
      * Get the actual table
      *
-     * @return \MUtil\Html\TableElement
+     * @return \Zalt\Html\TableElement
      */
     public function getTable()
     {
@@ -281,8 +281,8 @@ class TableBridge extends \MUtil\Model\Bridge\TableBridgeAbstract
             $onclick = array('location.href=\'', $this->row_href, '\';');
 
             if ($this->has_multi_refs) {
-                foreach ($this->table[\MUtil\Html\TableElement::TBODY] as $row) {
-                    if ($row instanceof \MUtil\Html\TrElement) {
+                foreach ($this->table[\Zalt\Html\TableElement::TBODY] as $row) {
+                    if ($row instanceof \Zalt\Html\TrElement) {
                         $row->onclick = "{// Dummy for CSS\n}";
                     }
                     foreach ($row as $cell) {
@@ -292,8 +292,8 @@ class TableBridge extends \MUtil\Model\Bridge\TableBridgeAbstract
                     }
                 }
             } else {
-                foreach ($this->table[\MUtil\Html\TableElement::TBODY] as $row) {
-                    if ($row instanceof \MUtil\Html\TrElement) {
+                foreach ($this->table[\Zalt\Html\TableElement::TBODY] as $row) {
+                    if ($row instanceof \Zalt\Html\TrElement) {
                         $row->onclick = $onclick;
                     }
                 }

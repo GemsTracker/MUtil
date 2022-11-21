@@ -12,6 +12,7 @@
 namespace MUtil\Snippets\Standard;
 
 use MUtil\Snippets\ModelConfirmDataChangeSnippetAbstract;
+use Zalt\Model\Data\FullDataInterface;
 
 /**
  *
@@ -35,7 +36,7 @@ class ModelConfirmDataChangeSnippet extends ModelConfirmDataChangeSnippetAbstrac
      *
      * @return \MUtil\Model\ModelAbstract
      */
-    protected function createModel()
+    protected function createModel(): FullDataInterface
     {
         return $this->model;
     }

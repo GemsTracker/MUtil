@@ -12,6 +12,7 @@
 
 namespace MUtil\Validate\Date;
 
+use Laminas\Validator\AbstractValidator;
 use \MUtil\Model;
 
 /**
@@ -22,7 +23,7 @@ use \MUtil\Model;
  * @license    New BSD License
  * @since      Class available since \MUtil version 1.0
  */
-abstract class DateAbstract extends \Zend_Validate_Abstract
+abstract class DateAbstract extends AbstractValidator
         implements \MUtil\Validate\Date\FormatInterface
 {
     // Always use accossor functions, never reference these vars straight

@@ -11,6 +11,8 @@
 
 namespace MUtil\Snippets\Standard;
 
+use Zalt\Model\Data\FullDataInterface;
+
 /**
  * Processes and displays a model form using the model
  * set through the $model snippet parameter.
@@ -34,7 +36,7 @@ class ModelFormSnippet extends \MUtil\Snippets\ModelFormSnippetAbstract
      *
      * @return \MUtil\Model\ModelAbstract
      */
-    protected function createModel()
+    protected function createModel(): FullDataInterface
     {
         return $this->model;
     }

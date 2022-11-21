@@ -4,7 +4,7 @@ namespace MUtil\Request;
 
 use Mezzio\Router\RouteResult;
 
-class RequestInfo
+class RequestInfo extends \Zalt\Base\RequestInfo
 {
     /**
      * @var string|null Name of the current action

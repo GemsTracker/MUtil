@@ -378,7 +378,7 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
      *
      * @return boolean
      */
-    public function hasNew()
+    public function hasNew(): bool
     {
         // We assume this to be the case, unless the child model overrules this method.
         return $this->_saveable;
@@ -392,7 +392,7 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
      *
      * @return boolean
      */
-    public function hasTextSearchFilter()
+    public function hasTextSearchFilter(): bool
     {
         return true;
     }

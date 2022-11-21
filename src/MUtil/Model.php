@@ -127,10 +127,10 @@ class Model
      * @var array string => bridge class
      */
     private static $_bridges = array(
-        'display'   => 'DisplayBridge',
-        'form'      => 'FormBridge',
-        'itemTable' => 'VerticalTableBridge',
-        'table'     => 'TableBridge',
+        'display'   => \Zalt\Model\Bridge\DisplayBridge::class,
+        'form'      => \Zalt\Snippets\ModelBridge\ZendFormBridge::class,
+        'itemTable' => \Zalt\Snippets\ModelBridge\DetailTableBridge::class,
+        'table'     => \Zalt\Snippets\ModelBridge\TableBridge::class,
     );
 
     /**
@@ -397,6 +397,17 @@ class Model
     public static function setBridgeLoader(\MUtil\Loader\PluginLoader $loader)
     {
         self::setLoader($loader, 'Bridge');
+    }
+
+    /**
+     * Returns an arrat of bridge type => class name for
+     * getting the default bridge classes for a model.
+     *
+     * @return array
+     */
+    public static function setDefaultBridge($key, $className)
+    {
+        self::$_bridges[$key] = $className;
     }
 
     /**

@@ -58,7 +58,7 @@ class SelectiveTableSnippet extends \MUtil\Snippets\TableSnippetAbstract
      *
      * @return boolean
      */
-    public function hasHtmlOutput()
+    public function hasHtmlOutput(): bool
     {
         return parent::hasHtmlOutput() && $this->columns;
     }

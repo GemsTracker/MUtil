@@ -11,6 +11,8 @@
 
 namespace MUtil\Model\Bridge;
 
+use Zalt\Model\Bridge\BridgeInterface;
+
 /**
  *
  * @package    MUtil
@@ -24,7 +26,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
     /**
      * The actual table
      *
-     * @var \MUtil\Html\TableElement
+     * @var \Zalt\Html\TableElement
      */
     protected $table;
 
@@ -46,19 +48,19 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
      * @param \MUtil\Model\ModelAbstract $model The model it is all about
      * @param \MUtil\Html\ElementInterface $args_array
      */
-    public function __construct(\MUtil\Model\ModelAbstract $model, $args_array = null)
+    public function __construct(\Zalt\Model\Data\DataReaderInterface $model, $args_array = null)
     {
         parent::__construct($model);
 
         $this->_chainedBridge = $model->getBridgeFor('display');
 
-        if ($args_array instanceof \MUtil\Html\ElementInterface) {
+        if ($args_array instanceof \Zalt\Html\ElementInterface) {
             $this->table = $args_array;
         } else {
             $args = func_get_args();
-            $args = \MUtil\Ra::args($args, 1);
+            $args = \Zalt\Ra\Ra::args($args, 1);
 
-            $this->table = \MUtil\Html::table($args);
+            $this->table = \Zalt\Html\Html::table($args);
         }
     }
 
@@ -78,7 +80,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
         }
 
         if (is_object($function)) {
-            if (($function instanceof \MUtil\Html\ElementInterface)
+            if (($function instanceof \Zalt\Html\ElementInterface)
                 || method_exists($function, 'append')) {
 
                 $object = clone $function;
@@ -92,7 +94,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
         // Assume it is a html tag when a string
         if (is_string($function)) {
 
-            return \MUtil\Html::create($function, $item);
+            return \Zalt\Html\Html::create($function, $item);
 
         } elseif (is_array($function)) {
             foreach ($function as $display) {
@@ -180,9 +182,9 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
     /**
      * Get the repeater source for the lazy data
      *
-     * @return \MUtil\Lazy\RepeatableInterface
+     * @return \Zalt\Late\RepeatableInterface
      */
-    public function getRepeater()
+    public function getRepeater(): \Zalt\Late\RepeatableInterface
     {
         if ($this->_repeater) {
             return $this->_repeater;
@@ -202,7 +204,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
     /**
      * Get the actual table
      *
-     * @return \MUtil\Html\TableElement
+     * @return \Zalt\Html\TableElement
      */
     abstract public function getTable();
 
@@ -211,7 +213,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
      *
      * @return boolean
      */
-    public function hasRepeater()
+    public function hasRepeater(): bool
     {
         return parent::hasRepeater() || (boolean) $this->table->getRepeater();
     }
@@ -230,9 +232,8 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
      * Set the repeater source for the lazy data
      *
      * @param mixed $repeater \MUtil\Lazy\RepeatableInterface or something that can be made into one.
-     * @return \MUtil\Model_Format_DisplayFormatter (continuation pattern)
      */
-    public function setRepeater($repeater)
+    public function setRepeater($repeater): BridgeInterface
     {
         parent::setRepeater($repeater);
 

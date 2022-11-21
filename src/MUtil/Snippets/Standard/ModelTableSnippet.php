@@ -12,6 +12,8 @@
 
 namespace MUtil\Snippets\Standard;
 
+use Zalt\Model\Data\DataReaderInterface;
+
 /**
  * Displays multiple items from a model in a tabel by row using
  * the model set through the $model snippet parameter.
@@ -35,7 +37,7 @@ class ModelTableSnippet extends \MUtil\Snippets\ModelTableSnippetAbstract
      *
      * @return \MUtil\Model\ModelAbstract
      */
-    protected function createModel()
+    protected function createModel(): DataReaderInterface
     {
         return $this->model;
     }

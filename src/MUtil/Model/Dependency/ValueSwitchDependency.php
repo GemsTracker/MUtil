@@ -209,7 +209,7 @@ class ValueSwitchDependency extends DependencyAbstract
      * @param mixed $effectedSettings A single setting or an array of settings
      * @return \MUtil\Model\Dependency\DependencyAbstract (continuation pattern)
      */
-    public function addEffected($effectedField, $effectedSettings)
+    public function addEffected($effectedField, $effectedSettings): DependencyInterface
     {
         $this->_checked_effected = false;
         $this->_switches[$effectedField] = $effectedSettings;
@@ -257,7 +257,7 @@ class ValueSwitchDependency extends DependencyAbstract
      * @param boolean $new True when the item is a new record not yet saved
      * @return array name => array(setting => value)
      */
-    public function getChanges(array $context, $new)
+    public function getChanges(array $context, bool $new = false): array
     {
         $this->_checkEffected();
         return $this->_findChanges($this->getSwitches(), $this->getDependsOn(), $context);
@@ -269,7 +269,7 @@ class ValueSwitchDependency extends DependencyAbstract
      * @param $name Field name
      * @return array of setting => setting of fields with settings for this $name changed by this dependency
      */
-    public function getEffected($name)
+    public function getEffected($name): array
     {
         $this->_checkEffected();
 
@@ -281,7 +281,7 @@ class ValueSwitchDependency extends DependencyAbstract
      *
      * @return array of name => array(setting => setting) of fields with settings changed by this dependency
      */
-    public function getEffecteds()
+    public function getEffecteds(): array
     {
         $this->_checkEffected();
 
@@ -303,7 +303,7 @@ class ValueSwitchDependency extends DependencyAbstract
      * @param $name
      * @return boolean
      */
-    public function isEffected($name)
+    public function isEffected($name): bool
     {
         $this->_checkEffected();
 

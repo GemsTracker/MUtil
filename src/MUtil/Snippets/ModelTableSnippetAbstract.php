@@ -11,6 +11,9 @@
 
 namespace MUtil\Snippets;
 
+use Zalt\Model\Data\DataReaderInterface;
+use Zalt\Snippets\ModelBridge\TableBridge;
+
 /**
  * Displays multiple items in a model below each other in an Html table.
  *
@@ -107,7 +110,7 @@ abstract class ModelTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbs
      * @param \MUtil\Model\ModelAbstract $model
      * @return void
      */
-    protected function addBrowseTableColumns(\MUtil\Model\Bridge\TableBridge $bridge, \MUtil\Model\ModelAbstract $model)
+    protected function addBrowseTableColumns(TableBridge $bridge, DataReaderInterface $model)
     {
         if ($this->columns) {
             foreach ($this->columns as $column) {
@@ -136,10 +139,10 @@ abstract class ModelTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbs
      * Only called when $this->browse is true. Overrule this function
      * to define your own method.
      *
-     * @param \MUtil\Html\TableElement $table
+     * @param mixed $table
      * $param \Zend_Paginator $paginator
      */
-    protected function addPaginator(\MUtil\Html\TableElement $table, \Zend_Paginator $paginator)
+    protected function addPaginator(mixed $table, \Zend_Paginator $paginator)
     {
         //$table->tfrow()->pagePanel($paginator, null, array('baseUrl' => $this->baseUrl));
     }
@@ -181,7 +184,7 @@ abstract class ModelTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbs
      * @param \Zend_View_Abstract $view Just in case it is needed here
      * @return \MUtil\Html\HtmlInterface Something that can be rendered
      */
-    public function getHtmlOutput(\Zend_View_Abstract $view)
+    public function getHtmlOutput(\Zend_View_Abstract $view = null)
     {
         $model = $this->getModel();
 
@@ -240,7 +243,7 @@ abstract class ModelTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbs
      * @param \Zend_View_Abstract $view
      * @return string Html output
      */
-    public function render(\Zend_View_Abstract $view)
+    public function render(\Zend_View_Abstract $view = null)
     {
         if ($this->_marker) {
             $this->_marker->setEncoding($view->getEncoding());

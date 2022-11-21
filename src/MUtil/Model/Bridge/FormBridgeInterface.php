@@ -11,6 +11,8 @@
 
 namespace MUtil\Model\Bridge;
 
+use Zalt\Model\Data\DataReaderInterface;
+
 /**
  *
  *
@@ -215,9 +217,9 @@ interface FormBridgeInterface extends \MUtil\Model\Bridge\BridgeInterface
 
     /**
      *
-     * @return \MUtil\Model\ModelAbstract
+     * @return \Zalt\Model\Data\DataReaderInterface
      */
-    public function getModel();
+    public function getModel(): DataReaderInterface;
 
     /**
      * Retrieve a tab from a \Gems\TabForm to add extra content to it

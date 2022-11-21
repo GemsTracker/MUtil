@@ -12,6 +12,8 @@
 
 namespace MUtil\Model\Transform;
 
+use Zalt\Model\MetaModelInterface;
+
 /**
  * Transforms the output of a model->load() function to include required rows.
  *
@@ -195,7 +197,7 @@ class RequiredRowsTransformer extends \MUtil\Model\ModelTransformerAbstract
      * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
      * @return array Nested array containing (optionally) transformed data
      */
-    public function transformLoad(\MUtil\Model\ModelAbstract $model, array $data, $new = false, $isPostData = false)
+    public function transformLoad(MetaModelInterface $model, array $data, $new = false, $isPostData = false)
     {
         $defaults  = $this->getDefaultRow($model);
         $keyCount  = $this->getKeyItemCount();

@@ -12,6 +12,8 @@
 
 namespace MUtil\Snippets\Standard;
 
+use Zalt\Model\Data\DataReaderInterface;
+
 /**
  * Displays each field of a single item in a model in a row in a Html table
  * the model set through the $model snippet parameter.
@@ -35,7 +37,7 @@ class ModelVerticalTableSnippet extends \MUtil\Snippets\ModelVerticalTableSnippe
      *
      * @return \MUtil\Model\ModelAbstract
      */
-    protected function createModel()
+    protected function createModel(): DataReaderInterface
     {
         return $this->model;
     }

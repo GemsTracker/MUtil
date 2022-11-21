@@ -386,9 +386,9 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
     /**
      * Set to true in so $this->html is created at startup.
      *
-     * @var boolean $useHtmlView true
+     * @var bool $useHtmlView true
      */
-    public $useHtmlView = true;  // Overrule parent
+    public bool $useHtmlView = true;  // Overrule parent
 
     /**
      * The request ID value

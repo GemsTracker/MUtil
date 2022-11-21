@@ -11,6 +11,9 @@
 
 namespace MUtil\Snippets;
 
+use Zalt\Model\Data\DataReaderInterface;
+use Zalt\Snippets\ModelBridge\DetailTableBridge;
+
 /**
  * Displays each fields of a single item in a model in a row in a Html table.
  *
@@ -90,7 +93,7 @@ abstract class ModelVerticalTableSnippetAbstract extends \MUtil\Snippets\ModelSn
      * @param \Zend_View_Abstract $view Just in case it is needed here
      * @return \MUtil\Html\HtmlInterface Something that can be rendered
      */
-    public function getHtmlOutput(\Zend_View_Abstract $view)
+    public function getHtmlOutput(\Zend_View_Abstract $view = null)
     {
         $model = $this->getModel();
         if ($this->trackUsage) {
@@ -158,7 +161,7 @@ abstract class ModelVerticalTableSnippetAbstract extends \MUtil\Snippets\ModelSn
      * @param \MUtil\Model\ModelAbstract $model
      * @return void
      */
-    protected function setShowTableFooter(\MUtil\Model\Bridge\VerticalTableBridge $bridge, \MUtil\Model\ModelAbstract $model)
+    protected function setShowTableFooter(DetailTableBridge $bridge, DataReaderInterface $model)
     { }
 
     /**
@@ -171,6 +174,6 @@ abstract class ModelVerticalTableSnippetAbstract extends \MUtil\Snippets\ModelSn
      * @param \MUtil\Model\ModelAbstract $model
      * @return void
      */
-    protected function setShowTableHeader(\MUtil\Model\Bridge\VerticalTableBridge $bridge, \MUtil\Model\ModelAbstract $model)
+    protected function setShowTableHeader(DetailTableBridge $bridge, DataReaderInterface $model)
     { }
 }

@@ -114,7 +114,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      *
      * @param array $filter Filter array, num keys contain fixed expresions, text keys are equal or one of filters
      * @param array $sort Sort array field name => sort type
-     * @return \Zend_Db_Table_Select
+     * @return \Zend_Db_Select or \Zend_Db_Table_Select
      */
     protected function _createSelect(array $filter, array $sort)
     {
@@ -704,7 +704,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * Adding DeleteValues means delete() updates the selected rows with these values, instead of physically deleting the rows.
      *
      * @param string|array $arrayOrField1 \MUtil\Ra::pairs() arguments
-     * @param mxied $value1
+     * @param mixed $value1
      * @param string $field2
      * @param mixed $key2
      * @return \MUtil\Model\TableModel
@@ -1056,12 +1056,12 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
         return $filter;
     }
 
-    public function hasNew()
+    public function hasNew(): bool
     {
         return $this->canCreate;
     }
 
-    public function hasTextSearchFilter()
+    public function hasTextSearchFilter(): bool
     {
         return true;
     }
@@ -1124,7 +1124,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * Setting DeleteValues means delete() updates the selected rows with these values, instead of physically deleting the rows.
      *
      * @param string|array $arrayOrField1 \MUtil\Ra::pairs() arguments
-     * @param mxied $value1
+     * @param mixed $value1
      * @param string $field2
      * @param mixed $key2
      * @return \MUtil\Model\DatabaseModelAbstract (continuation pattern)

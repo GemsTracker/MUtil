@@ -18,6 +18,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use MUtil\Legacy\RequestHelper;
 use Mezzio\Helper\UrlHelper;
 use Mezzio\Flash\FlashMessagesInterface;
+use Zalt\Base\RequestInfo;
+use Zalt\Base\RequestInfoFactory;
 
 
 /**
@@ -65,19 +67,17 @@ abstract class Action
     public ?string $redirectUrl = null;
 
     /**
-     * PSR-7 Request
-     *
-     * @var ServerRequestInterface
-     */
-    protected ServerRequestInterface $request;
-
-    /**
      * Helper class for retrieving legacy data from a PSR-7 Request
      *
      * @var RequestHelper
      */
     protected RequestHelper $requestHelper;
 
+    /**
+     * @var \Zalt\Base\RequestInfo 
+     */
+    protected RequestInfo $requestInfo;
+    
     /**
      * The loader for snippets.
      *
@@ -100,8 +100,6 @@ abstract class Action
      */
     public $translate;
 
-    protected UrlHelper $urlHelper;
-
     /**
      * Set to true in child class for automatic creation of $this->html.
      *
@@ -109,10 +107,9 @@ abstract class Action
      *
      * Overrules $useRawOutput.
      *
-     * @see $useRawOutput
-     * @var boolean $useHtmlView
+     * @var bool $useHtmlView
      */
-    public $useHtmlView = false;
+    public bool $useHtmlView = false;
 
     /**
      * Set to true in child class for automatic use of raw (e.g. echo) output only.
@@ -121,18 +118,17 @@ abstract class Action
      *
      * Overruled in initialization if $useHtmlView is true.
      *
-     * @see $useHtmlView
      * @var boolean $useRawOutput
      */
     public $useRawOutput = false;
 
-    public function __construct(ServerRequestInterface $request, UrlHelper $urlHelper, $init = true)
+    public function __construct(
+        protected ServerRequestInterface $request, 
+        protected UrlHelper $urlHelper, 
+        $init = true)
     {
-        $this->request = $request;
         $this->requestHelper = new RequestHelper($request);
-        $this->urlHelper = $urlHelper;
-
-        //$this->_helper = new \Zend_Controller_Action_HelperBroker($this);
+        $this->requestInfo   = RequestInfoFactory::getMezzioRequestInfo($request);
 
         if ($init) {
             $this->init();
@@ -274,6 +270,12 @@ abstract class Action
 
                 } elseif ($snippet->getRedirectRoute()) {
                     $redirectParts = $snippet->getRedirectRoute();
+                    
+                    if (is_string($redirectParts)) {
+                        $this->redirectUrl = $redirectParts;
+                        return null;
+                    }
+                    
                     if (isset($redirectParts['routeName'])) {
                         $url = $this->urlHelper->generate($redirectParts['routeName']);
                         $this->redirectUrl = $url;

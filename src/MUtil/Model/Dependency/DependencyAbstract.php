@@ -11,6 +11,10 @@
 
 namespace MUtil\Model\Dependency;
 
+use Zalt\Model\Dependency\DependencyInterface;
+use Zalt\Model\MetaModel;
+use Zalt\Model\MetaModelInterface;
+
 /**
  * A basic dependency implementation that all the housekeeping work,
  * but leaves the actual changes alone.
@@ -93,7 +97,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param mixed $dependsOn
      * @return \MUtil\Model\Dependency\DependencyAbstract (continuation pattern)
      */
-    public function addDependsOn($dependsOn)
+    public function addDependsOn($dependsOn): DependencyInterface
     {
         $dependsOn = \MUtil\Ra::flatten(func_get_args());
 
@@ -114,7 +118,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param mixed $effectedSettings A single setting or an array of settings
      * @return \MUtil\Model\Dependency\DependencyAbstract (continuation pattern)
      */
-    public function addEffected($effectedField, $effectedSettings)
+    public function addEffected($effectedField, $effectedSettings): DependencyInterface
     {
         if ($effectedSettings) {
             foreach ((array) $effectedSettings as $setting) {
@@ -138,7 +142,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param array $effecteds Of values accepted by addEffected as paramter
      * @return \MUtil\Model\Dependency\DependencyAbstract (continuation pattern)
      */
-    public final function addEffecteds(array $effecteds)
+    public final function addEffecteds(array $effecteds): DependencyInterface
     {
         foreach ($effecteds as $effectedField => $effectedSettings) {
             if (is_int($effectedField) && (! is_array($effectedSettings)) && $this->_defaultEffects) {
@@ -154,19 +158,19 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
     /**
      * Use this function for a default application of this dependency to the model
      *
-     * @param \MUtil\Model\ModelAbstract $model Try not to store the model as variabe in the dependency (keep it simple)
+     * @param \Zalt\Model\MetaModelInterface $metaModel Try not to store the model as variabe in the dependency (keep it simple)
      */
-    public function applyToModel(\MUtil\Model\ModelAbstract $model)
+    public function applyToModel(MetaModelInterface $metaModel)
     {
         if ($this->applyOnChange) {
             foreach ($this->getDependsOn() as $name) {
-                if ($model->is($name, 'elementClass', 'Checkbox')) {
-                    if (! $model->has($name, 'onclick')) {
-                        $model->set($name, 'onclick', $this->onChangeJs);
+                if ($metaModel->is($name, 'elementClass', 'Checkbox')) {
+                    if (! $metaModel->has($name, 'onclick')) {
+                        $metaModel->set($name, 'onclick', $this->onChangeJs);
                     }
                 } else {
-                    if (! $model->has($name, 'onchange')) {
-                        $model->set($name, 'onchange', $this->onChangeJs);
+                    if (! $metaModel->has($name, 'onchange')) {
+                        $metaModel->set($name, 'onchange', $this->onChangeJs);
                     }
                 }
             }
@@ -176,12 +180,12 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
     /**
      * Does this dependency depends on this field?
      *
-     * @param $name Field name
+     * @param string $name Field name
      * @return boolean
      */
-    public function dependsOn($name)
+    public function dependsOn(string $name): bool
     {
-        return isset($this->_dependentOn[$name]);
+        return (bool) isset($this->_dependentOn[$name]);
     }
 
     /**
@@ -204,7 +208,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param boolean $new True when the item is a new record not yet saved
      * @return array name => array(setting => value)
      * /
-    public function getChanges(array $context, $new)
+    public function getChanges(array $context, bool $new = false): array
     {
 
     }  // */
@@ -214,7 +218,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      *
      * @return array name => name
      */
-    public function getDependsOn()
+    public function getDependsOn(): array
     {
         return $this->_dependentOn;
     }
@@ -225,7 +229,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param $name Field name
      * @return array of setting => setting of fields with settings for this $name changed by this dependency
      */
-    public function getEffected($name)
+    public function getEffected($name): array
     {
         if (isset($this->_effecteds[$name])) {
             return $this->_effecteds[$name];
@@ -239,7 +243,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      *
      * @return array of name => array(setting => setting) of fields with settings changed by this dependency
      */
-    public function getEffecteds()
+    public function getEffecteds(): array
     {
         return $this->_effecteds;
     }
@@ -250,7 +254,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param $name
      * @return boolean
      */
-    public function isEffected($name)
+    public function isEffected($name): bool
     {
         return isset($this->_effecteds[$name]);
     }
@@ -262,7 +266,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param mixed $dependsOn
      * @return \MUtil\Model\Dependency\DependencyAbstract (continuation pattern)
      */
-    public function setDependsOn($dependsOn)
+    public function setDependsOn($dependsOn): DependencyInterface
     {
         $this->_dependentOn = array();
 
@@ -277,7 +281,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param array $effecteds Of values accepted by addEffected as paramter
      * @return \MUtil\Model\Dependency\DependencyAbstract (continuation pattern)
      */
-    public final function setEffecteds(array $effecteds)
+    public final function setEffecteds(array $effecteds): DependencyInterface
     {
         $this->_effecteds = array();
 

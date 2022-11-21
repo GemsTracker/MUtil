@@ -44,7 +44,7 @@ abstract class EmptySnippetAbstract extends \MUtil\Registry\TargetAbstract
      *
      * @return mixed Nothing or either an array or a string that is acceptable for Redector->gotoRoute()
      */
-    public function getRedirectRoute()
+    public function getRedirectRoute(): ?string
     { }
 
     /**
@@ -58,7 +58,7 @@ abstract class EmptySnippetAbstract extends \MUtil\Registry\TargetAbstract
      *
      * @return boolean
      */
-    public function hasHtmlOutput()
+    public function hasHtmlOutput(): bool
     {
         return false;
     }

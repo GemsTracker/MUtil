@@ -12,6 +12,8 @@
 
 namespace MUtil\Model\Transform;
 
+use Zalt\Model\MetaModelInterface;
+
 /**
  * Transform that can be used to put nested submodels in a model
  *
@@ -39,7 +41,7 @@ class NestedTransformer extends \MUtil\Model\SubmodelTransformerAbstract
      * @param \MUtil\Model\ModelAbstract $model The parent model
      * @return array Of filedname => set() values
      */
-    public function getFieldInfo(\MUtil\Model\ModelAbstract $model)
+    public function getFieldInfo(MetaModelInterface $model)
     {
         $data = array();
         foreach ($this->_subModels as $sub) {
@@ -155,7 +157,7 @@ class NestedTransformer extends \MUtil\Model\SubmodelTransformerAbstract
      * @param array $sort
      * @return array The (optionally changed) sort
      */
-    public function transformSort(\MUtil\Model\ModelAbstract $model, array $sort)
+    public function transformSort(MetaModelInterface $model, array $sort)
     {
         foreach ($this->_subModels as $sub) {
             foreach ($sort as $key => $value) {
