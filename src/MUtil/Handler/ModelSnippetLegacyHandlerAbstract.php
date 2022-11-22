@@ -11,22 +11,24 @@ declare(strict_types=1);
 
 namespace MUtil\Handler;
 
-use Laminas\ServiceManager\ServiceManager;
+use DateTimeInterface;
 use Mezzio\Session\SessionInterface;
+use MUtil\Model;
+use MUtil\Model\ModelAbstract;
+use MUtil\Model\Bridge\DisplayBridge;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zalt\Base\RequestInfo;
-use Zalt\Base\RequestInfoFactory;
 use Zalt\Base\TranslateableTrait;
 use Zalt\Html\Sequence;
 use Zalt\Late\Late;
 use Zalt\Ra\Ra;
+use Zalt\Snippets\ModelBridge\TableBridge;
 use Zalt\Snippets\ModelDetailTableSnippet;
 use Zalt\Snippets\ModelYesNoDeleteSnippet;
 use Zalt\Snippets\Zend\ZendModelFormSnippet;
-use Zalt\SnippetsLoader\SnippetLoader;
 use Zalt\SnippetsLoader\SnippetResponderInterface;
 
 /**
@@ -45,7 +47,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    private $_defaultAutofilterParameters = [
+    private array $_defaultAutofilterParameters = [
         'searchData'    => 'getSearchData',
         'searchFilter'  => 'getSearchFilter',
     ];
@@ -61,7 +63,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array
      */
-    private $_defaultCreateParameters = [
+    private array $_defaultCreateParameters = [
         'createData' => true,
     ];
 
@@ -76,7 +78,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array
      */
-    private $_defaultEditParameters = [
+    private array $_defaultEditParameters = [
         'createData' => false,
     ];
 
@@ -90,7 +92,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    private $_defaultImportParameters = [
+    private array $_defaultImportParameters = [
         'defaultImportTranslator' => 'getDefaultImportTranslator',
         'importTranslators'       => 'getImportTranslators',
     ];
@@ -106,7 +108,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array
      */
-    private $_defaultParameters = [
+    private array $_defaultParameters = [
         'cacheTags'             => 'getCacheTags',
         'includeNumericFilters' => 'getIncludeNumericFilters',
         '_messenger'             => 'getMessenger',
@@ -118,31 +120,31 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * Always retrieve using $this->getModel().
      *
-     * $var \MUtil\Model\ModelAbstract $_model The model in use
+     * $var Model\ModelAbstract $_model The model in use
      */
-    private $_model;
+    private ?ModelAbstract $_model = null;
 
     /**
      *
-     * @var array The search data
+     * @var ?array The search data
      */
-    private $_searchData = false;
+    private ?array $_searchData = null;
 
     /**
      *
-     * @var array The search data
+     * @var ?array The search data
      */
-    private $_searchFilter = false;
+    private ?array $_searchFilter = null;
 
     /**
      * @var array Local store of parameters
      */
-    private $_snippetParams = [];
+    private array $_snippetParams = [];
 
     /**
      * @var array local store of snippets
      */
-    private $_snippetNames = [];
+    private array $_snippetNames = [];
 
     /**
      * The parameters used for the autofilter action.
@@ -154,21 +156,21 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialisation
      */
-    protected $autofilterParameters = array('columns' => 'getBrowseColumns');
+    protected array $autofilterParameters = ['columns' => 'getBrowseColumns'];
 
     /**
      * The snippets used for the autofilter action.
      *
-     * @var mixed String or array of snippets name
+     * @var array snippets name
      */
-    protected $autofilterSnippets = 'ModelTableSnippet';
+    protected array $autofilterSnippets = ['ModelTableSnippet'];
 
     /**
      * Tags for cache cleanup after changes, passed to snippets
      *
      * @var array
      */
-    public $cacheTags = [];
+    public array $cacheTags = [];
 
     /**
      * The parameters used for the create and edit actions.
@@ -180,14 +182,14 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $createEditParameters = [];
+    protected array $createEditParameters = [];
 
     /**
      * The snippets used for the create and edit actions.
      *
      * @var mixed String or array of snippets name
      */
-    protected $createEditSnippets = ZendModelFormSnippet::class;
+    protected array $createEditSnippets = [ZendModelFormSnippet::class];
 
     /**
      * The parameters used for the edit actions, overrules any values in
@@ -200,7 +202,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $createParameters = [];
+    protected array $createParameters = [];
 
     /**
      * Model level parameters used for all actions, overruled by any values set in any other
@@ -214,14 +216,14 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $defaultParameters = [];
+    protected array $defaultParameters = [];
 
     /**
      * The default search data to use.
      *
      * @var array()
      */
-    protected $defaultSearchData = [];
+    protected array $defaultSearchData = [];
 
     /**
      * The parameters used for the deactivate action.
@@ -233,14 +235,14 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $deactivateParameters = [];
+    protected array$deactivateParameters = [];
 
     /**
      * The snippets used for the deactivate  action.
      *
      * @var mixed String or array of snippets name
      */
-    protected $deactivateSnippets = 'ModelConfirmDataChangeSnippet';
+    protected array $deactivateSnippets = ['ModelConfirmDataChangeSnippet'];
 
     /**
      * The parameters used for the delete action.
@@ -252,14 +254,14 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $deleteParameters = [];
+    protected array $deleteParameters = [];
 
     /**
      * The snippets used for the delete action.
      *
      * @var mixed String or array of snippets name
      */
-    protected $deleteSnippets = [
+    protected array $deleteSnippets = [
         ModelYesNoDeleteSnippet::class,
         ];
 
@@ -274,7 +276,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $editParameters = [];
+    protected array $editParameters = [];
 
     /**
      * Array of the actions that use the model in form version.
@@ -283,12 +285,12 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array $formActions Array of the actions that use the model with a form.
      */
-    public $formActions = array('create', 'delete', 'edit', 'import');
+    public array $formActions = ['create', 'delete', 'edit', 'import'];
 
     /**
-     * @var Zalt\Html\Sequence
+     * @var Sequence
      */
-    protected $html;
+    protected Sequence $html;
 
     /**
      * The parameters used for the import action
@@ -300,20 +302,20 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $importParameters = [];
+    protected array $importParameters = [];
 
     /**
      * The snippets used for the import action
      *
      * @var mixed String or array of snippets name
      */
-    protected $importSnippets = 'ModelImportSnippet';
+    protected array $importSnippets = ['ModelImportSnippet'];
 
     /**
      *
      * @var boolean $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
      */
-    public $includeNumericFilters = false;
+    public bool $includeNumericFilters = false;
 
     /**
      * The parameters used for the index action minus those in autofilter.
@@ -325,21 +327,21 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $indexParameters = [];
+    protected array $indexParameters = [];
 
     /**
      * The snippets used for the index action, before those in autofilter
      *
      * @var mixed String or array of snippets name
      */
-    protected $indexStartSnippets = null;
+    protected array $indexStartSnippets = [];
 
     /**
      * The snippets used for the index action, after those in autofilter
      *
      * @var mixed String or array of snippets name
      */
-    protected $indexStopSnippets = null;
+    protected array $indexStopSnippets = [];
 
     /**
      * The parameters used for the reactivate action.
@@ -351,22 +353,22 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $reactivateParameters = [];
+    protected array $reactivateParameters = [];
 
     /**
      * The snippets used for the reactivate action.
      *
      * @var mixed String or array of snippets name
      */
-    protected $reactivateSnippets = 'ModelConfirmDataChangeSnippet';
+    protected array $reactivateSnippets = ['ModelConfirmDataChangeSnippet'];
 
     /**
-     * @var \Psr\Http\Message\ServerRequestInterface
+     * @var ServerRequestInterface
      */
     protected ServerRequestInterface $request;
 
     /**
-     * @var \Zalt\Base\RequestInfo
+     * @var RequestInfo
      */
     protected RequestInfo $requestInfo;
 
@@ -378,7 +380,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array
      */
-    protected $searchFieldRenames = [];
+    protected array $searchFieldRenames = [];
 
     /**
      * An optional search session id.
@@ -387,7 +389,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var string
      */
-    protected $searchSessionId;
+    protected string $searchSessionId = '';
 
     /**
      * The parameters used for the show action
@@ -399,14 +401,14 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected $showParameters = [];
+    protected array $showParameters = [];
 
     /**
      * The snippets used for the show action
      *
      * @var array Array of snippets classes or names
      */
-    protected $showSnippets = [
+    protected array $showSnippets = [
         ModelDetailTableSnippet::class,
         ];
 
@@ -421,7 +423,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * @var array $summarizedActions Array of the actions that use a
      * summarized version of the model.
      */
-    public $summarizedActions = array('index', 'autofilter');
+    public array $summarizedActions = ['index', 'autofilter'];
 
     /**
      *
@@ -431,7 +433,6 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
 
     public function __construct(
         protected SnippetResponderInterface $responder,
-        protected SnippetLoader $snippetLoader,
         TranslatorInterface $translate)
     {
         $this->translate = $translate;
@@ -439,8 +440,8 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
         $this->html = new Sequence();
         $this->_snippetParams['htmlContent'] = $this->html;
         
-        \MUtil\Model::setDefaultBridge('display',  \Zalt\Model\Bridge\DisplayBridge::class);
-        \MUtil\Model::setDefaultBridge('table', \Zalt\Snippets\ModelBridge\TableBridge::class);
+        Model::setDefaultBridge('display',  DisplayBridge::class);
+        Model::setDefaultBridge('table', TableBridge::class);
     }
 
     /**
@@ -450,7 +451,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      */
     protected function _getIdParam(): ?string
     {
-        return $this->requestInfo->getParam(\MUtil\Model::REQUEST_ID);
+        return $this->requestInfo->getParam(Model::REQUEST_ID);
     }
 
     /**
@@ -458,7 +459,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * @param array $input
      * @return array
      */
-    protected function _processParameters(array $input)
+    protected function _processParameters(array $input): array
     {
         $output = [];
 
@@ -488,7 +489,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * @param string[]|string $filenames Names of snippets
      * @param \MUtil\Ra::pairs $parameter_value_pairs name/value pairs ot add to the source for this snippet
-     * @return mixed The snippet if content was possibly added.
+     * @return void
      */
     public function addSnippets(mixed $filenames, $parameter_value_pairs = null): void
     {
@@ -503,12 +504,12 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Set the action key in request
      *
-     * Use this when an action is a Ajax action for retrieving
+     * Use this when an action is an Ajax action for retrieving
      * information for use within the screen of another action
      *
      * @param string $alias
      */
-    protected function aliasAction($alias)
+    protected function aliasAction(string $alias): void
     {
         /**
          * TODO reimplement alias action
@@ -518,33 +519,22 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
         $request->setParam($request->getActionKey(), $alias);*/
     }
 
-    /**
-     * Apply this source to the target.
-     *
-     * @param \MUtil\Registry\TargetInterface $target
-     * @return boolean True if $target is OK with loaded requests
-     */
-    public function applySource(\MUtil\Registry\TargetInterface $target)
-    {
-        return $this->snippetLoader->getOverLoader()->applyToLegacyTarget($target);
-    }
-
 
     /**
      * The automatically filtered result
      *
      * @param $resetMvc bool When true only the filtered resulsts
      */
-    public function autofilterAction($resetMvc = true)
+    public function autofilterAction(bool $resetMvc = true): void
     {
-        // \MUtil\Model::$verbose = true;
+        // Model::$verbose = true;
 
         // We do not need to return the layout, just the above table
         if ($resetMvc) {
             // Make sure all links are generated as if the current request was index.
             $this->aliasAction('index');
 
-            \Zend_Layout::resetMvcInstance();
+            // \Zend_Layout::resetMvcInstance();
         }
 
         if ($this->autofilterSnippets) {
@@ -556,14 +546,14 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
         if ($resetMvc) {
             // Lazy call here, because any echo calls in the snippets have not yet been
             // performed. so they will appear only in the next call when not lazy.
-            $this->html->raw(\MUtil\Lazy::call(array('\\MUtil\\EchoOut\\EchoOut', 'out')));
+            $this->html->raw(Late::call(array('\\MUtil\\EchoOut\\EchoOut', 'out')));
         }
     }
 
     /**
      * Action for showing a create new item page
      */
-    public function createAction()
+    public function createAction(): void
     {
         if ($this->createEditSnippets) {
             $params = $this->_processParameters($this->createParameters + $this->createEditParameters + $this->_defaultCreateParameters);
@@ -581,14 +571,14 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @param boolean $detailed True when the current action is not in $summarizedActions.
      * @param string $action The current action.
-     * @return \
+     * @return ModelAbstract
      */
-    abstract protected function createModel($detailed, $action);
+    abstract protected function createModel(bool $detailed, string $action): ModelAbstract;
 
     /**
-     * Action for showing a deactivate item page
+     * Action for showing a deactivated item page
      */
-    public function deactivateAction()
+    public function deactivateAction(): void
     {
         if ($this->deactivateSnippets) {
             $params = $this->_processParameters($this->deactivateParameters);
@@ -598,9 +588,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     }
 
     /**
-     * Action for showing a delete item page
+     * Action for showing a deleted item page
      */
-    public function deleteAction()
+    public function deleteAction(): void
     {
         if ($this->deleteSnippets) {
             $params = $this->_processParameters($this->deleteParameters);
@@ -610,9 +600,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     }
 
     /**
-     * Action for showing a edit item page
+     * Action for showing an edit item page
      */
-    public function editAction()
+    public function editAction(): void
     {
         if ($this->createEditSnippets) {
             $params = $this->_processParameters($this->editParameters + $this->createEditParameters + $this->_defaultEditParameters);
@@ -626,7 +616,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * @param string $action The current action.
      * @return boolean True when this actions uses a form
      */
-    public function forForm($action)
+    public function forForm(string $action): bool
     {
         return in_array($action, $this->formActions);
     }
@@ -636,9 +626,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * Must be an array of arrays containing the input for TableBridge->setMultisort()
      *
-     * @return array or false
+     * @return array|bool or false
      */
-    public function getBrowseColumns(): mixed
+    public function getBrowseColumns(): bool|array
     {
         return false;
     }
@@ -648,9 +638,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @return array
      */
-    public function getCacheTags()
+    public function getCacheTags(): array
     {
-        return (array) $this->cacheTags;
+        return $this->cacheTags;
     }
 
     /**
@@ -658,29 +648,16 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @return string
      */
-    public function getDefaultImportTranslator()
+    public function getDefaultImportTranslator(): string
     {
         return 'default';
-    }
-
-    /**
-     * Get the possible translators for the import snippet.
-     *
-     * @return array of \MUtil\Model\ModelTranslatorInterface objects
-     */
-    public function getImportTranslators()
-    {
-        $trs = new \MUtil\Model\Translator\StraightTranslator($this->_('Direct import'));
-        $this->applySource($trs);
-
-        return array('default' => $trs);
     }
 
     /**
      *
      * @return boolean $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
      */
-    public function getIncludeNumericFilters()
+    public function getIncludeNumericFilters(): bool
     {
         return $this->includeNumericFilters;
     }
@@ -692,9 +669,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * parameter was added, because the most common use of action is a split between detailed
      * and summarized actions.
      *
-     * @return \MUtil\Model\ModelAbstract
+     * @return ModelAbstract
      */
-    protected function getModel()
+    protected function getModel(): ModelAbstract
     {
         $action = strtolower($this->requestInfo->getCurrentAction());
 
@@ -702,12 +679,12 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
         if (! ($this->_model && $this->_model->isMeta('action', $action))) {
             $detailed = ! $this->isSummarized($action);
 
-            $container = \MUtil\Model::getSource()->getContainer();
+            /*$container = Model::getSource()->getContainer();
             if ($container instanceof ServiceManager) {
                 $container->setService('action', $action);
                 $container->setService('detailed', $detailed);
                 $container->setService('forForm', $this->forForm($action));
-            }
+            }*/
 
             $this->_model = $this->createModel($detailed, $action);
             $this->_model->setMeta('action', $action);
@@ -741,7 +718,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * @param boolean $useRequest Use the request as source (when false, the session is used)
      * @return array
      */
-    public function getSearchData($useRequest = true)
+    public function getSearchData(bool $useRequest = true): array
     {
         if (is_array($this->_searchData)) {
             return $this->_searchData;
@@ -771,17 +748,17 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
             $data = $this->request->getQueryParams();
             $data += $this->request->getParsedBody();
 
-            if (isset($data[\MUtil\Model::AUTOSEARCH_RESET]) && $data[\MUtil\Model::AUTOSEARCH_RESET]) {
+            if (isset($data[Model::AUTOSEARCH_RESET]) && $data[Model::AUTOSEARCH_RESET]) {
                 // Clean up values
                 $sessionData = [];
 
-                //$request->setParam(\MUtil\Model::AUTOSEARCH_RESET, null);
+                //$request->setParam(Model::AUTOSEARCH_RESET, null);
             } else {
                 $data = $data + $sessionData;
             }
 
             // Always remove
-            unset($data[\MUtil\Model::AUTOSEARCH_RESET]);
+            unset($data[Model::AUTOSEARCH_RESET]);
 
             // Store cleaned values in session (we do not store the defaults now as they may change
             // depending on the request and this way the filter data responds to that).
@@ -810,7 +787,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
         // the filter itself, but the values should be stored in the session.
         //
         // Remove all empty values (but not arrays) from the filter
-        $this->_searchData = array_filter($data, function($i) { return is_array($i) || $i instanceof \DateTimeInterface || strlen($i); });
+        $this->_searchData = array_filter($data, function($i) { return is_array($i) || $i instanceof DateTimeInterface || strlen($i); });
 
         // \MUtil\EchoOut\EchoOut::track($this->_searchData, $this->searchSessionId);
 
@@ -824,7 +801,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @return array
      */
-    public function getSearchDefaults()
+    public function getSearchDefaults(): array
     {
         return $this->defaultSearchData;
     }
@@ -835,9 +812,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * @param boolean $useRequest Use the request as source (when false, the session is used)
      * @return array or false
      */
-    public function getSearchFilter($useRequest = true)
+    public function getSearchFilter(bool $useRequest = true): array
     {
-        if (false !== $this->_searchFilter) {
+        if (null !== $this->_searchFilter) {
             return $this->_searchFilter;
         }
 
@@ -887,7 +864,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Generic model based import action
      */
-    public function importAction()
+    public function importAction(): void
     {
         if ($this->importSnippets) {
             $params = $this->_processParameters($this->importParameters + $this->_defaultImportParameters);
@@ -899,8 +876,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Action for showing a browse page
      */
-    public function indexAction()
+    public function indexAction(): void
     {
+        $params = null;
         if ($this->indexStartSnippets || $this->indexStopSnippets) {
             $params = $this->_processParameters(
                 $this->indexParameters + $this->autofilterParameters + $this->_defaultAutofilterParameters
@@ -923,15 +901,15 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * @param string $action The current action.
      * @return boolean True when this actions uses only summary data
      */
-    public function isSummarized($action)
+    public function isSummarized(string $action): bool
     {
         return in_array($action, $this->summarizedActions);
     }
 
     /**
-     * Action for showing a reactivate item page
+     * Action for showing a reactivated item page
      */
-    public function reactivateAction()
+    public function reactivateAction(): void
     {
         if ($this->reactivateSnippets) {
             $params = $this->_processParameters($this->reactivateParameters);
@@ -943,7 +921,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Action for showing an item page
      */
-    public function showAction()
+    public function showAction(): void
     {
         if ($this->showSnippets) {
             $params = $this->_processParameters($this->showParameters);
