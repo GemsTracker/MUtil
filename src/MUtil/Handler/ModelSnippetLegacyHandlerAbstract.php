@@ -263,7 +263,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      */
     protected array $deleteSnippets = [
         ModelYesNoDeleteSnippet::class,
-        ];
+    ];
 
     /**
      * The parameters used for the edit actions, overrules any values in
@@ -410,7 +410,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      */
     protected array $showSnippets = [
         ModelDetailTableSnippet::class,
-        ];
+    ];
 
     /**
      * Array of the actions that use a summarized version of the model.
@@ -439,7 +439,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
 
         $this->html = new Sequence();
         $this->_snippetParams['htmlContent'] = $this->html;
-        
+
         Model::setDefaultBridge('display',  DisplayBridge::class);
         Model::setDefaultBridge('table', TableBridge::class);
     }
@@ -619,6 +619,13 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     public function forForm(string $action): bool
     {
         return in_array($action, $this->formActions);
+    }
+
+    protected function getActionName(string $action): string
+    {
+        $actionParts = explode('-', $action);
+        $capitalizedActionParts = array_map('ucfirst', $actionParts);
+        return lcfirst(join('', $capitalizedActionParts)) . 'Action';
     }
 
     /**
@@ -838,14 +845,14 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     {
         $this->request = $request;
         $this->requestInfo = $this->responder->processRequest($request);
-        
-        // Add all params to the Late stack (for e.g. routing 
+
+        // Add all params to the Late stack (for e.g. routing
         Late::addStack('request', $this->requestInfo->getParams());
-        
+
         // file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  var_export($this->requestInfo, true) . "\n", FILE_APPEND);
-        
+
         $action   = $this->requestInfo->getCurrentAction() ?: 'index';
-        $function = $action . 'Action';
+        $function = $this->getActionName($action);
 
 //        file_put_contents('data/logs/echo.txt', strtolower($this->requestInfo->getCurrentController()) . "\n", FILE_APPEND);
 //        file_put_contents('data/logs/echo.txt', $function . "\n", FILE_APPEND);
