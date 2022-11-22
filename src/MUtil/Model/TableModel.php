@@ -31,7 +31,7 @@ class TableModel extends \MUtil\Model\DatabaseModelAbstract
 
     /**
      *
-     * @param \Zend_Db_Table_Abstract $table An Zend abstract table or the table name
+     * @param string|\Zend_Db_Table_Abstract $table An Zend abstract table or the table name
      * @param string $altName An alternative name to use, default is the name of the table itself
      */
     public function __construct($table, $altName = null)
