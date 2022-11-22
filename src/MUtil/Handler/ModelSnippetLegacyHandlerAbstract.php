@@ -465,7 +465,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
 
         foreach ($input + $this->defaultParameters + $this->_defaultParameters as $key => $value) {
             if (is_string($value) && method_exists($this, $value)) {
-                $value = $this->$value($key);
+                $value = $this->$value();
 
                 if (is_integer($key) || ($value === null)) {
                     continue;
