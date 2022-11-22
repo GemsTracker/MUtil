@@ -235,7 +235,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array Mixed key => value array for snippet initialization
      */
-    protected array$deactivateParameters = [];
+    protected array $deactivateParameters = [];
 
     /**
      * The snippets used for the deactivate  action.
