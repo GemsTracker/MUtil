@@ -27,6 +27,7 @@ use Zalt\Model\Bridge\DisplayBridge;
 use Zalt\Ra\Ra;
 use Zalt\Snippets\ModelBridge\TableBridge;
 use Zalt\Snippets\ModelDetailTableSnippet;
+use Zalt\Snippets\ModelTableSnippet;
 use Zalt\Snippets\ModelYesNoDeleteSnippet;
 use Zalt\Snippets\Zend\ZendModelFormSnippet;
 use Zalt\SnippetsLoader\SnippetResponderInterface;
@@ -163,7 +164,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array snippets name
      */
-    protected array $autofilterSnippets = ['ModelTableSnippet'];
+    protected array $autofilterSnippets = [
+        ModelTableSnippet::class,
+        ];
 
     /**
      * Tags for cache cleanup after changes, passed to snippets
