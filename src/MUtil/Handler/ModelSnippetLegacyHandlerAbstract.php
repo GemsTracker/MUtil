@@ -797,7 +797,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
         // the filter itself, but the values should be stored in the session.
         //
         // Remove all empty values (but not arrays) from the filter
-        $this->_searchData = array_filter($data, function($i) { return is_array($i) || $i instanceof DateTimeInterface || strlen($i); });
+        $this->_searchData = array_filter($data, function($i) { return is_array($i) || $i instanceof DateTimeInterface || strlen((string)$i); });
 
         // \MUtil\EchoOut\EchoOut::track($this->_searchData, $this->searchSessionId);
 
