@@ -37,7 +37,7 @@ interface SnippetLoaderInterface
      * @param string $path
      * @return \MUtil\Snippets\SnippetLoaderInterface
      */
-    public function addPrefixPath($prefix, $path);
+    public function addPrefixPath(string $prefix, string|array $path, bool $prepend = true): self;
 
     /**
      * Searches and loads a .php snippet file.
