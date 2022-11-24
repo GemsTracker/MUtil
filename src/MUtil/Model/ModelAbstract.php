@@ -937,7 +937,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * instabilities as bridge objects are shared without knowledge
      *
      * @param string $identifier
-     * @param array $args Optional first of extra arguments
+     * @param array $args Optional extra arguments
      * @return \MUtil\Model\Bridge\BridgeAbstract
      */
     public function getBridgeFor($identifier, ...$args)
@@ -954,10 +954,10 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
             throw new \MUtil\Model\ModelException("Request for unknown bridge type $identifier.");
         }
 
-        // First parameter is always the model, using + replaces that value
-        $params = array($this) + func_get_args();
         $loader = \MUtil\Model::getBridgeLoader();
-        $bridge = $loader->create($bridges[$identifier], ...$params);
+        
+        // First parameter is always the model
+        $bridge = $loader->create($bridges[$identifier], $this, ...$args);
 
         return $bridge;
     }
