@@ -12,6 +12,8 @@
 
 namespace MUtil\Model\Dependency;
 
+use Zalt\Model\Dependency\DependencyInterface;
+
 /**
  * A dependency where a fixed array of values is returned for each value in the switch.
  *
@@ -207,7 +209,7 @@ class ValueSwitchDependency extends DependencyAbstract
      *
      * @param string $effectedField A field name
      * @param mixed $effectedSettings A single setting or an array of settings
-     * @return \MUtil\Model\Dependency\DependencyAbstract (continuation pattern)
+     * @return DependencyInterface (continuation pattern)
      */
     public function addEffected($effectedField, $effectedSettings): DependencyInterface
     {
