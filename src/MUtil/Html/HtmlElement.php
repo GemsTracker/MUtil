@@ -629,7 +629,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
         if (! $this->view instanceof \Zend_View_Abstract) {
             $this->view = \Zalt\Html\Html::getRenderer()->getView();
         }
-        return $this->render($this->view);
+        return $this->render($this->view) ?: '';
     }
 
     /**
