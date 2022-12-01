@@ -27,7 +27,6 @@ use Zalt\Model\Bridge\DisplayBridge;
 use Zalt\Ra\Ra;
 use Zalt\Snippets\ModelBridge\TableBridge;
 use Zalt\Snippets\ModelDetailTableSnippet;
-use Zalt\Snippets\ModelTableSnippet;
 use Zalt\Snippets\ModelYesNoDeleteSnippet;
 use Zalt\Snippets\Zend\ZendModelFormSnippet;
 use Zalt\SnippetsLoader\SnippetResponderInterface;
@@ -164,9 +163,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @var array snippets name
      */
-    protected array $autofilterSnippets = [
-        ModelTableSnippet::class,
-        ];
+    protected array $autofilterSnippets = ['ModelTableSnippet'];
 
     /**
      * Tags for cache cleanup after changes, passed to snippets
@@ -528,7 +525,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @param $resetMvc bool When true only the filtered resulsts
      */
-    public function autofilterAction(bool $resetMvc = true): void
+    public function autofilterAction(bool $resetMvc = true)
     {
         // Model::$verbose = true;
 
@@ -556,7 +553,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Action for showing a create new item page
      */
-    public function createAction(): void
+    public function createAction()
     {
         if ($this->createEditSnippets) {
             $params = $this->_processParameters($this->createParameters + $this->createEditParameters + $this->_defaultCreateParameters);
@@ -581,7 +578,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Action for showing a deactivated item page
      */
-    public function deactivateAction(): void
+    public function deactivateAction()
     {
         if ($this->deactivateSnippets) {
             $params = $this->_processParameters($this->deactivateParameters);
@@ -593,7 +590,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Action for showing a deleted item page
      */
-    public function deleteAction(): void
+    public function deleteAction()
     {
         if ($this->deleteSnippets) {
             $params = $this->_processParameters($this->deleteParameters);
@@ -605,7 +602,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Action for showing an edit item page
      */
-    public function editAction(): void
+    public function editAction()
     {
         if ($this->createEditSnippets) {
             $params = $this->_processParameters($this->editParameters + $this->createEditParameters + $this->_defaultEditParameters);
@@ -877,7 +874,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Generic model based import action
      */
-    public function importAction(): void
+    public function importAction()
     {
         if ($this->importSnippets) {
             $params = $this->_processParameters($this->importParameters + $this->_defaultImportParameters);
@@ -889,7 +886,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Action for showing a browse page
      */
-    public function indexAction(): void
+    public function indexAction()
     {
         $params = null;
         if ($this->indexStartSnippets || $this->indexStopSnippets) {
@@ -922,7 +919,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Action for showing a reactivated item page
      */
-    public function reactivateAction(): void
+    public function reactivateAction()
     {
         if ($this->reactivateSnippets) {
             $params = $this->_processParameters($this->reactivateParameters);
@@ -934,7 +931,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Action for showing an item page
      */
-    public function showAction(): void
+    public function showAction()
     {
         if ($this->showSnippets) {
             $params = $this->_processParameters($this->showParameters);
