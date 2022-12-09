@@ -237,7 +237,7 @@ class Renderer
             // Resolve first as this function as recursion heavy enough as it is.
             if ($value instanceof \Zalt\Late\LateInterface) {
                 if (! $stack) {
-                    $stack = \Zalt\Late::getStack();
+                    $stack = \Zalt\Late\Late::getStack();
                 }
                 // \MUtil\EchoOut\EchoOut::countOccurences('lazyIf');
                 while ($value instanceof \Zalt\Late\LateInterface) {

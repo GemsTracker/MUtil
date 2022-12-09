@@ -139,7 +139,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * @var array Local store of parameters
      */
-    private array $_snippetParams = [];
+    protected array $_snippetParams = [];
 
     /**
      * @var array local store of snippets
