@@ -139,7 +139,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * @var array Local store of parameters
      */
-    protected array $_snippetParams = [];
+    private array $_snippetParams = [];
 
     /**
      * @var array local store of snippets
@@ -903,7 +903,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
         $this->autofilterAction(false);
 
         if ($this->indexStopSnippets) {
-            $this->addSnippets($this->indexStopSnippets, $params);
+            // Do not set params here as this already happend with the start snippets
+            // (and setting them here overwrites the autofilter params.
+            $this->addSnippets($this->indexStopSnippets); // , $params);
         }
     }
 

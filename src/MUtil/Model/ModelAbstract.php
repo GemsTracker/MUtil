@@ -83,6 +83,8 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      */
     private $_keys;
 
+    private array $_maps = [];
+    
     /**
      * Contains the per field settings of the model
      *
@@ -547,6 +549,18 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
             $this->setFilter($value);
         }
 
+        return $this;
+    }
+
+    /**
+     * @param string $alias Alternative to map to
+     * @param string $fieldName Existing field
+     * @return \Zalt\Model\MetaModelInterface (continuation pattern)
+     */
+    public function addMap(string $alias, string $fieldName): MetaModelInterface
+    {
+        $this->_maps[$alias] = $fieldName;
+        
         return $this;
     }
 
@@ -1228,6 +1242,14 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
         return $this->_keys;
     }
 
+    /**
+     * @return array alternative id => field name
+     */
+    public function getMaps(): array
+    {
+        return $this->_maps;
+    }
+    
     /**
      * Get a model level variable named $key
      *
@@ -2314,7 +2336,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      */
     public function setKeys(array $keys)
     {
-        $this->_keys = array();
+        $this->_keys = [];
 
         if (count($keys) == 1) {
             $name = reset($keys);
@@ -2334,7 +2356,20 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
                 }
             }
         }
+        foreach ($this->_keys as $alias => $field) {
+            $this->_maps[$alias] = $field;    
+        }
 
+        return $this;
+    }
+
+    /**
+     * @param array $map alternative id => field name
+     * @return \Zalt\Model\MetaModelInterface  (continuation pattern)
+     */
+    public function setMaps(array $map): MetaModelInterface
+    {
+        $this->_maps = $map;
         return $this;
     }
 
