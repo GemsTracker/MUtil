@@ -146,9 +146,9 @@ class Renderer
         $stack = null;
 
         // Resolve first as this function as recursion heavy enough as it is.
-        if ($content instanceof \ZAlt\Late\LateInterface) {
+        if ($content instanceof \Zalt\Late\LateInterface) {
             // Resolve first as this function as recursion heavy enough as it is.
-            if ($content instanceof \MUtil\Late\LateInterface) {
+            if ($content instanceof \Zalt\Late\LateInterface) {
                 $stack = \Zalt\Late::getStack();
                 // \MUtil\EchoOut\EchoOut::countOccurences('lazyIf');
                 while ($content instanceof \Zalt\Late\LateInterface) {
@@ -156,8 +156,7 @@ class Renderer
                     $content = $content->__toValue($stack);
                 }
             }
-        }
-        if ($content instanceof \MUtil\Lazy\LazyInterface) {
+        } elseif ($content instanceof \MUtil\Lazy\LazyInterface) {
             // Resolve first as this function as recursion heavy enough as it is.
             if ($content instanceof \MUtil\Lazy\LazyInterface) {
                 $stack = \MUtil\Lazy::getStack();
@@ -238,7 +237,7 @@ class Renderer
             // Resolve first as this function as recursion heavy enough as it is.
             if ($value instanceof \Zalt\Late\LateInterface) {
                 if (! $stack) {
-                    $stack = \Zalt\Late::getStack();
+                    $stack = \Zalt\Late\Late::getStack();
                 }
                 // \MUtil\EchoOut\EchoOut::countOccurences('lazyIf');
                 while ($value instanceof \Zalt\Late\LateInterface) {

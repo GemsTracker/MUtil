@@ -863,7 +863,8 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
         }
 
 //        file_put_contents('data/logs/echo.txt', __FUNCTION__ . '(' . __LINE__ . '): ' . print_r($this->_snippetNames, true) . "\n", FILE_APPEND);
-//        file_put_contents('data/logs/echo.txt', __FUNCTION__ . '(' . __LINE__ . '): ' . array_keys($this->_snippetParams), true) . "\n", FILE_APPEND);
+//        file_put_contents('data/logs/echo.txt', __FUNCTION__ . '(' . __LINE__ . '): ' . print_r(array_keys($this->_snippetParams), true) . "\n", FILE_APPEND);
+//        file_put_contents('data/logs/echo.txt', __FUNCTION__ . '(' . __LINE__ . '): ' . get_class($this->_snippetParams['model']) . "\n", FILE_APPEND);
 
         if ($this->html->count() || (! $this->_snippetNames)) {
             $this->_snippetNames[] = 'HtmlContentSnippet';
@@ -902,7 +903,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
         $this->autofilterAction(false);
 
         if ($this->indexStopSnippets) {
-            $this->addSnippets($this->indexStopSnippets, $params);
+            // Do not set params here as this already happend with the start snippets
+            // (and setting them here overwrites the autofilter params.
+            $this->addSnippets($this->indexStopSnippets); // , $params);
         }
     }
 
