@@ -101,7 +101,7 @@ class Exhibitor extends \Zend_View_Helper_FormElement
 
             } elseif (is_object($function)) {
 
-                if (($function instanceof \MUtil\Html\ElementInterface)
+                if (($function instanceof \Zalt\Html\ElementInterface)
                     || method_exists($function, 'append')) {
 
                     $object = clone $function;
@@ -112,11 +112,11 @@ class Exhibitor extends \Zend_View_Helper_FormElement
             } elseif (is_string($function)) {
                 // Assume it is a html tag when a string
 
-                $result = \MUtil\Html::create($function, $result);
+                $result = \Zalt\Html\Html::create($function, $result);
             }
         }
 
-        if ($result instanceof \MUtil\Html\HtmlInterface) {
+        if ($result instanceof \Zalt\Html\HtmlInterface) {
             $escape = false;    // Html should not be escaped!
             $result = $result->render($this->view);
         }
