@@ -196,7 +196,7 @@ trait LaminasElementValidator
                             $errors   = $messages;
                         } else {
                             $messages = array_merge($messages, $validator->getMessages());
-                            $errors   = array_merge($errors,   $validator->getErrors());
+                            $errors   = array_merge($errors, array_keys($validator->getMessages()));
                         }
                     }
                 }
