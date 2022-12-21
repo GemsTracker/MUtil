@@ -22,9 +22,9 @@ namespace MUtil;
  */
 class Version
 {
-    const MAJOR = 1;
-    const MINOR = 9;
-    const BUILD = 66;
+    const MAJOR = 2;
+    const MINOR = 0;
+    const BUILD = 100;
 
     public static function get()
     {
