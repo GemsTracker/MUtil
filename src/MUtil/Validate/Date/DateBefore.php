@@ -73,26 +73,22 @@ class DateBefore extends DateAbstract
             $this->_beforeDate = new DateTimeImmutable();
         }
 
-        if ($this->_beforeDate instanceof \DateTimeInterface) {
-            $before = $this->_beforeDate;
-        } elseif (array_key_exists($this->_beforeDate, $context)) {
-            $before = DateTimeImmutable::createFromFormat($format, $context[$this->_beforeDate]);
-        } elseif ($this->_afterDate) {
-            $before = DateTimeImmutable::createFromFormat($format, $this->_beforeDate);
-        } else {
-            // No date specified, return true
-            return true;
+        $before = $this->getDateObject($this->_beforeValue);
+
+        if ($before === null && is_array($this->_beforeDate) && array_key_exists($this->_beforeDate, $context)) {
+            $before = $this->getDateObject($context[$this->_beforeDate]);
         }
+
         if (! $before) {
-            $this->_error(self::NO_VALIDFROM);
+            $this->error(self::NO_VALIDFROM);
             return false;
         }
         $this->_beforeValue = $before->format($format);
 
-        $check = DateTimeImmutable::createFromFormat($format, $value);
+        $check = $this->getDateObject($value);
 
         if ((! $check) || ($check->getTimestamp() > $before->getTimestamp())) {
-            $this->_error(self::NOT_BEFORE);
+            $this->error(self::NOT_BEFORE);
             return false;
         }
 

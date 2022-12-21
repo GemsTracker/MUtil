@@ -14,6 +14,8 @@ namespace MUtil\Validate\Date;
 
 use Laminas\Validator\AbstractValidator;
 use \MUtil\Model;
+use DateTimeInterface;
+use DateTimeImmutable;
 
 /**
  *
@@ -34,6 +36,19 @@ abstract class DateAbstract extends AbstractValidator
         if (null !== $dateFormat) {
             $this->setDateFormat($dateFormat);
         }
+        parent::__construct();
+    }
+
+    public function getDateObject($value): ?DateTimeInterface
+    {
+        if ($value instanceof DateTimeInterface) {
+            return $value;
+        }
+        if (is_string($value)) {
+            $format = $this->getDateFormat();
+            return DateTimeImmutable::createFromFormat($format, $value);
+        }
+        return null;
     }
 
     public function getDateFormat()

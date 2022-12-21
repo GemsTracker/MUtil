@@ -72,26 +72,23 @@ class DateAfter extends DateAbstract
             $this->_afterDate = new DateTimeImmutable();
         }
 
-        if ($this->_afterDate instanceof \DateTimeInterface) {
-            $after = $this->_afterDate;
-        } elseif (array_key_exists($this->_afterDate, $context)) {
-            $after = DateTimeImmutable::createFromFormat($format, $context[$this->_afterDate]);
-        } elseif ($this->_afterDate) {
-            $after = DateTimeImmutable::createFromFormat($format, $this->_afterDate);
-        } else {
-            // No date specified, return true
-            return true;
+
+        $after = $this->getDateObject($this->_afterDate);
+
+        if ($after === null && is_array($this->_afterDate) && array_key_exists($this->_afterDate, $context)) {
+            $after = $this->getDateObject($context[$this->_afterDate]);
         }
+
         if (! $after) {
-            $this->_error(self::NO_VALIDFROM);
+            $this->error(self::NO_VALIDFROM);
             return false;
         }
         $this->_afterValue = $after->format($format);
 
-        $check = DateTimeImmutable::createFromFormat($format, $value);
+        $check = $this->getDateObject($value);
 
         if ((! $check) || ($check->getTimestamp() < $after->getTimestamp())) {
-            $this->_error(self::NOT_AFTER);
+            $this->error(self::NOT_AFTER);
             return false;
         }
 
