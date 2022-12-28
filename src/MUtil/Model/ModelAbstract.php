@@ -14,6 +14,7 @@ use MUtil\Iterator\ItemCallbackIterator;
 use MUtil\Model;
 use Zalt\Late\Late;
 use Zalt\Late\RepeatableInterface;
+use Zalt\Model\Bridge\BridgeInterface;
 use Zalt\Model\Data\DataReaderInterface;
 use Zalt\Model\Data\FullDataInterface;
 use Zalt\Model\Dependency\DependencyInterface;
@@ -952,9 +953,9 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * @param string $identifier
      * @param array $args Optional extra arguments
-     * @return \MUtil\Model\Bridge\BridgeAbstract
+     * @return \MUtil\Model\Bridge\BridgeInterface
      */
-    public function getBridgeFor($identifier, ...$args)
+    public function getBridgeFor($identifier, ...$args): BridgeInterface
     {
         $bridges = $this->getMeta(\MUtil\Model::META_BRIDGES);
 
@@ -976,6 +977,11 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
         return $bridge;
     }
 
+    public function getBridgeForModel(DataReaderInterface $dataModel, $identifier, ...$args): BridgeInterface
+    {
+        return $this->getBridgeFor($identifier, ...$args);    
+    }   
+    
     /**
      * The number of item rows changed since the last save or delete
      *

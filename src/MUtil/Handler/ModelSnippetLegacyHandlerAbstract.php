@@ -14,7 +14,6 @@ namespace MUtil\Handler;
 use DateTimeInterface;
 use Mezzio\Session\SessionInterface;
 use MUtil\Model;
-use MUtil\Model\ModelAbstract;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,6 +23,7 @@ use Zalt\Base\TranslateableTrait;
 use Zalt\Html\Sequence;
 use Zalt\Late\Late;
 use Zalt\Model\Bridge\DisplayBridge;
+use Zalt\Model\Data\DataReaderInterface;
 use Zalt\Ra\Ra;
 use Zalt\Snippets\ModelBridge\TableBridge;
 use Zalt\Snippets\ModelDetailTableSnippet;
@@ -120,9 +120,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * Always retrieve using $this->getModel().
      *
-     * $var Model\ModelAbstract $_model The model in use
+     * $var DataReaderInterface $_model The model in use
      */
-    private ?ModelAbstract $_model = null;
+    private ?DataReaderInterface $_model = null;
 
     /**
      *
@@ -571,9 +571,9 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @param boolean $detailed True when the current action is not in $summarizedActions.
      * @param string $action The current action.
-     * @return ModelAbstract
+     * @return DataReaderInterface
      */
-    abstract protected function createModel(bool $detailed, string $action): ModelAbstract;
+    abstract protected function createModel(bool $detailed, string $action): DataReaderInterface;
 
     /**
      * Action for showing a deactivated item page
@@ -676,14 +676,14 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * parameter was added, because the most common use of action is a split between detailed
      * and summarized actions.
      *
-     * @return ModelAbstract
+     * @return DataReaderInterface
      */
-    protected function getModel(): ModelAbstract
+    protected function getModel(): DataReaderInterface
     {
         $action = strtolower($this->requestInfo->getCurrentAction());
 
         // Only get new model if there is no model or the model was for a different action
-        if (! ($this->_model && $this->_model->isMeta('action', $action))) {
+        if (! ($this->_model && $this->_model->getMetaModel()->isMeta('action', $action))) {
             $detailed = ! $this->isSummarized($action);
 
             /*$container = Model::getSource()->getContainer();
@@ -694,21 +694,21 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
             }*/
 
             $this->_model = $this->createModel($detailed, $action);
-            $this->_model->setMeta('action', $action);
+            $this->_model->getMetaModel()->setMeta('action', $action);
 
             // Detailed models DO NOT USE $_POST for filtering,
             // multirow models DO USE $_POST parameters for filtering.
-            $parameters = $this->request->getQueryParams();
-            if (!$detailed) {
-                $parameters += $this->request->getParsedBody();
-            }
+//            $parameters = $this->request->getQueryParams();
+//            if (!$detailed) {
+//                $parameters += $this->request->getParsedBody();
+//            }
+//
+//            // Remove all empty values (but not arrays)
+//            $parameters = array_filter($parameters, function($i) {
+//                return is_array($i) || strlen($i);
+//            });
 
-            // Remove all empty values (but not arrays)
-            $parameters = array_filter($parameters, function($i) {
-                return is_array($i) || strlen($i);
-            });
-
-            $this->_model->applyParameters($parameters, $this->includeNumericFilters);
+            // $this->_model->applyParameters($parameters, $this->includeNumericFilters);
         }
 
         return $this->_model;
