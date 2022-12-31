@@ -205,6 +205,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
         if (\MUtil\Model::$verbose) {
             \MUtil\EchoOut\EchoOut::pre($select, get_class($this) . ' select');
         }
+        // file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  (string) $select . "\n", FILE_APPEND);
 
         return $select;
     }
@@ -249,10 +250,8 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
                     if (1 == count($value)) {
                         if (isset($value[MetaModelInterface::FILTER_CONTAINS])) {
                             $output[] = $adapter->quoteInto($name . ' LIKE ?', '%' . $value['like'] . '%');
-                        } else {
-                            $output[$name] = reset($value);
+                            continue;
                         }
-                        continue;
                     }
                     if (2 == count($value)) {
                         if (isset($value[MetaModelInterface::FILTER_BETWEEN_MAX], $value[MetaModelInterface::FILTER_BETWEEN_MIN])) {
@@ -261,7 +260,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
                         }
                     }
                     if ($value) {
-                        $output[] = $name . ' IN (' . $adapter->quote($value) . ')';
+                        $output[] = $name . ' IN (' . implode(', ', array_map([$adapter, 'quote'], $value)) . ')';
                     } elseif ($and) {
                         // Never a result when a value should be one of an empty set.
                         return self::WHERE_NONE;
@@ -278,6 +277,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
         if (! $output) {
             return null;
         }
+        // file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  $name . ' ' . print_r($output, true) . "\n", FILE_APPEND);
         // \MUtil\EchoOut\EchoOut::track($and, $output);
         return '(' . implode($and ? ') AND (' : ') OR (', $output) . ')';
     }
