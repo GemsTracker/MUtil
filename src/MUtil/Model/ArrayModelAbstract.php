@@ -12,6 +12,8 @@
 
 namespace MUtil\Model;
 
+use Zalt\Model\MetaModelInterface;
+
 /**
  * Generic model for data storage that does not come with it's own
  * storage engine; e.g. text/xml files, directories, session arrays.
@@ -52,39 +54,51 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
      */
     protected function _applyFiltersToRow(array $row, array $filters, $logicalAnd)
     {
-        foreach ($filters as $name => $filter) {
-            if (is_callable($filter)) {
+        foreach ($filters as $name => $value) {
+            if (is_callable($value)) {
                 if (is_numeric($name)) {
-                    $value = $row;
+                    $val = $row;
                 } else {
-                    $value = isset($row[$name]) ? $row[$name] : null;
+                    $val = isset($row[$name]) ? $row[$name] : null;
                 }
-                $result = call_user_func($filter, $value);
+                $result = call_user_func($value, $val);
 
-            } elseif (is_array($filter)) {
-                if (is_numeric($name)) {
-                    $subFilter = $filter;
-                } else {
-                    $subFilter = array();
-                    foreach ($filter as $key => $val) {
-                        if (is_numeric($key)) {
-                            $subFilter[$name] = $val;
-                        } else {
-                            $subFilter[$key] = $val;
-                        }
+            } elseif (is_array($value)) {
+                $subFilter = null;
+                if (1 == count($value)) {
+                    if (isset($value[MetaModelInterface::FILTER_CONTAINS])) {
+                        $result = str_contains($row[$name], $value['like']);
+                    }
+                } elseif (2 == count($value)) {
+                    if (isset($value[MetaModelInterface::FILTER_BETWEEN_MAX], $value[MetaModelInterface::FILTER_BETWEEN_MIN])) {
+                        $result = ($row[$name] >= $value[MetaModelInterface::FILTER_BETWEEN_MIN]) && ($row[$name] <= $value[MetaModelInterface::FILTER_BETWEEN_MAX]);
                     }
                 }
-                $result = $this->_applyFiltersToRow($row, $subFilter, ! $logicalAnd);
-
+                if (null!== $subFilter) {
+                    if (is_numeric($name)) {
+                        $subFilter = $value;
+                    } else {
+                        $subFilter = array();
+                        foreach ($value as $key => $val) {
+                            if (is_numeric($key)) {
+                                $subFilter[$name] = $val;
+                            } else {
+                                $subFilter[$key] = $val;
+                            }
+                        }
+                    }
+                    $result = $this->_applyFiltersToRow($row, $subFilter, ! $logicalAnd);
+                }
+                
             } else {
                 if (is_numeric($name)) {
                     // Allow literal value interpretation
                     $result = (boolean) $value;
                 } else {
-                    $value = isset($row[$name]) ? $row[$name] : null;
-                    $result = ($value === $filter) || (0 === strcasecmp($value, $filter));
+                    $val    = isset($row[$name]) ? $row[$name] : null;
+                    $result = ($val === $value) || (0 === strcasecmp($value, $val));
                 }
-                // \MUtil\EchoOut\EchoOut::r($value . '===' . $filter . '=' . $result);
+                // \MUtil\EchoOut\EchoOut::r($value . '===' . $value . '=' . $result);
             }
 
             if ($logicalAnd xor $result) {

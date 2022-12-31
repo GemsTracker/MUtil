@@ -12,6 +12,7 @@
 namespace MUtil\Model;
 
 use MUtil\Model;
+use Zalt\Model\MetaModelInterface;
 
 /**
  * Class contains standard helper functions for using models
@@ -245,6 +246,20 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
                 if (null === $value) {
                     $output[] = $name . ' IS NULL';
                 } elseif (is_array($value)) {
+                    if (1 == count($value)) {
+                        if (isset($value[MetaModelInterface::FILTER_CONTAINS])) {
+                            $output[] = $adapter->quoteInto($name . ' LIKE ?', '%' . $value['like'] . '%');
+                        } else {
+                            $output[$name] = reset($value);
+                        }
+                        continue;
+                    }
+                    if (2 == count($value)) {
+                        if (isset($value[MetaModelInterface::FILTER_BETWEEN_MAX], $value[MetaModelInterface::FILTER_BETWEEN_MIN])) {
+                            $output[] = $adapter->quoteInto($name . ' BETWEEN ? AND ?', [$value[MetaModelInterface::FILTER_BETWEEN_MIN], $value[MetaModelInterface::FILTER_BETWEEN_MAX]], null, 2);
+                            continue;
+                        }
+                    }
                     if ($value) {
                         $output[] = $name . ' IN (' . $adapter->quote($value) . ')';
                     } elseif ($and) {
