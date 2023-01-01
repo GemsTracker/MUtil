@@ -68,10 +68,12 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
                 if (1 == count($value)) {
                     if (isset($value[MetaModelInterface::FILTER_CONTAINS])) {
                         $result = str_contains($row[$name], $value['like']);
+                        $subFilter = false;
                     }
                 } elseif (2 == count($value)) {
                     if (isset($value[MetaModelInterface::FILTER_BETWEEN_MAX], $value[MetaModelInterface::FILTER_BETWEEN_MIN])) {
                         $result = ($row[$name] >= $value[MetaModelInterface::FILTER_BETWEEN_MIN]) && ($row[$name] <= $value[MetaModelInterface::FILTER_BETWEEN_MAX]);
+                        $subFilter = false;
                     }
                 }
                 if (null!== $subFilter) {
