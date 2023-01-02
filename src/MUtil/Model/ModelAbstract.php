@@ -18,7 +18,9 @@ use Zalt\Model\Bridge\BridgeInterface;
 use Zalt\Model\Data\DataReaderInterface;
 use Zalt\Model\Data\FullDataInterface;
 use Zalt\Model\Dependency\DependencyInterface;
+use Zalt\Model\Exception\MetaModelException;
 use Zalt\Model\MetaModelInterface;
+use Zalt\Model\MetaModelLoader;
 use Zalt\Model\Transformer\ModelTransformerInterface;
 
 /**
@@ -977,11 +979,6 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
         return $bridge;
     }
 
-    public function getBridgeForModel(DataReaderInterface $dataModel, $identifier, ...$args): BridgeInterface
-    {
-        return $this->getBridgeFor($identifier, ...$args);    
-    }   
-    
     /**
      * The number of item rows changed since the last save or delete
      *
@@ -1275,7 +1272,12 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     {
         return $this;
     }
-
+    
+    public function getMetaModelLoader(): MetaModelLoader
+    {
+        throw new MetaModelException("No model loader in old style ModelAbstract");
+    }
+    
     /**
      * The internal name of the model, used for joining models and sub forms, etc...
      *
