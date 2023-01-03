@@ -21,7 +21,7 @@ use Zalt\Model\Dependency\DependencyInterface;
 use Zalt\Model\Exception\MetaModelException;
 use Zalt\Model\MetaModelInterface;
 use Zalt\Model\MetaModelLoader;
-use Zalt\Model\Transformer\ModelTransformerInterface;
+use Zalt\Model\Transform\ModelTransformerInterface;
 
 /**
  * A model combines knowedge about a set of data with knowledge required to manipulate

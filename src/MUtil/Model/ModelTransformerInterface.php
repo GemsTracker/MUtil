@@ -20,8 +20,8 @@ namespace MUtil\Model;
  * @copyright  Copyright (c) 2012 Erasmus MC
  * @license    New BSD License
  * @since      Class available since \MUtil version 1.2
- * @deprecated replaced by \Zalt\Model\Transformer\ModelTransformerInterface
+ * @deprecated replaced by \Zalt\Model\Transform\ModelTransformerInterface
  */
-interface ModelTransformerInterface extends \Zalt\Model\Transformer\ModelTransformerInterface
+interface ModelTransformerInterface extends \Zalt\Model\Transform\ModelTransformerInterface
 {
 }
