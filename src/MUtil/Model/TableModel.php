@@ -70,7 +70,7 @@ class TableModel extends \MUtil\Model\DatabaseModelAbstract
      * @param mixed $filter True to use the stored filter, array to specify a different filter
      * @return int The number of items deleted
      */
-    public function delete($filter = true)
+    public function delete($filter = null): int
     {
         return $this->_deleteTableData(
                 $this->_table,

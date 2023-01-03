@@ -210,7 +210,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      */
     protected function _checkFilterUsed($filter)
     {
-        if (true === $filter) {
+        if (null === $filter) {
             $filter = $this->getFilter();
         }
         if (is_array($filter)) {
@@ -307,7 +307,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param boolean $new True when it is a new item
      * @return array The possibly adapted array of values
      */
-    protected function _filterDataForSave(array $data, $new = false)
+    public function processRowBeforeSave(array $data, bool $new = false): array
     {
         // \MUtil\EchoOut\EchoOut::r($data, 'preFilter');
 
@@ -851,7 +851,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $filter True to use the stored filter, array to specify a different filter
      * @return int The number of items deleted
      */
-    abstract public function delete($filter = true);
+    abstract public function delete($filter = null): int;
 
     /**
      * Gets one or more values for a certain field name.
@@ -984,7 +984,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * @return int
      */
-    public function getChanged()
+    public function getChanged(): int
     {
         return $this->_changedCount;
     }
@@ -1117,15 +1117,11 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     /**
      * Returns all the field names that have the properties passed in the parameters
      *
-     * @param string|array $arrayOrKey1 A key => value array or the name of the first key
-     * @param mixed $value1 The value for $arrayOrKey1 or null when $arrayOrKey1 is an array
-     * @param string $key2 Optional second key when $arrayOrKey1 is a string
-     * @param mixed $value2 Optional second value when $arrayOrKey1 is a string, an unlimited number of $key values pairs can be given.
+     * @param array ...$args A single key value array or a sequence of items made into an array using Ra::pairs()
      * @return array Of names
      */
-    public function getItemsFor($arrayOrKey1, $value1 = null, $key2 = null, $value2 = null)
+    public function getItemsFor(...$args)
     {
-        $args    = func_get_args();
         $args    = \MUtil\Ra::pairs($args);
         $results = array();
 
@@ -1763,7 +1759,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return array
      */
-    public function loadPostData(array $postData, $create = false, $filter = true, $sort = true)
+    public function loadPostData(array $postData, $create = false, $filter = null, $sort = null)
     {
         $this->_model_enable_dependencies = false;
         if ($create) {
@@ -1856,7 +1852,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     {
         foreach ($this->_transformers as $transformer) {
             if ($transformer->triggerOnSaves()) {
-                $row = $transformer->transformRowAfterSave($this, $this->_filterDataForSave($row));
+                $row = $transformer->transformRowAfterSave($this, $this->processRowBeforeSave($row));
             } else {
                 $row = $transformer->transformRowAfterSave($this, $row);
             }

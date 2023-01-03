@@ -119,7 +119,7 @@ class SelectModel extends \MUtil\Model\DatabaseModelAbstract
      * @param mixed $filter True to use the stored filter, array to specify a different filter
      * @return int The number of items deleted
      */
-    public function delete($filter = true)
+    public function delete($filter = null): int
     {
         throw new \Exception('Cannot delete ' . __CLASS__ . ' data.');
     }

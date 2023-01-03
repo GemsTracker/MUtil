@@ -218,7 +218,7 @@ class UnionModel extends \MUtil\Model\ModelAbstract
      */
     protected function _save(array $newValues, array $filter = null)
     {
-        $newValues = $this->_filterDataForSave($newValues);
+        $newValues = $this->processRowBeforeSave($newValues);
 
         $newName = $this->getModelNameForRow($newValues);
 
@@ -347,7 +347,7 @@ class UnionModel extends \MUtil\Model\ModelAbstract
      * @param mixed $filter True to use the stored filter, array to specify a different filter
      * @return int The number of items deleted
      */
-    public function delete($filter = true)
+    public function delete($filter = null): int
     {
         $filter  = $this->_checkFilterUsed($filter);
         $deleted = 0;

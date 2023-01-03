@@ -344,7 +344,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
                 $tableCols[$name] = $name;
             }
         }
-        $data = $this->_filterDataForSave($data, $isNew);
+        $data = $this->processRowBeforeSave($data, $isNew);
 
         // \MUtil\EchoOut\EchoOut::track($tableCols, array_keys($data), array_intersect_key($data, $tableCols));
         return array_intersect_key($data, $tableCols);
