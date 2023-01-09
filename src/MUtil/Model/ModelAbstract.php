@@ -1650,7 +1650,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return array Nested array or false
      */
-    public function load($filter = true, $sort = true): array
+    public function load($filter = null, $sort = null): array
     {
         $data = $this->_load(
                 $this->_checkFilterUsed($filter),
@@ -1735,7 +1735,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      */
     public function loadIterator($filter = true, $sort = true)
     {
-        return new \ArrayIterator($this->load($filter, $sort));
+        return new \ArrayIterator($filter = null, $sort = null);
     }
 
     /**
@@ -1745,7 +1745,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return \Zend_Paginator
      */
-    public function loadPaginator($filter = true, $sort = true)
+    public function loadPaginator($filter = null, $sort = null)
     {
         return \Zend_Paginator::factory($this->load($filter, $sort));
     }

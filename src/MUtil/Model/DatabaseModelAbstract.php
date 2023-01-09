@@ -1088,7 +1088,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return \Traversable
      */
-    public function loadIterator($filter = true, $sort = true)
+    public function loadIterator($filter = null, $sort = null)
     {
         $iter = new \MUtil\Db\Iterator\SelectIterator($this->_createSelect(
             $this->_checkFilterUsed($filter),
@@ -1110,7 +1110,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return \Zend_Paginator
      */
-    public function loadPaginator($filter = true, $sort = true)
+    public function loadPaginator($filter = null, $sort = null)
     {
         $select  = $this->_createSelect(
             $this->_checkFilterUsed($filter),
