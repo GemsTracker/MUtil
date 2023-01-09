@@ -160,6 +160,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
             }
         }
 //        file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  print_r($filter, true) . "\n", FILE_APPEND);
+        $where = $this->_createWhere($filter, $adapter);
         if ($where) {
             $select->where($where);
         }
