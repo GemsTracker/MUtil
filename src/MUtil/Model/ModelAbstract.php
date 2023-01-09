@@ -210,7 +210,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      */
     protected function _checkFilterUsed($filter)
     {
-        if (null === $filter) {
+        if (null === $filter || true === $filter) {
             $filter = $this->getFilter();
         }
         if (is_array($filter)) {
@@ -240,7 +240,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      */
     protected function _checkSortUsed($sort)
     {
-        if (true === $sort) {
+        if (true === $sort || null === $sort) {
             $sort = $this->getSort();
         } elseif (false === $sort) {
             $sort = array();
@@ -1681,7 +1681,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return array An array or false
      */
-    public function loadFirst($filter = true, $sort = true): array
+    public function loadFirst($filter = null, $sort = null): array
     {
         $row = $this->_loadFirst(
                 $this->_checkFilterUsed($filter),

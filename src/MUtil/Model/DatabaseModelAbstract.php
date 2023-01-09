@@ -159,7 +159,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
                 unset($filter[$name]);
             }
         }
-        $where = $this->_createWhere($filter, $adapter);
+//        file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  print_r($filter, true) . "\n", FILE_APPEND);
         if ($where) {
             $select->where($where);
         }
@@ -205,7 +205,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
         if (\MUtil\Model::$verbose) {
             \MUtil\EchoOut\EchoOut::pre($select, get_class($this) . ' select');
         }
-        // file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  (string) $select . "\n", FILE_APPEND);
+//        file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  (string) $select . "\n", FILE_APPEND);
 
         return $select;
     }
