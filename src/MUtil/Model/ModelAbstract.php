@@ -1735,7 +1735,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      */
     public function loadIterator($filter = true, $sort = true)
     {
-        return new \ArrayIterator($filter = null, $sort = null);
+        return new \ArrayIterator($this->load($filter = null, $sort = null));
     }
 
     /**
