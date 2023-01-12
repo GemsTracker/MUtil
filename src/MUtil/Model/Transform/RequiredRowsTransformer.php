@@ -12,7 +12,10 @@
 
 namespace MUtil\Model\Transform;
 
+use MUtil\Model\ModelException;
+use MUtil\Model\ModelTransformerAbstract;
 use Zalt\Model\MetaModelInterface;
+use Zalt\Ra\Ra;
 
 /**
  * Transforms the output of a model->load() function to include required rows.
@@ -26,27 +29,27 @@ use Zalt\Model\MetaModelInterface;
  * @license    New BSD License
  * @since      Class available since version 1.0
  */
-class RequiredRowsTransformer extends \MUtil\Model\ModelTransformerAbstract
+class RequiredRowsTransformer extends ModelTransformerAbstract
 {
     /**
      * Contains default values for all missing row values
      *
-     * @var mixed Something that can be made into an array using \MUtil\Ra::to()
+     * @var mixed Something that can be made into an array using Ra::to()
      */
-    protected $_defaultRow;
+    protected object|array|null $_defaultRow = null;
 
     /**
      * The number of key values to compare, if empty the number of fields in the first required row
      *
      * @var int
      */
-    protected $_keyItemCount;
+    protected ?int $_keyItemCount = null;
 
     /**
      *
-     * @var mixed Something that can be made into an array using \MUtil\Ra::to()
+     * @var mixed Something that can be made into an array using Ra::to()
      */
-    protected $_requiredRows;
+    protected object|array|null $_requiredRows = null;
 
     /**
      *
@@ -55,7 +58,7 @@ class RequiredRowsTransformer extends \MUtil\Model\ModelTransformerAbstract
      * @param int $count
      * @return boolean True if the rows refer to the same row
      */
-    protected function _compareRows($required, $row, $count)
+    protected function _compareRows(array $required, array $row, int $count): bool
     {
         if ($row) {
             $val1 = reset($required);
@@ -80,22 +83,22 @@ class RequiredRowsTransformer extends \MUtil\Model\ModelTransformerAbstract
     /**
      * Returns the required rows set or calculates the rows using the $model and the required rows info
      *
-     * @param \MUtil\Model\ModelAbstract $model Optional model for calculation
+     * @param MetaModelInterface $model Optional model for calculation
      * @return array
-     * @throws \MUtil\Model\ModelException
+     * @throws ModelException
      */
-    public function getDefaultRow(\MUtil\Model\ModelAbstract $model = null)
+    public function getDefaultRow(MetaModelInterface $model = null): array
     {
         if (! $this->_defaultRow) {
             $requireds = $this->getRequiredRows();
-            $required  = \MUtil\Ra::to(reset($requireds));
+            $required  = Ra::to(reset($requireds));
 
             if (! $this->_keyItemCount) {
                 $this->setKeyItemCount(count($required));
             }
 
-            if ($required && ($model instanceof \MUtil\Model\ModelAbstract)) {
-                $defaults = array();
+            if ($required) {
+                $defaults = [];
                 foreach ($model->getItemNames() as $name) {
                     if (! array_key_exists($name, $required)) {
                         $defaults[$name] = null;
@@ -103,10 +106,10 @@ class RequiredRowsTransformer extends \MUtil\Model\ModelTransformerAbstract
                 }
                 $this->_defaultRow = $defaults;
             } else {
-                throw new \MUtil\Model\ModelException('Cannot create default row without model and required rows.');
+                throw new ModelException('Cannot create default row without model and required rows.');
             }
         } elseif (! is_array($this->_defaultRow)) {
-            $this->_defaultRow = \MUtil\Ra::to($this->_defaultRow);
+            $this->_defaultRow = Ra::to($this->_defaultRow);
         }
 
         return $this->_defaultRow;
@@ -117,10 +120,11 @@ class RequiredRowsTransformer extends \MUtil\Model\ModelTransformerAbstract
      *
      * @return int
      */
-    public function getKeyItemCount()
+    public function getKeyItemCount(): int
     {
         if (! $this->_keyItemCount) {
-            $required = \MUtil\Ra::to(reset($this->getRequiredRows()));
+            $requiredRows = $this->getRequiredRows();
+            $required = Ra::to(reset($requiredRows));
             $this->setKeyItemCount(count($required));
         }
 
@@ -132,10 +136,10 @@ class RequiredRowsTransformer extends \MUtil\Model\ModelTransformerAbstract
      *
      * @return array
      */
-    public function getRequiredRows()
+    public function getRequiredRows(): array
     {
         if (! is_array($this->_requiredRows)) {
-            $this->_requiredRows = \MUtil\Ra::to($this->_requiredRows);
+            $this->_requiredRows = Ra::to($this->_requiredRows);
         }
 
         return $this->_requiredRows;
@@ -144,25 +148,25 @@ class RequiredRowsTransformer extends \MUtil\Model\ModelTransformerAbstract
     /**
      * Contains default values for all missing row values
      *
-     * @param mixed $defaultRow Something that can be made into an array using \MUtil\Ra::to()
-     * @return \MUtil\Model\Transform\RequiredRowsTransformer
-     * @throws \MUtil\Model\ModelException
+     * @param mixed $defaultRow Something that can be made into an array using Ra::to()
+     * @return self
+     * @throws ModelException
      */
-    public function setDefaultRow($defaultRow)
+    public function setDefaultRow(object|array $defaultRow): self
     {
-        if (\MUtil\Ra::is($defaultRow)) {
+        if (Ra::is($defaultRow)) {
             $this->_defaultRow = $defaultRow;
             return $this;
         }
 
-        throw new \MUtil\Model\ModelException('Invalid parameter type for ' . __FUNCTION__ . ': $rows cannot be converted to an array.');
+        throw new ModelException('Invalid parameter type for ' . __FUNCTION__ . ': $rows cannot be converted to an array.');
     }
 
     /**
      * The number of key values to compare
      *
      * @param int $count
-     * @return \MUtil\Model\Transform\RequiredRowsTransformer
+     * @return self
      */
     public function setKeyItemCount($count)
     {
@@ -173,25 +177,25 @@ class RequiredRowsTransformer extends \MUtil\Model\ModelTransformerAbstract
     /**
      * The keys for the required rows
      *
-     * @param mixed $rows Something that can be made into an array using \MUtil\Ra::to()
-     * @return \MUtil\Model\Transform\RequiredRowsTransformer
-     * @throws \MUtil\Model\ModelException
+     * @param mixed $rows Something that can be made into an array using Ra::to()
+     * @return RequiredRowsTransformer
+     * @throws ModelException
      */
-    public function setRequiredRows($rows)
+    public function setRequiredRows(object|array $rows): self
     {
-        if (\MUtil\Ra::is($rows)) {
+        if (Ra::is($rows)) {
             $this->_requiredRows = $rows;
             return $this;
         }
 
-        throw new \MUtil\Model\ModelException('Invalid parameter type for ' . __FUNCTION__ . ': $rows cannot be converted to an array.');
+        throw new ModelException('Invalid parameter type for ' . __FUNCTION__ . ': $rows cannot be converted to an array.');
     }
 
     /**
      * The transform function performs the actual transformation of the data and is called after
      * the loading of the data in the source model.
      *
-     * @param \MUtil\Model\ModelAbstract $model The parent model
+     * @param MetaModelInterface $model The parent model
      * @param array $data Nested array
      * @param boolean $new True when loading a new item
      * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
@@ -202,19 +206,23 @@ class RequiredRowsTransformer extends \MUtil\Model\ModelTransformerAbstract
         $defaults  = $this->getDefaultRow($model);
         $keyCount  = $this->getKeyItemCount();
         $requireds = $this->getRequiredRows();
-        $data      = \MUtil\Ra::to($data, \MUtil\Ra::RELAXED);
+        $data      = Ra::to($data, Ra::RELAXED);
         $results   = array();
         if (! $data) {
             foreach ($requireds as $key => $required) {
                 $results[$key] = $required + $defaults;
             }
         } else {
-            $row = reset($data);
-            foreach ($requireds as $key => $required) {
-                if ($this->_compareRows($required, $row, $keyCount)) {
-                    $results[$key] = $row + $required;
-                    $row = next($data);
-                } else {
+            foreach($requireds as $key => $required) {
+                $exists = false;
+                foreach($data as $row) {
+                    if ($this->_compareRows($required, $row, $keyCount)) {
+                        $results[$key] = $row + $required;
+                        $exists = true;
+                        break;
+                    }
+                }
+                if (!$exists) {
                     $results[$key] = $required + $defaults;
                 }
             }
