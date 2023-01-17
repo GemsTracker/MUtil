@@ -378,7 +378,7 @@ class Model
             }
         }
         
-        if (! isset($date)) {
+        if (! $date) {
             return null;
         }
         
