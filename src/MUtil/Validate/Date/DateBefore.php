@@ -67,7 +67,6 @@ class DateBefore extends DateAbstract
      */
     public function isValid($value, $context = null)
     {
-        file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  get_class($value) . "\n", FILE_APPEND);
         $format = $this->getDateFormat();
 
         if (null === $this->beforeDate) {
