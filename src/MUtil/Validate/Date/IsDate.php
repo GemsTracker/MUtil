@@ -32,7 +32,7 @@ class IsDate extends DateAbstract
     /**
      * @var array Message templates
      */
-    protected $_messageTemplates = array(
+    protected $messageTemplates = array(
         self::NOT_VALID_DATE => '%value% is not a valid date.',
     );
 
@@ -52,7 +52,7 @@ class IsDate extends DateAbstract
     {
         $date = DateTimeImmutable::createFromFormat($this->getDateFormat(), $value);
         if (! $date) {
-            $this->_error(self::NOT_VALID_DATE, $value);
+            $this->error(self::NOT_VALID_DATE, $value);
             return false;
         }
 
@@ -65,7 +65,7 @@ class IsDate extends DateAbstract
             return true;
         }
 
-        $this->_error(self::NOT_VALID_DATE, $value);
+        $this->error(self::NOT_VALID_DATE, $value);
         return false;
     }
 }

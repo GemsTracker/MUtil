@@ -33,7 +33,7 @@ class DateAfter extends DateAbstract
     /**
      * @var array Message templates
      */
-    protected $_messageTemplates = array(
+    protected $messageTemplates = array(
         self::NOT_AFTER => "Date should be '%dateAfter%' or later.",
         self::NO_VALIDFROM => "Should be empty if valid from date is not set."
     );
@@ -41,17 +41,17 @@ class DateAfter extends DateAbstract
     /**
      * @var array
      */
-    protected $_messageVariables = array(
-        'dateAfter' => '_afterValue',
+    protected $messageVariables = array(
+        'dateAfter' => 'afterValue',
     );
 
-    protected $_afterDate;
-    protected $_afterValue;
+    protected $afterDate;
+    protected $afterValue;
 
     public function __construct($afterDate = null, $format = 'd-m-Y')
     {
         parent::__construct($format);
-        $this->_afterDate = $afterDate;
+        $this->afterDate = $afterDate;
     }
 
     /**
@@ -67,24 +67,23 @@ class DateAfter extends DateAbstract
     public function isValid($value, $context = null)
     {
         $format = $this->getDateFormat();
-        
-        if (null === $this->_afterDate) {
-            $this->_afterDate = new DateTimeImmutable();
-        }
 
-
-        $after = $this->getDateObject($this->_afterDate);
-
-        if ($after === null && is_array($this->_afterDate) && array_key_exists($this->_afterDate, $context)) {
-            $after = $this->getDateObject($context[$this->_afterDate]);
+        if (null === $this->afterDate) {
+            $after = new DateTimeImmutable();
+        } elseif ($this->afterDate instanceof \DateTimeInterface) {
+            $after = $this->beforeDate;
+        } elseif (isset($context[$this->afterDate])) {
+            $after = $this->getDateObject($context[$this->afterDate]);
+        } else {
+            $after = false;
         }
 
         if (! $after) {
             $this->error(self::NO_VALIDFROM);
             return false;
         }
-        $this->_afterValue = $after->format($format);
 
+        $this->afterValue = $after->format($this->getDateFormat());
         $check = $this->getDateObject($value);
 
         if ((! $check) || ($check->getTimestamp() < $after->getTimestamp())) {

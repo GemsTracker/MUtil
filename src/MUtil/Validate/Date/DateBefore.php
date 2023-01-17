@@ -33,7 +33,7 @@ class DateBefore extends DateAbstract
     /**
      * @var array Message templates
      */
-    protected $_messageTemplates = array(
+    protected $messageTemplates = array(
         self::NOT_BEFORE => "Date should be '%dateBefore%' or earlier.",
         self::NO_VALIDFROM => "Should be empty if valid after date is not set."
     );
@@ -41,17 +41,17 @@ class DateBefore extends DateAbstract
     /**
      * @var array
      */
-    protected $_messageVariables = array(
-        'dateBefore' => '_beforeValue',
+    protected $messageVariables = array(
+        'dateBefore' => 'beforeValue',
     );
 
-    protected $_beforeDate;
-    protected $_beforeValue;
+    protected $beforeDate;
+    protected $beforeValue;
 
-    public function __construct($beforeDate = null, $format = 'dd-MM-yyyy')
+    public function __construct($beforeDate = null, $format = 'd-m-Y')
     {
         parent::__construct($format);
-        $this->_beforeDate = $beforeDate;
+        $this->beforeDate = $beforeDate;
     }
 
     /**
@@ -67,24 +67,25 @@ class DateBefore extends DateAbstract
      */
     public function isValid($value, $context = null)
     {
+        file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  get_class($value) . "\n", FILE_APPEND);
         $format = $this->getDateFormat();
 
-        if (null === $this->_beforeDate) {
-            $this->_beforeDate = new DateTimeImmutable();
+        if (null === $this->beforeDate) {
+            $before = new DateTimeImmutable();
+        } elseif ($this->beforeDate instanceof \DateTimeInterface) {
+            $before = $this->beforeDate;
+        } elseif (isset($context[$this->beforeDate])) {
+            $before = $this->getDateObject($context[$this->beforeDate]);
+        } else {
+            $before = false;
         }
-
-        $before = $this->getDateObject($this->_beforeValue);
-
-        if ($before === null && is_array($this->_beforeDate) && array_key_exists($this->_beforeDate, $context)) {
-            $before = $this->getDateObject($context[$this->_beforeDate]);
-        }
-
+        
         if (! $before) {
             $this->error(self::NO_VALIDFROM);
             return false;
         }
-        $this->_beforeValue = $before->format($format);
-
+       
+        $this->beforeValue = $before->format($this->getDateFormat());
         $check = $this->getDateObject($value);
 
         if ((! $check) || ($check->getTimestamp() > $before->getTimestamp())) {
