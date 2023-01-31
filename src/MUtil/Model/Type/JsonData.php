@@ -13,6 +13,10 @@ namespace MUtil\Model\Type;
 
 use MUtil\Html\HtmlElement;
 use MUtil\Model\ModelAbstract;
+use Zalt\Html\Html;
+use Zalt\Html\HtmlInterface;
+use Zalt\Html\Sequence;
+use Zalt\Html\TableElement;
 
 /**
  *
@@ -79,41 +83,41 @@ class JsonData
     /**
      * Displays the content
      *
-     * @param string $value
+     * @param mixed $value
      * @return string|HtmlElement
      */
-    public function formatDetailed(string $value): string|HtmlElement
+    public function formatDetailed(mixed $value): string|HtmlElement
     {
         if ((null === $value) || is_scalar($value)) {
             return $value;
         }
         if (! is_array($value)) {
-                return \MUtil\Html\TableElement::createArray($value)
+                return TableElement::createArray($value)
                         ->appendAttrib('class', 'jsonNestedObject');
         }
         foreach ($value as $key => $val) {
-            if (! (is_int($key) && (is_scalar($val) || ($val instanceof \MUtil\Html\HtmlInterface)))) {
-                return \MUtil\Html\TableElement::createArray($value)
+            if (! (is_int($key) && (is_scalar($val) || ($val instanceof HtmlInterface)))) {
+                return TableElement::createArray($value)
                         ->appendAttrib('class', 'jsonNestedArray');
             }
         }
-        return \MUtil\Html::create('ul', $value, ['class' => 'jsonArrayList']);
+        return Html::create('ul', $value, ['class' => 'jsonArrayList']);
     }
 
     /**
      * Displays the content
      *
-     * @param string $value
-     * @return string
+     * @param mixed $value
+     * @return string|HtmlElement
      */
-    public function formatTable(string $value): string|HtmlElement
+    public function formatTable(mixed $value): string|HtmlElement
     {
         if ((null === $value) || is_scalar($value)) {
             return $value;
         }
         if (is_array($value)) {
             $i = 0;
-            $output = new \MUtil\Html\Sequence();
+            $output = new Sequence();
             $output->setGlue($this->_separator);
             foreach ($value as $val) {
                 if ($i++ > $this->_maxTable) {
@@ -124,7 +128,7 @@ class JsonData
             }
             return $output;
         }
-        return \MUtil\Html\TableElement::createArray($value);
+        return TableElement::createArray($value);
     }
 
     /**
