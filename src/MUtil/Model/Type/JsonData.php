@@ -11,9 +11,10 @@
 
 namespace MUtil\Model\Type;
 
-use MUtil\Html\HtmlElement;
 use MUtil\Model\ModelAbstract;
+use Zalt\Html\ElementInterface;
 use Zalt\Html\Html;
+use Zalt\Html\HtmlElement;
 use Zalt\Html\HtmlInterface;
 use Zalt\Html\Sequence;
 use Zalt\Html\TableElement;
@@ -84,9 +85,9 @@ class JsonData
      * Displays the content
      *
      * @param mixed $value
-     * @return string|HtmlElement
+     * @return string|ElementInterface
      */
-    public function formatDetailed(mixed $value): string|HtmlElement
+    public function formatDetailed(mixed $value): string|ElementInterface
     {
         if ((null === $value) || is_scalar($value)) {
             return $value;
@@ -108,9 +109,9 @@ class JsonData
      * Displays the content
      *
      * @param mixed $value
-     * @return string|HtmlElement
+     * @return string|ElementInterface
      */
-    public function formatTable(mixed $value): string|HtmlElement
+    public function formatTable(mixed $value): string|ElementInterface
     {
         if ((null === $value) || is_scalar($value)) {
             return $value;
