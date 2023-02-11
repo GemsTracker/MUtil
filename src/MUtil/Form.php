@@ -10,12 +10,18 @@
 
 namespace MUtil;
 
+use Zalt\Html\ElementInterface;
+use Zalt\Html\Html;
+use Zalt\Html\Sequence;
+use Zalt\Html\Zend\ZendDlElement;
+use Zalt\Html\Zend\ZendElementDecorator;
+use Zalt\Html\Zend\ZendFormLayout;
+use Zalt\Ra\Ra;
+
 /**
  * Extends a \Zend_Form with automatic JQuery activation,
- * \MUtil\Html rendering integration and non-css stylesheet per
+ * \Zalt\Html rendering integration and non-css stylesheet per
  * form (possibly automatically calculated) fixed label widths.
- *
- * @see \MUtil\Html
  *
  * @package    MUtil
  * @subpackage Form
@@ -60,18 +66,14 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
     /**
      * Option value for fixed label width for label elements redered with \MUtil\Html\LabelElement
      *
-     * @see \MUtil\Html\LabelElement
-     *
      * @var int
      */
     protected $_labelWidth;
 
     /**
      * Option value to set the fixed label with for label elements redered with
-     * \MUtil\Html\LabelElement by takeing the strlen of the longest label times
+     * \Zalt\Html\LabelElement by takeing the strlen of the longest label times
      * this factor
-     *
-     * @see \MUtil\Html\LabelElement
      *
      * @var float
      */
@@ -496,11 +498,11 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
     {
         if (! $this->_html_element) {
             foreach ($this->_decorators as $decorator) {
-                if ($decorator instanceof \MUtil\Html\ElementDecorator) {
+                if ($decorator instanceof \MUtil\Html\ElementDecorator || $decorator instanceof ZendElementDecorator) {
                     break;
                 }
             }
-            if ($decorator instanceof \MUtil\Html\ElementDecorator) {
+            if ($decorator instanceof \MUtil\Html\ElementDecorator || $decorator instanceof ZendElementDecorator) {
                 $this->_html_element = $decorator->getHtmlElement();
             } else {
                 $this->setHtml();
@@ -516,8 +518,6 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
      * \MUtil\Html\LabelElement by takeing the strlen of the longest label times
      * this factor
      *
-     * @see \MUtil\Html\LabelElement
-     *
      * @var float
      */
     public function getLabelWidth()
@@ -529,8 +529,6 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
      * Value to set the fixed label with for label elements redered with
      * \MUtil\Html\LabelElement by takeing the strlen of the longest label times
      * this factor
-     *
-     * @see \MUtil\Html\LabelElement
      *
      * @var float
      */
@@ -753,9 +751,9 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
      */
     public function setHtml($html = null, $args = null)
     {
-        $options = \MUtil\Ra::args(func_get_args(), 1);
+        $options = Ra::args(func_get_args(), 1);
 
-        if ($html instanceof \MUtil\Html\ElementInterface) {
+        if ($html instanceof \MUtil\Html\ElementInterface || $html instanceof ElementInterface) {
             if ($options) {
                 foreach ($options as $name => $option) {
                     if (is_int($name)) {
@@ -766,16 +764,17 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
                 }
             }
         } elseif (null == $html) {
-            $html = new \MUtil\Html\Sequence($options);
+            $html = new Sequence($options);
         } else {
-            $html = \MUtil\Html::createArray($html, $options);
+            $html = Html::createArray($html, $options);
         }
 
-        if ($html instanceof \MUtil\Html\FormLayout) {
+        if ($html instanceof \MUtil\Html\FormLayout || $html instanceof ZendFormLayout) {
             $html->setAsFormLayout($this);
         } else {
             // Set this element as the form decorator
-            $decorator = new \MUtil\Html\ElementDecorator();
+            $decorator = new ZendElementDecorator();
+            $decorator = new ZendElementDecorator();
             $decorator->setHtmlElement($html);
             // $decorator->setPrologue($formrep); // Renders hidden elements before this element
             $this->setDecorators(array($decorator, 'AutoFocus', 'Form'));
@@ -796,7 +795,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
     {
         $this->_labelWidth = $width;
 
-        $layout = new \MUtil\Html\DlElement();
+        $layout = new DlElement();
         $layout->setAsFormLayout($this, $width, $this->getDisplayOrder());
 
         $this->_html_element = $layout;
@@ -815,7 +814,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
     {
         $this->_labelWidthFactor = $factor;
 
-        $layout = new \MUtil\Html\DlElement();
+        $layout = new ZendDlElement();
         $layout->setAutoWidthFormLayout($this, $factor, $this->getDisplayOrder());
 
         $this->_html_element = $layout;

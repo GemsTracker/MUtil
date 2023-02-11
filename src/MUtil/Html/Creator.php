@@ -95,7 +95,6 @@ class Creator
         'menu'              => '\\MUtil\\Html\\ListElement::menu',
         'ol'                => '\\MUtil\\Html\\ListElement::ol',
         'pagePanel'         => '\\MUtil\\Html\\PagePanel::pagePanel',
-        'pForm'             => '\\MUtil\\Html\\PFormElement::pForm',
         'progress'          => '\\MUtil\\Html\\ProgressPanel::progress',
         'progressPanel'     => '\\MUtil\\Html\\ProgressPanel::progress',
         'raw'               => '\\MUtil\\Html\\Raw::raw',
