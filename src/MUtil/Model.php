@@ -438,16 +438,8 @@ class Model
      * @param boolean $setExisting When true the source is set for all exiting loaders
      * @return void
      */
-    public static function setSource(ProjectOverloader $source, $setExisting = true)
+    public static function setSource(ProjectOverloader $projectOverloader, $setExisting = true)
     {
-        self::$_source = $source;
-
-        if ($setExisting) {
-            foreach (self::$_loaders as $loader) {
-                if ($loader instanceof ProjectOverloader) {
-                    $loader->setSource($source);
-                }
-            }
-        }
+        self::$_source = $projectOverloader;
     }
 }
