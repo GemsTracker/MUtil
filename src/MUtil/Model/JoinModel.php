@@ -135,7 +135,7 @@ class JoinModel extends \MUtil\Model\DatabaseModelAbstract
                 $joinSql[] = $adapter->quoteIdentifier($source) . ' = ' . $adapter->quoteIdentifier($target);
             }
         }
-        
+
         $this->_joinTables[$alias] = $joinFields;
         if ($tableName != $alias) {
             $tableName = array($alias => $tableName);
@@ -224,8 +224,8 @@ class JoinModel extends \MUtil\Model\DatabaseModelAbstract
                         $newValues[$source] = $newValues[$target];
 
                     } elseif ((strlen($newValues[$target]) > 0) &&
-                            (strlen($newValues[$source]) > 0) &&
-                            $newValues[$target] != $newValues[$source]) {
+                        (strlen($newValues[$source]) > 0) &&
+                        $newValues[$target] != $newValues[$source]) {
                         // Join key values changed.
                         //
                         // Set the old values as the filter
@@ -239,14 +239,14 @@ class JoinModel extends \MUtil\Model\DatabaseModelAbstract
                         $newValues[$target] = $newValues[$source];
                     }
                 } elseif ($target instanceof \Zend_Db_Expr &&
-                        (! (isset($newValues[$source]) && $newValues[$source]))) {
+                    (! (isset($newValues[$source]) && $newValues[$source]))) {
                     $newValues[$source] = $target;
                 }
             }
 
             //$this->_saveTableData returns the new row values, including any automatic changes.
             $newValues = $this->_saveTableData($this->_tables[$tableName], $newValues, $filter, $saveMode)
-                    + $oldValues;
+                + $oldValues;
             // \MUtil\EchoOut\EchoOut::track($oldValues, $newValues, $filter);
             $oldValues = $newValues;
         }
@@ -344,14 +344,17 @@ class JoinModel extends \MUtil\Model\DatabaseModelAbstract
         $saveTables = $this->_checkSaveTables($saveTables);
         $filter     = $this->_checkFilterUsed($filter);
 
+        $changed = 0;
         if ($this->_deleteValues) {
             // First get the old values so we can have all the key values
             $oldValues = $this->loadFirst($filter);
 
             // Add the oldValues to the save
-            $changed = $this->save($this->_deleteValues + $oldValues, $filter, $saveTables);
+            $newValues = $this->save($this->_deleteValues + $oldValues, $filter, $saveTables);
+            if ($newValues) {
+                $changed = 1;
+            }
         } else {
-            $changed = 0;
             foreach ($saveTables as $tableName => $saveMode) {
                 $table_filter = array();
                 $delete       = $saveMode & self::SAVE_MODE_DELETE;
