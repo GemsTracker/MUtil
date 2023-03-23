@@ -862,8 +862,8 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
             return $result;
         }
 
-//        file_put_contents('data/logs/echo.txt', __FUNCTION__ . '(' . __LINE__ . '): ' . print_r($this->_snippetNames, true) . "\n", FILE_APPEND);
-//        file_put_contents('data/logs/echo.txt', __FUNCTION__ . '(' . __LINE__ . '): ' . print_r(array_keys($this->_snippetParams), true) . "\n", FILE_APPEND);
+//        dump($this->_snippetNames);
+//        dump(array_keys($this->_snippetParams));
 //        file_put_contents('data/logs/echo.txt', __FUNCTION__ . '(' . __LINE__ . '): ' . get_class($this->_snippetParams['model']) . "\n", FILE_APPEND);
 
         if ($this->html->count() || (! $this->_snippetNames)) {

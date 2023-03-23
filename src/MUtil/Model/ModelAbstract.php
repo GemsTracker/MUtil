@@ -296,18 +296,9 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     }
 
     /**
-     * Processes empty strings, filters items that should not be saved
-     * according to setSaveWhen() and changes values that have a setOnSave()
-     * function.
-     *
-     * @see setOnSave
-     * @set setSaveWhen
-     *
-     * @param array $data The values to save
-     * @param boolean $new True when it is a new item
-     * @return array The possibly adapted array of values
+     * @inheritdoc
      */
-    public function processRowBeforeSave(array $data, bool $new = false): array
+    public function processRowBeforeSave(array $data, bool $new = false, array $fullRow = []): array
     {
         // \MUtil\EchoOut\EchoOut::r($data, 'preFilter');
 
@@ -318,7 +309,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
             }
 
             if ($this->isSaveable($value, $new, $name, $data)) {
-                $filteredData[$name] = $this->getOnSave($value, $new, $name, $data);
+                $filteredData[$name] = $this->getOnSave($value, $new, $name, $fullRow ?: $data);
             }
         }
 
@@ -1465,8 +1456,6 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      */
     public function hasAnyOf(array $names)
     {
-        $check = array_combine($names, $names);
-
         foreach ($names as $name) {
             if (isset($this->_model[$name])) {
                 return true;
