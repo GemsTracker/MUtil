@@ -12,6 +12,7 @@
 namespace MUtil\Model;
 
 use MUtil\Model;
+use MUtil\Validate\Db\UniqueValue;
 use Zalt\Model\MetaModelInterface;
 
 /**
@@ -762,7 +763,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      *
      * @param string|array $name The name of a database table field in the model or an array of them belonging to the same table.
      * @param optional array $excludeFilter An array containing [num|db_fieldname] => $_POST mappings.
-     * @return \MUtil_Validate_Db_UniqueValue A validator.
+     * @return UniqueValue A validator.
      */
     public function createUniqueValidator($name, array $excludeFilter = null)
     {
