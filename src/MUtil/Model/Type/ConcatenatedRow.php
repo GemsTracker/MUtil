@@ -117,7 +117,10 @@ class MUtil_Model_Type_ConcatenatedRow
             $model->setOnTextFilter($name, array($this, 'textFilter'));
         }
 
-        $this->options = $model->get($name, 'multiOptions');
+        $options = $model->get($name, 'multiOptions');
+        if ($options) {
+            $this->setOptions($options);
+        }
         return $this;
     }
 
@@ -225,6 +228,11 @@ class MUtil_Model_Type_ConcatenatedRow
             }
         }
         return $value;
+    }
+
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
     }
 
     /**
