@@ -22,7 +22,7 @@ namespace MUtil\Validate;
  * @license    New BSD License
  * @since      Class available since \MUtil version 1.7.2 Mar 22, 2016 3:16:44 PM
  */
-class NotEqualExcept extends \MUtil_Validate_NotEqualTo
+class NotEqualExcept extends NotEqualTo
 {
     /**
      * The exceptions where equality does not matter
