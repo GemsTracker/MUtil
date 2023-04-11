@@ -1716,6 +1716,27 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     }
 
     /**
+     * Returns the numbers of rows with the items requested
+     *
+     * @param mixed $filter Array to use as filter
+     * @param mixed $sort Array to use for sort
+     * @return array Nested array or false
+     */
+    public function loadPageWithCount(?int &$total, int $page, int $items, $filter = null, $sort = null): array
+    {
+        $rows = $this->load($filter, $sort);
+
+        if (! $rows) {
+            $total = 0;
+            return [];
+        }
+
+        $total = count($rows);
+
+        return array_slice($rows, ($page - 1) * $items, $items);
+    }
+
+    /**
      * Returns a \Traversable spewing out arrays containing the items requested.
      *
      * @param mixed $filter True to use the stored filter, array to specify a different filter
