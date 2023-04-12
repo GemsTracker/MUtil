@@ -1123,7 +1123,6 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
         $total  = $paginator->getTotalItemCount();
 
         if ($output instanceof \Traversable) {
-            dump($output->getArrayCopy());
             return $output->getArrayCopy();
         }
 
