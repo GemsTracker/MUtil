@@ -1205,6 +1205,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         // Set to stopped
         $batchInfo = $this->getBatchInfo();
         $batchInfo['finished'] = true;
+        $this->progress->finish();
         $this->session->set($this->sessionId, $batchInfo);
 
         // Cleanup stack
