@@ -1106,6 +1106,30 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
     }
 
     /**
+     * Returns the numbers of rows with the items requested
+     *
+     * @param mixed $filter Array to use as filter
+     * @param mixed $sort Array to use for sort
+     * @return array Nested array or false
+     */
+    public function loadPageWithCount(?int &$total, int $page, int $items, $filter = null, $sort = null): array
+    {
+        $paginator = $this->loadPaginator($filter, $sort);
+
+        $paginator->setItemCountPerPage($items);
+        $paginator->setCurrentPageNumber($page);
+
+        $output = $paginator->getItemsByPage($page);
+        $total  = $paginator->getTotalItemCount();
+
+        if ($output instanceof \Traversable) {
+            return $output->getArrayCopy();
+        }
+
+        return $output;
+    }
+
+    /**
      * Returns a \Zend_Paginator for the items in the model
      *
      * @param mixed $filter True to use the stored filter, array to specify a different filter
