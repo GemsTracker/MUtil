@@ -465,6 +465,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
             $batchInfo['counters'][$name] = 0;
         }
         $batchInfo['counters'][$name] += $add;
+        $this->session->set($this->sessionId, $batchInfo);
 
         return $batchInfo['counters'][$name];
     }
@@ -1030,7 +1031,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     public function setMessage(string $id, string $text): self
     {
         $batchInfo = $this->getBatchInfo();
-        $batchInfo[$id] = $text;
+        $batchInfo['messages'][$id] = $text;
         $this->session->set($this->sessionId, $batchInfo);
 
         $this->_lastMessage = $text;
