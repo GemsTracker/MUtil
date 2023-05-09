@@ -1270,7 +1270,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->_model_name;
     }
