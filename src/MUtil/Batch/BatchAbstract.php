@@ -12,6 +12,11 @@
 namespace MUtil\Batch;
 
 use Mezzio\Session\SessionInterface;
+use MUtil\Batch\Info\InfoInterface;
+use MUtil\Batch\Info\ObjectInfo;
+use MUtil\Batch\Info\SessionInfo;
+use MUtil\Batch\Stack\ObjectStack;
+use MUtil\Batch\Stack\SessionStack;
 use MUtil\Batch\Stack\Stackinterface;
 use MUtil\Registry\TargetAbstract;
 use Psr\Log\LoggerInterface;
@@ -127,20 +132,6 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     private bool $_messageLogWhenSetting = false;
 
     /**
-     * Progress template
-     *
-     * Available placeholders:
-     * {total}      Total time
-     * {elapsed}    Elapsed time
-     * {remaining}  Remaining time
-     * {percent}    Progress percent without the % sign
-     * {msg}        Message reveiced
-     *
-     * @var string
-     */
-    private string $_progressTemplate = "{percent}% {msg}";
-
-    /**
      * When true the progressbar should start immediately. When false the user has to perform an action.
      *
      * @var boolean
@@ -163,6 +154,8 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      * @var string
      */
     public $finishUrl;
+
+    protected InfoInterface $infoContainer;
 
     /**
      * The number of bytes to pad for the first push communication in Kilobytes. If zero
@@ -207,7 +200,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     /**
      * @var Progress
      */
-    protected $progress;
+    protected Progress $progress;
 
     /**
      * The name of the parameter used for progress panel signals
@@ -241,13 +234,6 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     public string $progressParameterRunValue = 'run';
 
     /**
-     * @var SessionInterface
-     */
-    protected SessionInterface $session;
-
-    protected string $sessionId;
-
-    /**
      * The command stack
      *
      * @var Stackinterface
@@ -266,20 +252,21 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      * @param string $id A unique name identifying this batch
      * @param \MUtil\Batch\Stack\Stackinterface $stack Optional different stack than session stack
      */
-    public function __construct($id, SessionInterface $session, Stackinterface $stack = null, LoggerInterface $logger = null)
+    public function __construct($id, SessionInterface $session = null, Stackinterface $stack = null, LoggerInterface $logger = null)
     {
-        $this->setBatchId($id);
-        $this->session = $session;
-        $this->setSessionId($id);
-        $this->setStack($stack);
-
         $this->progress = new Progress();
-
-        $this->_initSession($id);
         $this->logger = $logger;
+        $this->setBatchId($id);
+        $this->_initInfoContainer($session);
+
+        $this->setStack($stack, $session);
 
         $batchInfo = $this->getBatchInfo();
 
+        if (!isset($batchInfo['processed'])) {
+            $this->reset();
+            $batchInfo = $this->getBatchInfo();
+        }
         if ($batchInfo['finished'] === true) {
             $this->progress->finish();
         }
@@ -322,7 +309,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         $batchInfo['count'] += 1;
         $batchInfo['processed'] += 1;
 
-        $this->session->set($this->sessionId, $batchInfo);
+        $this->infoContainer->set($batchInfo);
     }
 
     /**
@@ -333,7 +320,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         $batchInfo = $this->getBatchInfo();
         $batchInfo['finished'] = true;
 
-        $this->session->set($this->sessionId, $batchInfo);
+        $this->infoContainer->set($batchInfo);
 
         $this->progress->finish();
     }
@@ -343,12 +330,13 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      *
      * @param string $name The id of this batch
      */
-    private function _initSession(string $id): void
+    private function _initInfoContainer(SessionInterface $session = null): void
     {
-        $batchInfo = $this->getBatchInfo();
-
-        if (! isset($batchInfo['processed'])) {
-            $this->reset();
+        if ($session instanceof SessionInterface) {
+            $sessionId = get_class($this) . '_' . $this->id;
+            $this->infoContainer = new SessionInfo($session, $sessionId);
+        } else {
+            $this->infoContainer = new ObjectInfo();
         }
     }
 
@@ -426,7 +414,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
             $batchInfo = $this->getBatchInfo();
             $batchInfo['count'] += 1;
             $this->progress->setCount($batchInfo['count']);
-            $this->session->set($this->sessionId, $batchInfo);
+            $this->infoContainer->set($batchInfo);
         }
     }
 
@@ -440,7 +428,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     {
         $batchInfo = $this->getBatchInfo();
         $batchInfo['messages'][] = $text;
-        $this->session->set($this->sessionId, $batchInfo);
+        $this->infoContainer->set($batchInfo);
 
         $this->_lastMessage = $text;
 
@@ -465,7 +453,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
             $batchInfo['counters'][$name] = 0;
         }
         $batchInfo['counters'][$name] += $add;
-        $this->session->set($this->sessionId, $batchInfo);
+        $this->infoContainer->set($batchInfo);
 
         return $batchInfo['counters'][$name];
     }
@@ -484,7 +472,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
 
     public function getBatchInfo(): array
     {
-        return $this->session->get($this->sessionId, []);
+        return $this->infoContainer->get();
     }
 
     /**
@@ -598,49 +586,6 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         }
 
         return $messages;
-    }
-
-    /**
-     * Return a progress panel object, set up to be used by
-     * this batch.
-     *
-     * @param \Zend_View_Abstract $view
-     * @param mixed $arg_array \MUtil\Ra::args() arguments to populate progress bar with
-     * @return \MUtil\Html\ProgressPanel
-     */
-    public function getPanel(\Zend_View_Abstract $view, $arg_array = null)
-    {
-        $args = func_get_args();
-
-        \MUtil\JQuery::enableView($view);
-        //$jquery = $view->jQuery();
-        //$jquery->enable();
-
-        if (isset($this->finishUrl)) {
-            $urlFinish = $this->finishUrl;
-        } else {
-            $urlFinish = $view->url(array($this->progressParameterName => $this->progressParameterReportValue));
-        }
-        $urlRun    = $view->url(array($this->progressParameterName => $this->progressParameterRunValue));
-
-        $panel = new \MUtil\Html\ProgressPanel($args);
-        $panel->id = $this->id;
-
-        $js = new \MUtil\Html\Code\JavaScript(dirname(__FILE__) . '/Batch' . $this->method . '.js');
-        $js->setInHeader(false);
-        // Set the fields, in case they where not set earlier
-        $js->setDefault('__AUTOSTART__', $this->autoStart ? 'true' : 'false');
-        $js->setDefault('{PANEL_ID}', '#' . $this->id);
-        $js->setDefault('{FORM_ID}', $this->_formId);
-        $js->setDefault('{TEMPLATE}', $this->_progressTemplate);
-        $js->setDefault('{TEXT_ID}', $panel->getDefaultChildTag() . '.' . $panel->progressTextClass);
-        $js->setDefault('{URL_FINISH}', addcslashes($urlFinish, "/"));
-        $js->setDefault('{URL_START_RUN}', addcslashes($urlRun, "/"));
-        $js->setDefault('FUNCTION_PREFIX_', $this->getFunctionPrefix());
-
-        $panel->append($js);
-
-        return $panel;
     }
 
     /**
@@ -854,7 +799,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
             'processed' => 0,
         ];
 
-        $this->session->set($this->sessionId, $batchInfo);
+        $this->infoContainer->set($batchInfo);
         $this->progress->reset();
 
         $this->stack->reset();
@@ -872,7 +817,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     {
         $batchInfo = $this->getBatchInfo();
         unset($batchInfo['counters'][$name]);
-        $this->session->set($this->sessionId, $batchInfo);
+        $this->infoContainer->set($batchInfo);
 
         return $this;
     }
@@ -887,7 +832,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     {
         $batchInfo = $this->getBatchInfo();
         unset($batchInfo['messages'][$id]);
-        $this->session->set($this->sessionId, $batchInfo);
+        $this->infoContainer->set($batchInfo);
 
         return $this;
     }
@@ -1032,7 +977,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     {
         $batchInfo = $this->getBatchInfo();
         $batchInfo['messages'][$id] = $text;
-        $this->session->set($this->sessionId, $batchInfo);
+        $this->infoContainer->set($batchInfo);
 
         $this->_lastMessage = $text;
 
@@ -1101,15 +1046,19 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         }
 
         $batchInfo['source'][$name] = $variable;
-        $this->session->set($this->sessionId, $batchInfo);
+        $this->infoContainer->set($batchInfo);
 
         return $this;
     }
 
-    protected function setStack(?Stackinterface $stack): void
+    protected function setStack(?Stackinterface $stack, ?SessionInterface $session = null): void
     {
         if (null === $stack) {
-            $stack = new \MUtil\Batch\Stack\SessionStack($this->id, $this->session);
+            if ($session instanceof SessionInterface) {
+                $stack = new SessionStack($this->id, $session);
+            } else {
+                $stack = new ObjectStack();
+            }
         }
         $this->stack = $stack;
     }
@@ -1125,7 +1074,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     protected function setStep(string $method, ?string $id, mixed $param1 = null): self
     {
         if (! method_exists($this, $method)) {
-            throw new \MUtil\Batch\BatchException("Invalid batch method: '$method'.");
+            throw new BatchException("Invalid batch method: '$method'.");
         }
 
         $params = array_slice(func_get_args(), 2);
@@ -1181,7 +1130,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
                 }
                 $batchInfo = $this->getBatchInfo();
                 $batchInfo['processed'] += 1;
-                $this->session->set($this->sessionId, $batchInfo);
+                $this->infoContainer->set($batchInfo);
                 $this->_updateProgress();
 
             } catch (\Exception $e) {
@@ -1206,7 +1155,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
         $batchInfo = $this->getBatchInfo();
         $batchInfo['finished'] = true;
         $this->progress->finish();
-        $this->session->set($this->sessionId, $batchInfo);
+        $this->infoContainer->set($batchInfo);
 
         // Cleanup stack
         $this->stack->reset();
