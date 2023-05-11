@@ -10,6 +10,7 @@
 
 namespace MUtil;
 
+use Laminas\Validator\ValidatorInterface;
 use Zalt\Html\ElementInterface;
 use Zalt\Html\Html;
 use Zalt\Html\Sequence;
@@ -558,8 +559,13 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
                 case \Zend_Form_Element::VALIDATE:
                     $prefixSegment = ucfirst(strtolower($type));
                     $pathSegment   = $prefixSegment;
+                    $laminasValidatorPath = realpath(__DIR__ . '/../../../../../vendor/laminas/laminas-validator/src/');
+                    if ($laminasValidatorPath === false) {
+                        $rf = new \ReflectionClass(ValidatorInterface::class);
+                        $laminasValidatorPath = dirname($rf->getFileName());
+                    }
                     $this->_loaders[$type] = new \MUtil\Loader\PluginLoader(array(
-                        'Laminas_Validator_' => realpath(__DIR__ . '/../../../../../vendor/laminas/laminas-validator/src/'),
+                        'Laminas_Validator_' => $laminasValidatorPath,
                         'MUtil_' . $prefixSegment . '_' => 'MUtil/' . $pathSegment . '/',
                     ));
                     // $this->_loaders[$type]->removePrefixPath('Zend_' . $prefixSegment . '_');
