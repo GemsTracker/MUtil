@@ -479,7 +479,7 @@ class CachedLoader implements \Zend_Loader_Autoloader_Interface
 
         if (!class_exists($class, false) && !interface_exists($class, false)) {
             require_once 'Zend/Exception.php';
-            throw new \Zend_Exception("File \"$file\" does not exist or class "$class\" was not found in the file");
+            throw new \Zend_Exception("File \"$file\" does not exist or class \"$class\" was not found in the file");
         }
     }
 }
