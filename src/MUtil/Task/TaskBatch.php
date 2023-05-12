@@ -42,7 +42,7 @@ use Zalt\Loader\ProjectOverloader;
  */
 class TaskBatch extends BatchAbstract
 {
-    public function __construct($id, ProjectOverloader $loader, SessionInterface $session, Stackinterface $stack = null, LoggerInterface $logger = null)
+    public function __construct($id, ProjectOverloader $loader, SessionInterface $session = null, Stackinterface $stack = null, LoggerInterface $logger = null)
     {
         parent::__construct($id, $session, $stack, $logger);
         $this->overloader = $loader->createSubFolderOverloader('Task');

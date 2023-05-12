@@ -11,6 +11,8 @@
 
 namespace MUtil\EchoOut;
 
+use MUtil\EchoOut\Store\StoreInterface;
+
 /**
  * This class allows you to echo debug statements over multiple requests by
  * storing the output in the session.
@@ -159,7 +161,7 @@ class EchoOut
         static $session;
 
         if (! $session) {
-            $session = new \Zend_Session_Namespace('mutil.' . __CLASS__ . '.session');
+            $session = new EchoStore();
         }
 
         return $session;
@@ -201,15 +203,17 @@ class EchoOut
         $content = '';
         if (isset($session->counts)) {
             $content .= "<h6>Count results</h6>\n\n";
-            ksort($session->counts);
-            foreach ($session->counts as $name => $count) {
+            $counts = $session->counts;
+            ksort($counts);
+            foreach ($counts as $name => $count) {
                 $content .= "<b>$name</b> triggered $count times<br/>\n";
             }
         }
         if (isset($session->timings)) {
             $content .= "<h6>Timer results</h6>\n\n";
-            ksort($session->timings);
-            foreach ($session->timings as $name => $data) {
+            $timings = $session->timings;
+            ksort($timings);
+            foreach ($timings as $name => $data) {
                 if ($data['level']) {
                     $content .= '<b>Unbalanced call for ' . $name . ':</b> function level remains at ' . $data['level'] .  "!<br/>\n";
                 }
@@ -285,6 +289,12 @@ class EchoOut
         foreach (func_get_args() as $var) {
             self::r($var);
         }
+    }
+
+    public static function setStore(StoreInterface $store)
+    {
+        $session = self::getSession();
+        $session->setStore($store);
     }
 
     /**
