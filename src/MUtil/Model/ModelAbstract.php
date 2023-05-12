@@ -1663,6 +1663,17 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
         return $this->processAfterLoad(array($this->_createNew()), true);
     }
 
+    public function loadCount($filter = null, $sort = null): int
+    {
+        $rows = $this->load($filter, $sort);
+
+        if (! $rows) {
+            return 0;
+        }
+
+        return count($rows);
+    }
+
     /**
      * Returns an array containing the first requested item.
      *

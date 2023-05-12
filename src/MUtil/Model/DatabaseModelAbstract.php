@@ -1083,6 +1083,13 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
         return true;
     }
 
+    public function loadCount($filter = null, $sort = null): int
+    {
+        $paginator = $this->loadPaginator($filter, $sort);
+
+        return $paginator->getTotalItemCount();
+    }
+
     /**
      * Returns a \Traversable spewing out arrays containing the items requested.
      *
