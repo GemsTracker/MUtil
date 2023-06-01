@@ -906,11 +906,10 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
                 $options['label'] = 'Toggle';
             }
         }
-        if (isset($options['selectorName'])) {
+        /*if (isset($options['selectorName'])) {
             $options['selector'] = sprintf('input[name^=%s]', $options['selectorName']);
             unset($options['selectorName']);
-        }
-        $this->form->activateJQuery();
+        }*/
 
         $element = new \MUtil\Bootstrap\Form\Element\ToggleCheckboxes($name, $options);
 
