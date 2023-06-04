@@ -2099,14 +2099,14 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
 
                         $this->_model[$name][$key][$subkey] = $value;
                     }
-                } else {
+                } elseif ($value !== null) {
                     $this->_model[$name][$key] = $value;
                     if ('type' == $key) {
                         $defaults = Model::getTypeDefaults($value);
                         if ($defaults) {
-                            foreach ($defaults as $dKey => $value) {
+                            foreach ($defaults as $dKey => $val) {
                                 if (! array_key_exists($dKey, $this->_model[$name])) {
-                                    $this->_model[$name][$dKey] = $value;
+                                    $this->_model[$name][$dKey] = $val;
                                 }
                             }
                         }
