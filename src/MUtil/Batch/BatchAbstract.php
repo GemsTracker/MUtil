@@ -210,6 +210,13 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     public string $progressParameterName = 'progress';
 
     /**
+     * The value required for the progress panel to get initial settings
+     *
+     * @var string
+     */
+    public string $progressParameterInitValue = 'init';
+
+    /**
      * The value required for the progress panel to report and reset
      *
      * @var string
