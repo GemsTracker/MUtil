@@ -36,6 +36,9 @@ class SimpleEmail extends AbstractValidator
      */
     public function isValid($value): bool
     {
+        if ($value === '') {
+            return true;
+        }
         $this->setValue($value);
 
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
