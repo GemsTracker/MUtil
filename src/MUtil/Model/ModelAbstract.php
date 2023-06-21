@@ -1780,7 +1780,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return array
      */
-    public function loadPostData(array $postData, $create = false, $filter = null, $sort = null)
+    public function loadPostData(array $postData, $create = false, $filter = null, $sort = null): array
     {
         $this->_model_enable_dependencies = false;
         if ($create) {
