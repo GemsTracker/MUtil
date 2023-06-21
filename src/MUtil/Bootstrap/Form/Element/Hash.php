@@ -11,7 +11,7 @@
 
 namespace MUtil\Bootstrap\Form\Element;
 
-use MUtil\Form\Element\LaminasElementValidator;
+use MUtil\Form\Element\LaminasElementValidatorTrait;
 
 /**
  *
@@ -23,7 +23,7 @@ use MUtil\Form\Element\LaminasElementValidator;
  */
 class Hash extends \Zend_Form_Element_Hash
 {
-    use LaminasElementValidator;
+    use LaminasElementValidatorTrait;
 
 	/**
      * Load default decorators

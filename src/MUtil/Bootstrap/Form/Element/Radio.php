@@ -23,7 +23,7 @@ namespace MUtil\Bootstrap\Form\Element;
  */
 class Radio extends \Zend_Form_Element_Radio
 {
-    use \MUtil\Form\Element\LaminasElementValidator;
+    use \MUtil\Form\Element\LaminasElementValidatorTrait;
 
     /**
      * Constructor

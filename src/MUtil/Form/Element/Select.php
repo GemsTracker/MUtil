@@ -23,7 +23,7 @@ namespace MUtil\Form\Element;
  */
 class Select extends \Zend_Form_Element_Select
 {
-    use LaminasElementValidator;
+    use LaminasElementValidatorTrait;
 
     /**
      * Use formSelect view helper by default

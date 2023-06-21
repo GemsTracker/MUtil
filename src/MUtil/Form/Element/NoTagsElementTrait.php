@@ -24,7 +24,7 @@ use MUtil\Validate\NoTags;
  */
 trait NoTagsElementTrait 
 {
-    use LaminasElementValidator;
+    use LaminasElementValidatorTrait;
     
     /**
      * Flag indicating whether or not to insert NoTags validator

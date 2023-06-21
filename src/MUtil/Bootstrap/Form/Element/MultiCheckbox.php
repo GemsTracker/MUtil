@@ -23,7 +23,7 @@ namespace MUtil\Bootstrap\Form\Element;
  */
 class MultiCheckbox extends \Zend_Form_Element_MultiCheckbox
 {
-    use \MUtil\Form\Element\LaminasElementValidator;
+    use \MUtil\Form\Element\LaminasElementValidatorTrait;
     
     /**
      * Constructor

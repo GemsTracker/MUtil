@@ -2,10 +2,9 @@
 
 namespace MUtil\Form\Element;
 
-use Laminas\Validator\AbstractValidator;
 use Laminas\Validator\ValidatorInterface;
 
-trait LaminasElementValidator
+trait LaminasElementValidatorTrait
 {
     /**
      * Add validator to validation chain
@@ -32,7 +31,6 @@ trait LaminasElementValidator
         } else {
             throw new \Zend_Form_Exception('Invalid validator provided to addValidator; must be string or \\Laminas\\Validator\\ValidatorInterface');
         }
-
 
         $this->_validators[$name] = $validator;
 
