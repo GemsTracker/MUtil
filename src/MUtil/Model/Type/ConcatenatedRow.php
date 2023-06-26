@@ -195,7 +195,7 @@ class MUtil_Model_Type_ConcatenatedRow
                 $value = trim($value, $this->seperatorChar);
             }
             // If it was empty, return an empty array instead of array with an empty element
-            if(empty($value)) {
+            if(!isset($value) || $value === false || $value === null || $value === '') {
                 return array();
             }
             $value = explode($this->seperatorChar, $value);
