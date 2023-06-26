@@ -12,7 +12,7 @@
 namespace MUtil\Form\Element;
 
 use Laminas\Validator\ValidatorInterface;
-use MUtil\Validate\NoTags;
+use MUtil\Validator\NoTags;
 
 /**
  *
@@ -39,7 +39,7 @@ trait NoTagsElementTrait
      */
     public function addNoTagsValidator()
     {
-        if (!$this->getValidator('MUtil\\Validate\\NoTags')) {
+        if (!$this->getValidator('MUtil\\Validator\\NoTags')) {
             $this->addValidator(new NoTags());
         }
 

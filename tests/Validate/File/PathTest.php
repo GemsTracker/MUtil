@@ -2,8 +2,8 @@
 
 namespace MUtilTest\Validate;
 
-use MUtil\Validate\Base32;
-use MUtil\Validate\File\Path;
+use MUtil\Validator\Base32;
+use MUtil\Validator\File\Path;
 use PHPUnit\Framework\TestCase;
 
 class PathTest extends TestCase

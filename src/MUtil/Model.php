@@ -15,6 +15,7 @@ use _PHPStan_9a6ded56a\Nette\Neon\Exception;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Zalt\Loader\DependencyResolver\ConstructorDependencyParametersResolver;
 use Zalt\Loader\ProjectOverloader;
 
 
@@ -301,6 +302,7 @@ class Model
         if (! isset(self::$_loaders[$prefix])) {
             
             $loader = self::getSource()->createSubFolderOverloader(ucfirst($prefix));
+            $loader->setDependencyResolver(new ConstructorDependencyParametersResolver());
             
             self::$_loaders[$prefix] = $loader;
         }

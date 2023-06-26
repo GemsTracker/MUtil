@@ -2,8 +2,8 @@
 
 namespace MUtilTest\Validate;
 
-use MUtil\Validate\IsNot;
-use MUtil\Validate\SimpleEmail;
+use MUtil\Validator\IsNot;
+use MUtil\Validator\SimpleEmail;
 use PHPUnit\Framework\TestCase;
 
 class SimpleEmailTest extends TestCase

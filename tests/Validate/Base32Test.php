@@ -2,7 +2,7 @@
 
 namespace Validate;
 
-use MUtil\Validate\Base32;
+use MUtil\Validator\Base32;
 use PHPUnit\Framework\TestCase;
 
 class Base32Test extends TestCase

@@ -122,7 +122,8 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
     public function __construct($options = null)
     {
         $this->addElementPrefixPath('MUtil_Form_Decorator', 'MUtil/Form/Decorator',  \Zend_Form_Element::DECORATOR);
-        $this->addElementPrefixPath('MUtil_Validate',       'MUtil/Validate/',       \Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MUtil_Validator',      'MUtil/Validator/',       \Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('Laminas_Validator',    'laminas/Validator/',       \Zend_Form_Element::VALIDATE);
 
         parent::__construct($options);
 

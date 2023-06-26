@@ -792,11 +792,11 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * If no $excludes the model creates a filter using the primary key of the table.
      *
      * @param string|array $name The name of a model field in the model or an array of them.
-     * @return \MUtil\Validate\Model\UniqueValue A validator.
+     * @return \MUtil\Validator\Model\UniqueValue A validator.
      */
     public function createUniqueValidator($name)
     {
-        return new \MUtil\Validate\Model\UniqueValue($this, $name);
+        return new \MUtil\Validator\Model\UniqueValue($this, $name);
     }
 
     /**
@@ -957,15 +957,17 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
             $this->setMeta(\MUtil\Model::META_BRIDGES, $bridges);
         }
 
+        $loader = \MUtil\Model::getBridgeLoader();
+
         if (! isset($bridges[$identifier])) {
             // We cannot create when noting is specified
-            throw new \MUtil\Model\ModelException("Request for unknown bridge type $identifier.");
-        }
+            // throw new \MUtil\Model\ModelException("Request for unknown bridge type $identifier.");
 
-        $loader = \MUtil\Model::getBridgeLoader();
-        
-        // First parameter is always the model
-        $bridge = $loader->create($bridges[$identifier], $this, ...$args);
+            $bridge = $loader->create($identifier, $this, ...$args);
+        } else {
+            // First parameter is always the model
+            $bridge = $loader->create($bridges[$identifier], $this, ...$args);
+        }
 
         return $bridge;
     }

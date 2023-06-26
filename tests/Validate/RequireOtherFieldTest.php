@@ -2,7 +2,7 @@
 
 namespace MUtilTest\Validate;
 
-use MUtil\Validate\RequireOtherField;
+use MUtil\Validator\RequireOtherField;
 use PHPUnit\Framework\TestCase;
 
 class RequireOtherFieldTest extends TestCase

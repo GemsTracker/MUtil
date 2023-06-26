@@ -2,7 +2,7 @@
 
 namespace Validate;
 
-use MUtil\Validate\Phone;
+use MUtil\Validator\Phone;
 use PHPUnit\Framework\TestCase;
 
 class PhoneTest extends TestCase

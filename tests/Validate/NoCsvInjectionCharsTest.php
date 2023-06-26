@@ -2,7 +2,7 @@
 
 namespace MUtilTest\Validate;
 
-use MUtil\Validate\NoCsvInjectionChars;
+use MUtil\Validator\NoCsvInjectionChars;
 use PHPUnit\Framework\TestCase;
 
 class NoCsvInjectionCharsTest extends TestCase

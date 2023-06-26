@@ -14,6 +14,7 @@ namespace MUtil\JQuery\Form\Element;
 use DateTimeInterface;
 use MUtil\Form\Element\NoTagsElementTrait;
 use MUtil\Model;
+use MUtil\Validator\Date\IsDate;
 
 /**
  * Extension of ZendX DatePicker element that add's locale awareness and input and output date
@@ -116,7 +117,7 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
 
         if (! $this->getValidator('IsDate')) {
             // Always as first validator
-            $isDate = new \MUtil\Validate\Date\IsDate();
+            $isDate = new IsDate();
             $isDate->setDateFormat($this->_dateFormat);
 
             array_unshift($validators, $isDate);
@@ -126,7 +127,7 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
         if ($format = $this->getDateFormat()) {
             // Set the dataFormat if settable
             foreach ($validators as $validator) {
-                if (($validator instanceof \MUtil\Validate\Date\FormatInterface)
+                if (($validator instanceof \MUtil\Validator\Date\FormatInterface)
                     || method_exists($validator, 'setDateFormat')) {
                     $validator->setDateFormat($format);
                 }

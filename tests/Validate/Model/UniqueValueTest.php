@@ -3,7 +3,7 @@
 namespace Validate\Model;
 
 use MUtil\Model\PlaceholderModel;
-use MUtil\Validate\Model\UniqueValue;
+use MUtil\Validator\Model\UniqueValue;
 use PHPUnit\Framework\TestCase;
 
 class UniqueValueTest extends TestCase

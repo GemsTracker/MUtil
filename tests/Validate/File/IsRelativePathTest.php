@@ -2,7 +2,7 @@
 
 namespace MUtilTest\Validate;
 
-use MUtil\Validate\File\IsRelativePath;
+use MUtil\Validator\File\IsRelativePath;
 use PHPUnit\Framework\TestCase;
 
 class IsRelativePathTest extends TestCase

@@ -2,7 +2,7 @@
 
 namespace MUtilTest\Validate;
 
-use MUtil\Validate\IsConfirmed;
+use MUtil\Validator\IsConfirmed;
 use PHPUnit\Framework\TestCase;
 
 class IsConfirmedTest extends TestCase

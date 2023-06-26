@@ -8,7 +8,7 @@ namespace MUtilTest\Validate;
  * and open the template in the editor.
  */
 
-use MUtil\Validate\NoScript;
+use MUtil\Validator\NoScript;
 use PHPUnit\Framework\TestCase;
 
 /**

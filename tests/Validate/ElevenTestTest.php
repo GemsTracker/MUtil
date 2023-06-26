@@ -2,7 +2,7 @@
 
 namespace MUtilTest\Validate;
 
-use MUtil\Validate\ElevenTest;
+use MUtil\Validator\ElevenTest;
 use PHPUnit\Framework\TestCase;
 
 class ElevenTestTest extends TestCase

@@ -8,7 +8,7 @@ namespace MUtilTest\Validate;
  * and open the template in the editor.
  */
 
-use MUtil\Validate\NotEqualTo;
+use MUtil\Validator\NotEqualTo;
 use PHPUnit\Framework\TestCase;
 
 /**

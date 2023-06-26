@@ -8,7 +8,7 @@ namespace MUtilTest\Validate;
  * and open the template in the editor.
  */
 
-use MUtil\Validate\NoTags;
+use MUtil\Validator\NoTags;
 use PHPUnit\Framework\TestCase;
 
 /**

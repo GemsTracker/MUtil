@@ -728,8 +728,8 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
                 $repeatElement->addValidator('StringLength', true, $stringlength);
             }
 
-            $element->addValidator(new \MUtil\Validate\IsConfirmed($repeatName, $repeatLabel));
-            $repeatElement->addValidator(new \MUtil\Validate\IsConfirmed($name, isset($options['label']) ? $options['label'] : null));
+            $element->addValidator(new \MUtil\Validator\IsConfirmed($repeatName, $repeatLabel));
+            $repeatElement->addValidator(new \MUtil\Validator\IsConfirmed($name, isset($options['label']) ? $options['label'] : null));
         }
 
         return $element;

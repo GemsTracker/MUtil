@@ -2,7 +2,7 @@
 
 namespace MUtilTest\Validate;
 
-use MUtil\Validate\ExistingUrl;
+use MUtil\Validator\ExistingUrl;
 use PHPUnit\Framework\TestCase;
 
 class ExistingUrlTest extends TestCase

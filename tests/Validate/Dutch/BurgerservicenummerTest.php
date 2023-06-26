@@ -2,9 +2,9 @@
 
 namespace MUtilTest\Validate;
 
-use MUtil\Validate\Dutch\BankAccount;
-use MUtil\Validate\Dutch\Burgerservicenummer;
-use MUtil\Validate\ElevenTest;
+use MUtil\Validator\Dutch\BankAccount;
+use MUtil\Validator\Dutch\Burgerservicenummer;
+use MUtil\Validator\ElevenTest;
 use PHPUnit\Framework\TestCase;
 
 class BurgerservicenummerTest extends TestCase

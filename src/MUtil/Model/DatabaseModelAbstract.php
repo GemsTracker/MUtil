@@ -12,7 +12,7 @@
 namespace MUtil\Model;
 
 use MUtil\Model;
-use MUtil\Validate\Db\UniqueValue;
+use MUtil\Validator\Db\UniqueValue;
 use Zalt\Model\MetaModelInterface;
 
 /**
@@ -795,7 +795,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
             // \MUtil\EchoOut\EchoOut::r($excludes);
 
             if ($excludes) {
-                return new \MUtil\Validate\Db\ZendDbUniqueValue($tableName, $names, $excludes, $adapter);
+                return new \MUtil\Validator\Db\ZendDbUniqueValue($tableName, $names, $excludes, $adapter);
             }
 
             throw new \MUtil\Model\ModelException(

@@ -2,7 +2,7 @@
 
 namespace MUtilTest\Validate;
 
-use MUtil\Validate\IsNot;
+use MUtil\Validator\IsNot;
 use PHPUnit\Framework\TestCase;
 
 class IsNotTest extends TestCase
