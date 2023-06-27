@@ -112,6 +112,7 @@ class ExistingUrl extends AbstractValidator
                      */
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 
                     $valid = curl_exec($ch);
                     if (! $valid) {
