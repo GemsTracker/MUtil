@@ -37,7 +37,7 @@ class FileTest extends TestCase
      *
      * @return array
      */
-    public function providerRemoveWindowsDriveLetter()
+    public static function providerRemoveWindowsDriveLetter()
     {
         return [
             ['d:\path', '\path'],

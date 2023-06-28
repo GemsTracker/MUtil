@@ -38,7 +38,7 @@ class IsConfirmedTest extends TestCase
         $this->assertArrayHasKey($expectedMessageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             ['abcdefg', ['testField1' => 'abcdefg']],
@@ -47,7 +47,7 @@ class IsConfirmedTest extends TestCase
         ];
     }
 
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             ['abcdefg', ['testField1' => 'gddgfhjlgfh'], IsConfirmed::NOT_SAME],

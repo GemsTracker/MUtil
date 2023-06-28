@@ -41,7 +41,7 @@ class NoScriptTest extends TestCase
         $this->assertArrayHasKey($messageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             'valid#1' => ['allowed'],
@@ -50,7 +50,7 @@ class NoScriptTest extends TestCase
         ];
     }
     
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             'invalid#1' => ['<abc', NoScript::MATCH],

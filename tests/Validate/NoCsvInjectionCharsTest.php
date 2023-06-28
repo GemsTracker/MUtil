@@ -29,7 +29,7 @@ class NoCsvInjectionCharsTest extends TestCase
         $this->assertArrayHasKey($expectedMessageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             ['abcdefg'],
@@ -39,7 +39,7 @@ class NoCsvInjectionCharsTest extends TestCase
         ];
     }
 
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             ['abcd=', NoCsvInjectionChars::MATCH],

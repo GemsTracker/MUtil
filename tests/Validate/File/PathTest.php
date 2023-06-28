@@ -30,7 +30,7 @@ class PathTest extends TestCase
         $this->assertArrayHasKey($expectedMessageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             ['/test/hi/now'],
@@ -40,7 +40,7 @@ class PathTest extends TestCase
         ];
     }
 
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             [':/test', Path::MATCH],

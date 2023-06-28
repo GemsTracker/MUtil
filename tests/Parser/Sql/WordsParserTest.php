@@ -124,7 +124,7 @@ UPDATE Nothing SET Something = '\" /* -- bla' WHERE SomethingElse = \"'quoted'\"
         $this->assertCount(2, $result);
     }
     
-    public function splitEndingsProvider()
+    public static function splitEndingsProvider()
     {
         return [
             'Unix' => [

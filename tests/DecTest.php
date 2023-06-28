@@ -30,7 +30,7 @@ class DecTest extends TestCase
      *
      * @return array
      */
-    public function forCeiling()
+    public static function forCeiling()
     {
         return [
             [10.49825, 1, 10.5],
@@ -49,7 +49,7 @@ class DecTest extends TestCase
      *
      * @return array
      */
-    public function forFloor()
+    public static function forFloor()
     {
         return [
             [10.49825, 1, 10.4],

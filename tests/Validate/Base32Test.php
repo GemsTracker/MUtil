@@ -29,7 +29,7 @@ class Base32Test extends TestCase
         $this->assertArrayHasKey($expectedMessageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             ['ORSXG5A='],
@@ -37,7 +37,7 @@ class Base32Test extends TestCase
         ];
     }
 
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             ['', Base32::NOT_MATCH],

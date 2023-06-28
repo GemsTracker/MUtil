@@ -96,7 +96,7 @@ class IsConfirmed extends AbstractValidator
      * @return boolean
      */
     public function isValid($value, array $context = []): bool
-        {
+    {
         $this->setValue((string) $value);
         $fieldName = $this->getFieldName();
 
