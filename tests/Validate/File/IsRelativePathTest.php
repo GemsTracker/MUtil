@@ -29,7 +29,7 @@ class IsRelativePathTest extends TestCase
         $this->assertArrayHasKey($expectedMessageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             ['test/hi/now'],
@@ -38,7 +38,7 @@ class IsRelativePathTest extends TestCase
         ];
     }
 
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             ['/test', IsRelativePath::MATCH],

@@ -29,7 +29,7 @@ class PhoneTest extends TestCase
         $this->assertArrayHasKey($expectedMessageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             ['0612345678'],
@@ -39,7 +39,7 @@ class PhoneTest extends TestCase
         ];
     }
 
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             ['abcde', Phone::NOT_MATCH],

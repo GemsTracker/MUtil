@@ -27,7 +27,7 @@ class ModelTest extends TestCase
      * 
      * @return array
      */
-    public function providerAddFilterDataProvider()
+    public static function providerAddFilterDataProvider()
     {
         return array(
             [  // Simple first test

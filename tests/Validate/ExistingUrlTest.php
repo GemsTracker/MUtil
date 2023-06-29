@@ -38,7 +38,7 @@ class ExistingUrlTest extends TestCase
         $this->assertArrayHasKey($expectedMessageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             ['http://www.wikipedia.nl'],
@@ -49,7 +49,7 @@ class ExistingUrlTest extends TestCase
         ];
     }
 
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             ['test@wikipedia.nl', ExistingUrl::ERROR_URL_NOT_VALID],

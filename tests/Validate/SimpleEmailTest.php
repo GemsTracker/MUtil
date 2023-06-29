@@ -30,7 +30,7 @@ class SimpleEmailTest extends TestCase
         $this->assertArrayHasKey($expectedMessageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             ['example@email.com'],
@@ -50,7 +50,7 @@ class SimpleEmailTest extends TestCase
         ];
     }
 
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             ['plaintextaddress', SimpleEmail::NOT_MATCH],

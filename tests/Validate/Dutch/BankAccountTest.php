@@ -30,7 +30,7 @@ class BankAccountTest extends TestCase
         $this->assertArrayHasKey($expectedMessageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             [280814526],
@@ -39,7 +39,7 @@ class BankAccountTest extends TestCase
         ];
     }
 
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             [1, BankAccount::TOO_SHORT],

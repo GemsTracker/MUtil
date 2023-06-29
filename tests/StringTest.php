@@ -389,7 +389,7 @@ class StringTest extends TestCase
         $this->assertEquals($result, 'abcdef');
     }
 
-    public function providerTestStripToHost()
+    public static function providerTestStripToHost()
     {
         return array(
             array('https://www.host.com/erwrtej/gfeg', 'www.host.com'),

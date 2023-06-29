@@ -67,7 +67,7 @@ class ElevenTestTest extends TestCase
         $this->assertArrayHasKey($expectedMessageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             [15],
@@ -77,7 +77,7 @@ class ElevenTestTest extends TestCase
         ];
     }
 
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             [1, ElevenTest::NOT_CHECK],

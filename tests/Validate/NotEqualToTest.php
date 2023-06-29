@@ -54,7 +54,7 @@ class NotEqualToTest extends TestCase
         $this->assertEquals($expected, $result['notEqualTo']);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             'valid#1' => [
@@ -76,7 +76,7 @@ class NotEqualToTest extends TestCase
         ];
     }
     
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             'invalid#1' => [

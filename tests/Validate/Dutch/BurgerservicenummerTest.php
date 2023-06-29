@@ -31,7 +31,7 @@ class BurgerservicenummerTest extends TestCase
         $this->assertArrayHasKey($expectedMessageKey, $messages);
     }
 
-    public function IsValidProvider()
+    public static function IsValidProvider()
     {
         return [
             ['000000012'],
@@ -41,7 +41,7 @@ class BurgerservicenummerTest extends TestCase
         ];
     }
 
-    public function IsInValidProvider()
+    public static function IsInValidProvider()
     {
         return [
             [1, Burgerservicenummer::TOO_SHORT],
