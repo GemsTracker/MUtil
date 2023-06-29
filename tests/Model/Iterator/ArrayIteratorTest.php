@@ -39,8 +39,8 @@ class ArrayIteratorTest extends TestCase
     /**
      * If this test fails, the normal \ArrayIterator retains it's position
      * after serialization and then we can remove our own extension
-     */
-    public function skipTestBasicArrayIterator()
+     * /
+    public function testBasicArrayIterator()
     {
         // This is a test of the serialization of the PHP ArrayIterator
         // Apparently it does not work.
@@ -80,6 +80,9 @@ class ArrayIteratorTest extends TestCase
         }        
     }
 
+    /**
+     *
+     */
     public function testReadAllElements()
     {
         $input = [
@@ -109,7 +112,10 @@ class ArrayIteratorTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function skipTestSerialize()
+    /**
+     * @return void
+     * /
+    public function testSerialize()
     {
         // This is a test of the serialization of the ArrayIteratorTellable
         // Apparently it does not work.
