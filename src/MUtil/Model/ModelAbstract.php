@@ -1291,7 +1291,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     public function getOnLoad($value, $new, $name, array $context = array(), $isPost = false)
     {
         $call = $this->get($name, self::LOAD_TRANSFORMER);
-        if ($call) {
+        if (!is_null($call)) {
              if (is_callable($call)) {
                  $value = call_user_func($call, $value, $new, $name, $context, $isPost);
              } else {
@@ -1314,7 +1314,8 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      */
     public function getOnSave($value, $new, $name, array $context = array())
     {
-        if ($call = $this->get($name, self::SAVE_TRANSFORMER)) {
+        $call = $this->get($name, self::SAVE_TRANSFORMER);
+        if (!is_null($call)) {
 
             if (is_callable($call)) {
                 $value = call_user_func($call, $value, $new, $name, $context);
