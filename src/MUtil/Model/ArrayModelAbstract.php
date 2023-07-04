@@ -59,15 +59,18 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
                 if (is_numeric($name)) {
                     $val = $row;
                 } else {
-                    $val = isset($row[$name]) ? $row[$name] : null;
+                    $val = $row[$name] ?? null;
                 }
                 $result = call_user_func($value, $val);
 
             } elseif (is_array($value)) {
-                $subFilter = null;
+                $subFilter = true;
                 if (1 == count($value)) {
                     if (isset($value[MetaModelInterface::FILTER_CONTAINS])) {
-                        $result = str_contains($row[$name], $value['like']);
+                        $result = str_contains($row[$name], $value[MetaModelInterface::FILTER_CONTAINS]);
+                        $subFilter = false;
+                    } elseif (isset($value[MetaModelInterface::FILTER_CONTAINS_NOT])) {
+                        $result = ! str_contains($row[$name], $value[MetaModelInterface::FILTER_CONTAINS_NOT]);
                         $subFilter = false;
                     }
                 } elseif (2 == count($value)) {
@@ -76,29 +79,36 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
                         $subFilter = false;
                     }
                 }
-                if (null!== $subFilter) {
+                if ($subFilter) {
                     if (is_numeric($name)) {
-                        $subFilter = $value;
+                        $result = $this->_applyFiltersToRow($row, $value, !$logicalAnd);
+                    } elseif (MetaModelInterface::FILTER_NOT == $name) {
+                        // Check here as NOT can be part of the main filter
+                        $result = ! $this->_applyFiltersToRow($row, $value, ! $logicalAnd);
                     } else {
-                        $subFilter = array();
-                        foreach ($value as $key => $val) {
-                            if (is_numeric($key)) {
-                                $subFilter[$name] = $val;
-                            } else {
-                                $subFilter[$key] = $val;
+                        $rowVal = $row[$name] ?? null;
+                        $result = false;
+                        foreach ($value as $filterVal) {
+                            if ($rowVal == $filterVal) {
+                                $result = true;
+                                break;
                             }
                         }
                     }
-                    $result = $this->_applyFiltersToRow($row, $subFilter, ! $logicalAnd);
                 }
-                
+
             } else {
                 if (is_numeric($name)) {
                     // Allow literal value interpretation
                     $result = (boolean) $value;
                 } else {
-                    $val    = isset($row[$name]) ? $row[$name] : null;
-                    $result = ($val === $value) || (0 === strcasecmp($value, $val));
+                    $val = isset($row[$name]) ? $row[$name] : null;
+
+                    if (is_string($value) || is_string($val)) {
+                        $result = ($val === $value) || (0 === strcasecmp((string) $value, (string) $val));
+                    } else {
+                        $result = ($val === $value);
+                    }
                 }
                 // \MUtil\EchoOut\EchoOut::r($value . '===' . $value . '=' . $result);
             }

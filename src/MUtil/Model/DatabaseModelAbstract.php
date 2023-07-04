@@ -251,7 +251,11 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
                 } elseif (is_array($value)) {
                     if (1 == count($value)) {
                         if (isset($value[MetaModelInterface::FILTER_CONTAINS])) {
-                            $output[] = $adapter->quoteInto($name . ' LIKE ?', '%' . $value['like'] . '%');
+                            $output[] = $adapter->quoteInto($name . ' LIKE ?', '%' . $value[MetaModelInterface::FILTER_CONTAINS] . '%');
+                            continue;
+                        }
+                        if (isset($value[MetaModelInterface::FILTER_CONTAINS_NOT])) {
+                            $output[] = $adapter->quoteInto($name . ' NOT LIKE ?', '%' . $value[MetaModelInterface::FILTER_CONTAINS_NOT] . '%');
                             continue;
                         }
                     }
@@ -272,6 +276,9 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
                 } else {
                     $output[] = $adapter->quoteInto($name . ' = ?', $value);
                 }
+            } elseif (MetaModelInterface::FILTER_NOT == $name) {
+                // Check here as NOT can be part of the main filter
+                $output[] = 'NOT (' . $this->_createWhere($value, $adapter, true) . ')';
             } else {
                 throw new \Zend_Exception("Unknown or forbidden column '$name' used in query.");
             }
