@@ -42,8 +42,8 @@
     "require": {
         "php": ">=8.1",
         "laminas/laminas-validator": "^2.20",
-        "magnafacta/zalt-html": "2.x-validators-dev",
-        "magnafacta/zalt-model": "2.x-validators-dev",
+        "magnafacta/zalt-html": "dev-main",
+        "magnafacta/zalt-model": "2.x-dev",
         "psr/http-message": "^1.0.1",
         "psr/cache": "^3.0",
         "shardj/zf1-future": "^1.21",
@@ -89,7 +89,7 @@
     ],
     "scripts": {
         "test": [
-            "vendor/bin/phpunit"
+            "vendor/bin/phpunit tests"
         ]
      }
 }
