@@ -90,7 +90,7 @@ class JsonData
     public function formatDetailed(mixed $value): string|ElementInterface
     {
         if ((null === $value) || is_scalar($value)) {
-            return $value;
+            return $value ?? '';
         }
         if (! is_array($value)) {
                 return TableElement::createArray($value)
