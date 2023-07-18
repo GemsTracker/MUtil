@@ -929,13 +929,14 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Returns the field that name is an Alias of
      *
      * @param string $name
-     * @return string
+     * @return ?string
      */
-    public function getAlias($name)
+    public function getAlias($name): ?string
     {
         if (isset($this->_model[$name][self::ALIAS_OF])) {
             return $this->_model[$name][self::ALIAS_OF];
         }
+        return null;
     }
 
     /**
@@ -1642,7 +1643,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return array Nested array or false
      */
-    public function load($filter = null, $sort = null): array
+    public function load($filter = null, $sort = null, $columns = null): array
     {
         $data = $this->_load(
                 $this->_checkFilterUsed($filter),
@@ -1684,7 +1685,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return array An array or false
      */
-    public function loadFirst($filter = null, $sort = null): array
+    public function loadFirst($filter = null, $sort = null, $columns = null): array
     {
         $row = $this->_loadFirst(
                 $this->_checkFilterUsed($filter),
@@ -1736,7 +1737,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $sort Array to use for sort
      * @return array Nested array or false
      */
-    public function loadPageWithCount(?int &$total, int $page, int $items, $filter = null, $sort = null): array
+    public function loadPageWithCount(?int &$total, int $page, int $items, $filter = null, $sort = null, $columns = null): array
     {
         $rows = $this->load($filter, $sort);
 
@@ -1757,7 +1758,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return \Traversable
      */
-    public function loadIterator($filter = true, $sort = true)
+    public function loadIterator($filter = true, $sort = true, $columns = null)
     {
         return new \ArrayIterator($this->load($filter = null, $sort = null));
     }
@@ -1783,7 +1784,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return array
      */
-    public function loadPostData(array $postData, $create = false, $filter = null, $sort = null): array
+    public function loadPostData(array $postData, $create = false, $filter = null, $sort = null, $columns = null): array
     {
         $this->_model_enable_dependencies = false;
         if ($create) {
@@ -1822,7 +1823,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return \Zalt\Late\RepeatableInterface
      */
-    public function loadRepeatable($filter = true, $sort = true): RepeatableInterface
+    public function loadRepeatable($filter = true, $sort = true, $columns = null): RepeatableInterface
     {
         return Late::repeat($this->loadIterator($filter, $sort));
     }

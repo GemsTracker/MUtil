@@ -1104,7 +1104,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return \Traversable
      */
-    public function loadIterator($filter = null, $sort = null)
+    public function loadIterator($filter = null, $sort = null, $columns = null)
     {
         $iter = new \MUtil\Db\Iterator\SelectIterator($this->_createSelect(
             $this->_checkFilterUsed($filter),
@@ -1126,7 +1126,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * @param mixed $sort Array to use for sort
      * @return array Nested array or false
      */
-    public function loadPageWithCount(?int &$total, int $page, int $items, $filter = null, $sort = null): array
+    public function loadPageWithCount(?int &$total, int $page, int $items, $filter = null, $sort = null, $columns = null): array
     {
         $paginator = $this->loadPaginator($filter, $sort);
 

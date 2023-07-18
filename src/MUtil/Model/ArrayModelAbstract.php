@@ -430,7 +430,7 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return \Traversable
      */
-    public function loadIterator($filter = null, $sort = null)
+    public function loadIterator($filter = null, $sort = null, $columns = null)
     {
         $data = $this->_loadAllTraversable();
 
