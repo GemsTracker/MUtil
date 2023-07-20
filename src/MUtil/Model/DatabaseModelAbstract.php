@@ -440,21 +440,21 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
             switch (strtolower($field['DATA_TYPE'])) {
                 case 'date':
                     $finfo['type'] = \MUtil\Model::TYPE_DATE;
-                    $this->setOnSave($name, array($this, 'formatSaveDate'));
-                    $this->setOnLoad($name, array($this, 'formatLoadDate'));
+//                    $this->setOnSave($name, array($this, 'formatSaveDate'));
+//                    $this->setOnLoad($name, array($this, 'formatLoadDate'));
                     break;
 
                 case 'datetime':
                 case 'timestamp':
                     $finfo['type'] = \MUtil\Model::TYPE_DATETIME;
-                    $this->setOnSave($name, array($this, 'formatSaveDate'));
-                    $this->setOnLoad($name, array($this, 'formatLoadDate'));
+//                    $this->setOnSave($name, array($this, 'formatSaveDate'));
+//                    $this->setOnLoad($name, array($this, 'formatLoadDate'));
                     break;
 
                 case 'time':
                     $finfo['type'] = \MUtil\Model::TYPE_TIME;
-                    $this->setOnSave($name, array($this, 'formatSaveDate'));
-                    $this->setOnLoad($name, array($this, 'formatLoadDate'));
+//                    $this->setOnSave($name, array($this, 'formatSaveDate'));
+//                    $this->setOnLoad($name, array($this, 'formatLoadDate'));
                     break;
 
                 case 'int':

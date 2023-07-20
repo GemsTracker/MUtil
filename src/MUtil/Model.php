@@ -17,6 +17,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Zalt\Loader\DependencyResolver\ConstructorDependencyParametersResolver;
 use Zalt\Loader\ProjectOverloader;
+use Zalt\Model\MetaModelLoader;
 
 
 /**
@@ -310,6 +311,16 @@ class Model
         return self::$_loaders[$prefix];
     }
 
+    public static function getMetaModelLoader(): MetaModelLoader
+    {
+        static $metaModelLoader;
+
+        if (! $metaModelLoader) {
+            $metaModelLoader = self::$_source->getContainer()->get(MetaModelLoader::class);
+        }
+        return $metaModelLoader;
+    }
+
     /**
      * Get or create the current source
      *
@@ -327,16 +338,19 @@ class Model
 
     public static function getTypeDefault(int $type, string $key)
     {
-        if (isset(self::$_typeDefaults[$type][$key])) {
-            return self::$_typeDefaults[$type][$key];
+        $defaults = self::getTypeDefaults($type);
+        if (isset($defaults[$key])) {
+            return $defaults[$key];
         }
-        return [];
+        return null;
     }
 
     public static function getTypeDefaults(int $type): array
     {
-        if (isset(self::$_typeDefaults[$type])) {
-            return self::$_typeDefaults[$type]; 
+        $ml   = self::getMetaModelLoader();
+        $type = $ml->getDefaultTypeInterface($type);
+        if ($type) {
+            return $type->getSettings();
         }
         return [];
     }

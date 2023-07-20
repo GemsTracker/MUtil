@@ -2,9 +2,15 @@
 
 namespace MUtilTest\Model;
 
+use MUtil\Model;
 use MUtilTest\Test\ZendDbFixtures;
 use MUtilTest\Test\ZendDbMigrateFromTestSql;
 use MUtilTest\Test\ZendDbTestCase;
+use Zalt\Loader\ProjectOverloader;
+use Zalt\Loader\ProjectOverloaderFactory;
+use Zalt\Mock\SimpleServiceManager;
+use Zalt\Model\MetaModelLoader;
+use Zalt\Model\MetaModelLoaderFactory;
 
 /**
  *
@@ -44,6 +50,16 @@ class NestedModelTest extends ZendDbTestCase
     protected function getNestedModel()
     {
         if (! $this->_nestedModel) {
+            $config = [];
+            $sm = new SimpleServiceManager(['config' => $config]);
+            $overFc = new ProjectOverloaderFactory();
+            $sm->set(ProjectOverloader::class, $overFc($sm));
+
+            $mmlf   = new MetaModelLoaderFactory();
+            $loader = $mmlf($sm);
+            $sm->set(MetaModelLoader::class, $loader);
+            // Model::setSource($loader->createSubFolderOverloader('Model'));
+
             $this->_nestedModel = new \MUtil\Model\TableModel('n1');
 
             $sub = new \MUtil\Model\TableModel('n2');

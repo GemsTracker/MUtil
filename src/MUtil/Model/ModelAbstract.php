@@ -18,10 +18,10 @@ use Zalt\Model\Bridge\BridgeInterface;
 use Zalt\Model\Data\DataReaderInterface;
 use Zalt\Model\Data\FullDataInterface;
 use Zalt\Model\Dependency\DependencyInterface;
-use Zalt\Model\Exception\MetaModelException;
 use Zalt\Model\MetaModelInterface;
 use Zalt\Model\MetaModelLoader;
 use Zalt\Model\Transform\ModelTransformerInterface;
+use Zalt\Model\Type\ModelTypeInterface;
 
 /**
  * A model combines knowedge about a set of data with knowledge required to manipulate
@@ -151,6 +151,11 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @var int
      */
     public $orderIncrement = 10;
+
+    /**
+     * @var bool When false ->set() does not override existing values
+     */
+    protected $overwriteOnSet = true;
 
     /**
      *
@@ -582,7 +587,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
         $this->set($name,
                 'model', $model,
                 'elementClass', 'FormTable',
-                'type', \MUtil\Model::TYPE_CHILD_MODEL
+                MetaModelInterface::TYPE_ID, \MUtil\Model::TYPE_CHILD_MODEL
                 );
 
         return $trans;
@@ -1265,7 +1270,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     
     public function getMetaModelLoader(): MetaModelLoader
     {
-        throw new MetaModelException("No model loader in old style ModelAbstract");
+        return Model::getMetaModelLoader();
     }
     
     /**
@@ -1629,7 +1634,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
 
     public function isString($name)
     {
-        if ($type = $this->get($name, 'type')) {
+        if ($type = $this->get($name, MetaModelInterface::TYPE_ID)) {
             return \MUtil\Model::TYPE_STRING == $type;
         }
 
@@ -2101,20 +2106,25 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
                         $subkey = substr($key, $pos + 1, -1);
                         $key    = substr($key, 0, $pos);
 
-                        $this->_model[$name][$key][$subkey] = $value;
+                        if ($this->overwriteOnSet || (! isset($this->_model[$name][$key][$subkey]))) {
+                            $this->_model[$name][$key][$subkey] = $value;
+                        }
                     }
                 } elseif ($value !== null) {
-                    $this->_model[$name][$key] = $value;
-                    if ('type' == $key) {
-                        $defaults = Model::getTypeDefaults($value);
-                        if ($defaults) {
-                            foreach ($defaults as $dKey => $val) {
-                                if (! array_key_exists($dKey, $this->_model[$name])) {
-                                    $this->_model[$name][$dKey] = $val;
-                                }
-                            }
+                    if ($key == 'type') {
+                        if (is_int($value))  {
+                            $value = Model::getMetaModelLoader()->getDefaultTypeInterface($value) ?? $value;
                         }
-                    } 
+                        if ($value instanceof ModelTypeInterface) {
+                            $this->overwriteOnSet = false;
+                            $value->apply($this, $name);
+                            $value = $value->getBaseType();
+                            $this->overwriteOnSet = true;
+                        }
+                    }
+                    if ($this->overwriteOnSet || (! isset($this->_model[$name][$key]))) {
+                        $this->_model[$name][$key] = $value;
+                    }
                 }
             }
         } elseif (!array_key_exists($name, $this->_model)) {
