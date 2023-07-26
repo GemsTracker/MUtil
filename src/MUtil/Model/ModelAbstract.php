@@ -22,6 +22,7 @@ use Zalt\Model\MetaModelInterface;
 use Zalt\Model\MetaModelLoader;
 use Zalt\Model\Transform\ModelTransformerInterface;
 use Zalt\Model\Type\ModelTypeInterface;
+use Zalt\Model\Type\OverwritingTypeInterface;
 
 /**
  * A model combines knowedge about a set of data with knowledge required to manipulate
@@ -2114,9 +2115,11 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
                     if ($key == 'type') {
                         if (is_int($value))  {
                             $value = Model::getMetaModelLoader()->getDefaultTypeInterface($value) ?? $value;
+                        } elseif (is_string($value)) {
+                            $value = Model::getMetaModelLoader()->createType($value);
                         }
                         if ($value instanceof ModelTypeInterface) {
-                            $this->overwriteOnSet = false;
+                            $this->overwriteOnSet = $value instanceof OverwritingTypeInterface;
                             $value->apply($this, $name);
                             $value = $value->getBaseType();
                             $this->overwriteOnSet = true;
