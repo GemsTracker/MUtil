@@ -303,7 +303,6 @@ class Model
         if (! isset(self::$_loaders[$prefix])) {
             
             $loader = self::getSource()->createSubFolderOverloader(ucfirst($prefix));
-            $loader->setDependencyResolver(new ConstructorDependencyParametersResolver());
             
             self::$_loaders[$prefix] = $loader;
         }
