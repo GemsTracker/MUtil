@@ -1092,9 +1092,23 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
 
     public function loadCount($filter = null, $sort = null): int
     {
-        $paginator = $this->loadPaginator($filter, $sort);
+        $select  = $this->_createSelect(
+            $this->_checkFilterUsed($filter),
+            $this->_checkSortUsed($sort)
+        );
 
-        return $paginator->getTotalItemCount();
+        $select->reset(\Zend_Db_Select::COLUMNS);
+        $select->columns(['count' => new \Zend_Db_Expr("COUNT(*)")]);
+        // dump($select->assemble());
+
+        $rows = $select->query(\Zend_Db::FETCH_ASSOC)->fetchAll();
+        if ($rows) {
+            $row = reset($rows);
+            if ($row && isset($row['count'])) {
+                return intval($row['count']);
+            }
+        }
+        return 1;
     }
 
     /**
@@ -1116,7 +1130,6 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
         }
 
         return $data;
-
     }
 
     /**
