@@ -42,6 +42,22 @@ class NestedModelTest extends ZendDbTestCase
      */
     private $_nestedModel;
 
+    public function ensureProjectOverloader()
+    {
+        if (! Model::hasSource()) {
+            $config = [];
+            $sm = new SimpleServiceManager(['config' => $config]);
+            $overFc = new ProjectOverloaderFactory();
+            $sm->set(ProjectOverloader::class, $overFc($sm));
+
+            $mmlf = new MetaModelLoaderFactory();
+            $loader = $mmlf($sm);
+            $sm->set(MetaModelLoader::class, $loader);
+            // Happens in the factory!!
+            // Model::setSource($loader->createSubFolderOverloader('Model'));
+        }
+    }
+
     /**
      * Create the model
      *
@@ -50,15 +66,7 @@ class NestedModelTest extends ZendDbTestCase
     protected function getNestedModel()
     {
         if (! $this->_nestedModel) {
-            $config = [];
-            $sm = new SimpleServiceManager(['config' => $config]);
-            $overFc = new ProjectOverloaderFactory();
-            $sm->set(ProjectOverloader::class, $overFc($sm));
-
-            $mmlf   = new MetaModelLoaderFactory();
-            $loader = $mmlf($sm);
-            $sm->set(MetaModelLoader::class, $loader);
-            // Model::setSource($loader->createSubFolderOverloader('Model'));
+            $this->ensureProjectOverloader();;
 
             $this->_nestedModel = new \MUtil\Model\TableModel('n1');
 
@@ -69,10 +77,12 @@ class NestedModelTest extends ZendDbTestCase
 
         return $this->_nestedModel;
     }
-    
+
     public function testJoinTransformer()
     {
         $this->insertFixtures([NestedModelFixtures::class]);
+
+        $this->ensureProjectOverloader();;
 
         $main = new \MUtil\Model\TableModel('n1');
         $sub = new \MUtil\Model\TableModel('n2');
