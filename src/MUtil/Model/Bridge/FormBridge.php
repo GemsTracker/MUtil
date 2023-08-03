@@ -887,7 +887,7 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
     /**
      * @param string $name
      * @param mixed $arrayOrKey1 \MUtil\Ra::pairs() name => value array
-     * @return \MUtil\Bootstrap\Form\Element\ToggleCheckboxes
+     * @return \MUtil\Form\Element\ToggleCheckboxes
      * @throws \Zend_Form_Exception
      */
     public function addToggleCheckboxes($name, $arrayOrKey1 = null, $value1 = null, $key2 = null, $value2 = null)
@@ -911,7 +911,7 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
             unset($options['selectorName']);
         }*/
 
-        $element = new \MUtil\Bootstrap\Form\Element\ToggleCheckboxes($name, $options);
+        $element = new \MUtil\Form\Element\ToggleCheckboxes($name, $options);
 
         $this->form->addElement($element);
 

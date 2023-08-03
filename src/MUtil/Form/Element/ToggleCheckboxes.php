@@ -11,7 +11,7 @@
  * @license    New BSD License
  */
 
-namespace MUtil\Bootstrap\Form\Element;
+namespace MUtil\Form\Element;
 
 /**
  * Short description for ToggleCheckboxes
@@ -27,9 +27,4 @@ namespace MUtil\Bootstrap\Form\Element;
 class ToggleCheckboxes extends \MUtil\Bootstrap\Form\Element\Button
 {
     protected $_elementClass = 'btn toggle-btn';
-
-    public function __construct($spec, $options = null)
-    {
-        parent::__construct($spec, $options);
-    }
 }
