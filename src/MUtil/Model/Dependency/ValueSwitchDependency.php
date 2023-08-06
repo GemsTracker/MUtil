@@ -84,7 +84,7 @@ class ValueSwitchDependency extends DependencyAbstract
      *
      * @param array $switches Current level of switches array
      * @param array $dependsOn Current level of $dependsOn array
-     * @param array $results The final result, should take the form array(field => array(stting => setting))
+     * @param array $results The final result, should take the form array(field => array(string => setting))
      * @throws \MUtil\Model\Dependency\DependencyException
      */
     private function _checkEffectFor(array $switches, array $dependsOn, array &$results)
