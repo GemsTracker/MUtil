@@ -150,7 +150,14 @@ class JsonData
         if ($value === null) {
             return null;
         }
-        return json_decode($value, true);
+        if (is_array($value)) {
+            return $value;
+        }
+        if (is_string($value)) {
+            return json_decode($value, true);
+        }
+
+        return null;
     }
 
     /**
