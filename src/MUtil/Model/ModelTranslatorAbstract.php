@@ -631,7 +631,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      * @param scalar $key
      * @return mixed Row array or false when errors occurred
      */
-    public function translateRowValues($row, $key)
+    public function translateRowValues($row, mixed $key)
     {
         $row = $this->_prepareRow($row, $key);
 
@@ -649,7 +649,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      * @param scalar $key
      * @return mixed Row array or false when errors occurred
      */
-    public function validateRowValues(array $row, $key)
+    public function validateRowValues(array $row, mixed $key)
     {
         if (! $this->targetForm instanceof \Zend_Form) {
             return $row;
