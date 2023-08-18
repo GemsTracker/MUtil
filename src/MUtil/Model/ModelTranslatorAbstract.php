@@ -12,6 +12,8 @@
 namespace MUtil\Model;
 
 use MUtil\Model;
+use Zalt\Model\Data\DataReaderInterface;
+use Zalt\Model\Data\DataWriterInterface;
 
 /**
  * Translators can translate the data from one model to be saved using another
@@ -115,13 +117,6 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      * @var string Uppercase string
      */
     public $nullValue = 'NULL';
-
-    /**
-     * The task used for import
-     *
-     * @var string
-     */
-    protected $saveTask = 'Import\\SaveToModel';
 
     /**
      * The form used to validate the input values
@@ -386,7 +381,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->_description;
     }
@@ -404,7 +399,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      *
      * @return array of fields sourceName => targetName
      */
-    public function getRequiredFields()
+    public function getRequiredFields(): array
     {
         $trans  = $this->getFieldsTranslations();
         $keys   = array_fill_keys($this->_targetModel->getKeys(), true);
@@ -424,7 +419,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      *
      * @return array of String messages
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         $errorOutput = array();
         foreach ($this->_errors as $row => $rowErrors) {
@@ -443,7 +438,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      * @param mixed $row
      * @return array of String messages
      */
-    public function getRowErrors($row)
+    public function getRowErrors($row): array
     {
         $errorOutput = array();
         if (isset($this->_errors[$row])) {
@@ -466,9 +461,9 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
     /**
      * Get the source model, where the data is coming from.
      *
-     * @return \MUtil\Model\ModelAbstract $sourceModel The source of the data
+     * @return DataReaderInterface $sourceModel The source of the data
      */
-    public function getSourceModel()
+    public function getSourceModel(): DataReaderInterface
     {
         return $this->_sourceModel;
     }
@@ -491,9 +486,9 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
     /**
      * Get the target model, where the data is going to.
      *
-     * @return \MUtil\Model\ModelAbstract $sourceModel The target of the data
+     * @return DataWriterInterface $sourceModel The target of the data
      */
-    public function getTargetModel()
+    public function getTargetModel(): DataWriterInterface
     {
         return $this->_targetModel;
     }
@@ -503,7 +498,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      *
      * @return boolean True when there are errora
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return (boolean) $this->_errors;
     }
@@ -514,7 +509,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      * @param string $description A description that enables users to choose the transformer they need.
      * @return \Gems\Model\ModelTranslatorAbstract (continuation pattern)
      */
-    public function setDescription($description)
+    public function setDescription(string $description): ModelTranslatorAbstract
     {
         $this->_description = $description;
         return $this;
@@ -523,10 +518,10 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
     /**
      * Set the source model, where the data is coming from.
      *
-     * @param \MUtil\Model\ModelAbstract $sourceModel The source of the data
+     * @param DataReaderInterface $sourceModel The source of the data
      * @return \MUtil\Model\ModelTranslatorAbstract (continuation pattern)
      */
-    public function setSourceModel(\MUtil\Model\ModelAbstract $sourceModel)
+    public function setSourceModel(DataReaderInterface $sourceModel): ModelTranslatorAbstract
     {
         $this->_sourceModel = $sourceModel;
         return $this;
@@ -552,10 +547,10 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
     /**
      * Set the target model, where the data is going to.
      *
-     * @param \MUtil\Model\ModelAbstract $sourceModel The target of the data
+     * @param DataWriterInterface $sourceModel The target of the data
      * @return \MUtil\Model\ModelTranslatorAbstract (continuation pattern)
      */
-    public function setTargetModel(\MUtil\Model\ModelAbstract $targetModel)
+    public function setTargetModel(DataWriterInterface $targetModel): ModelTranslatorAbstract
     {
         $this->_targetModel = $targetModel;
 
@@ -581,7 +576,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      *
      * @return \MUtil\Model\ModelTranslatorAbstract (continuation pattern)
      */
-    public function startImport()
+    public function startImport(): ModelTranslatorAbstract
     {
         if (! $this->_targetModel instanceof \MUtil\Model\ModelAbstract) {
             throw new \MUtil\Model\ModelException("Trying to start the import without target model.");
@@ -608,7 +603,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      * @param \Traversable|array $data a nested data set as loaded from the source model
      * @return mixed Nested row array or false when errors occurred
      */
-    public function translateImport($data)
+    public function translateImport($data): mixed
     {
         $this->startImport();
 

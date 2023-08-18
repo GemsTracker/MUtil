@@ -37,7 +37,7 @@ class StraightTranslator extends \MUtil\Model\ModelTranslatorAbstract
      * @return array of fields sourceName => targetName
      * @throws \MUtil\Model\ModelException
      */
-    public function getFieldsTranslations()
+    public function getFieldsTranslations(): array
     {
         if (! $this->_targetModel instanceof \MUtil\Model\ModelAbstract) {
             throw new \MUtil\Model\ModelTranslateException(sprintf('Called %s without a set target model.', __FUNCTION__));
