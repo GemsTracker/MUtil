@@ -503,6 +503,15 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
         return (boolean) $this->_errors;
     }
 
+    public function saveAll(array $rows): array
+    {
+        $output = [];
+        foreach ($rows as $rowId => $row) {
+            $output[$rowId] = $this->_targetModel->save($row);
+        }
+        return $output;
+    }
+
     /**
      * Set the description.
      *
