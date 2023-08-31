@@ -12,6 +12,8 @@
 namespace MUtil\Snippets;
 
 use Mezzio\Csrf\CsrfGuardInterface;
+use Zalt\Model\MetaModelInterface;
+use Zalt\Model\MetaModellerInterface;
 
 /**
  * Abstract class for creating & processing a form based on a model. To use this
@@ -335,6 +337,42 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
     }
 
     /**
+     * Remove all non-used elements from a form by setting the elementClasses to None.
+     *
+     * Checks for dependencies and keys to be included
+     *
+     * @return MetaModelInterface (continuation pattern)
+     */
+    public function clearElementClasses(MetaModelInterface $metaModel)
+    {
+        $labels  = $metaModel->getColNames('label');
+        $options = array_intersect($metaModel->getColNames('multiOptions'), $labels);
+
+        // Set element class to text for those with labels without an element class
+        $metaModel->setDefault($options, 'elementClass', 'Select');
+
+        // Set element class to text for those with labels without an element class
+        $metaModel->setDefault($labels, 'elementClass', 'Text');
+
+        // Hide al dependencies plus the keys
+        $elems   = $metaModel->getColNames('elementClass');
+        $depends = $metaModel->getDependentOn($elems) + $this->getKeys();
+        if ($depends) {
+            $metaModel->setDefault($depends, 'elementClass', 'Hidden');
+        }
+
+        // Leave out the rest
+        $metaModel->setDefault('elementClass', 'None');
+
+        // Cascade
+        foreach ($metaModel->getCol('model') as $subModel) {
+            if ($subModel instanceof MetaModellerInterface) {
+                $this->clearElementClasses($subModel->getMetaModel());
+            }
+        }
+    }
+
+    /**
      * Creates an empty form. Allows overruling in sub-classes.
      *
      * @param mixed $options
@@ -442,11 +480,11 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
     protected function initItems()
     {
         if (is_null($this->_items)) {
-            $model        = $this->getModel();
+            $model        = $this->getModel()->getMetaModel();
             $this->_items = $model->getItemsOrdered();
 
             if ($this->onlyUsedElements) {
-                $model->clearElementClasses();
+                $this->clearElementClasses($model);
             }
         }
     }

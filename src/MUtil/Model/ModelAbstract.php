@@ -19,6 +19,7 @@ use Zalt\Model\Data\DataReaderInterface;
 use Zalt\Model\Data\FullDataInterface;
 use Zalt\Model\Dependency\DependencyInterface;
 use Zalt\Model\MetaModelInterface;
+use Zalt\Model\MetaModellerInterface;
 use Zalt\Model\MetaModelLoader;
 use Zalt\Model\Transform\ModelTransformerInterface;
 use Zalt\Model\Type\ModelTypeInterface;
@@ -746,44 +747,6 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
         $parameters = array_filter($parameters, function($i) { return is_array($i) || strlen($i); });
 
         $this->applyParameters($parameters, $includeNumericFilters);
-
-        return $this;
-    }
-
-    /**
-     * Remove all non-used elements from a form by setting the elementClasses to None.
-     *
-     * Checks for dependencies and keys to be included
-     *
-     * @return \MUtil\Model\ModelAbstract (continuation pattern)
-     */
-    public function clearElementClasses()
-    {
-        $labels  = $this->getColNames('label');
-        $options = array_intersect($this->getColNames('multiOptions'), $labels);
-
-        // Set element class to text for those with labels without an element class
-        $this->setDefault($options, 'elementClass', 'Select');
-
-        // Set element class to text for those with labels without an element class
-        $this->setDefault($labels, 'elementClass', 'Text');
-
-        // Hide al dependencies plus the keys
-        $elems   = $this->getColNames('elementClass');
-        $depends = $this->getDependentOn($elems) + $this->getKeys();
-        if ($depends) {
-            $this->setDefault($depends, 'elementClass', 'Hidden');
-        }
-
-        // Leave out the rest
-        $this->setDefault('elementClass', 'None');
-
-        // Cascade
-        foreach ($this->getCol('model') as $subModel) {
-            if ($subModel instanceof \MUtil\Model\ModelAbstract) {
-                $subModel->clearElementClasses();
-            }
-        }
 
         return $this;
     }
