@@ -221,9 +221,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
             $filter = $this->getFilter();
         }
         if (is_array($filter)) {
-            foreach ($this->_transformers as $transformer) {
-                $filter = $transformer->transformFilter($this, $filter);
-            }
+            $filter = $this->processFilter($filter);
 
             if ($this->hasTextSearchFilter() && ($param = $this->getTextFilter())) {
                 if (isset($filter[$param])) {
@@ -255,9 +253,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
             $sort = $this->_checkSortValue($sort);
         }
 
-        foreach ($this->_transformers as $transformer) {
-            $sort = $transformer->transformSort($this, $sort);
-        }
+        $sort = $this->processSort($sort);
 
         return $sort;
     }
@@ -323,6 +319,14 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
         // \MUtil\EchoOut\EchoOut::r($filteredData, 'afterFilter');
 
         return $filteredData;
+    }
+
+    public function processSort(array $sort): array
+    {
+        foreach ($this->_transformers as $transformer) {
+            $sort = $transformer->transformSort($this, $sort);
+        }
+        return $sort;
     }
 
     protected function _getKeyValue($name, $key)
@@ -1928,6 +1932,14 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
         // \MUtil\EchoOut\EchoOut::track($data);
 
         return $data;
+    }
+
+    public function processFilter(array $filter): array
+    {
+        foreach ($this->_transformers as $transformer) {
+            $filter = $transformer->transformFilter($this, $filter);
+        }
+        return $filter;
     }
 
     /**
