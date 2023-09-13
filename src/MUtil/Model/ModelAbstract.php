@@ -175,7 +175,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param array $changes
      * @param array $data Referenced data
      */
-    protected function _applyDependencyChanges(MetaModelInterface $model, array $changes, array &$data)
+    public function applyDependencyChanges(MetaModelInterface $model, array $changes, array &$data)
     {
         // \MUtil\EchoOut\EchoOut::track($model->getName(), $changes, $data);
 
@@ -191,7 +191,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
                     }
 
                     foreach ($data[$name] as &$row) {
-                        $submodel->_applyDependencyChanges($submodel, $settings['model'], $row);
+                        $submodel->applyDependencyChanges($submodel, $settings['model'], $row);
                     }
                 }
 
@@ -1906,7 +1906,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
                         // but as not specifying this correctly may lead to errors elsewhere
                         // I think there is enough reason for discipline in this not to perform
                         // this extra check. (Though I may change my mind in the future
-                        $this->_applyDependencyChanges($this, $changes, $data);
+                        $this->applyDependencyChanges($this, $changes, $data);
                     }
                 } elseif (\MUtil\Model::$verbose) {
                     if ($dependsOn) {
