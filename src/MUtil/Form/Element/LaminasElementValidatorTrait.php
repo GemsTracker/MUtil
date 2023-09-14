@@ -2,10 +2,238 @@
 
 namespace MUtil\Form\Element;
 
+use Laminas\Filter\FilterInterface;
 use Laminas\Validator\ValidatorInterface;
 
 trait LaminasElementValidatorTrait
 {
+    /**
+     * Element filters
+     * @var array
+     */
+    protected $_filters = [];
+
+    /**
+     * Lazy-load a filter
+     *
+     * @param  array $filter
+     * @return FilterInterface
+     */
+    protected function _loadFilter(array $filter)
+    {
+        $origName = $filter['filter'];
+        $name     = $this->getPluginLoader(self::FILTER)->load($filter['filter']);
+
+        if (array_key_exists($name, $this->_filters)) {
+            require_once 'Zend/Form/Exception.php';
+            throw new \Zend_Form_Exception(sprintf('Filter instance already exists for filter "%s"', $origName));
+        }
+
+        if (empty($filter['options'])) {
+            $instance = new $name;
+        } else {
+            $r = new \ReflectionClass($name);
+            if ($r->hasMethod('__construct')) {
+                $instance = $r->newInstanceArgs(array_values((array) $filter['options']));
+            } else {
+                $instance = $r->newInstance();
+            }
+        }
+
+        if ($origName != $name) {
+            $filterNames  = array_keys($this->_filters);
+            $order        = array_flip($filterNames);
+            $order[$name] = $order[$origName];
+            $filtersExchange = [];
+            unset($order[$origName]);
+            asort($order);
+            foreach ($order as $key => $index) {
+                if ($key == $name) {
+                    $filtersExchange[$key] = $instance;
+                    continue;
+                }
+                $filtersExchange[$key] = $this->_filters[$key];
+            }
+            $this->_filters = $filtersExchange;
+        } else {
+            $this->_filters[$name] = $instance;
+        }
+
+        return $instance;
+    }
+
+    /**
+     * Add a filter to the element
+     *
+     * @param  string|FilterInterface $filter
+     * @return \Zend_Form_Element
+     */
+    public function addFilter($filter, $options = [])
+    {
+        if ($filter instanceof FilterInterface) {
+            $name = get_class($filter);
+        } elseif (is_string($filter)) {
+            $name = $filter;
+            $filter = [
+                'filter' => $filter,
+                'options' => $options,
+            ];
+            $this->_filters[$name] = $filter;
+        } else {
+            require_once 'Zend/Form/Exception.php';
+            throw new \Zend_Form_Exception('Invalid filter provided to addFilter; must be string or Zend_Filter_Interface');
+        }
+
+        $this->_filters[$name] = $filter;
+
+        return $this;
+    }
+
+    /**
+     * Add filters to element
+     *
+     * @param  array $filters
+     * @return \Zend_Form_Element
+     */
+    public function addFilters(array $filters)
+    {
+        foreach ($filters as $filterInfo) {
+            if ($filterInfo instanceof FilterInterface) {
+                $this->addFilter($filterInfo);
+            } elseif (is_string($filterInfo)) {
+                $this->addFilter($filterInfo);
+            } elseif (is_array($filterInfo)) {
+                $argc                = count($filterInfo);
+                $options             = [];
+                if (isset($filterInfo['filter'])) {
+                    $filter = $filterInfo['filter'];
+                    if (isset($filterInfo['options'])) {
+                        $options = $filterInfo['options'];
+                    }
+                    $this->addFilter($filter, $options);
+                } else {
+                    switch (true) {
+                        case (0 == $argc):
+                            break;
+                        case (1 <= $argc):
+                            $filter  = array_shift($filterInfo);
+                        case (2 <= $argc):
+                            $options = array_shift($filterInfo);
+                        default:
+                            $this->addFilter($filter, $options);
+                            break;
+                    }
+                }
+            } else {
+                dump(get_class($filterInfo));
+                // require_once 'Zend/Form/Exception.php';
+                // throw new \Zend_Form_Exception('Invalid filter passed to addFilters()');
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add filters to element, overwriting any already existing
+     *
+     * @param  array $filters
+     * @return \Zend_Form_Element
+     */
+    public function setFilters(array $filters)
+    {
+        $this->clearFilters();
+        return $this->addFilters($filters);
+    }
+
+    /**
+     * Retrieve a single filter by name
+     *
+     * @param  string $name
+     * @return FilterInterface|bool
+     */
+    public function getFilter($name)
+    {
+        if (!isset($this->_filters[$name])) {
+            $len = strlen($name);
+            foreach ($this->_filters as $localName => $filter) {
+                if ($len > strlen($localName)) {
+                    continue;
+                }
+
+                if (0 === substr_compare($localName, $name, -$len, $len, true)) {
+                    if (is_array($filter)) {
+                        return $this->_loadFilter($filter);
+                    }
+                    return $filter;
+                }
+            }
+            return false;
+        }
+
+        if (is_array($this->_filters[$name])) {
+            return $this->_loadFilter($this->_filters[$name]);
+        }
+
+        return $this->_filters[$name];
+    }
+
+    /**
+     * Get all filters
+     *
+     * @return array
+     */
+    public function getFilters()
+    {
+        $filters = [];
+        foreach ($this->_filters as $key => $value) {
+            if ($value instanceof FilterInterface) {
+                $filters[$key] = $value;
+                continue;
+            }
+            $filter = $this->_loadFilter($value);
+            $filters[get_class($filter)] = $filter;
+        }
+        return $filters;
+    }
+
+    /**
+     * Remove a filter by name
+     *
+     * @param  string $name
+     * @return \Zend_Form_Element
+     */
+    public function removeFilter($name)
+    {
+        if (isset($this->_filters[$name])) {
+            unset($this->_filters[$name]);
+        } else {
+            $len = strlen($name);
+            foreach (array_keys($this->_filters) as $filter) {
+                if ($len > strlen($filter)) {
+                    continue;
+                }
+                if (0 === substr_compare($filter, $name, -$len, $len, true)) {
+                    unset($this->_filters[$filter]);
+                    break;
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clear all filters
+     *
+     * @return \Zend_Form_Element
+     */
+    public function clearFilters()
+    {
+        $this->_filters = [];
+        return $this;
+    }
+
     /**
      * Add validator to validation chain
      *
