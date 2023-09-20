@@ -1251,6 +1251,11 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
         return $this->_model_name;
     }
 
+    public function getOldValues(): array|null
+    {
+        return null;
+    }
+
     /**
      * Checks for and executes any actions to perform on a value after
      * loading the value
