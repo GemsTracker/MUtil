@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace MUtil\Handler;
 
 use DateTimeInterface;
+use Mezzio\Csrf\CsrfGuardInterface;
+use Mezzio\Csrf\CsrfMiddleware;
 use Mezzio\Session\SessionInterface;
 use MUtil\Model;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -65,6 +67,8 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      */
     private array $_defaultCreateParameters = [
         'createData' => true,
+        'csrfName'   => '__csrf',
+        'csrfToken'  => 'getCsrfToken',
     ];
 
     /**
@@ -80,6 +84,8 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      */
     private array $_defaultEditParameters = [
         'createData' => false,
+        'csrfName'   => '__csrf',
+        'csrfToken'  => 'getCsrfToken',
     ];
 
     /**
@@ -648,6 +654,13 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     public function getCacheTags(): array
     {
         return $this->cacheTags;
+    }
+
+    public function getCsrfToken()
+    {
+        /** @var CsrfGuardInterface $csrfGuard */
+        $csrfGuard = $this->request->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE);
+        return $csrfGuard->generateToken();
     }
 
     /**
