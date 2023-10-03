@@ -204,7 +204,7 @@ class DlElement extends \MUtil\Html\HtmlElement implements \MUtil\Html\FormLayou
         $decorator = new \MUtil\Html\ElementDecorator();
         $decorator->setHtmlElement($this);
         $decorator->setPrologue($formrep);  // Renders hidden elements before this element
-        $form->setDecorators(array($decorator, 'AutoFocus', 'Form'));
+        $form->setDecorators(array($decorator, 'Form'));
 
         return $this;
     }

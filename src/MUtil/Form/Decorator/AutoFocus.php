@@ -22,6 +22,7 @@ use MUtil\Form\Element\Hidden as BaseHidden;
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
  * @since      Class available since version 1.0
+ * @deprecated
  */
 class AutoFocus extends \Zend_Form_Decorator_Abstract
 {

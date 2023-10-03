@@ -11,12 +11,14 @@
 namespace MUtil;
 
 use Laminas\Validator\ValidatorInterface;
+use MUtil\Bootstrap\Form\Element\Hidden;
 use Zalt\Html\ElementInterface;
 use Zalt\Html\Html;
 use Zalt\Html\Sequence;
 use Zalt\Html\Zend\ZendDlElement;
 use Zalt\Html\Zend\ZendElementDecorator;
 use Zalt\Html\Zend\ZendFormLayout;
+use Zalt\Late\RepeatableFormElements;
 use Zalt\Ra\Ra;
 
 /**
@@ -128,26 +130,8 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
         parent::__construct($options);
 
         if ($this->focusTrackerElementId) {
-            $this->activateJQuery();
-
-            $elementId = $this->focusTrackerElementId;
-
-            $element = new \MUtil\Bootstrap\Form\Element\Hidden($elementId);
-
+            $element = new Hidden($this->focusTrackerElementId);
             $this->addElement($element);
-
-            $script    = sprintf("
-                jQuery('form input, form select, form textarea').focus(
-                function () {
-                    var input = jQuery(this);
-                    var tracker = input.closest('form').find('input[name=%s]');
-                    tracker.val(input.attr('id'));
-                }
-                );
-                ", $elementId);
-
-            $jquery = $this->getView()->jQuery();
-            $jquery->addOnLoad($script);
         }
     }
 
@@ -211,7 +195,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
             }
 
             if ($this->_hiddenAlwaysEven && (1 == (count($hidden) % 2))) {
-                $this->_elements[$this->_hiddenAlwaysEven] = new \MUtil\Bootstrap\Form\Element\Hidden($this->_hiddenAlwaysEven);
+                $this->_elements[$this->_hiddenAlwaysEven] = new Hidden($this->_hiddenAlwaysEven);
 
                 $hidden[] = $this->_hiddenAlwaysEven;
             }
@@ -678,9 +662,8 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
 
         $decorators = $this->getDecorators();
         if (empty($decorators)) {
-            $this->addDecorator('AutoFocus', ['form' => $this])
-                ->addDecorator('FormElements');
-            $this->addDecorator('Form');
+            $this->addDecorator('FormElements')
+                ->addDecorator('Form');
         }
     }
 
@@ -779,12 +762,14 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
         if ($html instanceof \MUtil\Html\FormLayout || $html instanceof ZendFormLayout) {
             $html->setAsFormLayout($this);
         } else {
+            $repeater = new RepeatableFormElements($this);
+            $repeater->splitHidden = true;
+
             // Set this element as the form decorator
             $decorator = new ZendElementDecorator();
-            $decorator = new ZendElementDecorator();
             $decorator->setHtmlElement($html);
-            // $decorator->setPrologue($formrep); // Renders hidden elements before this element
-            $this->setDecorators(array($decorator, 'AutoFocus', 'Form'));
+            $decorator->setPrologue($repeater); // Renders hidden elements before this element
+            $this->setDecorators(array($decorator, 'Form'));
         }
 
         $this->_html_element = $html;

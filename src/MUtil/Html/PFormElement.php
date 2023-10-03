@@ -109,7 +109,7 @@ class PFormElement extends \MUtil\Html\HtmlElement implements \MUtil\Html\FormLa
                     array('class' => $errorClass, 'style' => array('margin-left' => $width))
                     ));
         }
-        $form->setDecorators(array($decorator, 'AutoFocus', 'Form'));
+        $form->setDecorators(array($decorator, 'Form'));
 
         return $this;
     }

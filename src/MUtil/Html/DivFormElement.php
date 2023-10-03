@@ -137,7 +137,7 @@ class DivFormElement extends \MUtil\Html\HtmlElement implements \MUtil\Html\Form
                     array('class' => $errorClass, 'style' => array('margin-left' => $width))
                     ));
         }
-        $form->setDecorators(array($decorator, 'AutoFocus', 'Form'));
+        $form->setDecorators(array($decorator, 'Form'));
 
         return $this;
     }
