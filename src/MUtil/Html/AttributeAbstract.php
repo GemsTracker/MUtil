@@ -68,7 +68,7 @@ abstract class AttributeAbstract implements \MUtil\Html\AttributeInterface
      */
     public function __toString()
     {
-        return $this->get();
+        return $this->get() ?? '';
     }
 
     // public function add($value);
