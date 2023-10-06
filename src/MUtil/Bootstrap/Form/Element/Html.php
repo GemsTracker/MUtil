@@ -11,12 +11,14 @@
 
 namespace MUtil\Bootstrap\Form\Element;
 
+use Zalt\Html\Raw;
+
 /**
  * @package    MUtil
  * @subpackage Form_Element
  * @copyright  Copyright (c) 2011 Erasmus MC
  * @license    New BSD License
- * @method     Zalt\Html\Raw             raw(...$arguments)
+ * @method     Raw             raw(...$arguments)
  */
 class Html extends \MUtil\Form\Element\Html
         implements \MUtil\Form\Element\NoFocusInterface
