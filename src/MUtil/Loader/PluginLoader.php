@@ -83,7 +83,7 @@ class PluginLoader extends \Zend_Loader_PluginLoader
 
             // \MUtil\EchoOut\EchoOut::track(self::getAbsolutePaths($path));
             foreach (self::getAbsolutePaths($path) as $sub) {
-                if (! in_array($sub, $newPaths)) {
+                if (! in_array($sub . DIRECTORY_SEPARATOR, $newPaths)) {
                     if ($prepend) {
                         array_unshift($newPaths, $sub . DIRECTORY_SEPARATOR);
                     } else {
