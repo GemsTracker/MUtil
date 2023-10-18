@@ -16,6 +16,7 @@ use Mezzio\Csrf\CsrfGuardInterface;
 use Mezzio\Csrf\CsrfMiddleware;
 use Mezzio\Session\SessionInterface;
 use MUtil\Model;
+use MUtil\Snippets\Standard\ModelYesNoDeleteSnippet;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,7 +30,6 @@ use Zalt\Model\Data\DataReaderInterface;
 use Zalt\Ra\Ra;
 use Zalt\Snippets\ModelBridge\TableBridge;
 use Zalt\Snippets\ModelDetailTableSnippet;
-use Zalt\Snippets\ModelYesNoDeleteSnippet;
 use Zalt\Snippets\Zend\ZendModelFormSnippet;
 use Zalt\SnippetsLoader\SnippetResponderInterface;
 
