@@ -17,6 +17,7 @@ use Mezzio\Csrf\CsrfMiddleware;
 use Mezzio\Session\SessionInterface;
 use MUtil\Model;
 use MUtil\Snippets\Standard\ModelYesNoDeleteSnippet;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -115,9 +116,10 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * @var array
      */
     private array $_defaultParameters = [
+        'cache'                 => 'getCache',
         'cacheTags'             => 'getCacheTags',
         'includeNumericFilters' => 'getIncludeNumericFilters',
-        '_messenger'             => 'getMessenger',
+        '_messenger'            => 'getMessenger',
         'model'                 => 'getModel',
     ];
 
@@ -170,6 +172,8 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * @var array snippets name
      */
     protected array $autofilterSnippets = ['ModelTableSnippet'];
+
+    protected ?CacheItemPoolInterface $cache = null;
 
     /**
      * Tags for cache cleanup after changes, passed to snippets
@@ -645,6 +649,17 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     {
         return false;
     }
+
+    /**
+     * Get the cache tags for this model (if any)
+     *
+     * @return ?CacheItemPoolInterface
+     */
+    public function getCache(): ?CacheItemPoolInterface
+    {
+        return $this->cache;
+    }
+
 
     /**
      * Get the cache tags for this model (if any)
