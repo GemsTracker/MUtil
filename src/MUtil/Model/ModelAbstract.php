@@ -2032,14 +2032,14 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
 
     /**
      * Calls $this->save() multiple times for each element
-     * in the input array and returns the number of saved rows.
+     * in the input array and returns the saved rows.
      *
      * @param array $newValues A nested array
-     * @return int The number of changed rows
+     * @return array The saved rows
      */
-    public function saveAll(array $newValues)
+    public function saveAll(array $newValues): array
     {
-        $savedValues = array();
+        $savedValues = [];
 
         foreach ($newValues as $key => $newValue) {
             if ($saved = $this->save($newValue)) {
