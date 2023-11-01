@@ -83,10 +83,11 @@ class FakeSubmit extends \Zend_View_Helper_FormButton
 
         // Link to page.
         if ($is_element) {
-            $attribs['onclick'] = 'e1 = document.getElementsByName(\''.$target_name.'\')[0]; e2 = document.getElementsByName(\''.$target_value.'\')[0]; e1.value=e2.value; e.form.submit();';
-        } else {
-            $attribs['onclick'] = 'e = document.getElementsByName(\''.$target_name.'\')[0]; e.value=\''.$target_value.'\'; e.form.submit();';
+            $attribs['data-target-value'] = $target_value;
         }
+
+        $attribs['data-target-name'] = $target_name;
+        $attribs['class'] .= ' fake-submit-button';
 
          return $prehtml . $this->formButton($name, $value, $attribs);
     }
