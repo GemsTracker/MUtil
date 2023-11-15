@@ -1709,6 +1709,24 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     }
 
     /**
+     * Returns the items requested
+     *
+     * @param mixed $filter Array to use as filter
+     * @param mixed $sort Array to use for sort
+     * @return array Nested array or false
+     */
+    public function loadPage(int $page, int $items, $filter = null, $sort = null, $columns = null): array
+    {
+        $rows = $this->load($filter, $sort);
+
+        if (! $rows) {
+            return [];
+        }
+
+        return array_slice($rows, ($page - 1) * $items, $items);
+    }
+
+    /**
      * Returns the numbers of rows with the items requested
      *
      * @param mixed $filter Array to use as filter
