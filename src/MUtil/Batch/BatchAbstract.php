@@ -1143,7 +1143,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
             } catch (\Exception $e) {
                 $this->addMessage('ERROR!!!');
                 $this->addMessage(
-                    'While calling:' . $command[0] . '(' . implode(',', \MUtil\Ra::flatten($command[1])) . ')'
+                    'While calling:' . $command[0] . '(' . implode(',', \MUtil\Ra::flatten($command[1])) . ') line: ' . $e->getFile() . '(' . $e->getLine() . ')'
                 );
                 $this->addException($e);
                 $this->stopBatch($e->getMessage());
