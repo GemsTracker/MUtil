@@ -6,6 +6,7 @@ use Mezzio\Router\Route;
 use Mezzio\Router\RouteResult;
 use MUtil\Legacy\RequestHelper;
 use Psr\Http\Message\ServerRequestInterface;
+use Zalt\Base\BaseDir;
 
 class RequestInfoFactory
 {
@@ -51,12 +52,20 @@ class RequestInfoFactory
                 }
             }
         }
+        $path = '';
+        if ($controllerName) {
+            $path = $controllerName;
+            if ($actionName) {
+                $path .= '/' . $actionName;
+            }
+        }
 
         $requestInfo = new RequestInfo(
             $controllerName,
             $actionName,
             $routeName,
-            rtrim($baseUrl, '/\\') ?: '/',
+            BaseDir::getBaseDir(),
+            $path,
             'POST' == $this->request->getMethod(),
             $routeMatchedParams,
             $this->request->getParsedBody() ?: [],
