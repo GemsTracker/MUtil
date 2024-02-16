@@ -12,6 +12,7 @@
 namespace MUtil\Snippets;
 
 use Psr\Cache\CacheItemPoolInterface;
+use Zalt\Base\RequestInfo;
 
 /**
  *
@@ -128,9 +129,9 @@ abstract class FormSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
     protected $layoutFixedWidth;
 
     /**
-     * @var \MUtil\Request\RequestInfo
+     * @var \Zalt\Request\RequestInfo
      */
-    protected ?\MUtil\Request\RequestInfo $requestInfo = null;
+    protected ?RequestInfo $requestInfo = null;
 
     /**
      * The name of the action to forward to after form completion

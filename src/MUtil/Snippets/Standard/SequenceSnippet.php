@@ -15,7 +15,7 @@
 
 namespace MUtil\Snippets\Standard;
 
-use MUtil\Request\RequestInfo;
+use Zalt\Base\RequestInfo;
 
 /**
  *

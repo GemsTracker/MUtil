@@ -11,6 +11,8 @@
 
 namespace MUtil\Snippets;
 
+use Zalt\Base\RequestInfo;
+
 /**
  * Abstract class for quickly creating a tabbed bar, or rather a div that contains a number
  * of links, adding specific classes for display.
@@ -64,9 +66,9 @@ abstract class TabSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
     protected $href = array();
 
     /**
-     * @var \MUtil\Request\RequestInfo
+     * @var RequestInfo
      */
-    protected ?\MUtil\Request\RequestInfo $requestInfo = null;
+    protected ?RequestInfo $requestInfo = null;
 
     /**
      *

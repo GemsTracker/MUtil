@@ -11,6 +11,8 @@
 
 namespace MUtil\Snippets;
 
+use Zalt\Base\RequestInfo;
+
 /**
  * Contains base functionality to use a model in a snippet.
  *
@@ -79,7 +81,10 @@ abstract class ModelSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
      */
     public $removePost = true;
 
-    protected ?\MUtil\Request\RequestInfo $requestInfo = null;
+    /**
+     * @var RequestInfo|null
+     */
+    protected ?RequestInfo $requestInfo = null;
 
     /**
      * Searchfilter to use including model sorts, etcc..

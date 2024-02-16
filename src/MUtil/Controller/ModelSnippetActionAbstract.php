@@ -13,6 +13,8 @@ namespace MUtil\Controller;
 
 use Laminas\ServiceManager\ServiceManager;
 use Mezzio\Session\SessionInterface;
+use Zalt\Base\RequestInfo;
+use Zalt\Base\RequestInfoFactory;
 
 /**
  * Controller class with standard model and snippet based browse (index), IN THE NEAR FUTURE show, edit and delete actions.
@@ -656,9 +658,9 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
         return $this->_model;
     }
 
-    public function getRequestInfo(): \MUtil\Request\RequestInfo
+    public function getRequestInfo(): RequestInfo
     {
-        $factory = new \MUtil\Request\RequestInfoFactory($this->request);
+        $factory = new RequestInfoFactory($this->request);
         return $factory->getRequestInfo();
     }
 
