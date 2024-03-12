@@ -23,16 +23,6 @@ class MezzioRequestWrapper
         $this->request = $request;
     }
 
-    public function getClientIp()
-    {
-        $server = $this->request->getServerParams();
-        if (isset($server['REMOTE_ADDR'])) {
-            return $server['REMOTE_ADDR'];
-        }
-
-        return null;
-    }
-
     public function getParams()
     {
         $params = [
