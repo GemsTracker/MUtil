@@ -168,7 +168,7 @@ class JoinModel extends \MUtil\Model\DatabaseModelAbstract
             } else {
                 $tableName = (string) $table;
             }
-            $table = new \Zend_DB_Table($tableName);
+            $table = new \Zend_Db_Table($tableName);
         }
         if (! $alias) {
             $alias = $tableName;
