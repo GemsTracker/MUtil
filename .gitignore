@@ -3,3 +3,4 @@
 /composer.lock
 /tests/build/logs
 /.idea
+/.phpunit.cache

@@ -6,6 +6,8 @@ use PHPUnit\Framework\TestCase;
 
 class ModelTest extends TestCase
 {
+    protected $model;
+
     public function setUp(): void
     {
         parent::setUp();

@@ -34,19 +34,19 @@ class RequireOtherField extends AbstractValidator
     ];
 
 
-    protected string $description;
+    protected string $_description;
 
     /**
      * The field name against which to validate
      * @var string
      */
-    protected string $fieldName;
+    protected string $_fieldName;
 
     /**
      * Description of field name against which to validate
      * @var string
      */
-    protected string $fieldDescription;
+    protected string $_fieldDescription;
 
     /**
      * Sets validator options
