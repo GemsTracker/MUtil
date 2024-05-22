@@ -199,6 +199,8 @@ class JoinModel extends \MUtil\Model\DatabaseModelAbstract
      */
     protected function _save(array $newValues, array $filter = null, array $saveTables = null)
     {
+        $this->oldValues = [];
+
         $saveTables = $this->_checkSaveTables($saveTables);
         $oldChanged = $this->getChanged();
 

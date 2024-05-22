@@ -59,6 +59,7 @@ class TableModel extends \MUtil\Model\DatabaseModelAbstract
      */
     protected function _save(array $newValues, array $filter = null)
     {
+        $this->oldValues = [];
         // $this->_saveTableData returns the new row values, including any automatic changes.
         // add $newValues to throw nothing away.
         return $this->_saveTableData($this->_table, $newValues, $filter, parent::SAVE_MODE_ALL) + $newValues;

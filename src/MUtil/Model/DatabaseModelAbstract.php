@@ -103,6 +103,8 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      */
     public $keyCopier = self::KEY_COPIER;
 
+    protected array $oldValues = [];
+
     /**
      * Should the paginator prefetch all data? E.g. when multiple data loads occur on the same page
      * or model dependencies trigger other queries.
@@ -595,6 +597,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
                 $update = false;
             } else {
                 $oldValues = $oldValues->toArray();
+                $this->oldValues += $oldValues;
             }
         }
 
@@ -962,6 +965,11 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
     public function getKeyCopyName($name)
     {
         return sprintf($this->keyCopier, $name);
+    }
+
+    public function getOldValues(): array|null
+    {
+        return $this->oldValues;
     }
 
     /**
