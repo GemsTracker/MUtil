@@ -63,6 +63,87 @@ trait LaminasElementValidatorTrait
     }
 
     /**
+     * Lazy-load a validator
+     *
+     * @param  array $validator Validator definition
+     * @return Zend_Validate_Interface
+     */
+    protected function _loadValidator(array $validator)
+    {
+        $origName = $validator['validator'];
+        $name     = $this->getPluginLoader(self::VALIDATE)->load($validator['validator']);
+
+        if (array_key_exists($name, $this->_validators)) {
+            require_once 'Zend/Form/Exception.php';
+            throw new Zend_Form_Exception(sprintf('Validator instance already exists for validator "%s"', $origName));
+        }
+
+        $messages = false;
+        if (isset($validator['options']) && array_key_exists('messages', (array)$validator['options'])) {
+            $messages = $validator['options']['messages'];
+            unset($validator['options']['messages']);
+        }
+
+        if (empty($validator['options'])) {
+            $instance = new $name;
+        } else {
+            $r = new ReflectionClass($name);
+            if ($r->hasMethod('__construct')) {
+                $numeric = false;
+                if (is_array($validator['options'])) {
+                    $keys    = array_keys($validator['options']);
+                    foreach($keys as $key) {
+                        if (is_numeric($key)) {
+                            $numeric = true;
+                            break;
+                        }
+                    }
+                }
+
+                if ($numeric) {
+                    $instance = $r->newInstanceArgs((array) $validator['options']);
+                } else {
+                    $instance = $r->newInstance($validator['options']);
+                }
+            } else {
+                $instance = $r->newInstance();
+            }
+        }
+
+        if ($messages) {
+            if (is_array($messages)) {
+                $instance->setMessages($messages);
+            } elseif (is_string($messages)) {
+                $instance->setMessage($messages);
+            }
+        }
+        if (property_exists($instance, 'zfBreakChainOnFailure')) {
+            $instance->zfBreakChainOnFailure = $validator['breakChainOnFailure'];
+        }
+
+        if ($origName != $name) {
+            $validatorNames     = array_keys($this->_validators);
+            $order              = array_flip($validatorNames);
+            $order[$name]       = $order[$origName];
+            $validatorsExchange = [];
+            unset($order[$origName]);
+            asort($order);
+            foreach ($order as $key => $index) {
+                if ($key == $name) {
+                    $validatorsExchange[$key] = $instance;
+                    continue;
+                }
+                $validatorsExchange[$key] = $this->_validators[$key];
+            }
+            $this->_validators = $validatorsExchange;
+        } else {
+            $this->_validators[$name] = $instance;
+        }
+
+        return $instance;
+    }
+
+    /**
      * Add a filter to the element
      *
      * @param  string|FilterInterface $filter
