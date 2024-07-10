@@ -100,8 +100,8 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * @var array Mixed key => value array for snippet initialization
      */
     private array $_defaultImportParameters = [
-        'defaultImportTranslator' => 'getDefaultImportTranslator',
-        'importTranslators'       => 'getImportTranslators',
+        // 'defaultImportTranslator' => 'getDefaultImportTranslator',
+        // 'importTranslators'       => 'getImportTranslators',
     ];
 
     /**
