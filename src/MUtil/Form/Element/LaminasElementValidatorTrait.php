@@ -66,16 +66,15 @@ trait LaminasElementValidatorTrait
      * Lazy-load a validator
      *
      * @param  array $validator Validator definition
-     * @return Zend_Validate_Interface
+     * @return Laminas\Validator\ValidatorInterface
      */
     protected function _loadValidator(array $validator)
     {
         $origName = $validator['validator'];
         $name     = $this->getPluginLoader(self::VALIDATE)->load($validator['validator']);
 
-        if (array_key_exists($name, $this->_validators)) {
-            require_once 'Zend/Form/Exception.php';
-            throw new Zend_Form_Exception(sprintf('Validator instance already exists for validator "%s"', $origName));
+        if (array_key_exists($name, $this->_validators) && $this->_validators[$name] instanceof ValidatorInterface) {
+            throw new \Zend_Form_Exception(sprintf('Validator instance already exists for validator "%s"', $origName));
         }
 
         $messages = false;
@@ -404,6 +403,8 @@ trait LaminasElementValidatorTrait
     public function getValidators()
     {
         $validators = [];
+        file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  print_r(array_keys($this->_validators), true) . "\n", FILE_APPEND);
+
         foreach ($this->_validators as $key => $value) {
             if ($value instanceof ValidatorInterface) {
                 $validators[$key] = $value;
@@ -412,6 +413,7 @@ trait LaminasElementValidatorTrait
             $validator = $this->_loadValidator($value);
             $validators[get_class($validator)] = $validator;
         }
+        file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  print_r(array_keys($this->_validators), true) . "\n", FILE_APPEND);
         return $validators;
     }
 
