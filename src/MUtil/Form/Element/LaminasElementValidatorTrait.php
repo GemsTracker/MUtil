@@ -403,7 +403,6 @@ trait LaminasElementValidatorTrait
     public function getValidators()
     {
         $validators = [];
-        file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  print_r(array_keys($this->_validators), true) . "\n", FILE_APPEND);
 
         foreach ($this->_validators as $key => $value) {
             if ($value instanceof ValidatorInterface) {
@@ -413,7 +412,6 @@ trait LaminasElementValidatorTrait
             $validator = $this->_loadValidator($value);
             $validators[get_class($validator)] = $validator;
         }
-        file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): ' .  print_r(array_keys($this->_validators), true) . "\n", FILE_APPEND);
         return $validators;
     }
 
