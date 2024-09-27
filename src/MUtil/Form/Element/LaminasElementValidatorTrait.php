@@ -205,7 +205,7 @@ trait LaminasElementValidatorTrait
                     }
                 }
             } else {
-                dump(get_class($filterInfo));
+                // dump(get_class($filterInfo));
                 // require_once 'Zend/Form/Exception.php';
                 // throw new \Zend_Form_Exception('Invalid filter passed to addFilters()');
             }
