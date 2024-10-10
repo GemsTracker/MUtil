@@ -131,6 +131,8 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      */
     private bool $_messageLogWhenSetting = false;
 
+    protected string $_progressTemplate = '';
+
     /**
      * When true the progressbar should start immediately. When false the user has to perform an action.
      *
