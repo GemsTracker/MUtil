@@ -351,6 +351,10 @@ class JoinModel extends \MUtil\Model\DatabaseModelAbstract
             // First get the old values so we can have all the key values
             $oldValues = $this->loadFirst($filter);
 
+            if (empty($oldValues)) {
+                return 0;
+            }
+
             // Add the oldValues to the save
             $newValues = $this->save($this->_deleteValues + $oldValues, $filter, $saveTables);
             if ($newValues) {
