@@ -21,6 +21,8 @@ namespace MUtil\Form\Element;
  */
 class Exhibitor extends \Zend_Form_Element_Xhtml implements \MUtil\Form\Element\NoFocusInterface
 {
+    use LaminasElementValidatorTrait;
+
     public $helper = 'exhibitor';
 
     /**
