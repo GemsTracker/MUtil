@@ -1804,6 +1804,20 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
                     $postData[$exclude] = array();
                 }
             }
+            $displayers = array_diff(
+                array_merge(
+                    $this->getItemsFor(['elementClass' => 'Hidden']),
+                    $this->getItemsFor(['elementClass' => 'Exhibitor']),
+                    $this->getItemsFor(['elementClass' => 'Html']),
+                ),
+                $this->getColNames('no_displayer'),
+            );
+            foreach($displayers as $displayer) {
+                if (isset($postData[$displayer], $modelData[$displayer])) {
+                    unset($postData[$displayer]);
+                }
+            }
+
         }
         $this->_model_enable_dependencies = true;
 
