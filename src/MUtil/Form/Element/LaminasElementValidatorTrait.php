@@ -4,6 +4,7 @@ namespace MUtil\Form\Element;
 
 use Laminas\Filter\FilterInterface;
 use Laminas\Validator\ValidatorInterface;
+use Zalt\Validator\InArray;
 
 trait LaminasElementValidatorTrait
 {
@@ -561,7 +562,7 @@ trait LaminasElementValidatorTrait
         }
 
         $this->addValidator(
-            'InArray',
+            InArray::class,
             true,
             ['haystack' => $options]
         );
