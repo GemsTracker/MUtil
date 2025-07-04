@@ -786,9 +786,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
             if (isset($data[Model::AUTOSEARCH_RESET]) && $data[Model::AUTOSEARCH_RESET]) {
                 // Clean up values
                 $sessionData = [];
-
-                //$request->setParam(Model::AUTOSEARCH_RESET, null);
-            } else {
+            } elseif (! $this->requestInfo->isPost()) {
                 $data = $data + $sessionData;
             }
 
@@ -812,7 +810,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
         }
 
         // Add defaults to data without cleanup
-        if ($defaults) {
+        if ((! $data) && $defaults) {
             $data = $data + $defaults;
         }
 
