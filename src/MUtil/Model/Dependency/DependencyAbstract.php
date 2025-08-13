@@ -118,7 +118,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * @param mixed $effectedSettings A single setting or an array of settings
      * @return \MUtil\Model\Dependency\DependencyAbstract (continuation pattern)
      */
-    public function addEffected($effectedField, $effectedSettings): DependencyInterface
+    public function addEffected($effectedField, $effectedSettings = null): DependencyInterface
     {
         if ($effectedSettings) {
             foreach ((array) $effectedSettings as $setting) {

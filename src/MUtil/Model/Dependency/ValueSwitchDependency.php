@@ -211,7 +211,7 @@ class ValueSwitchDependency extends DependencyAbstract
      * @param mixed $effectedSettings A single setting or an array of settings
      * @return DependencyInterface (continuation pattern)
      */
-    public function addEffected($effectedField, $effectedSettings): DependencyInterface
+    public function addEffected($effectedField, $effectedSettings = null): DependencyInterface
     {
         $this->_checked_effected = false;
         $this->_switches[$effectedField] = $effectedSettings;
