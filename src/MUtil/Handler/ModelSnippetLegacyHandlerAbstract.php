@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace MUtil\Handler;
 
 use DateTimeInterface;
+use Laminas\Diactoros\Response\HtmlResponse;
 use Mezzio\Csrf\CsrfGuardInterface;
 use Mezzio\Csrf\CsrfMiddleware;
 use Mezzio\Session\SessionInterface;
@@ -533,7 +534,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * The automatically filtered result
      *
-     * @param $resetMvc bool When true only the filtered resulsts
+     * @param $resetMvc bool When true only the filtered results are returned
      */
     public function autofilterAction(bool $resetMvc = true)
     {
@@ -551,12 +552,6 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
             $params = $this->_processParameters($this->autofilterParameters + $this->_defaultAutofilterParameters);
 
             $this->addSnippets($this->autofilterSnippets, $params);
-        }
-
-        if ($resetMvc) {
-            // Lazy call here, because any echo calls in the snippets have not yet been
-            // performed. so they will appear only in the next call when not lazy.
-            $this->html->raw(Late::call(array('\\MUtil\\EchoOut\\EchoOut', 'out')));
         }
     }
 
@@ -822,7 +817,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
         // Remove all empty values (but not arrays) from the filter
         $this->_searchData = array_filter($data, function($i) { return is_array($i) || $i instanceof DateTimeInterface || strlen((string)$i); });
 
-        // \MUtil\EchoOut\EchoOut::track($this->_searchData, $this->searchSessionId);
+        // file_put_contents('data/logs/echo.txt', __CLASS__ . '->' . __FUNCTION__ . '(' . __LINE__ . '): >' . $useRequest . '< ' . print_r($data, true) . "\n", FILE_APPEND);
 
         return $this->_searchData;
     }
