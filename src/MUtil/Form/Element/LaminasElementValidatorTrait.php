@@ -4,6 +4,7 @@ namespace MUtil\Form\Element;
 
 use Laminas\Filter\FilterInterface;
 use Laminas\Validator\ValidatorInterface;
+use Zalt\Base\SymfonyTranslator;
 use Zalt\Validator\InArray;
 
 trait LaminasElementValidatorTrait
@@ -452,19 +453,23 @@ trait LaminasElementValidatorTrait
             $this->setValidators($validators);
         }
 
-        // Find the correct translator. Zend_Validate_Abstract::getDefaultTranslator()
-        // will get either the static translator attached to Zend_Validate_Abstract
-        // or the 'Zend_Translate' from Zend_Registry.
-        if (\Zend_Validate_Abstract::hasDefaultTranslator() &&
-            !\Zend_Form::hasDefaultTranslator())
-        {
-            $translator = \Zend_Validate_Abstract::getDefaultTranslator();
-            if ($this->hasTranslator()) {
-                // only pick up this element's translator if it was attached directly.
+        if (LaminasValidatorTranslator::hasSymfonyTranslator()) {
+            $translator = LaminasValidatorTranslator::getSymfonyTranslator();
+        } else {
+            // Find the correct translator. Zend_Validate_Abstract::getDefaultTranslator()
+            // will get either the static translator attached to Zend_Validate_Abstract
+            // or the 'Zend_Translate' from Zend_Registry.
+            if (\Zend_Validate_Abstract::hasDefaultTranslator() &&
+                !\Zend_Form::hasDefaultTranslator())
+            {
+                $translator = \Zend_Validate_Abstract::getDefaultTranslator();
+                if ($this->hasTranslator()) {
+                    // only pick up this element's translator if it was attached directly.
+                    $translator = $this->getTranslator();
+                }
+            } else {
                 $translator = $this->getTranslator();
             }
-        } else {
-            $translator = $this->getTranslator();
         }
 
         $this->_messages = [];
