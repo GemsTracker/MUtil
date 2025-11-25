@@ -42,4 +42,12 @@ class Hidden extends BaseHidden
         }
         return $this;
     }
+
+    public function setValue($value)
+    {
+        if (is_array($value)) {
+            $this->_isArray = true;
+        }
+        return parent::setValue($value);
+    }
 }
