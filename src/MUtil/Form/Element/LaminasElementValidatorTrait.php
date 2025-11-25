@@ -475,7 +475,7 @@ trait LaminasElementValidatorTrait
         $this->_messages = [];
         $this->_errors   = [];
         $result          = true;
-        $isArray         = $this->isArray();
+        $isArray         = $this->isArray() || ($this instanceof Hidden && is_array($value));
         foreach ($this->getValidators() as $key => $validator) {
             if (method_exists($validator, 'setTranslator')) {
                 if (method_exists($validator, 'hasTranslator')) {
