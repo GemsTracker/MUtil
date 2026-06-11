@@ -11,6 +11,8 @@
 
 namespace MUtil\Model;
 
+use Zalt\Model\Data\FullDataInterface;
+
 /**
  * Utility object for importing data from one model to another
  *
@@ -77,7 +79,7 @@ class Importer extends \MUtil\Translate\TranslateableAbstract
     /**
      * Model to read import
      *
-     * @var \MUtil\Model\ModelAbstract
+     * @var FullDataInterface
      */
     protected $sourceModel;
 
@@ -138,10 +140,10 @@ class Importer extends \MUtil\Translate\TranslateableAbstract
             } else {
                 $batch->setVariable('iterator', $iter);
 
-                if ($batch->isPull()) {
-                    // Cannot pull when iterator is not serializable
-                    $batch->setMethodPush();
-                }
+//                if ($batch->isPull()) {
+//                    // Cannot pull when iterator is not serializable
+//                    $batch->setMethodPush();
+//                }
             }
         }        
     }
@@ -505,10 +507,10 @@ class Importer extends \MUtil\Translate\TranslateableAbstract
     /**
      * Set the target model for the imported data
      *
-     * @param \MUtil\Model\ModelAbstract $model
+     * @param FullDataInterface $model
      * @return \MUtil\Model\Importer (continuation pattern)
      */
-    public function setTargetModel(\MUtil\Model\ModelAbstract $model)
+    public function setTargetModel(FullDataInterface $model)
     {
         $this->targetModel = $model;
 

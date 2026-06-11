@@ -426,11 +426,11 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Save a single model item.
      *
      * @param array $newValues The values to store for a single model item.
-     * @param array $filter If the filter contains old key values these are used
+     * @param array|null $filter If the filter contains old key values these are used
      * to decide on update versus insert.
      * @return array The values as they are after saving (they may change).
      */
-    abstract protected function _save(array $newValues, array $filter = null);
+    abstract protected function _save(array $newValues, ?array $filter = null);
 
     /**
      * Tell the model one more item has changed
@@ -452,12 +452,12 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * @param mixed $dependency DependencyInterface or string or array to create one
      * @param mixed $dependsOn Optional string field name or array of fields that do the changing
-     * @param array $effects Optional array of field => array(setting) of settings are changed, array of whatever
+     * @param array|null $effects Optional array of field => array(setting) of settings are changed, array of whatever
      * the dependency accepts as an addEffects() argument
      * @param mixed $key A key to identify the specific dependency.
      * @return int The actual key used.
      */
-    public function addDependency($dependency, $dependsOn = null, array $effects = null,  $key = null)
+    public function addDependency($dependency, $dependsOn = null, ?array $effects = null, $key = null)
     {
         if (! $dependency instanceof DependencyInterface) {
             $loader = \MUtil\Model::getDependencyLoader();
@@ -2043,11 +2043,11 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Save a single model item.
      *
      * @param array $newValues The values to store for a single model item.
-     * @param array $filter If the filter contains old key values these are used
+     * @param array|null $filter If the filter contains old key values these are used
      * to decide on update versus insert.
      * @return array The values as they are after saving (they may change).
      */
-    public function save(array $newValues, array $filter = null): array
+    public function save(array $newValues, ?array $filter = null): array
     {
         $beforeValues = $this->processBeforeSave($newValues);
 

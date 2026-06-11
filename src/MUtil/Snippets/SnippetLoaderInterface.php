@@ -43,10 +43,10 @@ interface SnippetLoaderInterface
      * Searches and loads a .php snippet file.
      *
      * @param string $className The name of the snippet
-     * @param array $extraSourceParameters name/value pairs to add to the source for this snippet
+     * @param array|null $extraSourceParameters name/value pairs to add to the source for this snippet
      * @return \MUtil\Snippets\SnippetInterface The snippet
      */
-    public function getSnippet($className, array $extraSourceParameters = null);
+    public function getSnippet($className, ?array $extraSourceParameters = null);
 
     /**
      * Returns a source of values for snippets.

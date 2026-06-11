@@ -34,7 +34,7 @@ class XmlRaIterator implements \Iterator
     /**
      * The current xml item
      *
-     * @var \MUtil\XmlRa
+     * @var \MUtil\XmlRa|null
      */
     private $_currentNode;
 
@@ -44,7 +44,7 @@ class XmlRaIterator implements \Iterator
      * Signature must be: function(mixed $value) where $value is
      * a \MUtil\XmlRa::_returnValue output and returns a boolean.
      *
-     * @var callable
+     * @var callable|null
      */
     private $_filterFunction;
 
@@ -54,7 +54,7 @@ class XmlRaIterator implements \Iterator
      * Signature must be: function(mixed $value) where $value is
      * a \MUtil\XmlRa::_returnValue output.
      *
-     * @var callable
+     * @var callable|null
      */
     private $_mapFunction;
 
@@ -88,6 +88,7 @@ class XmlRaIterator implements \Iterator
      *
      * @return \MUtil\XmlRa
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         if (-1 === $this->_currentCount) {
@@ -104,6 +105,7 @@ class XmlRaIterator implements \Iterator
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         if (-1 === $this->_currentCount) {
@@ -117,7 +119,7 @@ class XmlRaIterator implements \Iterator
      *
      * @return void
      */
-    public function next()
+    public function next(): void
     {
         $this->_currentCount++;
 
@@ -139,7 +141,7 @@ class XmlRaIterator implements \Iterator
      *
      * @return void
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->_currentCount = -1;
         $this->next();
@@ -179,9 +181,9 @@ class XmlRaIterator implements \Iterator
     /**
      * Is there a current item
      *
-     * @return boolean
+     * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         if (-1 === $this->_currentCount) {
             $this->next();

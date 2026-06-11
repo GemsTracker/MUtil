@@ -78,7 +78,7 @@ class XmlRaDocument extends \DOMDocument
      * Get the namespace prefix for an URI
      *
      * @param string $namespaceUri
-     * @return string Or false if not found
+     * @return string|false false if not found
      */
     public function getNamespacePrefix($namespaceUri)
     {
@@ -115,10 +115,10 @@ class XmlRaDocument extends \DOMDocument
      * Return a single item or null form the xpath expression.
      *
      * @param string $expression XPath query expression
-     * @param \DOMNode $contextNode
+     * @param \DOMNode|null $contextNode
      * @return null|\DOMNode
      */
-    public function xpathEvaluate($expression, \DOMNode $contextNode = null)
+    public function xpathEvaluate($expression, ?\DOMNode $contextNode = null)
     {
 
         $this->_xpathInitialize();
@@ -144,10 +144,10 @@ class XmlRaDocument extends \DOMDocument
      * Returns a NodeList containging the result of the XPath query
      *
      * @param string $expression XPath query expression
-     * @param \DOMNode $contextNode
+     * @param \DOMNode|null $contextNode
      * @return \DOMNodeList
      */
-    public function xpathQuery($expression, \DOMNode $contextNode = null)
+    public function xpathQuery($expression, ?\DOMNode $contextNode = null)
     {
         $this->_xpathInitialize();
 

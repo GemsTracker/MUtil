@@ -28,7 +28,7 @@ class LookupList
 {
     protected $_elements;
 
-    public function __construct(array $initialList = null)
+    public function __construct(?array $initialList = null)
     {
         $this->set((array) $initialList);
     }

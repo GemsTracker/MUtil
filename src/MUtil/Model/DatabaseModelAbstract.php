@@ -298,10 +298,10 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      *
      * @param \Zend_Db_Table_Abstract $table The table to delete from.
      * @param array $filter The filter for deleting. This is required to prevent deleting all data in a table.
-     * @param array $deleteUpdates Does not do a real delete, but updates the database instead.
+     * @param array|null $deleteUpdates Does not do a real delete, but updates the database instead.
      * @return int The number of rows deleted / updated
      */
-    protected function _deleteTableData(\Zend_Db_Table_Abstract $table, array $filter, array $deleteUpdates = null)
+    protected function _deleteTableData(\Zend_Db_Table_Abstract $table, array $filter, ?array $deleteUpdates = null)
     {
         if ($filter) {
             $adapter = $this->getAdapter();
@@ -522,12 +522,12 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      *
      * @param \Zend_Db_Table_Abstract $table The table to save
      * @param array  $newValues The values to save, including those for other tables
-     * @param array  $oldKeys The original keys as they where before the changes
+     * @param array |null $oldKeys The original keys as they where before the changes
      * @param int    $saveMode Should updates / inserts occur
      * @return array The values for this table as they were updated
      */
     protected function _saveTableData(\Zend_Db_Table_Abstract $table, array $newValues,
-                                      array $oldKeys = null, $saveMode = self::SAVE_MODE_ALL)
+                                      ?array $oldKeys = null, int $saveMode = self::SAVE_MODE_ALL)
     {
         if (! $newValues) {
             return array();
@@ -772,10 +772,10 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * If no $excludes the model creates a filter using the primary key of the table.
      *
      * @param string|array $name The name of a database table field in the model or an array of them belonging to the same table.
-     * @param optional array $excludeFilter An array containing [num|db_fieldname] => $_POST mappings.
+     * @param array|null $excludeFilter An array containing [num|db_fieldname] => $_POST mappings.
      * @return UniqueValue A validator.
      */
-    public function createUniqueValidator($name, array $excludeFilter = null)
+    public function createUniqueValidator($name, ?array $excludeFilter = null)
     {
         $names = $name;
         if (is_array($names)) {

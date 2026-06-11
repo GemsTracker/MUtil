@@ -91,9 +91,9 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
      * must remain the model.
      *
      * @param \Zalt\Model\Data\DataReaderInterface $model
-     * @param \Zend_Form $form Rquired
+     * @param \Zend_Form|null $form Rquired
      */
-    public function __construct(DataReaderInterface $model, \Zend_Form $form = null)
+    public function __construct(DataReaderInterface $model, ?\Zend_Form $form = null)
     {
         $this->model = $model;
         $this->form  = $form;

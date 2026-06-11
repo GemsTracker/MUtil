@@ -59,7 +59,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @var array of nodes
      */
-    private $nodes;
+    private $_nodes;
 
     /**
      * The "main" node of this object, unless $nodes is set.
@@ -90,7 +90,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @param string $name
      * @param array $arguments Not used
-     * @return string
+     * @return mixed
      */
     public function __call($name, $arguments)
     {
@@ -136,10 +136,10 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * to it at initiation.
      *
      * @param array $nodes optionally empty array
-     * @param \DOMNode $rootNode
-     * @param type $next_name
+     * @param \DOMNode|null $rootNode
+     * @param mixed $next_name
      */
-    public function __construct(array $nodes, \DOMNode $rootNode = null, $nextName)
+    public function __construct(array $nodes, ?\DOMNode $rootNode = null, $nextName)
     {
         $this->_nodes = $nodes;
         $this->_nextName = $nextName;
@@ -253,7 +253,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * loops over all child items.
      *
      * @param \DOMNode $rootNode
-     * @return \self
+     * @return XmlRa
      */
     private static function _createForChildren(\DOMNode $rootNode)
     {
@@ -267,7 +267,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @param \DOMNode $rootNode
      * @param string $childName
-     * @return \self
+     * @return XmlRa
      */
     private static function _createForName(\DOMNode $rootNode, $childName)
     {
@@ -279,7 +279,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * nodelist as an array of items.
      *
      * @param \DOMNodeList $nodes
-     * @return \self
+     * @return XmlRa
      */
     private static function _createFromNodeList(\DOMNodeList $nodes)
     {
@@ -476,7 +476,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * Returns the number of nodes in this object
      *
-     * @return type
+     * @return int
      */
     public function count()
     {
@@ -597,7 +597,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @param mixed $index
      * @param boolean $create
-     * @return type
+     * @return \DOMNode|null
      */
     private function getNode($index, $create)
     {
@@ -613,6 +613,9 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
             } else {
                 $first = $this->_getFirstElement();
             }
+            /**
+             * @var \DOMElement $first
+             */
 
             // Treat index as xpath and check for attribute marker
             if ($index[0] == self::XMLRA_ATTR) {
@@ -698,7 +701,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * Return TRUE when the value of this index element is
      * one of the official XML FALSE values.
      *
-     * @param type $index
+     * @param mixed $index
      * @return boolean
      */
     public function isFalse($index = null)
@@ -729,7 +732,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * Return true when the value of this index element is
      * one of the official XML true values.
      *
-     * @param type $index
+     * @param mixed $index
      * @return boolean
      */
     public function isTrue($index = null)
@@ -763,7 +766,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @param string $filename
      * @param string $xpath
-     * @return self
+     * @return XmlRa
      * @throws \MUtil\XmlRa\XmlRaException
      */
     public static function loadFile($filename, $xpath = null)
@@ -794,7 +797,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * One of the two main entry points to this class,
      *
      * @param string $string
-     * @return self
+     * @return XmlRa
      */
     public static function loadString($string)
     {
@@ -805,7 +808,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
 
     // \ArrayObject implementation
     // bool \ArrayObject::offsetExists ( mixed $index )
-    public function offsetExists($index)
+    public function offsetExists($index): bool
     {
         // echo "Check: $index\n";
         return !is_null($this->getNode($index, false));
@@ -821,7 +824,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * @param mixed $index
      * @return mixed
      */
-    public function offsetGet($index)
+    public function offsetGet($index): mixed
     {
         // \MUtil\EchoOut\EchoOut::track("Get $index");
         return $this->_returnValue($this->getNode($index, true));
@@ -829,7 +832,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
 
     // \ArrayObject implementation
     // void \ArrayObject::offsetSet ( mixed $index, mixed $newval )
-    public function offsetSet($index, $value)
+    public function offsetSet($index, $value): void
     {
         if ($value) {
             if ($index) {
@@ -842,7 +845,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
 
     // \ArrayObject implementation
     // void void \ArrayObject::offsetUnset ( mixed $index )
-    public function offsetUnset($index)
+    public function offsetUnset($index): void
     {
         throw new \MUtil\XmlRa\XmlRaException('Cannot (yet) unset the value of an indexed item.');
     }
@@ -940,7 +943,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * Save this XML object to a file.
      *
      * @param string $filename
-     * @return This function returns the number of bytes that were written to the file, or FALSE on failure.
+     * @return int|false  This function returns the number of bytes that were written to the file, or FALSE on failure.
      */
     public function toFile($filename)
     {
@@ -1008,6 +1011,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
                     $text = $n->textContent;
                 } else {
                     $name = null;
+                    $text = null;
                 }
 
                 if ($name) {
@@ -1035,7 +1039,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * text context is returned and not a valid XML string.
      *
      * @param mixed $index
-     * @return type
+     * @return string
      */
     public function toString($index = null)
     {
@@ -1044,6 +1048,8 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
 
             if ($val) {
                 return $val->textContent;
+            } else {
+                return '';
             }
         } elseif ($this->_isForChildren()) {
             return $this->_rootNode->textContent;

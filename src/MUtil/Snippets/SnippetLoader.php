@@ -67,7 +67,7 @@ class SnippetLoader implements \MUtil\Snippets\SnippetLoaderInterface
      * @param string $path
      * @return \MUtil\Snippets\SnippetLoaderInterface
      */
-    public function addPrefixPath(string $prefix, string|array $path, bool $prepend = true): self
+    public function addPrefixPath(string $prefix, string|array $path, bool $prepend = true): \MUtil\Snippets\SnippetLoaderInterface
     {
         $this->loader->addPrefixPath($prefix, $path, $prepend);
 
@@ -78,10 +78,10 @@ class SnippetLoader implements \MUtil\Snippets\SnippetLoaderInterface
      * Searches and loads a .php snippet file.
      *
      * @param string $className The name of the snippet
-     * @param array $extraSourceParameters name/value pairs to add to the source for this snippet
+     * @param array|null $extraSourceParameters name/value pairs to add to the source for this snippet
      * @return \MUtil\Snippets\SnippetInterface The snippet
      */
-    public function getSnippet($className, array $extraSourceParameters = null)
+    public function getSnippet($className, ?array $extraSourceParameters = null)
     {
         $className = $this->loader->load($className);
 

@@ -30,10 +30,10 @@ trait ZendDb
         } else {
             $this->zendDb = \Zend_Db::factory('Pdo_Mysql',
                 [
-                    'dbname' => DB_DATABASE,
-                    'host' => DB_HOST,
-                    'username' => DB_USERNAME,
-                    'password' => DB_PASSWORD,
+                    'dbname' => DB_DATABASE,   // @phpstan-ignore constant.notFound
+                    'host' => DB_HOST,         // @phpstan-ignore constant.notFound
+                    'username' => DB_USERNAME, // @phpstan-ignore constant.notFound
+                    'password' => DB_PASSWORD, // @phpstan-ignore constant.notFound
                 ]
             );
         }

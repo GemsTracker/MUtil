@@ -53,11 +53,11 @@ class TableModel extends \MUtil\Model\DatabaseModelAbstract
      * Save a single model item.
      *
      * @param array $newValues The values to store for a single model item.
-     * @param array $filter If the filter contains old key values these are used
+     * @param array|null $filter If the filter contains old key values these are used
      * to decide on update versus insert.
      * @return array The values as they are after saving (they may change).
      */
-    protected function _save(array $newValues, array $filter = null)
+    protected function _save(array $newValues, ?array $filter = null)
     {
         $this->oldValues = [];
         // $this->_saveTableData returns the new row values, including any automatic changes.
