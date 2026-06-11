@@ -33,7 +33,7 @@ class Potemkin extends \Zend_Translate_Adapter
         return new \Zend_Translate(__CLASS__, '');
     }
 
-    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+    public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         return $this->_($id);
     }

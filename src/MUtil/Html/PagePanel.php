@@ -37,7 +37,7 @@ class PagePanel extends \MUtil\Html\Sequence implements \MUtil\Lazy\Procrastinat
     /**
      * The current page number
      *
-     * @var int
+     * @var int|null
      */
     protected $_currentPage;
 
@@ -78,7 +78,7 @@ class PagePanel extends \MUtil\Html\Sequence implements \MUtil\Lazy\Procrastinat
     /**
      * The number of items per page
      *
-     * @var int
+     * @var int|null
      */
     protected $_itemCount;
 
@@ -99,34 +99,34 @@ class PagePanel extends \MUtil\Html\Sequence implements \MUtil\Lazy\Procrastinat
     /**
      * The default decrease / increase steps in the number of items per page
      *
-     * @var int
+     * @var array
      */
     protected $_itemCountValues  = array(5, 10, 15, 20, 50, 100, 200, 500, 1000, 2000);
 
     /**
      * Lazy instance of this object
      *
-     * @var \MUtil\Lazy\ObjectWrap
+     * @var \MUtil\Lazy\ObjectWrap|null
      */
     protected $_lazy;
 
     /**
      * Returns the current page collection.
      *
-     * @return array
+     * @return array|null
      */
     protected $_pages;
 
     /**
      * The core paginator.
      *
-     * @var \Zend_Paginator
+     * @var \Zend_Paginator|null
      */
     protected $_paginator;
 
     /**
      *
-     * @var \Zend_Controller_Request_Abstract
+     * @var \Zend_Controller_Request_Abstract|null
      */
     protected $_request;
 
@@ -155,14 +155,14 @@ class PagePanel extends \MUtil\Html\Sequence implements \MUtil\Lazy\Procrastinat
     /**
      * Lazy call to the _pages parameter
      *
-     * @var \MUtil\Lazy\ObjectWrap
+     * @var \MUtil\Lazy\ObjectWrap|null
      */
     public $pages;
 
     /**
      * Lazy call to the _paginator parameter.
      *
-     * @var \MUtil\Lazy\ObjectWrap
+     * @var \MUtil\Lazy\ObjectWrap|null
      */
     public $paginator;
 
@@ -580,7 +580,7 @@ class PagePanel extends \MUtil\Html\Sequence implements \MUtil\Lazy\Procrastinat
         return new \MUtil\Html\PageRangeRenderer($this, $args);
     }
 
-    public function setBaseUrl(array $baseUrl = null)
+    public function setBaseUrl(?array $baseUrl = null)
     {
         $this->_baseUrl = (array) $baseUrl;
         return $this;

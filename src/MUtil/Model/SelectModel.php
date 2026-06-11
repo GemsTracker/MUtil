@@ -89,7 +89,7 @@ class SelectModel extends \MUtil\Model\DatabaseModelAbstract
      * to decide on update versus insert.
      * @return array The values as they are after saving (they may change).
      */
-    protected function _save(array $newValues, array $filter = null)
+    protected function _save(array $newValues, ?array $filter = null)
     {
         throw new \Exception('Cannot save ' . __CLASS__ . ' data.');
     }

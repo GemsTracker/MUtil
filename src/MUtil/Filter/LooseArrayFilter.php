@@ -25,22 +25,22 @@ class LooseArrayFilter implements \Zend_Filter_Interface
 {
     /**
      *
-     * @var uppercase translate value => actual value
+     * @var array $_basicValues uppercase translate value => actual value
      */
     private $_basicValues = array();
 
     /**
      *
-     * @var uppercase array translate value => actual value
+     * @var array $_extraValues uppercase array translate value => actual value
      */
     private $_extraValues = array();
 
     /**
      *
      * @param array $options key => label
-     * @param array $extraValues extra key value => actual value
+     * @param array|null $extraValues extra key value => actual value
      */
-    public function __construct(array $options, array $extraValues = null)
+    public function __construct(array $options, ?array $extraValues = null)
     {
         $this->setMultiOptions($options);
 

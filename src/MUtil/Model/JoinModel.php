@@ -191,13 +191,13 @@ class JoinModel extends \MUtil\Model\DatabaseModelAbstract
      * Save a single model item.
      *
      * @param array $newValues The values to store for a single model item.
-     * @param array $filter If the filter contains old key values these are used
+     * @param array|null $filter If the filter contains old key values these are used
      * to decide on update versus insert.
-     * @param array $saveTables Optional array containing the table names to save,
+     * @param array|null $saveTables Optional array containing the table names to save,
      * otherwise the tables set to save at model level will be saved.
      * @return array The values as they are after saving (they may change).
      */
-    protected function _save(array $newValues, array $filter = null, array $saveTables = null)
+    protected function _save(array $newValues, ?array $filter = null, ?array $saveTables = null)
     {
         $this->oldValues = [];
 
@@ -338,10 +338,10 @@ class JoinModel extends \MUtil\Model\DatabaseModelAbstract
      * to actually delete an item.
      *
      * @param mixed $filter True to use the stored filter, array to specify a different filter
-     * @param array $saveTables Array of table names => save mode
+     * @param array|null $saveTables Array of table names => save mode
      * @return int The number of items deleted
      */
-    public function delete($filter = null, array $saveTables = null): int
+    public function delete($filter = null, ?array $saveTables = null): int
     {
         $saveTables = $this->_checkSaveTables($saveTables);
         $filter     = $this->_checkFilterUsed($filter);

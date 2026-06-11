@@ -181,10 +181,10 @@ abstract class ModelTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbs
      *
      * This is a stub function either override getHtmlOutput() or override render()
      *
-     * @param \Zend_View_Abstract $view Just in case it is needed here
+     * @param \Zend_View_Abstract|null $view Just in case it is needed here
      * @return \MUtil\Html\HtmlInterface Something that can be rendered
      */
-    public function getHtmlOutput(\Zend_View_Abstract $view = null)
+    public function getHtmlOutput(?\Zend_View_Abstract $view = null)
     {
         $model = $this->getModel();
 
@@ -240,10 +240,10 @@ abstract class ModelTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbs
      *
      * You should override either getHtmlOutput() or this function to generate output
      *
-     * @param \Zend_View_Abstract $view
+     * @param \Zend_View_Abstract|null $view
      * @return string Html output
      */
-    public function render(\Zend_View_Abstract $view = null)
+    public function render(?\Zend_View_Abstract $view = null)
     {
         if ($this->_marker) {
             $this->_marker->setEncoding($view->getEncoding());

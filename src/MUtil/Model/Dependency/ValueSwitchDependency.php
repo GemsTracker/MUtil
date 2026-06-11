@@ -68,9 +68,9 @@ class ValueSwitchDependency extends DependencyAbstract
 
     /**
      *
-     * @param array $switches
+     * @param array|null $switches
      */
-    public function __construct(array $switches = null)
+    public function __construct(?array $switches = null)
     {
         parent::__construct();
 

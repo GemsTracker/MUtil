@@ -36,6 +36,6 @@ class Html extends \Zend_View_Helper_FormElement
      */
     public function html($name, $value = null, $attribs = null)
     {
-        return \MUtil\Html::renderAny($this->view, $value);
+        return \MUtil\Html::renderAny($this->view, $value); // @phpstan-ignore-line
     }
 }

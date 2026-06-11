@@ -40,9 +40,9 @@ class UniqueValue extends NoRecordExists
      * @param string|array $field A field to check or an array of fields to check for an
      * unique value combination, though only the value of the first will be shown
      * @param string|array $keyFields Names of the key fields to filter out the row of the value
-     * @param \Zend_Db_Adapter_Abstract $adapter An optional database adapter to use.
+     * @param \Zend_Db_Adapter_Abstract|null $adapter An optional database adapter to use.
      */
-    public function __construct($table, $field, $keyFields, \Zend_Db_Adapter_Abstract $adapter = null)
+    public function __construct($table, $field, $keyFields, ?\Zend_Db_Adapter_Abstract $adapter = null)
     {
         if (is_array($field)) {
             // This means a COMBINATION of fields must be unique

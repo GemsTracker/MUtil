@@ -74,7 +74,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
 
     /**
      *
-     * @var float The timer for _checkReport()
+     * @var float|null The timer for _checkReport()
      */
     private $_checkReportStart = null;
 
@@ -261,7 +261,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      * @param string $id A unique name identifying this batch
      * @param \MUtil\Batch\Stack\Stackinterface $stack Optional different stack than session stack
      */
-    public function __construct($id, SessionInterface $session = null, Stackinterface $stack = null, LoggerInterface $logger = null)
+    public function __construct($id, ?SessionInterface $session = null, ?Stackinterface $stack = null, ?LoggerInterface $logger = null)
     {
         $this->progress = new Progress();
         $this->logger = $logger;
@@ -336,10 +336,8 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
 
     /**
      * Initialize persistent storage
-     *
-     * @param string $name The id of this batch
      */
-    private function _initInfoContainer(SessionInterface $session = null): void
+    private function _initInfoContainer(?SessionInterface $session = null): void
     {
         if ($session instanceof SessionInterface) {
             $sessionId = get_class($this) . '_' . $this->id;

@@ -92,10 +92,10 @@ class EscortControllerHelper extends \Zend_Controller_Action_Helper_Abstract
     /**
      * setActionController()
      *
-     * @param  \Zend_Controller_Action $actionController
-     * @return \Zend_Controller_ActionHelper_Abstract Provides a fluent interface
+     * @param  \Zend_Controller_Action|null $actionController
+     * @return EscortControllerHelper Provides a fluent interface
      */
-    public function setActionController(\Zend_Controller_Action $actionController = null)
+    public function setActionController(?\Zend_Controller_Action $actionController = null)
     {
         $result = parent::setActionController($actionController);
 

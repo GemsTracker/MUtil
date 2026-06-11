@@ -223,7 +223,7 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
      * @param  \Zend_View_Interface $view
      * @return \Zend_Form_Element
      */
-    public function setView(\Zend_View_Interface $view = null)
+    public function setView(?\Zend_View_Interface $view = null)
     {
         $element = parent::setView($view);
 

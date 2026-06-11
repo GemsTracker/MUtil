@@ -22,7 +22,7 @@ namespace MUtil\View\Helper;
  */
 class FormErrors extends \Zend_View_Helper_FormErrors
 {
-    public function formErrors($errors, array $options = null)
+    public function formErrors($errors, ?array $options = null)
     {
         if (empty($options['class'])) {
             $options['class'] = 'errors alert alert-danger';

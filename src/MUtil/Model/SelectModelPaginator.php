@@ -31,46 +31,46 @@ class SelectModelPaginator implements \MUtil\Paginator\Adapter\PrefetchInterface
     /**
      * Store for count
      *
-     * @var int
+     * @var mixed
      */
     protected $_count;
 
     /**
      * Last item count
      *
-     * @var int
+     * @var int|null
      */
     protected $_lastItemCount = null;
 
     /**
      * Last items for last offset
      *
-     * @var \Traversable
+     * @var \Traversable|null
      */
     protected $_lastItems = null;
 
     /**
      * Last offset
      *
-     * @var int
+     * @var int|null
      */
     protected $_lastOffset = null;
 
     /**
      *
-     * @var \MUtil\Model\DatabaseModelAbstract
+     * @var \MUtil\Model\DatabaseModelAbstract|null
      */
     protected $_model;
 
     /**
      *
-     * @var \Zend_Db_Select
+     * @var \Zend_Db_Select|null
      */
     protected $_select;
 
     /**
      *
-     * @var \Zend_Paginator_Adapter_DbSelect
+     * @var \Zend_Paginator_Adapter_DbSelect|null
      */
     protected $_selectAdapter;
 

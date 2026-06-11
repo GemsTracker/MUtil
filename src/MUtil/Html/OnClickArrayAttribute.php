@@ -35,10 +35,10 @@ class OnClickArrayAttribute extends \MUtil\Html\JavascriptArrayAttribute
 
     /**
      * 
-     * @param array $commands
-     * @return \self
+     * @param array|null $commands
+     * @return OnClickArrayAttribute
      */
-    public static function onclickAttribute(array $commands = null)
+    public static function onclickAttribute(?array $commands = null)
     {
         return new self($commands);
     }

@@ -37,7 +37,7 @@ class InlineScript extends \Zend_View_Helper_InlineScript
      * @param  string $type
      * @param  array $attributes
      * @param  string $content
-     * @return stdClass
+     * @return \stdClass
      */
     public function createData($type, array $attributes, $content = null)
     {

@@ -24,29 +24,15 @@ namespace MUtil\Lazy;
 class LazyException extends \Zend_Exception
 {
     /**
-     *
-     * @var type
-     * /
-    private $_stacktrace;
-
-    /**
      * Construct the exception
      *
      * @param  string $msg
      * @param  int $code
-     * @param  \Exception $previous
-     * @param  array $stacktrace
+     * @param  \Exception|null $previous
      * @return void
      */
-    public function __construct($msg = '', $code = 0, \Exception $previous = null)
+    public function __construct($msg = '', $code = 0, ?\Exception $previous = null)
     {
         parent::__construct($msg, $code, $previous);
-
-        /*
-        $this->_stacktrace = debug_backtrace(false);
-
-        // Remove this line
-        array_shift($this->_stacktrace);
-        // */
     }
 }

@@ -117,7 +117,6 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
      *
      * Registers form view helper as decorator
      *
-     * @param string $name
      * @param mixed $options
      * @return void
      */
@@ -138,10 +137,10 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
     /**
      * Activate JQuery for the view
      *
-     * @param \Zend_View_Interface $view
+     * @param \Zend_View_Interface|null $view
      * @return void
      */
-    protected function _activateJQueryView(\Zend_View_Interface $view = null)
+    protected function _activateJQueryView(?\Zend_View_Interface $view = null)
     {
         if ($this->_no_jquery) {
             return;
@@ -827,10 +826,10 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
     /**
      * Set view object
      *
-     * @param  \Zend_View_Interface $view
+     * @param  \Zend_View_Interface|null $view
      * @return \Zend_Form
      */
-    public function setView(\Zend_View_Interface $view = null)
+    public function setView(?\Zend_View_Interface $view = null)
     {
         if ($view) {
             if (! $this->_no_jquery) {

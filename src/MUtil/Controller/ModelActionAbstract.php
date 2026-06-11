@@ -82,7 +82,7 @@ abstract class ModelActionAbstract extends \MUtil\Controller\Action
      * Overrule this function to add different columns to the browse table, without
      * having to recode the core table building code.
      *
-     * @param \MUtil\Model\Bridge\TableBridge $bridge
+     * @param TableBridge $bridge
      * @param \MUtil\Model\ModelAbstract $model
      * @return void
      */
@@ -151,11 +151,11 @@ abstract class ModelActionAbstract extends \MUtil\Controller\Action
     /**
      * Creates from the model a \MUtil\Html\TableElement that can display multiple items.
      *
-     * @param array $baseUrl
+     * @param array|null $baseUrl
      * @param mixed $sort A valid sort for \MUtil\Model\ModelAbstract->load()
      * @return \MUtil\Html\TableElement
      */
-    public function getBrowseTable(array $baseUrl = null, $sort = null, $model = null)
+    public function getBrowseTable(?array $baseUrl = null, $sort = null, $model = null)
     {
         if (empty($model)) {
             $model  = $this->getModel();
@@ -226,6 +226,9 @@ abstract class ModelActionAbstract extends \MUtil\Controller\Action
     {
         $model = $this->getModel();
 
+        /**
+         * @var FormBridgeInterface $bridge
+         */
         $bridge = $model->getBridgeFor('form', $this->createForm());
 
         $this->addFormElements($bridge, $model, $data, $new);

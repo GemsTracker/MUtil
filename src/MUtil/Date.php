@@ -114,11 +114,11 @@ class Date extends \Zend_Date
      * timezones can be the same GMT second, but can still occur on
      * different days.
      *
-     * @param \Zend_Date $date
-     * @param \Zend_Locale $locale optional (not used)
+     * @param \Zend_Date|null $date
+     * @param \Zend_Locale|null $locale optional (not used)
      * @return int
      */
-    public function diffDays(\Zend_Date $date = null, $locale = null)
+    public function diffDays(?\Zend_Date $date = null, $locale = null)
     {
         $val1 = (int) (($this->getUnixTimestamp() - $this->getGmtOffset()) / self::DAY_SECONDS);
 
@@ -145,11 +145,11 @@ class Date extends \Zend_Date
      * timezones can be the same GMT second, but can still occur on
      * different days.
      *
-     * @param \Zend_Date $date
-     * @param \Zend_Locale $locale optional (not used)
+     * @param \Zend_Date|null $date
+     * @param \Zend_Locale|null $locale optional (not used)
      * @return int
      */
-    public function diffHours(\Zend_Date $date = null, $locale = null)
+    public function diffHours(?\Zend_Date $date = null, $locale = null)
     {
         $val1 = (int) (($this->getUnixTimestamp() - $this->getGmtOffset()) / self::HOUR_SECONDS);
 
@@ -176,11 +176,11 @@ class Date extends \Zend_Date
      * timezones can be the same GMT second, but can still occur on
      * different days.
      *
-     * @param \Zend_Date $date
-     * @param \Zend_Locale $locale optional (not used)
+     * @param \Zend_Date|null $date
+     * @param \Zend_Locale|null $locale optional (not used)
      * @return int
      */
-    public function diffMinutes(\Zend_Date $date = null, $locale = null)
+    public function diffMinutes(?\Zend_Date $date = null, $locale = null)
     {
         $val1 = (int) (($this->getUnixTimestamp() - $this->getGmtOffset()) / 60);
 
@@ -286,11 +286,11 @@ class Date extends \Zend_Date
      * POSITIVE when $date is YOUNGER than $this
      * Negative when $date is older than $this
      *
-     * @param \Zend_Date $date Date or now
-     * @param \Zend_Locale $locale optional (not used)
+     * @param \Zend_Date|null $date Date or now
+     * @param \Zend_Locale|null $locale optional (not used)
      * @return int
      */
-    public function diffSeconds(\Zend_Date $date = null, $locale = null)
+    public function diffSeconds(?\Zend_Date $date = null, $locale = null)
     {
         $val1 = $this->getUnixTimestamp();
         if (null == $date) {

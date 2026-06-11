@@ -96,7 +96,7 @@ class FolderModel extends \MUtil\Model\ArrayModelAbstract
      * An ArrayModel assumes that (usually) all data needs to be loaded before any load
      * action, this is done using the iterator returned by this function.
      *
-     * @return \Traversable Return an iterator over or an array of all the rows in this object
+     * @return \Traversable|array Return an iterator over or an array of all the rows in this object
      */
     protected function _loadAllTraversable()
     {
@@ -138,6 +138,7 @@ class FolderModel extends \MUtil\Model\ArrayModelAbstract
         if (! $realFilter) {
             return 0;
         }
+        $deleteable = $this->load($realFilter);
 
         $count = 0;
         foreach ($deleteable as $fileData) {
@@ -151,6 +152,8 @@ class FolderModel extends \MUtil\Model\ArrayModelAbstract
                         ));
             }
         }
+
+        return $count;
     }
 
     /**
@@ -173,11 +176,11 @@ class FolderModel extends \MUtil\Model\ArrayModelAbstract
      * Save a single model item.
      *
      * @param array $newValues The values to store for a single model item.
-     * @param array $filter If the filter contains old key values these are used
+     * @param array $filter|null If the filter contains old key values these are used
      * to decide on update versus insert.
      * @return array The values as they are after saving (they may change).
      */
-    public function save(array $newValues, array $filter = null): array
+    public function save(array $newValues, ?array $filter = null): array
     {
         $filename = false;
         if ($this->recursive) {

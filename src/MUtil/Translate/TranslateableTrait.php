@@ -75,7 +75,7 @@ trait TranslateableTrait
      *
      * @throws InvalidArgumentException If the locale contains invalid characters
      */
-    public function _(?string $id, array $parameters = [], string $domain = null, string $locale = null): string
+    public function _(?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         return $this->translate->trans($id, $parameters, $domain, $locale);
     }

@@ -40,7 +40,7 @@ class SumTotalTransformer extends \MUtil\Model\ModelTransformerAbstract
     /**
      * Helper function for total rows field calculation
      *
-     * @param striong $keyField
+     * @param string $keyField
      * @param mixed $keyValue
      * @param array $currentValues
      */

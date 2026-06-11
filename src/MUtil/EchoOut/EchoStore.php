@@ -9,7 +9,7 @@ class EchoStore
 {
     private StoreInterface $store;
 
-    public function __construct(StoreInterface $store = null)
+    public function __construct(?StoreInterface $store = null)
     {
         if ($store === null) {
             $store = new ObjectStore();

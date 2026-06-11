@@ -26,12 +26,12 @@ class Translator implements TranslatorInterface
         return $this->translator->getLocale();
     }
 
-    public function _(?string $id, array $parameters = [], string $domain = null, string $locale = null): string
+    public function _(?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }
 
-    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+    public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }

@@ -115,13 +115,13 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
 
     /**
      *
-     * @var array The search data
+     * @var array|false The search data
      */
     private $_searchData = false;
 
     /**
      *
-     * @var array The search data
+     * @var array|false The search data
      */
     private $_searchFilter = false;
 
@@ -561,7 +561,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
      *
      * Must be an array of arrays containing the input for TableBridge->setMultisort()
      *
-     * @return array or false
+     * @return array|false
      */
     public function getBrowseColumns()
     {
@@ -660,8 +660,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
 
     public function getRequestInfo(): RequestInfo
     {
-        $factory = new RequestInfoFactory($this->request);
-        return $factory->getRequestInfo();
+        return RequestInfoFactory::getMezzioRequestInfo($this->request);
     }
 
     /**

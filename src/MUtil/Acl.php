@@ -29,7 +29,7 @@ class Acl extends \Zend_Acl
      * Adds an "allow" rule to the ACL
      *
      * @param  \Zend_Acl_Role_Interface|string|array     $roles
-     * @param  string|array                             $privileges
+     * @param  string|array                             $privileges_args
      * @uses   \Zend_Acl::allow()
      * @return \Zend_Acl Provides a fluent interface
      */
@@ -253,7 +253,7 @@ class Acl extends \Zend_Acl
      * Removes a previously set "allow" rule from the ACL
      *
      * @param  \Zend_Acl_Role_Interface|string|array     $roles
-     * @param  string|array                             $privileges
+     * @param  string|array                             $privileges_args
      * @uses   \Zend_Acl::allow()
      * @return \Zend_Acl Provides a fluent interface
      */

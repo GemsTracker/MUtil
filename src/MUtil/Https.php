@@ -33,6 +33,9 @@ class Https
             return;
         }
 
+        /**
+         * @var \HttpRequest $request
+         */
         $request    = \Zend_Controller_Front::getInstance()->getRequest();
         $url        = 'https://' . $_SERVER['HTTP_HOST'] . $request->getRequestUri();
         $redirector = \Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
@@ -43,7 +46,7 @@ class Https
     /**
      * True when the url is a HTTPS url, false when HTTP, null otherwise
      *
-     * @return boolean True when HTTPS, false when HTTP, null otherwise
+     * @return boolean|null True when HTTPS, false when HTTP, null otherwise
      */
     public static function isHttps($url)
     {

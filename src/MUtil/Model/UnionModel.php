@@ -216,7 +216,7 @@ class UnionModel extends \MUtil\Model\ModelAbstract
      * to decide on update versus insert.
      * @return array The values as they are after saving (they may change).
      */
-    protected function _save(array $newValues, array $filter = null)
+    protected function _save(array $newValues, ?array $filter = null)
     {
         $newValues = $this->processRowBeforeSave($newValues);
 
@@ -309,11 +309,11 @@ class UnionModel extends \MUtil\Model\ModelAbstract
      * Add an extra model to the union
      *
      * @param \MUtil\Model\ModelAbstract $model
-     * @param array $fieldMap Map from the sub model field names to this models names
-     * @param string $name
+     * @param array|null $fieldMap Map from the sub model field names to this models names
+     * @param string|null $name
      * @return \MUtil\Model\UnionModelAbstract (continuation pattern)
      */
-    public function addUnionModel(\MUtil\Model\ModelAbstract $model, array $fieldMap = null, $name = null)
+    public function addUnionModel(\MUtil\Model\ModelAbstract $model, ?array $fieldMap = null, $name = null)
     {
         if (null === $name) {
             $name = $model->getName();
@@ -362,10 +362,10 @@ class UnionModel extends \MUtil\Model\ModelAbstract
     /**
      * Gets the keys that should be cleared when moving a field from one submodel to another
      *
-     * @param array $rows An optional row, this allows submodels to specify the clearable keys per row
+     * @param array|null $rows An optional row, this allows submodels to specify the clearable keys per row
      * @return array name => name
      */
-    public function getClearableKeys(array $row = null)
+    public function getClearableKeys(?array $row = null)
     {
         return $this->_clearableKeys;
     }
@@ -481,11 +481,11 @@ class UnionModel extends \MUtil\Model\ModelAbstract
     /**
      * Sets the keys that should be cleared when moving a field from one submodel to another
      *
-     * @param array $keys name => name, when empty the whole key of the model is cleared,
+     * @param array|null $keys name => name, when empty the whole key of the model is cleared,
      * an empty array means nothing is cleared.
      * @return \MUtil\Model\ModelAbstract (continuation pattern)
      */
-    public function setClearableKeys(array $keys = null)
+    public function setClearableKeys(?array $keys = null)
     {
         if (null === $keys) {
             $keys = $this->getKeys();

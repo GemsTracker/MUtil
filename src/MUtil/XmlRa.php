@@ -50,7 +50,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * Query string to retrieve the next element
      *
-     * @var string
+     * @var string|null
      */
     private $_nextName;
 
@@ -64,7 +64,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * The "main" node of this object, unless $nodes is set.
      *
-     * @var \DOMNode
+     * @var \DOMNode|null
      */
     private $_rootNode;
 
@@ -137,9 +137,9 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @param array $nodes optionally empty array
      * @param \DOMNode|null $rootNode
-     * @param mixed $next_name
+     * @param string|null $nextName
      */
-    public function __construct(array $nodes, ?\DOMNode $rootNode = null, $nextName)
+    public function __construct(array $nodes, ?\DOMNode $rootNode = null, $nextName = null)
     {
         $this->_nodes = $nodes;
         $this->_nextName = $nextName;

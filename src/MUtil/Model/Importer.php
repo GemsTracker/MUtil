@@ -186,10 +186,10 @@ class Importer extends \MUtil\Translate\TranslateableAbstract
     /**
      *
      * @param string $idPart End part for batch id
-     * @param \MUtil\Task\TaskBatch $batch Optional batch with different source etc..
+     * @param \MUtil\Task\TaskBatch|null $batch Optional batch with different source etc..
      * @return \MUtil\Task\TaskBatch
      */
-    protected function getBasicImportBatch($idPart, \MUtil\Task\TaskBatch $batch = null)
+    protected function getBasicImportBatch($idPart, ?\MUtil\Task\TaskBatch $batch = null)
     {
         if (null === $batch) {
             $batch = new \MUtil\Task\TaskBatch('check_' . basename($this->sourceModel->getName()) . '_' . $idPart);
@@ -205,10 +205,10 @@ class Importer extends \MUtil\Translate\TranslateableAbstract
 
     /**
      *
-     * @param \MUtil\Task\TaskBatch $batch Optional batch with different source etc..
+     * @param \MUtil\Task\TaskBatch|null $batch Optional batch with different source etc..
      * @return \MUtil\Task\TaskBatch
      */
-    public function getCheckAndImportBatch(\MUtil\Task\TaskBatch $batch = null)
+    public function getCheckAndImportBatch(?\MUtil\Task\TaskBatch $batch = null)
     {
         $batch = $this->getBasicImportBatch(__FUNCTION__, $batch);
 
@@ -240,11 +240,11 @@ class Importer extends \MUtil\Translate\TranslateableAbstract
 
     /**
      *
-     * @param \MUtil\Task\TaskBatch $chechkBatch Optional check batch with different source etc..
-     * @param \MUtil\Task\TaskBatch $importBatch Optional import batch with different source etc..
+     * @param \MUtil\Task\TaskBatch|null $chechkBatch Optional check batch with different source etc..
+     * @param \MUtil\Task\TaskBatch|null $importBatch Optional import batch with different source etc..
      * @return \MUtil\Task\TaskBatch
      */
-    public function getCheckWithImportBatches(\MUtil\Task\TaskBatch $checkBatch = null, \MUtil\Task\TaskBatch $importBatch = null)
+    public function getCheckWithImportBatches(?\MUtil\Task\TaskBatch $checkBatch = null, ?\MUtil\Task\TaskBatch $importBatch = null)
     {
         $batch = $this->getBasicImportBatch(__FUNCTION__, $checkBatch);
 
@@ -280,10 +280,10 @@ class Importer extends \MUtil\Translate\TranslateableAbstract
 
     /**
      *
-     * @param \MUtil\Task\TaskBatch $batch Optional batch with different source etc..
+     * @param \MUtil\Task\TaskBatch|null $batch Optional batch with different source etc..
      * @return \MUtil\Task\TaskBatch
      */
-    public function getImportOnlyBatch(\MUtil\Task\TaskBatch $batch = null)
+    public function getImportOnlyBatch(?\MUtil\Task\TaskBatch $batch = null)
     {
         if (! $this->_importBatch instanceof \MUtil\Task\TaskBatch) {
             $batch = new \MUtil\Task\TaskBatch(__CLASS__ . '_import_' . basename($this->sourceModel->getName()) . '_' . __FUNCTION__);

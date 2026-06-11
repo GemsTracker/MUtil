@@ -132,10 +132,10 @@ abstract class Escort extends \Zend_Application_Bootstrap_Bootstrap
      * Actions after: ob_get_clean(); $response->appendBody()
      * Next hook: postDispatch()
      *
-     * @param \Zend_Controller_Action $actionController
+     * @param \Zend_Controller_Action|null $actionController
      * @return void
      */
-    public function controllerAfterAction(\Zend_Controller_Action $actionController = null)
+    public function controllerAfterAction(?\Zend_Controller_Action $actionController = null)
     { }
 
 
@@ -151,10 +151,10 @@ abstract class Escort extends \Zend_Application_Bootstrap_Bootstrap
      * Actions after: $controller->preDispatch(); $controller->{name}Action(); $controller->postDispatch()
      * Next hook: controllerAfterAction()
      *
-     * @param \Zend_Controller_Action $actionController
+     * @param \Zend_Controller_Action|null $actionController
      * @return void
      */
-    public function controllerBeforeAction(\Zend_Controller_Action $actionController = null)
+    public function controllerBeforeAction(?\Zend_Controller_Action $actionController = null)
     { }
 
     /**
@@ -169,10 +169,10 @@ abstract class Escort extends \Zend_Application_Bootstrap_Bootstrap
      * Actions after: $controller->init(); ob_start(); $controller->dispatch()
      * Next hook: controllerBeforeAction()
      *
-     * @param \Zend_Controller_Action $actionController
+     * @param \Zend_Controller_Action|null $actionController
      * @return void
      */
-    public function controllerInit(\Zend_Controller_Action $actionController = null)
+    public function controllerInit(?\Zend_Controller_Action $actionController = null)
     { }
 
 
@@ -404,7 +404,7 @@ abstract class Escort extends \Zend_Application_Bootstrap_Bootstrap
     final public function run($stackIndex = null)
     {
         \MUtil\Application\EscortPlugin::register($this, $stackIndex);
-        \MUtil\Application\EscortControllerHelper::register($this, $stackIndex);
+        \MUtil\Application\EscortControllerHelper::register($this);
 
         $this->beforeRun();
 
@@ -418,10 +418,10 @@ abstract class Escort extends \Zend_Application_Bootstrap_Bootstrap
      * and sets the controller. No event hooked up as controllerInit() is called straigt
      * after this call.
      *
-     * @param  \Zend_Controller_Action $actionController
-     * @return \Zend_Controller_ActionHelper_Abstract Provides a fluent interface
+     * @param  \Zend_Controller_Action|null $actionController
+     * @return Escort Provides a fluent interface
      */
-    public final function setActionController(\Zend_Controller_Action $actionController = null)
+    public final function setActionController(?\Zend_Controller_Action $actionController = null)
     {
         $this->controller = $actionController;
 
@@ -437,7 +437,7 @@ abstract class Escort extends \Zend_Application_Bootstrap_Bootstrap
      * @param \Zend_Controller_Request_Abstract $request
      * @return \MUtil\Application\Escort
      */
-    public final function setRequest(\Zend_Controller_Request_Abstract $request)
+    public final function setRequest(\Zend_ontroller_Request_Abstract $request)
     {
         $this->request = $request;
 

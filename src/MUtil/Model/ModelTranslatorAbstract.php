@@ -139,9 +139,9 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      *
      * @param array $messages or single string message
      * @param mixed $key Row key
-     * @param array $row Optional for filtering errors not in the import
+     * @param array|null $row Optional for filtering errors not in the import
      */
-    protected function _addErrors($messages, $key, array $row = null)
+    protected function _addErrors($messages, $key, ?array $row = null)
     {
         if (is_array($messages)) {
             if (is_array($row)) {

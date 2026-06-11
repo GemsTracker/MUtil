@@ -36,26 +36,26 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
 {
     /**
      *
-     * @var \Mezzio\Flash\FlashMessagesInterface
+     * @var \Mezzio\Flash\FlashMessagesInterface|null
      */
-    private $messenger;
+    private $messenger; // @phpstan-ignore-line
 
     /**
      * Attributes (e.g. class) for the main html element
      *
-     * @var array
+     * @var array|null
      */
     protected $attributes;
 
     /**
      * Shortfix to add class attribute
      *
-     * @var string
+     * @var string|null
      */
     protected $class;
 
     /**
-     * @var \MUtil\Controller\Action\Helper\Redirector
+     * @var \MUtil\Controller\Action\Helper\Redirector|null
      */
     protected $redirector;
 
@@ -70,7 +70,7 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
     /**
      * Adds one or more messages to the session based message store.
      *
-     * @param mixed $message_args Can be an array or multiple argemuents. Each sub element is a single message string
+     * @param mixed $message Can be an array or multiple argemuents. Each sub element is a single message string
      * @return self (continuation pattern)
      */
     public function addMessage(mixed $message, string $status = 'warning')
@@ -109,10 +109,10 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      *
      * This is a stub function either override getHtmlOutput() or override render()
      *
-     * @param \Zend_View_Abstract $view Just in case it is needed here
-     * @return \MUtil\Html\HtmlInterface Something that can be rendered
+     * @param \Zend_View_Abstract|null $view Just in case it is needed here
+     * @return \MUtil\Html\HtmlInterface|string|null Something that can be rendered
      */
-    public function getHtmlOutput(\Zend_View_Abstract $view = null)
+    public function getHtmlOutput(?\Zend_View_Abstract $view = null)
     {
         return null;
     }
@@ -133,7 +133,7 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
     protected function getRedirector()
     {
         if (!$this->redirector) {
-            $this->redirector = new MUtil\Controller\Action\Helper\Redirector();
+            $this->redirector = new \MUtil\Controller\Action\Helper\Redirector();
         }
         return $this->redirector;
     }
@@ -202,10 +202,10 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      *
      * You should override either getHtmlOutput() or this function to generate output
      *
-     * @param \Zend_View_Abstract $view
+     * @param \Zend_View_Abstract|null $view
      * @return string Html output
      */
-    public function render(\Zend_View_Abstract $view = null)
+    public function render(?\Zend_View_Abstract $view = null)
     {
         $view = \Zalt\Html\Html::getRenderer()->getView();
         
@@ -235,5 +235,6 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
                 }
             }
         }
+        return '';
     }
 }

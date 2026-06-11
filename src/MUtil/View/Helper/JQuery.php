@@ -22,6 +22,8 @@ namespace MUtil\View\Helper;
  */
 class JQuery extends \ZendX_JQuery_View_Helper_JQuery
 {
+    protected $_container;
+
    /**
      * Initialize helper
      *
@@ -34,7 +36,7 @@ class JQuery extends \ZendX_JQuery_View_Helper_JQuery
     {
         $registry = \Zend_Registry::getInstance();
         if (!isset($registry[__CLASS__])) {
-            $container = new \MUtil\View\Helper\Container();
+            $container = new \MUtil\View\Helper\JQuery\Container();
             $registry[__CLASS__] = $container;
         }
         $this->_container = $registry[__CLASS__];

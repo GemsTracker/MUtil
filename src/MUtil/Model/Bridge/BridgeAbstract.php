@@ -467,10 +467,10 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
     /**
      * Switch to single row mode and set that row.
      *
-     * @param array $row Or load from model
+     * @param array|null $row Or load from model
      * @throws \MUtil\Model\ModelException
      */
-    public function setRow(array $row = null)
+    public function setRow(?array $row = null)
     {
         $this->setMode(self::MODE_SINGLE_ROW);
 
@@ -498,10 +498,10 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
     /**
      * Switch to multi rows mode and set those rows.
      *
-     * @param array $rows Or load from model
+     * @param array|null $rows Or load from model
      * @throws \MUtil\Model\ModelException
      */
-    public function setRows(array $rows = null)
+    public function setRows(?array $rows = null)
     {
         $this->setMode(self::MODE_ROWS);
 

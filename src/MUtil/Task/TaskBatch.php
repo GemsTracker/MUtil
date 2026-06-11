@@ -44,7 +44,7 @@ class TaskBatch extends BatchAbstract
 {
     protected ProjectOverloader $overloader;
 
-    public function __construct($id, ProjectOverloader $loader, SessionInterface $session = null, Stackinterface $stack = null, LoggerInterface $logger = null)
+    public function __construct($id, ProjectOverloader $loader, ?SessionInterface $session = null, ?Stackinterface $stack = null, ?LoggerInterface $logger = null)
     {
         parent::__construct($id, $session, $stack, $logger);
         $this->overloader = $loader->createSubFolderOverloader('Task');
@@ -55,7 +55,6 @@ class TaskBatch extends BatchAbstract
      *
      * @param string $task Name of Task class
      * @param mixed $param1 Optional scalar or array with scalars, as many parameters as needed allowed
-     * @param mixed $param2 ...
      * @return \MUtil\Task\TaskBatch (continuation pattern)
      */
     public function addTask($task, $param1 = null)
