@@ -123,8 +123,6 @@ class ExistingUrl extends AbstractValidator
                     // $return = curl_getinfo($ch, CURLINFO_FILETIME);
                     // \MUtil\EchoOut\EchoOut::r('Date at server: '.date('r', $return));
 
-                    curl_close($ch);
-
                     return $valid;
 
                 } else {

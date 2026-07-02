@@ -54,11 +54,13 @@ class Bootstrap extends \Zend_View_Helper_Abstract
      * Set view to this class and the bootstrapper
      *
      * @param  \Zend_View_Interface $view
-     * @return void
+     * @return \Zend_View_Helper_Abstract
      */
     public function setView(\Zend_View_Interface $view)
     {
         $this->view = $view;
         $this->_bootstrapper->setView($view);
+
+        return $this;
     }
 }

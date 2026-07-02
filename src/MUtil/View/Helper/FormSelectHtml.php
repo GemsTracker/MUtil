@@ -33,8 +33,8 @@ class FormSelectHtml extends \Zend_View_Helper_FormSelect
     /**
      * Builds the actual <option> tag
      *
-     * @param string $value Options Value
-     * @param string $label Options Label
+     * @param mixed $value Options Value
+     * @param mixed $label Options Label
      * @param array  $selected The option value(s) to mark as 'selected'
      * @param array|bool $disable Whether the select is disabled, or individual options are
      * @param array $optionClasses The classes to associate with each option value
@@ -49,13 +49,13 @@ class FormSelectHtml extends \Zend_View_Helper_FormSelect
         $selectmenu = true;
 
         $opt = '<option'
-             . ' value="' . $this->view->escape($value) . '"';
+             . ' value="' . $this->view->escape($value) . '"';         // @phpstan-ignore-line
 
         if ($label instanceof \MUtil\Html\HtmlElement) {
             // Element not allowed, get parts that are allowed
             foreach (array('class', 'dir', 'id', 'label', 'lang', 'style', 'title', 'data-class', 'data-style') as $attr) {
                 if (isset($label->$attr)) {
-                    $opt .= ' ' . $attr . '="' . $this->view->escape($label->$attr) . '"';
+                    $opt .= ' ' . $attr . '="' . $this->view->escape($label->$attr) . '"';         // @phpstan-ignore-line
                     if (('data-style' == $attr or 'data-class' == $attr) and true == $selectmenu) {
                         $this->enableSelectmenu();
                         $selectmenu = false;
@@ -67,14 +67,14 @@ class FormSelectHtml extends \Zend_View_Helper_FormSelect
             $renderer = \MUtil\Html::getRenderer();
             $content  = '';
             foreach ($label->getIterator() as $part) {
-                $content .= $renderer->renderAny($this->view, $part);
+                $content .= $renderer->renderAny($this->view, $part);          // @phpstan-ignore-line
             }
             
         } elseif ($label instanceof \MUtil\Html\HtmlInterface) {
-            $content = $label->render($this->view);
+            $content = $label->render($this->view);          // @phpstan-ignore-line
         } else {
-            $content = $this->view->escape($label);
-            $opt .= ' label="' . $this->view->escape($label) . '"';
+            $content = $this->view->escape($label);          // @phpstan-ignore-line
+            $opt .= ' label="' . $this->view->escape($label) . '"';         // @phpstan-ignore-line
 
         }
 
@@ -129,9 +129,9 @@ class FormSelectHtml extends \Zend_View_Helper_FormSelect
     public function enableSelectmenu ()
     {
         $baseUrl = \Zend_Controller_Front::getInstance()->getBaseUrl();
-        $this->view->headScript()->prependFile($baseUrl . '/gems/js/jquery-ui-selectmenu.js');
-        $this->view->headLink()->appendStylesheet($baseUrl . '/gems/css/jquery-ui.css');
-        $this->view->headLink()->appendStylesheet($baseUrl . '/gems/css/jquery-ui-selectmenu.css');
+        $this->view->headScript()->prependFile($baseUrl . '/gems/js/jquery-ui-selectmenu.js');          // @phpstan-ignore-line
+        $this->view->headLink()->appendStylesheet($baseUrl . '/gems/css/jquery-ui.css');          // @phpstan-ignore-line
+        $this->view->headLink()->appendStylesheet($baseUrl . '/gems/css/jquery-ui-selectmenu.css');          // @phpstan-ignore-line
         
         $js = sprintf("jQuery(document).ready(function($) {
                 $('#%s').iconselectmenu({width: null}).iconselectmenu('menuWidget').addClass('ui-menu-icons avatar overflow');
@@ -139,6 +139,6 @@ class FormSelectHtml extends \Zend_View_Helper_FormSelect
             $this->id
         );
         
-        $this->view->headScript()->appendScript($js);
+        $this->view->headScript()->appendScript($js);          // @phpstan-ignore-line
     }
 }

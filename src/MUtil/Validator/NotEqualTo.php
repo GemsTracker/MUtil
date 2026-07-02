@@ -46,7 +46,7 @@ class NotEqualTo extends AbstractValidator
      * Sets validator options
      *
      * @param array|string $fields On or more values that this element should not have
-     * @param string|array Optional different message or an array of messages containing field names, an int array value is set as a general message
+     * @param string|array|null Optional different message or an array of messages containing field names, an int array value is set as a general message
      */
     public function __construct($fields, $message = null)
     {

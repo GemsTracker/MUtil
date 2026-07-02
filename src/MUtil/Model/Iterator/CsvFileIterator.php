@@ -99,7 +99,7 @@ class CsvFileIterator implements \Iterator, \Countable
      */
     private function _accept()
     {
-        return (boolean) trim($this->_file->current(), "\r\n");
+        return (bool) trim($this->_file->current(), "\r\n");
     }
     
     /**

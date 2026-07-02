@@ -54,7 +54,7 @@ class Regexclude extends AbstractValidator
     /**
      * Sets validator options
      *
-     * @param  string regex parern $pattern
+     * @param  null|string $pattern regex parern
      * @return void
      */
     public function __construct(?string $pattern = null)
@@ -100,7 +100,7 @@ class Regexclude extends AbstractValidator
      *
      * Returns true if and only if $value matches against the pattern option
      *
-     * @param  string $value
+     * @param  mixed $value
      * @return boolean
      */
     public function isValid(mixed $value): bool

@@ -124,7 +124,7 @@ class Cli extends \Zend_Controller_Request_Abstract
      */
     public function hasUserLogin()
     {
-        return (boolean) $this->_userName || $this->_userOrg || $this->_userPassword;
+        return (bool) $this->_userName || $this->_userOrg || $this->_userPassword;
     }
 
     /**

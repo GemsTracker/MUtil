@@ -116,7 +116,7 @@ class CacheStack extends StackAbstract
      */
     public function hasNext(): bool
     {
-        return (boolean) $this->commands;
+        return (bool) $this->commands;
     }
 
     /**

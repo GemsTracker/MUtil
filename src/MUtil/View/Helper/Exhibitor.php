@@ -118,7 +118,7 @@ class Exhibitor extends \Zend_View_Helper_FormElement
 
         if ($result instanceof \Zalt\Html\HtmlInterface) {
             $escape = false;    // Html should not be escaped!
-            $result = $result->render($this->view);
+            $result = $result->render();
         }
 
         // By all appearance not in use.
@@ -128,7 +128,7 @@ class Exhibitor extends \Zend_View_Helper_FormElement
         } */
 
         if ($escape) {
-            $result = $this->view->escape($result);
+            $result = $this->view->escape($result);         // @phpstan-ignore-line
         }
 
         if (isset($attribs['nohidden']) && $attribs['nohidden'] || is_array($value)) {

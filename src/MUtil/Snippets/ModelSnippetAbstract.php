@@ -146,7 +146,7 @@ abstract class ModelSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
      */
     public function hasHtmlOutput(): bool
     {
-        return (boolean) $this->getModel();
+        return (bool) $this->getModel();
     }
 
     /**

@@ -115,7 +115,7 @@ class DatePicker extends \ZendX_JQuery_View_Helper_DatePicker
         $onload->render($this->view);
 
         $datePicker = '<div class="input-group date">'
-            . $this->view->formText($id, $value, $attribs)
+            . $this->view->formText($id, $value, $attribs)         // @phpstan-ignore-line
             . '<label for="' . $attribs['id'] . '" class="input-group-addon date"><i class="fa fa-calendar"></i></label>'
             . '</div>';
 

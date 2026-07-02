@@ -33,9 +33,9 @@ class JavaScript extends \MUtil\Html\Code\DynamicAbstract
     public function getInHeader()
     {
         if ($this->_inHeader instanceof \MUtil\Lazy\LazyInterface) {
-            return (boolean) \MUtil\Lazy::raise($this->_inHeader);
+            return (bool) \MUtil\Lazy::raise($this->_inHeader);
         } else {
-            return (boolean) $this->_inHeader;
+            return (bool) $this->_inHeader;
         }
     }
     /**
@@ -43,10 +43,10 @@ class JavaScript extends \MUtil\Html\Code\DynamicAbstract
      *
      * The $view is used to correctly encode and escape the output
      *
-     * @param \Zend_View_Abstract $view
+     * @param \Zend_View_Interface $view
      * @return string Correctly encoded and escaped html output
      */
-    public function render(\Zend_View_Abstract $view)
+    public function render(\Zend_View_Interface $view)
     {
         $content = $this->getContentOutput($view);
 

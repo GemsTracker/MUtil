@@ -147,7 +147,7 @@ class SelectIterator implements \Countable, \Iterator
         if (! $this->_statement instanceof \Zend_Db_Statement_Interface) {
             $this->_initStatement();
         }
-        return (boolean) $this->_row;
+        return (bool) $this->_row;
     }
 
 }

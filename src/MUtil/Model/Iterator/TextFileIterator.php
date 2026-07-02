@@ -103,7 +103,7 @@ class TextFileIterator implements \Countable, \Iterator
      */
     private function _accept()
     {
-        return (boolean) trim($this->_file->current(), "\r\n");
+        return (bool) trim($this->_file->current(), "\r\n");
     }
 
     /**

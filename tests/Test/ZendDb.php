@@ -18,14 +18,14 @@ trait ZendDb
             }
 
             $this->zendDb = \Zend_Db::factory(
-                'Pdo_sqlite',
+                'Pdo_Sqlite',
                 [
                     'dbname' => DB_DATABASE
                 ]
             );
 
             $pdo = $this->zendDb->getConnection();
-            $sqliteFunctions->addSqlFunctonsToPdoAdapter($pdo);
+            $sqliteFunctions->addSqlFunctonsToPdoAdapter($pdo, $this->zendDb);
 
         } else {
             $this->zendDb = \Zend_Db::factory('Pdo_Mysql',

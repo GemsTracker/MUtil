@@ -10,10 +10,12 @@ class SqliteFunctions
 {
     public function addSqlFunctonsToPdoAdapter(\PDO $pdo)
     {
-        $pdo->sqliteCreateFunction('now', [__CLASS__, 'now']);
-        $pdo->sqliteCreateFunction('CHAR_LENGTH', 'strlen');
-        $pdo->sqliteCreateFunction('concat', [__CLASS__, 'concat']);
-        $pdo->sqliteCreateFunction('concat_ws', [__CLASS__, 'concatWs']);
+        if (version_compare(PHP_VERSION, '8.5.0', '<=')) {
+            $pdo->sqliteCreateFunction('now', [__CLASS__, 'now']);
+            $pdo->sqliteCreateFunction('CHAR_LENGTH', 'strlen');
+            $pdo->sqliteCreateFunction('concat', [__CLASS__, 'concat']);
+            $pdo->sqliteCreateFunction('concat_ws', [__CLASS__, 'concatWs']);
+        }
     }
 
     /**

@@ -215,7 +215,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
      */
     public function hasRepeater(): bool
     {
-        return parent::hasRepeater() || (boolean) $this->table->getRepeater();
+        return parent::hasRepeater() || (bool) $this->table->getRepeater();
     }
 
     /**

@@ -461,7 +461,7 @@ class JoinModel extends \MUtil\Model\DatabaseModelAbstract
      */
     public function hasAlias($name)
     {
-        return (boolean) isset($this->_tables[$name]);
+        return (bool) isset($this->_tables[$name]);
     }
 
     /**

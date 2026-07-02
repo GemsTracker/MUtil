@@ -53,7 +53,7 @@ class Bootstrapper
 
     protected function _getBootstrapCdnPath()
     {
-        $protocol = \Zend_Controller_Front::getInstance()->getRequest()->isSecure() ? 'https:' : 'http:';
+        $protocol = \Zend_Controller_Front::getInstance()->getRequest()->isSecure() ? 'https:' : 'http:';          // @phpstan-ignore-line
         return $protocol . \MUtil\Bootstrap::CDN_BASE;
     }
 
@@ -78,7 +78,7 @@ class Bootstrapper
 
     protected function _getFontAwesomeCdnPath()
     {
-        $protocol = \Zend_Controller_Front::getInstance()->getRequest()->isSecure() ? 'https:' : 'http:';
+        $protocol = \Zend_Controller_Front::getInstance()->getRequest()->isSecure() ? 'https:' : 'http:';          // @phpstan-ignore-line
         return $protocol . \MUtil\Bootstrap::CDN_FONTAWESOME_BASE;
     }
 
@@ -150,7 +150,7 @@ class Bootstrapper
         $stylesheet = $this->_getStylesheet();
 
         if ($this->view instanceof \Zend_View_Abstract) {
-            $closingBracket = ($this->view->doctype()->isXhtml()) ? ' />' : '>';
+            $closingBracket = ($this->view->doctype()->isXhtml()) ? ' />' : '>';          // @phpstan-ignore-line
         } else {
             $closingBracket = ' />';
         }
@@ -168,7 +168,7 @@ class Bootstrapper
 
     /**
      * Sets the (local) Script path to overwrite CDN loading
-     * @param string path
+     * @param string $path
      */
     public function setBootstrapScriptPath($path)
     {
@@ -177,7 +177,7 @@ class Bootstrapper
 
     /**
      * Sets the (local) Stylesheet path to overwrite CDN loading
-     * @param string path
+     * @param string $path
      */
     public function setBootstrapStylePath($path)
     {
@@ -192,13 +192,13 @@ class Bootstrapper
      */
     public function setCdnSsl($flag)
     {
-        $this->_loadSslCdnPath = (boolean) $flag;
+        $this->_loadSslCdnPath = (bool) $flag;
         return $this;
     }
     
     /**
      * Sets the (local) Font Awesome Stylesheet path to overwrite CDN loading
-     * @param string path
+     * @param string $path
      */
     public function setFontAwesomeStylePath($path)
     {

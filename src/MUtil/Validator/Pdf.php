@@ -54,7 +54,7 @@ class Pdf extends AbstractValidator
             \Zend_Pdf::load($value);
             return true;
         } catch (\Zend_Pdf_Exception $e) {
-            $this->_error(self::ERROR_INVALID_VERSION, $e->getMessage());
+            $this->error(self::ERROR_INVALID_VERSION, $e->getMessage());
             return false;
         }
     }

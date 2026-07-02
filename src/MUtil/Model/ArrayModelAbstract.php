@@ -100,7 +100,7 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
             } else {
                 if (is_numeric($name)) {
                     // Allow literal value interpretation
-                    $result = (boolean) $value;
+                    $result = (bool) $value;
                 } else {
                     $val = isset($row[$name]) ? $row[$name] : null;
 

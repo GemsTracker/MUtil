@@ -117,7 +117,7 @@ class StringUtil
      * \MUtil\StringUtil\StringUtil::splitOnCharCallback('abCDef', 'ctype_upper', true) => array(0 => 'ab', 2 => 'ef');
      *
      * @param string $input
-     * @param callback $callBack Taking a single character as input
+     * @param \callback $callBack Taking a single character as input
      * @param boolean $excludeDelimiter When excluded and 2 delimiters are next to each other, the output
      *                                  index in the array will skip a value
      * @return array index => split portion
@@ -222,6 +222,8 @@ class StringUtil
 
             return substr($input, $p1 , $p3);
         }
+
+        return '';
     }
 
     /**

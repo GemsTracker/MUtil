@@ -177,7 +177,7 @@ class Repeatable implements \MUtil\Lazy\RepeatableInterface
         $this->_currentItem = null;
 
         if ($this->_arrayMode) {
-            return (boolean) count($this->_repeater);
+            return (bool) count($this->_repeater);
 
         } else {
             if ($this->_repeater->valid()) {

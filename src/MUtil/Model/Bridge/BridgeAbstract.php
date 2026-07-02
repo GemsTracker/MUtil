@@ -394,7 +394,7 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
         }
 
         $modelKeys = $this->model->getKeys();
-        return (boolean) isset($modelKeys[$name]);
+        return (bool) isset($modelKeys[$name]);
     }
 
     /**

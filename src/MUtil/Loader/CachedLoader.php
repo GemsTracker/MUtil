@@ -243,7 +243,7 @@ class CachedLoader implements \Zend_Loader_Autoloader_Interface
 
         if (isset($this->_cacheClassArray[$class])) {
             if ($this->_cacheClassArray[$class]) {
-                return (boolean) $this->includeFile($this->_cacheClassArray[$class]);
+                return (bool) $this->includeFile($this->_cacheClassArray[$class]);
             }
         } else {
             $dirs = $this->_includeDirs;

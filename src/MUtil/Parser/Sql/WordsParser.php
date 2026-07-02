@@ -206,9 +206,9 @@ class WordsParser
     private static function modeIsOneChar($mode)
     {
         switch ($mode) {
-            case self::MODE_COMMA;
-            case self::MODE_SEMI_COLON;
-            case self::MODE_BRACKET;
+            case self::MODE_COMMA:
+            case self::MODE_SEMI_COLON:
+            case self::MODE_BRACKET:
                 return true;
         }
 

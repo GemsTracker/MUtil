@@ -1453,7 +1453,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      */
     public function hasDependencies()
     {
-        return (boolean) $this->_model_dependencies;
+        return (bool) $this->_model_dependencies;
     }
 
     /**
@@ -1501,7 +1501,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      */
     public function hasItemsUsed()
     {
-        return (boolean) $this->_model_used;
+        return (bool) $this->_model_used;
     }
 
     /**

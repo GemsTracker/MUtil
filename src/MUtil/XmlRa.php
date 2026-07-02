@@ -172,7 +172,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * this is where we are at now.
      *
      * @param string $name element name
-     * @return self
+     * @return XmlRa|null
      */
     public function __get($name)
     {
@@ -189,6 +189,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
                 return self::_createForName($n, $name);
             }
         }
+        return null;
     }
 
     /**

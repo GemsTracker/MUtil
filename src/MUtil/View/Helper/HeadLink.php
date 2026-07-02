@@ -39,8 +39,8 @@ class HeadLink extends \Zend_View_Helper_HeadLink
     /**
      * Utility function to base64 encode gradients for use in IE
      *
-     * @param type $args
-     * @return type
+     * @param mixed $args
+     * @return array
      */
     public function base64encode($args)
     {
@@ -56,8 +56,8 @@ class HeadLink extends \Zend_View_Helper_HeadLink
      *
      * Needed since it is protected
      *
-     * @param type $value
-     * @return type
+     * @param mixed $value
+     * @return string
      */
     protected function compileValue($value)
     {
@@ -73,7 +73,7 @@ class HeadLink extends \Zend_View_Helper_HeadLink
                 list(, $num, $unit) = $value;
                 // [1] - the number
                 // [2] - the unit
-                if ($this->numberPrecision !== null) {
+                if ($this->numberPrecision !== null) {           // @phpstan-ignore-line
                     $num = round($num, $this->numberPrecision);
                 }
                 return $num . $unit;
@@ -87,8 +87,9 @@ class HeadLink extends \Zend_View_Helper_HeadLink
                 }
                 return $delim . implode($content) . $delim;
             default: // assumed to be unit
-                $this->throwError("unknown value type: $value[0]");
+                new \Zend_Exception("unknown value type: $value[0]");
         }
+        return '';
     }
 
     /**
@@ -118,17 +119,17 @@ class HeadLink extends \Zend_View_Helper_HeadLink
         try {
             // \MUtil\EchoOut\EchoOut::track($inFile, $outFile);
 
-            $lessc = new lessc();
-            $lessc->setOption('relativeUrls', true);
-            $lessc->registerFunction('base64encode', array($this, 'base64encode'));
+            $lessc = new lessc();           // @phpstan-ignore-line
+            $lessc->setOption('relativeUrls', true);          // @phpstan-ignore-line
+            $lessc->registerFunction('base64encode', array($this, 'base64encode'));          // @phpstan-ignore-line
             if ($always || array_key_exists('compilecss', \Zend_Controller_Front::getInstance()->getRequest()->getParams())) {
-                $result = (boolean) $lessc->compileFile($inFile, $outFile);
+                $result = (bool) $lessc->compileFile($inFile, $outFile);          // @phpstan-ignore-line
             } else {
-                $result = $lessc->checkedCompile($inFile, $outFile);
+                $result = $lessc->checkedCompile($inFile, $outFile);          // @phpstan-ignore-line
             }
         } catch (\Exception $exc) {
             // If we have an error, present it if not in production
-            if ((APPLICATION_ENV !== 'production') || (APPLICATION_ENV !== 'acceptance')) {
+            if ((APPLICATION_ENV !== 'production') || (APPLICATION_ENV !== 'acceptance')) {          // @phpstan-ignore-line
                 \MUtil\EchoOut\EchoOut::pre($exc->getMessage());
             }
             $result = null;
@@ -141,7 +142,7 @@ class HeadLink extends \Zend_View_Helper_HeadLink
      * Create item for stylesheet link item
      *
      * @param  array $args
-     * @return stdClass|false Returns fals if stylesheet is a duplicate
+     * @return \stdClass|false Returns fals if stylesheet is a duplicate
      */
     public function createDataStylesheet(array $args)
     {
@@ -187,7 +188,7 @@ class HeadLink extends \Zend_View_Helper_HeadLink
      * Create item for alternate link item
      *
      * @param  array $args
-     * @return stdClass
+     * @return \stdClass
      */
     public function createDataAlternate(array $args)
     {
@@ -237,7 +238,7 @@ class HeadLink extends \Zend_View_Helper_HeadLink
 
             // This is a stylesheet, consider extension and compile .less to .css
             if (($attributes['type'] == 'text/less') || \MUtil\StringUtil\StringUtil::endsWith($attributes['href'], '.less', true)) {
-                $this->compile($this->view, $attributes['href'], false);
+                $this->compile($this->view, $attributes['href'], false);          // @phpstan-ignore-line
 
                 // Modify object, not the derived array
                 $item->type = 'text/css';

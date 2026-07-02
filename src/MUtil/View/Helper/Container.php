@@ -149,7 +149,7 @@ class Container extends \ZendX_JQuery_View_Helper_JQuery_Container
                 $scriptTags .= '<script type="text/javascript" src="'.$uiPath.'"'.$nonceAttribute.'></script>' . PHP_EOL;
             }
 
-            if(ZendX_JQuery_View_Helper_JQuery::getNoConflictMode() == true) {
+            if(\ZendX_JQuery_View_Helper_JQuery::getNoConflictMode() == true) {
                 $scriptTags .= '<script type="text/javascript"'.$nonceAttribute.'>var $j = jQuery.noConflict();</script>' . PHP_EOL;
             }
 

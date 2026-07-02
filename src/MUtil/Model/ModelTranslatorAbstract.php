@@ -500,7 +500,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      */
     public function hasErrors(): bool
     {
-        return (boolean) $this->_errors;
+        return (bool) $this->_errors;
     }
 
     public function saveAll(array $rows): array

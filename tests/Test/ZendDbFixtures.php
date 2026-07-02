@@ -62,7 +62,7 @@ trait ZendDbFixtures
                             $row[$prefix . 'created'] = $this->getDbNow();
                             $row[$prefix . 'created_by'] = 1;
                             break;
-                        default;
+                        default:
                             break;
                     }
                 }

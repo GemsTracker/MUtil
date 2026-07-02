@@ -25,8 +25,8 @@ class BaseUrl extends \Zend_View_Helper_BaseUrl
     /**
      * Remove Script filename from baseurl
      *
-     * @param  string $url
-     * @return string
+     * @param  string|null $url
+     * @return string|null
      */
     protected function _removeScriptName($url)
     {

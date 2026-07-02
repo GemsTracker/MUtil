@@ -23,7 +23,7 @@ use Laminas\Validator\Regex;
  * @license    New BSD License
  * @since      Class available since \MUtil version 1.0
  */
-class Phone extends Regex
+class Phone extends Regex          // @phpstan-ignore-line
 {
     const PHONE_REGEX = '/^[\d\s\+\(\)\-]*$/';
 
@@ -42,13 +42,8 @@ class Phone extends Regex
      */
     protected $pattern = self::PHONE_REGEX;
 
-    /**
-     * Sets validator options
-     *
-     * @param  string $pattern
-     * @return void
-     */
-    public function __construct(string $pattern = self::PHONE_REGEX)
+    // @phpstan-ignore-next-line
+    public function __construct($pattern = self::PHONE_REGEX)
     {
         parent::__construct($pattern);
     }
