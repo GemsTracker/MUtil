@@ -45,7 +45,7 @@
         "laminas/laminas-validator": "^2.20",
         "magnafacta/zalt-html": "^1.0.1",
         "magnafacta/zalt-model": "^2.0.3",
-        "psr/http-message": "^1.0.1",
+        "psr/http-message": "^1.0.1|^2.0",
         "psr/cache": "^3.0",
         "shardj/zf1-future": "^1.23",
         "shardj/zf1-extras-future": "^1.12",
