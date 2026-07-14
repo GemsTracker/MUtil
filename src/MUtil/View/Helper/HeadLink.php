@@ -97,8 +97,8 @@ class HeadLink extends \Zend_View_Helper_HeadLink
      *
      * @param \Zend_View $view
      * @param string $href The less file
-     * @param boolean $always Always compile
-     * @return boolean True when changed
+     * @param bool $always Always compile
+     * @return bool True when changed
      */
     public function compile(\Zend_View $view, $href, $always = false)
     {
