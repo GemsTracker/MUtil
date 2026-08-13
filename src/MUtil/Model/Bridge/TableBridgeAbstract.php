@@ -113,8 +113,8 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
      *
      * @param string $name name of the model item
      * @param mixed $item Lazy variable or a label
-     * @param booelan $forHeader if true uses header settings tableHeaderDisplay instead of itemDisplay
-     * @return type
+     * @param bool $forHeader if true uses header settings tableHeaderDisplay instead of itemDisplay
+     * @return \Zalt\Html\ElementInterface
      */
     private function _applyDisplayFunctions($name, $item, $forHeader = false)
     {
@@ -168,7 +168,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
     /**
      *
      * @param string $name
-     * @return \MUtil\Lazy\LazyAbstract
+     * @return \Zalt\Html\ElementInterface|string
      */
     protected function _getLazyName($name)
     {

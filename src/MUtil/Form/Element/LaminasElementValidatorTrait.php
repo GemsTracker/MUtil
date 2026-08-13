@@ -197,10 +197,15 @@ trait LaminasElementValidatorTrait
                     switch (true) {
                         case (0 == $argc):
                             break;
-                        case (1 <= $argc): // @phpunit-ignore smallerOrEqual.alwaysTrue
+                        case (1 == $argc): // @phpunit-ignore smallerOrEqual.alwaysTrue
                             $filter  = array_shift($filterInfo);
-                        case (2 <= $argc):
+                            $this->addFilter($filter, $options);
+                            break;
+                        case (2 == $argc):
+                            $filter  = array_shift($filterInfo);
                             $options = array_shift($filterInfo);
+                            $this->addFilter($filter, $options);
+                            break;
                         default:
                             $this->addFilter($filter, $options);
                             break;
@@ -377,12 +382,21 @@ trait LaminasElementValidatorTrait
                     switch (true) {
                         case (0 == $argc):
                             break;
-                        case (1 <= $argc): // @phpunit-ignore smallerOrEqual.alwaysTrue
+                        case (1 == $argc):
                             $validator  = array_shift($validatorInfo);
-                        case (2 <= $argc):
+                            $this->addValidator($validator, $breakChainOnFailure, $options);
+                            break;
+                        case (2 == $argc):
+                            $validator  = array_shift($validatorInfo);
                             $breakChainOnFailure = array_shift($validatorInfo);
-                        case (3 <= $argc):
+                            $this->addValidator($validator, $breakChainOnFailure, $options);
+                            break;
+                        case (3 == $argc):
+                            $validator  = array_shift($validatorInfo);
+                            $breakChainOnFailure = array_shift($validatorInfo);
                             $options = array_shift($validatorInfo);
+                            $this->addValidator($validator, $breakChainOnFailure, $options);
+                            break;
                         default:
                             $this->addValidator($validator, $breakChainOnFailure, $options);
                             break;
