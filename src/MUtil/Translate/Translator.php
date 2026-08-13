@@ -23,7 +23,7 @@ class Translator implements TranslatorInterface
 
     public function getLocale(): string
     {
-        // @phpunit-ignore-next-line method.notFound
+        // @phpstan-ignore-next-line method.notFound
         return $this->translator->getLocale();
     }
 

@@ -197,7 +197,7 @@ trait LaminasElementValidatorTrait
                     switch (true) {
                         case (0 == $argc):
                             break;
-                        case (1 == $argc): // @phpunit-ignore smallerOrEqual.alwaysTrue
+                        case (1 == $argc):
                             $filter  = array_shift($filterInfo);
                             $this->addFilter($filter, $options);
                             break;
