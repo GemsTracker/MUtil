@@ -398,6 +398,7 @@ class CachedLoader implements \Zend_Loader_Autoloader_Interface
         }
 
         if ($this->includeFile($file)) {
+            // @phpunit-ignore-next-line booleanOr.leftAlwaysFalse booleanOr.rightAlwaysFalse
             if (class_exists($className, false) || interface_exists($className, false)) {
                 $this->_cacheClassArray[$className] = $file;
                 $this->_cacheChanged                = true;
@@ -477,6 +478,7 @@ class CachedLoader implements \Zend_Loader_Autoloader_Interface
             }
         }
 
+        // @phpunit-ignore-next-line booleanNot.alwaysTrue
         if (!class_exists($class, false) && !interface_exists($class, false)) {
             require_once 'Zend/Exception.php';
             throw new \Zend_Exception("File \"$file\" does not exist or class \"$class\" was not found in the file");
