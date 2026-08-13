@@ -54,6 +54,7 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
      */
     protected function _applyFiltersToRow(array $row, array $filters, $logicalAnd)
     {
+        result = null;
         foreach ($filters as $name => $value) {
             if (is_callable($value)) {
                 if (is_numeric($name)) {

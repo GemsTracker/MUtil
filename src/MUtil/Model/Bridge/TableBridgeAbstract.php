@@ -68,9 +68,9 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
      * Display the item correctly using the function
      *
      * @param mixed $item
-     * @param mxied $function When array each element is applied, when function it is executed,
+     * @param mixed $function When array each element is applied, when function it is executed,
      * otherwise it is added to an HtmlElement
-     * @return \MUtil\Html\ElementInterface
+     * @return \Zalt\Html\ElementInterface
      */
     private static function _applyDisplayFunction($item, $function)
     {

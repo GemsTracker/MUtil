@@ -408,7 +408,7 @@ class TableElement extends \MUtil\Html\HtmlElement
      *
      * print_r but then resulting in html tables.
      *
-     * @param array $data An array or an array of arrays
+     * @param mixed $data An array or an array of arrays
      * @param $caption Optional caption
      * @param true|false|null $nested Optional, looks at first element of $data when null or not specified
      * @param array $objects_not_expanded Objects whose content should not be displayed. Used for preventing resursion.

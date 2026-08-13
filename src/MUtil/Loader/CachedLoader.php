@@ -368,7 +368,7 @@ class CachedLoader implements \Zend_Loader_Autoloader_Interface
         if (file_exists($file)) {
             $result = include $file;
 
-            return $result ? $result : false;
+            return $result ? $result : 1;
         }
 
         return false;

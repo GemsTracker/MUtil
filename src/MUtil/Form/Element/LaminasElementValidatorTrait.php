@@ -197,7 +197,7 @@ trait LaminasElementValidatorTrait
                     switch (true) {
                         case (0 == $argc):
                             break;
-                        case (1 <= $argc): // @phpuni-ignore smallerOrEqual.alwaysTrue
+                        case (1 <= $argc): // @phpunit-ignore smallerOrEqual.alwaysTrue
                             $filter  = array_shift($filterInfo);
                         case (2 <= $argc):
                             $options = array_shift($filterInfo);
@@ -377,7 +377,7 @@ trait LaminasElementValidatorTrait
                     switch (true) {
                         case (0 == $argc):
                             break;
-                        case (1 <= $argc): // @phpuni-ignore smallerOrEqual.alwaysTrue
+                        case (1 <= $argc): // @phpunit-ignore smallerOrEqual.alwaysTrue
                             $validator  = array_shift($validatorInfo);
                         case (2 <= $argc):
                             $breakChainOnFailure = array_shift($validatorInfo);

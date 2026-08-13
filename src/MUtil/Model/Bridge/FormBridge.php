@@ -404,7 +404,7 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
      * @param string $name Name of element
      * @param array $elements or \MUtil\Ra::pairs() name => value array with 'elements' item in it
      * @param mixed $arrayOrKey1 \MUtil\Ra::pairs() name => value array
-     * @return \Zend_Form_Displaygroup
+     * @return \Zend_Form_DisplayGroup
      */
     public function addDisplayGroup($name, $elements, $arrayOrKey1 = null, $value1 = null, $key2 = null, $value2 = null)
     {
