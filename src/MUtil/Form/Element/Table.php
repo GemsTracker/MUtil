@@ -109,7 +109,7 @@ class Table extends \Zend_Form_Element_Xhtml implements \MUtil\Form\Element\SubF
      *
      * @param  mixed $value
      * @param  mixed $context
-     * @return boolean
+     * @return bool
      */
     public function isValid($value, $context = null)
     {

@@ -109,7 +109,7 @@ class DatePicker extends \ZendX_JQuery_Form_Element_DatePicker
      *
      * @param  mixed $value
      * @param  mixed $context
-     * @return boolean
+     * @return bool
      */
     public function isValid($value, $context = null)
     {

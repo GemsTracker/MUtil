@@ -63,13 +63,13 @@ class TableBridge extends \MUtil\Model\Bridge\TableBridgeAbstract
         }
 
         foreach($addItems as $item) {
-            $td = $this->_getLazyName($name);
-            $th = $this->_checkLabel($label, $name);
+            $td = $this->_getLazyName($item);
+            $th = $this->_checkLabel(null, $item);
 
-            if ($tdClass || ($tdClass = $this->model->get($name, 'tdClass'))) {
+            if ($td || ($tdClass = $this->model->get($item, 'tdClass'))) {
                 $td = array($td, 'class' => $tdClass);
             }
-            if ($thClass || ($thClass = $this->model->get($name, 'thClass'))) {
+            if ($th || ($thClass = $this->model->get($item, 'thClass'))) {
                 $th = array($th, 'class' => $thClass);
             }
             if ($showLabels) {

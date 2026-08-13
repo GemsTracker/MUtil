@@ -118,7 +118,7 @@ abstract class Action
      *
      * Overruled in initialization if $useHtmlView is true.
      *
-     * @var boolean $useRawOutput
+     * @var bool $useRawOutput
      */
     public $useRawOutput = false;
 
@@ -187,9 +187,9 @@ abstract class Action
      * Reroutes the page (i.e. header('Location: ');)
      *
      * @param array $urlOptions Url parts
-     * @param boolean $reset Use default module, action and controller instead of current when not specified in $urlOptions
+     * @param bool $reset Use default module, action and controller instead of current when not specified in $urlOptions
      * @param string $routeName
-     * @param boolean $encode
+     * @param bool $encode
      */
     protected function _reroute(array $urlOptions = array(), $reset = false, $routeName = null, $encode = true)
     {
@@ -466,7 +466,7 @@ abstract class Action
     /**
      * Intializes the html component.
      *
-     * @param boolean $reset Throws away any existing html output when true
+     * @param bool $reset Throws away any existing html output when true
      * @return void
      */
     public function initHtml(bool $reset = false): void

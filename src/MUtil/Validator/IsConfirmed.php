@@ -93,7 +93,7 @@ class IsConfirmed extends AbstractValidator
      * matches that token.
      *
      * @param  mixed $value
-     * @return boolean
+     * @return bool
      */
     public function isValid($value, array $context = []): bool
     {

@@ -61,9 +61,9 @@ class FolderModelIterator extends \FilterIterator
     /**
      * \FilterIterator::accept Check whether the current element of the iterator is acceptable
      *
-     * @return boolean
+     * @return bool
      */
-    public function accept()
+    public function accept(): bool
     {
         $file = parent::current();
 
@@ -91,7 +91,7 @@ class FolderModelIterator extends \FilterIterator
      *
      * @return mixed null or artray
      */
-    public function current()
+    public function current(): mixed
     {
         $file = parent::current();
 

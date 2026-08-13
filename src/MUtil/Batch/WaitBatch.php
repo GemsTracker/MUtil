@@ -90,7 +90,7 @@ class WaitBatch extends \MUtil\Batch\BatchAbstract
      *
      * @var int
      */
-    public $minimalStepDurationMs = 100;
+    public int $minimalStepDurationMs = 100;
 
     /**
      * Add one second wait command to the command stack.
@@ -197,7 +197,7 @@ class WaitBatch extends \MUtil\Batch\BatchAbstract
      *
      * @param int $seconds
      * @param string $message
-     * @return boolean true when the task has completed, otherwise task is rerun.
+     * @return bool true when the task has completed, otherwise task is rerun.
      */
     protected function waitFor($seconds, $message)
     {
@@ -219,7 +219,7 @@ class WaitBatch extends \MUtil\Batch\BatchAbstract
      *
      * @param int $microsSeconds
      * @param string $message
-     * @return boolean true when the task has completed, otherwise task is rerun.
+     * @return bool true when the task has completed, otherwise task is rerun.
      */
     protected function waitForMs($microsSeconds, $message)
     {

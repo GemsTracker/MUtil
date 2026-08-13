@@ -37,7 +37,7 @@ trait TargetTrait
      *
      * @param string $name Name of resource to set
      * @param mixed $resource The resource.
-     * @return boolean True if $resource was OK
+     * @return bool True if $resource was OK
      */
     public function answerRegistryRequest($name, $resource)
     {
@@ -50,7 +50,7 @@ trait TargetTrait
      * Should be called after answering the request to allow the Target
      * to check if all required registry values have been set correctly.
      *
-     * @return boolean False if required values are missing.
+     * @return bool False if required values are missing.
      */
     public function checkRegistryRequestsAnswers()
     {
@@ -63,7 +63,7 @@ trait TargetTrait
      * Can be overriden.
      *
      * @param string $name
-     * @return boolean
+     * @return bool
      */
     protected function filterRequestNames($name)
     {

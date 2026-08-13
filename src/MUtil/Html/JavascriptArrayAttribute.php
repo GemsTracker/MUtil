@@ -55,7 +55,7 @@ class JavascriptArrayAttribute extends \MUtil\Html\ArrayAttribute
     /**
      * Add a cancel bubble command
      *
-     * @param boolean $cancelBubble
+     * @param bool $cancelBubble
      * @return \MUtil\Html\JavascriptArrayAttribute (continuation pattern)
      */
     public function addCancelBubble($cancelBubble = true)
@@ -71,7 +71,7 @@ class JavascriptArrayAttribute extends \MUtil\Html\ArrayAttribute
     /**
      * Add a cancel bubble command
      *
-     * @param boolean $cancelBubble
+     * @param bool $cancelBubble
      * @return \MUtil\Html\JavascriptArrayAttribute (continuation pattern)
      */
     public function addConfirm($question)

@@ -24,7 +24,7 @@ class RepeatableObjectProperties extends \MUtil\Lazy\Repeatable
 {
     /**
      *
-     * @var boolean
+     * @var bool
      */
     private $_hasProperties;
 

@@ -34,7 +34,7 @@ abstract class StackAbstract implements \MUtil\Batch\Stack\Stackinterface
      *
      * @param array $command
      * @param string $id Optional id to repeat double execution
-     * @return boolean When true, increment the number of commands, otherwise the command existed
+     * @return bool When true, increment the number of commands, otherwise the command existed
      */
     abstract protected function _addCommand(array $command, ?string $id = null): bool;
 
@@ -81,7 +81,7 @@ abstract class StackAbstract implements \MUtil\Batch\Stack\Stackinterface
      *
      * @param string $method Name of a method of the batch object
      * @param array  $params Array with scalars, as many parameters as needed allowed
-     * @return boolean When true, increment the number of commands, otherwise the command existed
+     * @return bool When true, increment the number of commands, otherwise the command existed
      */
     public function addStep(string $method, array $params): bool
     {
@@ -108,7 +108,7 @@ abstract class StackAbstract implements \MUtil\Batch\Stack\Stackinterface
     /**
      * Return true when there still exist unexecuted commands
      *
-     * @return boolean
+     * @return bool
      */
     // public function hasNext(): bool
 
@@ -144,7 +144,7 @@ abstract class StackAbstract implements \MUtil\Batch\Stack\Stackinterface
      * @param string $method Name of a method of the batch object
      * @param mixed $id A unique id to prevent double adding of something to do
      * @param array  $params Array with scalars, as many parameters as needed allowed
-     * @return boolean When true, increment the number of commands, otherwise the command existed
+     * @return bool When true, increment the number of commands, otherwise the command existed
      */
     public function setStep(string $method, ?string $id, array $params): bool
     {

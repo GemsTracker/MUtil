@@ -114,7 +114,7 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      * Checks name for being a key id field and in that case returns the real field name
      *
      * @param string $name The field name or key name
-     * @param boolean $throwError By default we throw an error until rendering
+     * @param bool $throwError By default we throw an error until rendering
      * @return string The real name and not e.g. the key id
      * @throws \MUtil\Model\ModelException
      */
@@ -385,7 +385,7 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
      * Returns true if name is in the model
      *
      * @param string $name
-     * @return boolean
+     * @return bool
      */
     public function has($name)
     {
@@ -400,7 +400,7 @@ abstract class BridgeAbstract extends \MUtil\Translate\TranslateableAbstract
     /**
      * is there a repeater source for the lazy data
      *
-     * @return boolean
+     * @return bool
      */
     public function hasRepeater(): bool
     {

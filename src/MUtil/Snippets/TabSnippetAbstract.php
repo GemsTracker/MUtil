@@ -54,7 +54,7 @@ abstract class TabSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
     /**
      * Show bar when there is only a single tab
      *
-     * @var boolean
+     * @var bool
      */
     protected $displaySingleTab = false;
 

@@ -34,14 +34,14 @@ class DivFormElement extends \MUtil\Html\HtmlElement implements \MUtil\Html\Form
 
     /**
      *
-     * @var boolean Should subforms be flattened
+     * @var bool Should subforms be flattened
      */
     protected $_flattenSubs = true;
 
     /**
      * Should have content
      *
-     * @var boolean The element is rendered even without content when true.
+     * @var bool The element is rendered even without content when true.
      */
     public $renderWithoutContent = false;
 
@@ -66,7 +66,7 @@ class DivFormElement extends \MUtil\Html\HtmlElement implements \MUtil\Html\Form
 
     /**
      *
-     * @return boolean $flatten Should subforms be flattened as tables
+     * @return bool $flatten Should subforms be flattened as tables
      */
     public function getFlattenSubs()
     {
@@ -164,7 +164,7 @@ class DivFormElement extends \MUtil\Html\HtmlElement implements \MUtil\Html\Form
 
     /**
      *
-     * @param boolean $flatten Should subforms be flattened as tables
+     * @param bool $flatten Should subforms be flattened as tables
      * @return \MUtil\Html\DivFormElement
      */
     public function setFlattenSubs($flatten = true)

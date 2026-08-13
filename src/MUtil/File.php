@@ -67,7 +67,7 @@ class File
     /**
      * @param array $extensions An [optionally nested] array of file extensions
      * @param string $startName A start path / regular expression
-     * @param boolean $caseSensitive
+     * @param bool $caseSensitive
      * @return string A preg expression for the extensions
      */
     public static function createMask($extensions, $startName = '', $caseSensitive = false)
@@ -216,7 +216,7 @@ class File
      * Check OS specific plus check for urls
      *
      * @param string $path
-     * @return boolean
+     * @return bool
      */
     public static function isRootPath($path)
     {
@@ -238,7 +238,7 @@ class File
     /**
      * Returns true when running on Windows machine
      *
-     * @return boolean
+     * @return bool
      */
     public static function isOnWindows()
     {

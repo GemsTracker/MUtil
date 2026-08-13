@@ -32,7 +32,7 @@ class SourcePluginLoader extends \MUtil\Loader\PluginLoader
     /**
      * Show warning when source not set.
      *
-     * @var boolean
+     * @var bool
      */
     public static $verbose = false;
 
@@ -70,7 +70,7 @@ class SourcePluginLoader extends \MUtil\Loader\PluginLoader
     /**
      * Is there a source for the loader
      *
-     * @return boolean
+     * @return bool
      */
     public function hasSource()
     {

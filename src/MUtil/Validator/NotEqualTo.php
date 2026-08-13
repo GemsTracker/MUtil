@@ -74,7 +74,7 @@ class NotEqualTo extends AbstractValidator
      * matches that token.
      *
      * @param  mixed $value
-     * @return boolean
+     * @return bool
      */
     public function isValid($value, $context = [])
     {

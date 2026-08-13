@@ -61,7 +61,7 @@ class UniqueValue extends AbstractValidator
      *
      * @param  mixed $value
      * @param  array $context
-     * @return boolean
+     * @return bool
      */
     public function isValid($value, $context = array())
     {

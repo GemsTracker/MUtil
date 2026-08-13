@@ -86,7 +86,7 @@ class TableElement extends \MUtil\Html\HtmlElement
     /**
      * All new content is added to the last (tbody) element.
      *
-     * @var boolean When true new content not having a $_allowedChildTags is added to $_lastChild.
+     * @var bool When true new content not having a $_allowedChildTags is added to $_lastChild.
      */
     protected $_addtoLastChild = true;
 
@@ -116,7 +116,7 @@ class TableElement extends \MUtil\Html\HtmlElement
     /**
      * Signals the default row class was set
      *
-     * @var boolean
+     * @var bool
      */
     protected $_defaultRowClassSet = false;
 
@@ -158,7 +158,7 @@ class TableElement extends \MUtil\Html\HtmlElement
      *
      * @see $_repeater
      *
-     * @var boolean The element is rendered even without content when true.
+     * @var bool The element is rendered even without content when true.
      */
     public $renderWithoutContent = false;
 
@@ -753,8 +753,8 @@ class TableElement extends \MUtil\Html\HtmlElement
      * Apply this element to the form as the output decorator.
      *
      * @param \Zend_Form $form
-     * @param boolean $add_description When true the description is displayed
-     * @param boolean $include_description When false the description is added in a separate column instead of the element column.
+     * @param bool $add_description When true the description is displayed
+     * @param bool $include_description When false the description is added in a separate column instead of the element column.
      * @return \MUtil\Html\TableElement
      */
     public function setAsFormLayout(\Zend_Form $form, $add_description = false, $include_description = false)
@@ -815,7 +815,7 @@ class TableElement extends \MUtil\Html\HtmlElement
      * In other words: this humble setting switches a table with repeating rows
      * in a table with repeating columns.
      *
-     * @param boolean $pivot True to switch to left rotated pivot when rendering
+     * @param bool $pivot True to switch to left rotated pivot when rendering
      * @param int $headerRows The number of pivoted rows going to in the header
      * @param int $footerRows The number of pivoted rows going to in the footer
      * @return \MUtil\Html\TableElement (continuation pattern)
@@ -858,7 +858,7 @@ class TableElement extends \MUtil\Html\HtmlElement
      *
      * @param mixed $repeater \MUtil\Lazy\RepeatableInterface or something that can be made into one.
      * @param mixed $onEmptyContent Optional. When not null the content to display when the repeater does not result in data is set.
-     * @param boolean $repeatTags Optional when not null the repeatTags switch is set.
+     * @param bool $repeatTags Optional when not null the repeatTags switch is set.
      * @return \MUtil\Html\TableElement (continuation pattern)
      */
     public function setRepeater($repeater, $onEmptyContent = null, $repeatTags = null)

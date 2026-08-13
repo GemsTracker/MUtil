@@ -69,7 +69,7 @@ class TaskBatch extends BatchAbstract
      *
      * @param string $task Class name of task
      * @param array $params Parameters used in the call to execute
-     * @return boolean true when the task has completed, otherwise task is rerun.
+     * @return bool true when the task has completed, otherwise task is rerun.
      * @throws \MUtil\Batch\BatchException
      */
     public function runTask($task, array $params = array())

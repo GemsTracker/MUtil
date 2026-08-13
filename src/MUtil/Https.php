@@ -46,7 +46,7 @@ class Https
     /**
      * True when the url is a HTTPS url, false when HTTP, null otherwise
      *
-     * @return boolean|null True when HTTPS, false when HTTP, null otherwise
+     * @return bool|null True when HTTPS, false when HTTP, null otherwise
      */
     public static function isHttps($url)
     {
@@ -65,7 +65,7 @@ class Https
     /**
      * True when https is used.
      *
-     * @return boolean
+     * @return bool
      */
     public static function on()
     {

@@ -72,7 +72,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      *
      * Set by startImport().
      *
-     * @var boolean
+     * @var bool
      */
     private $_mapRequired = null;
 
@@ -245,7 +245,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
      *
      * @param mixed $row array or \Traversable row
      * @param scalar $key
-     * @return array or boolean
+     * @return array or bool
      * @throws \MUtil\Model\ModelException
      */
     protected function _prepareRow($row, $key)
@@ -496,7 +496,7 @@ abstract class ModelTranslatorAbstract extends \MUtil\Translate\TranslateableAbs
     /**
      * True when the transformation generated errors.
      *
-     * @return boolean True when there are errora
+     * @return bool True when there are errora
      */
     public function hasErrors(): bool
     {

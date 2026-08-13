@@ -38,7 +38,7 @@ class JsPush extends \Zend_ProgressBar_Adapter_JsPush
     /**
      * When true data has been sent.
      *
-     * @var boolean
+     * @var bool
      */
     protected $_dataSent = false;
 

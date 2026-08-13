@@ -45,14 +45,14 @@ class ImgElement extends \MUtil\Html\HtmlElement
     private static $_webRoot;
 
     /**
-     * @var boolean|string When true, no content is used, when a string content is added to an attribute with that name.
+     * @var bool|string When true, no content is used, when a string content is added to an attribute with that name.
      */
     protected $_contentToTag = 'alt';
 
     /**
      * By default this element is not generated when the 'src' is empty.
      *
-     * @var boolean The element is rendered even without content when true.
+     * @var bool The element is rendered even without content when true.
      */
     public $renderWithoutSrc = false;
 

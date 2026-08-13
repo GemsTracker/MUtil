@@ -11,8 +11,6 @@
 
 namespace MUtil;
 
-use _PHPStan_9a6ded56a\Nette\Neon\Exception;
-
 use DateTimeImmutable;
 use DateTimeInterface;
 use Zalt\Loader\DependencyResolver\ConstructorDependencyParametersResolver;
@@ -171,7 +169,7 @@ class Model
      *     \MUtil\Model::$verbose = true;
      * to enable.
      *
-     * @var boolean $verbose If true echo retrieval statements.
+     * @var bool $verbose If true echo retrieval statements.
      */
     public static $verbose = false;
 
@@ -179,7 +177,7 @@ class Model
      * Add a namespace to all loader
      *
      * @param string $nameSpace The namespace without any trailing _
-     * @return boolean True when the namespace is new
+     * @return bool True when the namespace is new
      */
     public static function addNameSpace($nameSpace)
     {
@@ -329,7 +327,7 @@ class Model
     {
         if (! self::$_source instanceof ProjectOverloader) {
             // Autoload?
-            throw new Exception("Use of MUtil\Model->getSource() while no ProjectOverloader set!");
+            throw new \Zend_Exception("Use of MUtil\Model->getSource() while no ProjectOverloader set!");
         }
 
         return self::$_source;
@@ -357,7 +355,7 @@ class Model
     /**
      * Is a source available
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasSource()
     {
@@ -450,7 +448,7 @@ class Model
      * Set the current source for loaders
      *
      * @param ProjectOverloader $source
-     * @param boolean $setExisting When true the source is set for all exiting loaders
+     * @param bool $setExisting When true the source is set for all exiting loaders
      * @return void
      */
     public static function setSource(ProjectOverloader $projectOverloader, $setExisting = true)

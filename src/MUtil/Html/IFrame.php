@@ -33,7 +33,7 @@ class IFrame extends \MUtil\Html\HtmlElement
      *
      * @see $renderWithoutContent
      *
-     * @var boolean The element is always rendered with a closing tag.
+     * @var bool The element is always rendered with a closing tag.
      */
     public $renderClosingTag = true;
 

@@ -78,7 +78,7 @@ class RepeatRenderer implements \MUtil\Html\ElementInterface
         return $value;
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->_content);
     }
@@ -88,7 +88,7 @@ class RepeatRenderer implements \MUtil\Html\ElementInterface
         return $this->_content;
     }
 
-    public function getIterator()
+    public function getIterator(): \Iterator
     {
         return new \ArrayIterator($this->_content);
     }
@@ -116,22 +116,22 @@ class RepeatRenderer implements \MUtil\Html\ElementInterface
         return $this->_repeater ? true : false;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->_content);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->_content[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->_content[$offset] = $value;
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->_content[$offset]);
     }

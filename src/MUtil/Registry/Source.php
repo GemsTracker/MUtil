@@ -41,7 +41,7 @@ class Source implements \MUtil\Registry\SourceInterface
     /**
      * Debugging variable
      *
-     * @var boolean When true echo is used
+     * @var bool When true echo is used
      */
     public static $verbose = false;
 
@@ -68,7 +68,7 @@ class Source implements \MUtil\Registry\SourceInterface
      *
      * @param \MUtil\Registry\TargetInterface $target
      * @param string $name
-     * @return boolean A correct match was found
+     * @return bool A correct match was found
      */
     protected function _applySourceContainers(\MUtil\Registry\TargetInterface $target, $name)
     {
@@ -122,7 +122,7 @@ class Source implements \MUtil\Registry\SourceInterface
      * Apply this source to the target.
      *
      * @param \MUtil\Registry\TargetInterface $target
-     * @return boolean True if $target is OK with loaded requests
+     * @return bool True if $target is OK with loaded requests
      */
     public function applySource(\MUtil\Registry\TargetInterface $target)
     {

@@ -457,7 +457,7 @@ class JoinModel extends \MUtil\Model\DatabaseModelAbstract
      * Does this table alias exist in the mdoel.
      *
      * @param string $name The name of the alias
-     * @return boolean
+     * @return bool
      */
     public function hasAlias($name)
     {

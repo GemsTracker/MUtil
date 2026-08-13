@@ -51,7 +51,7 @@ abstract class ModelVerticalTableSnippetAbstract extends \MUtil\Snippets\ModelSn
 
     /**
      *
-     * @var boolean True when only tracked fields should be retrieved by the nodel
+     * @var bool True when only tracked fields should be retrieved by the nodel
      */
     protected $trackUsage = true;
 

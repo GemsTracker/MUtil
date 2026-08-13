@@ -134,7 +134,7 @@ abstract class DynamicAbstract implements \MUtil\Html\HtmlInterface
      * must specificy the name '{path}', not 'path'.
      *
      * @param string $name Full name of the field.
-     * @return boolean True if it exists
+     * @return bool True if it exists
      */
     public function hasField($name)
     {

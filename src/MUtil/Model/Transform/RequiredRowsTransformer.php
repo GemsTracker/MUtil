@@ -56,7 +56,7 @@ class RequiredRowsTransformer extends ModelTransformerAbstract
      * @param array $required
      * @param array $row
      * @param int $count
-     * @return boolean True if the rows refer to the same row
+     * @return bool True if the rows refer to the same row
      */
     protected function _compareRows(array $required, array $row, int $count): bool
     {
@@ -197,8 +197,8 @@ class RequiredRowsTransformer extends ModelTransformerAbstract
      *
      * @param MetaModelInterface $model The parent model
      * @param array $data Nested array
-     * @param boolean $new True when loading a new item
-     * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
+     * @param bool $new True when loading a new item
+     * @param bool $isPostData With post data, unselected multiOptions values are not set so should be added
      * @return array Nested array containing (optionally) transformed data
      */
     public function transformLoad(MetaModelInterface $model, array $data, $new = false, $isPostData = false)

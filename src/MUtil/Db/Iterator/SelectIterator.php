@@ -140,7 +140,7 @@ class SelectIterator implements \Countable, \Iterator
     /**
      * True if not EOF
      *
-     * @return boolean
+     * @return bool
      */
     public function valid(): bool
     {

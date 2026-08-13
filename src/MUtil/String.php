@@ -47,8 +47,8 @@ class MUtil_String
      *
      * @param string $haystack The string to search in
      * @param string $needle The string to search for
-     * @param boolean $caseInSensitive When true a case insensitive compare is performed
-     * @return boolean
+     * @param bool $caseInSensitive When true a case insensitive compare is performed
+     * @return bool
      * @deprecated replaced with native str_contains
      */
     public static function contains($haystack, $needle, $caseInSensitive = false)
@@ -64,8 +64,8 @@ class MUtil_String
      *
      * @param string $haystack The string to search in
      * @param string $needle The string to search for
-     * @param boolean $caseInSensitive When true a case insensitive compare is performed
-     * @return boolean
+     * @param bool $caseInSensitive When true a case insensitive compare is performed
+     * @return bool
      * @deprecated replaced with native str_ends_with
      */
     public static function endsWith($haystack, $needle, $caseInSensitive = false)
@@ -93,7 +93,7 @@ class MUtil_String
      * does perform an actual decoding to be sure.
      *
      * @param string $input
-     * @return boolean
+     * @return bool
      */
     public static function isBase64($input)
     {
@@ -116,7 +116,7 @@ class MUtil_String
      *
      * @param string $input
      * @param callback $callBack Taking a single character as input
-     * @param boolean $excludeDelimiter When excluded and 2 delimiters are next to each other, the output
+     * @param bool $excludeDelimiter When excluded and 2 delimiters are next to each other, the output
      *                                  index in the array will skip a value
      * @return array index => split portion
      */
@@ -149,8 +149,8 @@ class MUtil_String
      *
      * @param string $haystack The string to search in
      * @param string $needle The string to search for
-     * @param boolean $caseInSensitive When true a case insensitive compare is performed
-     * @return boolean
+     * @param bool $caseInSensitive When true a case insensitive compare is performed
+     * @return bool
      * @deprecated replaced with native str_starts_with
      */
     public static function startsWith($haystack, $needle, $caseInSensitive = false)

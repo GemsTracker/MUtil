@@ -120,7 +120,7 @@ class Cli extends \Zend_Controller_Request_Abstract
     /**
      * Has the user login information
      *
-     * @return boolean
+     * @return bool
      */
     public function hasUserLogin()
     {
@@ -130,7 +130,7 @@ class Cli extends \Zend_Controller_Request_Abstract
     /**
      * Was the request made by POST?
      *
-     * @return boolean
+     * @return bool
      */
     public function isPost()
     {

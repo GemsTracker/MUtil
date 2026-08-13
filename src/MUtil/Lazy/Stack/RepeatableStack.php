@@ -58,7 +58,7 @@ class RepeatableStack implements \MUtil\Lazy\StackInterface
     /**
      * Set this stack to throw an exception
      *
-     * @param mixed $throw boolean
+     * @param mixed $throw bool
      * @return \MUtil_ArrayStack (continuation pattern_
      */
     public function setThrowOnMiss($throw = true)

@@ -32,7 +32,7 @@ abstract class ModelActionAbstract extends \MUtil\Controller\Action
 {
     /**
      *
-     * @var boolean $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
+     * @var bool $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
      */
     public bool $includeNumericFilters = false;
 
@@ -105,7 +105,7 @@ abstract class ModelActionAbstract extends \MUtil\Controller\Action
      * @param \MUtil\Model\Bridge\FormBridgeInterface $bridge
      * @param \MUtil\Model\ModelAbstract $model
      * @param array $data The data that will later be loaded into the form
-     * @param boolean $new Form should be for a new element
+     * @param bool $new Form should be for a new element
      * @return void When an array of new values is return, these are used to update the $data array in the calling function
      */
     protected function addFormElements(FormBridgeInterface $bridge, FullDataInterface $model, array $data, $new = false): void
@@ -127,7 +127,7 @@ abstract class ModelActionAbstract extends \MUtil\Controller\Action
      * parameter was added, because the most common use of action is a split between detailed
      * and summarized actions.
      *
-     * @param boolean $detailed True when the current action is not in $summarizedActions.
+     * @param bool $detailed True when the current action is not in $summarizedActions.
      * @param string $action The current action.
      * @return \MUtil\Model\ModelAbstract
      */
@@ -219,7 +219,7 @@ abstract class ModelActionAbstract extends \MUtil\Controller\Action
      * using addFormElements().
      *
      * @param array $data The data that will later be loaded into the form, can be changed
-     * @param boolean $new Form should be for a new element
+     * @param bool $new Form should be for a new element
      * @return \Zend_Form
      */
     public function getModelForm(array &$data, bool $new = false)
@@ -264,7 +264,7 @@ abstract class ModelActionAbstract extends \MUtil\Controller\Action
     /**
      * Helper function to determine the ability for the user to create new items
      *
-     * return boolean True if the user can add new items
+     * return bool True if the user can add new items
      */
     public function hasNew(): bool
     {

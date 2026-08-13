@@ -154,7 +154,7 @@ trait LaminasElementValidatorTrait
     {
         if ($filter instanceof FilterInterface) {
             $name = get_class($filter);
-        } elseif (is_string($filter)) {
+        } elseif ($filter) {
             $name = $filter;
             $filter = [
                 'filter' => $filter,
@@ -197,7 +197,7 @@ trait LaminasElementValidatorTrait
                     switch (true) {
                         case (0 == $argc):
                             break;
-                        case (1 <= $argc):
+                        case (1 <= $argc): // @phpuni-ignore smallerOrEqual.alwaysTrue
                             $filter  = array_shift($filterInfo);
                         case (2 <= $argc):
                             $options = array_shift($filterInfo);
@@ -377,7 +377,7 @@ trait LaminasElementValidatorTrait
                     switch (true) {
                         case (0 == $argc):
                             break;
-                        case (1 <= $argc):
+                        case (1 <= $argc): // @phpuni-ignore smallerOrEqual.alwaysTrue
                             $validator  = array_shift($validatorInfo);
                         case (2 <= $argc):
                             $breakChainOnFailure = array_shift($validatorInfo);
@@ -429,7 +429,7 @@ trait LaminasElementValidatorTrait
      *
      * @param  mixed $value
      * @param  mixed $context
-     * @return boolean
+     * @return bool
      */
     public function isValid($value, $context = null)
     {
@@ -496,7 +496,7 @@ trait LaminasElementValidatorTrait
                 $errors   = [];
                 if (empty($value)) {
                     if ($this->isRequired()
-                        || (!$this->isRequired() && !$this->getAllowEmpty())
+                        || (!$this->getAllowEmpty())
                     ) {
                         $value = '';
                     }

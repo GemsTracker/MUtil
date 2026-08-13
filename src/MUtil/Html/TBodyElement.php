@@ -215,7 +215,7 @@ class TBodyElement extends \MUtil\Html\HtmlElement implements \MUtil\Html\Column
      *
      * @param mixed $repeater \MUtil\Lazy\RepeatableInterface or something that can be made into one.
      * @param mixed $onEmptyContent Optional. When not null the content to display when the repeater does not result in data is set.
-     * @param boolean $repeatTags Optional when not null the repeatTags switch is set.
+     * @param bool $repeatTags Optional when not null the repeatTags switch is set.
      * @param mixed $colcount \MUtil\Html\ColumnInterface or intefer. Span the onEmpty content over $colcount cells
      * @return \MUtil\Html\TBodyElement (continuation pattern)
      */

@@ -43,7 +43,7 @@ class Lazy
     /**
      * Static variable for debuggging purposes. Toggles the echoing of e.g. raised results.
      *
-     * @var boolean When true Lazy objects should start outputting what is happening in them.
+     * @var bool When true Lazy objects should start outputting what is happening in them.
      */
     public static $verbose = false;
 

@@ -79,7 +79,7 @@ class CsvFileIterator implements \Iterator, \Countable
 
     /**
      *
-     * @var boolean
+     * @var bool
      */
     protected $_valid = true;
     
@@ -95,7 +95,7 @@ class CsvFileIterator implements \Iterator, \Countable
     
     /**
      *
-     * @return boolean
+     * @return bool
      */
     private function _accept()
     {
@@ -244,7 +244,7 @@ class CsvFileIterator implements \Iterator, \Countable
      *
      * This line can then be used to determined the mapping used by the mapping function.
      *
-     * @return string Or boolean if file does not exist
+     * @return string Or bool if file does not exist
      */
     public function getFieldMap()
     {
@@ -364,7 +364,7 @@ class CsvFileIterator implements \Iterator, \Countable
     /**
      * True if not EOF
      *
-     * @return boolean
+     * @return bool
      */
     public function valid(): bool
     {

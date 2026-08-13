@@ -29,7 +29,7 @@ class TdElement extends \MUtil\Html\HtmlElement
      *
      * @see $_repeater
      *
-     * @var boolean Do not output if the output is identical to the last time the element was rendered.
+     * @var bool Do not output if the output is identical to the last time the element was rendered.
      */
     protected $_onlyWhenChanged = false;
 
@@ -50,7 +50,7 @@ class TdElement extends \MUtil\Html\HtmlElement
      *
      * @see $renderWithoutContent
      *
-     * @var boolean The element is always rendered with a closing tag.
+     * @var bool The element is always rendered with a closing tag.
      */
     public $renderClosingTag = true;
 
@@ -82,7 +82,7 @@ class TdElement extends \MUtil\Html\HtmlElement
      * When repeating content using $_repeater you may want to output the content only when it has
      * changed.
      *
-     * @return boolean
+     * @return bool
      */
     public function getOnlyWhenChanged()
     {

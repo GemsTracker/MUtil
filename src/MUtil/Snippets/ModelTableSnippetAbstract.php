@@ -52,7 +52,7 @@ abstract class ModelTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbs
     /**
      * Sets pagination on or off.
      *
-     * @var boolean
+     * @var bool
      */
     public $browse = false;
 
@@ -82,21 +82,21 @@ abstract class ModelTableSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbs
     /**
      * When true the post parameters are removed from the request while filtering
      *
-     * @var boolean Should post variables be removed from the request?
+     * @var bool Should post variables be removed from the request?
      */
     public $removePost = false;
 
     /**
      * When true (= default) the headers get sortable links.
      *
-     * @var boolean
+     * @var bool
      */
     public $sortableLinks = true;
 
     /**
      * When true query only the used columns
      *
-     * @var boolean
+     * @var bool
      */
     public $trackUsage = true;
 

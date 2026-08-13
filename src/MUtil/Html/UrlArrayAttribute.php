@@ -25,7 +25,7 @@ class UrlArrayAttribute extends \MUtil\Html\ArrayAttribute
 {
     /**
      *
-     * @var boolean
+     * @var bool
      */
     protected $_routeReset = false;
 
@@ -185,7 +185,7 @@ class UrlArrayAttribute extends \MUtil\Html\ArrayAttribute
     /**
      * Is this Url an Zend Framework Mvc url or a string with parameters.
      *
-     * @return boolean
+     * @return bool
      */
     public function isMvcUrl()
     {
@@ -206,7 +206,7 @@ class UrlArrayAttribute extends \MUtil\Html\ArrayAttribute
      *
      * @param \Zend_Controller_Request_Abstract $request
      * @param array $options An array of parameters (optionally including e.g. controller name) for the new url
-     * @param boolean $addRouteReset Deprecated: add the 'RouteReset' parameter that is used by objects of this type to set RouteReset
+     * @param bool $addRouteReset Deprecated: add the 'RouteReset' parameter that is used by objects of this type to set RouteReset
      * @return array Url array with adapted utl's
      */
     public static function rerouteUrl(\Zend_Controller_Request_Abstract $request, $options, $addRouteReset = false)
@@ -237,7 +237,7 @@ class UrlArrayAttribute extends \MUtil\Html\ArrayAttribute
     /**
      * Whether or not to set route defaults with the paramter values
      *
-     * @param boolean $routeReset
+     * @param bool $routeReset
      * @return \MUtil\Html\UrlArrayAttribute (continuation pattern)
      */
     public function setRouteReset($routeReset = true)

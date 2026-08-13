@@ -49,7 +49,7 @@ class DlElement extends \MUtil\Html\HtmlElement implements \MUtil\Html\FormLayou
     /**
      * Should have content
      *
-     * @var boolean The element is rendered even without content when true.
+     * @var bool The element is rendered even without content when true.
      */
     public $renderWithoutContent = false;
 

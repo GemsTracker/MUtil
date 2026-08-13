@@ -59,14 +59,14 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
     /**
      * Set to false to disable automatically setting the onchange code
      *
-     * @var boolean
+     * @var bool
      */
     protected $applyOnChange = true;
 
     /**
      * Set to false to disable automatically setting the onchange code
      *
-     * @var boolean
+     * @var bool
      */
     protected $onChangeJs = 'this.form.submit();';
 
@@ -181,7 +181,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * Does this dependency depends on this field?
      *
      * @param string $name Field name
-     * @return boolean
+     * @return bool
      */
     public function dependsOn(string $name): bool
     {
@@ -205,7 +205,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * When a 'model' setting is set, the workings cascade.
      *
      * @param array $context The current data this object is dependent on
-     * @param boolean $new True when the item is a new record not yet saved
+     * @param bool $new True when the item is a new record not yet saved
      * @return array name => array(setting => value)
      * /
     public function getChanges(array $context, bool $new = false): array
@@ -252,7 +252,7 @@ abstract class DependencyAbstract extends \MUtil\Translate\TranslateableAbstract
      * Is this field effected by this dependency?
      *
      * @param $name
-     * @return boolean
+     * @return bool
      */
     public function isEffected($name): bool
     {

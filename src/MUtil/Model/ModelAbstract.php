@@ -100,7 +100,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     /**
      * Do we use the dependencies?
      *
-     * @var boolean
+     * @var bool
      */
     private $_model_enable_dependencies = true;
 
@@ -388,8 +388,8 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @see setOnLoad()
      *
      * @param array $row The row values to load
-     * @param boolean $new True when it is a new item not saved in the model
-     * @param boolean $isPost True when passing on post data
+     * @param bool $new True when it is a new item not saved in the model
+     * @param bool $isPost True when passing on post data
      * @param array $transformColumns ignore:: cache to prevent repeated call's top getCol
      * @return array The possibly adapted array of values
      */
@@ -644,7 +644,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * sort / filter objects attached to this model.
      *
      * @param array $parameters
-     * @param boolean $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
+     * @param bool $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
      * @return array The $parameters minus the sort & textsearch keys
      */
     public function applyParameters(array $parameters, $includeNumericFilters = false)
@@ -719,7 +719,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Filters a request for use with applyParameters, including $_POST parameters.
      *
      * @param \Zend_Controller_Request_Abstract $request
-     * @param boolean $removePost Optional
+     * @param bool $removePost Optional
      * @return \MUtil\Model\ModelAbstract
      */
     public function applyPostRequest(\Zend_Controller_Request_Abstract $request)
@@ -731,8 +731,8 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Filters a request for use with applyParameters.
      *
      * @param \Zend_Controller_Request_Abstract $request
-     * @param boolean $removePost Optional
-     * @param boolean $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
+     * @param bool $removePost Optional
+     * @param bool $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
      * @return \MUtil\Model\ModelAbstract
      */
     public function applyRequest(\Zend_Controller_Request_Abstract $request, $removePost = true, $includeNumericFilters = false)
@@ -1191,7 +1191,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * When no keys are defined, the keys are derived from the model.
      *
-     * @param boolean $reset If true, derives the key from the model.
+     * @param bool $reset If true, derives the key from the model.
      * @return array
      */
     public function getKeys($reset = false)
@@ -1261,10 +1261,10 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * loading the value
      *
      * @param mixed $value The value being saved
-     * @param boolean $isNew True when a new item is being saved
+     * @param bool $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
-     * @param boolean $isPost True when passing on post data
+     * @param bool $isPost True when passing on post data
      * @return mixed The value to use instead
      */
     public function getOnLoad($value, $new, $name, array $context = array(), $isPost = false)
@@ -1286,7 +1286,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * saving the value
      *
      * @param mixed $value The value being saved
-     * @param boolean $isNew True when a new item is being saved
+     * @param bool $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
      * @return mixed The value to save
@@ -1419,7 +1419,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * @param string $name Field name
      * @param string $subkey Optional field key
-     * @return boolean
+     * @return bool
      */
     public function has(string $name, ?string $subkey = null): bool
     {
@@ -1434,7 +1434,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Returns True when one of the names exists in the model.
      *
      * @param array $names of field names
-     * @return boolean
+     * @return bool
      */
     public function hasAnyOf(array $names)
     {
@@ -1449,7 +1449,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     /**
      * Does the model have a dependencies?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasDependencies()
     {
@@ -1461,7 +1461,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * @param mixed $name Field name or array of fields
      * @param string $setting Setting name
-     * @return boolean
+     * @return bool
      */
     public function hasDependency($name, $setting = null)
     {
@@ -1487,7 +1487,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     /**
      * Does the model have a filter?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasFilter(): bool
     {
@@ -1497,7 +1497,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     /**
      * Does this model track items in use?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasItemsUsed()
     {
@@ -1508,7 +1508,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Does a certain Meta setting exist?
      *
      * @param string $key
-     * @return boolean
+     * @return bool
      */
     public function hasMeta($key)
     {
@@ -1519,7 +1519,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Does the item have a save transformer?
      *
      * @param string $name Item name
-     * @return boolean
+     * @return bool
      */
     public function hasOnSave($name)
     {
@@ -1530,7 +1530,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Does the item have a save when test?
      *
      * @param string $name Item name
-     * @return boolean
+     * @return bool
      */
     public function hasSaveWhen($name)
     {
@@ -1540,7 +1540,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     /**
      * Does the model have a sort?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasSort(): bool
     {
@@ -1553,7 +1553,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      *
      * This must be implemented by each sub model on it's own.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasTextSearchFilter(): bool
     {
@@ -1570,7 +1570,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * only available when supplied in the data to be saved (returns false).
      *
      * @param string $name  The name of a field
-     * @return boolean
+     * @return bool
      */
     public function isAutoSave($name)
     {
@@ -1586,10 +1586,10 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Must the model save field $name with this $value and / or this $new values.
      *
      * @param mixed $value The value being saved
-     * @param boolean $isNew True when a new item is being saved
+     * @param bool $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
-     * @return boolean True if the data can be saved
+     * @return bool True if the data can be saved
      */
     public function isSaveable($value, $new, $name, array $context = array())
     {
@@ -1775,7 +1775,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Processes and returns an array of post data
      *
      * @param array $postData
-     * @param boolean $create
+     * @param bool $create
      * @param mixed $filter True to use the stored filter, array to specify a different filter
      * @param mixed $sort True to use the stored sort, array to specify a different sort
      * @return array
@@ -1845,8 +1845,8 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @see \MUtil\Model\SelectModelPaginator
      *
      * @param mixed $data Nested array or \Traversable containing rows or iterator
-     * @param boolean $new True when it is a new item
-     * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
+     * @param bool $new True when it is a new item
+     * @param bool $isPostData With post data, unselected multiOptions values are not set so should be added
      * @return array or \Traversable Nested
      */
     public function processAfterLoad($data, $new = false, $isPostData = false): mixed
@@ -1916,7 +1916,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Process the changes in the model caused by dependencies, using this data.
      *
      * @param array $data The input data
-     * @param boolean $new True when it is a new item not saved in the model
+     * @param bool $new True when it is a new item not saved in the model
      * @return array The possibly change input data
      */
     public function processDependencies(array $data, $new)
@@ -1983,8 +1983,8 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Helper function that procesess a single row of raw data after a load.
      *
      * @param array $row array containing row
-     * @param boolean $new True when it is a new item
-     * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
+     * @param bool $new True when it is a new item
+     * @param bool $isPostData With post data, unselected multiOptions values are not set so should be added
      * @return array Row
      */
     public function processOneRowAfterLoad(array $row, $new = false, $isPostData = false)
@@ -2186,7 +2186,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * only available when supplied in the data to be saved (set to false).
      *
      * @param string $name  The name of a field
-     * @param boolean $value
+     * @param bool $value
      * @return \MUtil\Model\ModelAbstract (continuation pattern)
      */
     public function setAutoSave($name, $value = true)
@@ -2360,7 +2360,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @param string $key2        Optional second key when $arrayOrKey1 is a string
      * @param mixed  $value2      Optional second value when $arrayOrKey1 is a string,
      *                            an unlimited number of $key values pairs can be given.
-     * @return boolean True when the $name exists in this model.
+     * @return bool True when the $name exists in this model.
      */
     public function setIfExists($name, $arrayOrKey1 = array(), $value1 = null, $key2 = null, $value2 = null)
     {
@@ -2515,7 +2515,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * Set this field to be saved whenever a constant is true or a callable returns true.
      *
      * @param string $name The fieldname
-     * @param mixed $callableOrConstant A constant or a function of this type: callable($value, $isNew = false, $name = null, array $context = array()) boolean
+     * @param mixed $callableOrConstant A constant or a function of this type: callable($value, $isNew = false, $name = null, array $context = array()) bool
      * @return \MUtil\Model\ModelAbstract (continuation pattern)
      */
     public function setSaveWhen($name, $callableOrConstant)
@@ -2590,7 +2590,7 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
     /**
      * Start track usage, i.e. each name used in a call to get()
      *
-     * @param boolean $value
+     * @param bool $value
      */
     public function trackUsage($value = true)
     {
@@ -2608,10 +2608,10 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @see setSaveWhen()
      *
      * @param mixed $value The value being saved
-     * @param boolean $isNew True when a new item is being saved
+     * @param bool $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
-     * @return boolean
+     * @return bool
      */
     public static function whenNew($value, $isNew = false, $name = null, array $context = array())
     {
@@ -2625,10 +2625,10 @@ abstract class ModelAbstract extends \MUtil\Registry\TargetAbstract implements F
      * @see setSaveWhen()
      *
      * @param mixed $value The value being saved
-     * @param boolean $isNew True when a new item is being saved
+     * @param bool $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
-     * @return boolean
+     * @return bool
      */
     public static function whenNotNull($value, $isNew = false, $name = null, array $context = array())
     {

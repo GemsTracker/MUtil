@@ -81,7 +81,7 @@ class JQuery extends \ZendX_JQuery
      * Check if the view or form is using JQuery
      *
      * @param mixed $object \Zend_View_Abstract or \Zend_Form
-     * @return boolean
+     * @return bool
      */
     public static function usesJQuery($object)
     {

@@ -36,7 +36,7 @@ class PluginLoader extends \Zend_Loader_PluginLoader
     /**
      * Add the default autoloader to this plugin loader.
      *
-     * @param boolean $prepend Put path at the beginning of the stack, the default is false
+     * @param bool $prepend Put path at the beginning of the stack, the default is false
      * @return \Zend_Loader_PluginLoader (continuation pattern)
      */
     public function addFallBackPath($prepend = false)
@@ -53,7 +53,7 @@ class PluginLoader extends \Zend_Loader_PluginLoader
      *
      * @param string $prefix
      * @param mixed $paths String or an array of strings
-     * @param boolean $prepend Put path at the beginning of the stack (has no effect when prefix / dir already set)
+     * @param bool $prepend Put path at the beginning of the stack (has no effect when prefix / dir already set)
      * @return \Zend_Loader_PluginLoader (continuation pattern)
      */
     public function addPrefixPath($prefix, $paths, $prepend = true)
@@ -279,7 +279,7 @@ class PluginLoader extends \Zend_Loader_PluginLoader
      * Do a quick check for a path being absolute (may not work for some exotic absolute paths though)
      *
      * @param string $path
-     * @return boolean
+     * @return bool
      */
     public static function isAbsolutePath($path)
     {

@@ -32,7 +32,7 @@ class SaveToModel extends \MUtil\Task\TaskAbstract
      * Should be called after answering the request to allow the Target
      * to check if all required registry values have been set correctly.
      *
-     * @return boolean False if required values are missing.
+     * @return bool False if required values are missing.
      */
     public function checkRegistryRequestsAnswers()
     {

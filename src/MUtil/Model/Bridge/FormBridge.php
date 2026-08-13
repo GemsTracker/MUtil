@@ -125,8 +125,8 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
      * @param string $name
      * @param string|\Zend_Form_Element $element Element or element class name
      * @param array $options Element creation options
-     * @param boolean $addFilters When true filters are added
-     * @param boolean $addValidators When true validators are added
+     * @param bool $addFilters When true filters are added
+     * @param bool $addValidators When true validators are added
      * @return \Zend_Form_Element
      */
     protected function _addToForm($name, $element, $options = null, $addFilters = true, $addValidators = true)
@@ -920,9 +920,9 @@ class FormBridge implements \MUtil\Model\Bridge\FormBridgeInterface
 
     /**
      *
-     * @param sting $elementName
+     * @param string $elementName
      * @param mixed $validator
-     * @param boolean $breakChainOnFailure
+     * @param bool $breakChainOnFailure
      * @param mixed $options
      * @return \MUtil\Model\Bridge\FormBridge
      */

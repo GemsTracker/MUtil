@@ -134,7 +134,7 @@ class Log extends \Zend_Log
      * Clear the error log
      *
      * @param $index
-     * @return boolean True if the file no longer exists
+     * @return bool True if the file no longer exists
      */
     public function clearLogFile($index = null)
     {
@@ -195,7 +195,7 @@ class Log extends \Zend_Log
     /**
      * Does the error log file exist
      *
-     * @return boolean
+     * @return bool
      */
     public function hasLogFile()
     {

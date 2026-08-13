@@ -126,7 +126,7 @@ class Bootstrap
     /**
      * Is bootstrap enabled?
      *
-     * @return boolean
+     * @return bool
      */
     public static function enabled()
     {
@@ -137,7 +137,7 @@ class Bootstrap
      * Check if the view or form is using Bootstrap
      *
      * @param mixed $object \Zend_View_Abstract or \Zend_Form
-     * @return boolean
+     * @return bool
      */
     public static function usesBootstrap($object)
     {

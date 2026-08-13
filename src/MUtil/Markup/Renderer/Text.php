@@ -307,7 +307,7 @@ class Text extends \Zend_Markup_Renderer_RendererAbstract
      * @param  array $tag
      * @return string
      */
-    protected function _executeReplace(Zend_Markup_Token $token, $tag)
+    protected function _executeReplace(\Zend_Markup_Token $token, $tag)
     {
         if (! isset($tag['start'])) {
             $tag['start'] = '';
@@ -326,7 +326,7 @@ class Text extends \Zend_Markup_Renderer_RendererAbstract
      * @param  array $tag
      * @return string
      */
-    protected function _executeSingleReplace(Zend_Markup_Token $token, $tag)
+    protected function _executeSingleReplace(\Zend_Markup_Token $token, $tag)
     {
         if (! isset($tag['replace'])) {
             $tag['replace'] = '';

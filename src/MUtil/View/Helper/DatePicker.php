@@ -28,7 +28,7 @@ class DatePicker extends \ZendX_JQuery_View_Helper_DatePicker
      * @link   http://docs.jquery.com/UI/Datepicker
      * @link   http://trentrichardson.com/examples/timepicker
      *
-     * @static boolean $sayThisOnlyOnce Output JavaScript only once.
+     * @static bool $sayThisOnlyOnce Output JavaScript only once.
      * @param  string $id
      * @param  string $value
      * @param  array  $params jQuery Widget Parameters
@@ -127,7 +127,7 @@ class DatePicker extends \ZendX_JQuery_View_Helper_DatePicker
      *
      * @param string $id
      * @param string $picker
-     * @param boolean $disabled
+     * @param bool $disabled
      * @return \MUtil\Html\Code\JavaScript
      */
     public function onLoadJs($id, $picker, $disabled)

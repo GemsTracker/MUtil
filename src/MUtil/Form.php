@@ -85,14 +85,14 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
     /**
      * Is Bootstrap activated for this form?
      *
-     * @var boolean
+     * @var bool
      */
     protected $_no_bootstrap = true;
 
     /**
      * Is JQuery activated for this form?
      *
-     * @var boolean
+     * @var bool
      */
     protected $_no_jquery = true;
 
@@ -387,7 +387,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
      *
      * @param string $name Name of resource to set
      * @param mixed $resource The resource.
-     * @return boolean True if $resource was OK
+     * @return bool True if $resource was OK
      */
     public function answerRegistryRequest($name, $resource)
     {
@@ -405,7 +405,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
      * Should be called after answering the request to allow the Target
      * to check if all required registry values have been set correctly.
      *
-     * @return boolean False if required values are missing.
+     * @return bool False if required values are missing.
      */
     public function checkRegistryRequestsAnswers()
     {
@@ -444,7 +444,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
      * Can be overriden.
      *
      * @param string $name
-     * @return boolean
+     * @return bool
      */
     protected function filterRequestNames($name)
     {
@@ -610,7 +610,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
     /**
      * Return true when the form is lazy
      *
-     * @return boolean
+     * @return bool
      */
     public function isLazy()
     {
@@ -627,8 +627,8 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
      * cannot set translated. The \MUtil form is extended so it can make this switch.
      *
      * @param  array   $data
-     * @param  boolean $disableTranslateValidators Extra switch
-     * @return boolean
+     * @param  bool $disableTranslateValidators Extra switch
+     * @return bool
      */
     public function isValid($data, $disableTranslateValidators = null)
     {
@@ -816,7 +816,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
     /**
      * Is the form Lazy or can it be rendered normally?
      *
-     * @param boolean $lazy
+     * @param bool $lazy
      */
     public function setLazy($lazy = false)
     {
@@ -842,7 +842,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
 
     /**
      *
-     * @return boolean
+     * @return bool
      */
     public function usesBootstrap()
     {
@@ -851,7 +851,7 @@ class Form extends \Zend_Form implements \MUtil\Registry\TargetInterface
 
     /**
      *
-     * @return boolean
+     * @return bool
      */
     public function usesJQuery()
     {

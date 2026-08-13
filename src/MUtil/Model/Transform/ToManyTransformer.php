@@ -50,8 +50,8 @@ class ToManyTransformer extends \MUtil\Model\Transform\NestedTransformer
      * @param array $data The nested data rows
      * @param array $join The join array
      * @param string $name Name of sub model
-     * @param boolean $new True when loading a new item
-     * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
+     * @param bool $new True when loading a new item
+     * @param bool $isPostData With post data, unselected multiOptions values are not set so should be added
      */
     protected function transformLoadSubModel(
         \MUtil\Model\ModelAbstract $model, \MUtil\Model\ModelAbstract $sub, array &$data, array $join,

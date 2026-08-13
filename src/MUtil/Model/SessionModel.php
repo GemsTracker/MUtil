@@ -27,7 +27,7 @@ class SessionModel extends \MUtil\Model\ArrayModelAbstract
      * When set to true in a subclass, then the model should be able to
      * save itself.
      *
-     * @var boolean
+     * @var bool
      */
     protected $_saveable = true;
 

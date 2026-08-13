@@ -101,7 +101,7 @@ class TableSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
      * checkRegistryRequestsAnswers() function from the
      * {@see \MUtil\Registry\TargetInterface}.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasHtmlOutput(): bool
     {

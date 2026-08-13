@@ -71,7 +71,7 @@ class RequireOtherField extends AbstractValidator
      * matches that token.
      *
      * @param  mixed $value
-     * @return boolean
+     * @return bool
      */
     public function isValid(mixed $value, array $context = []): bool
     {

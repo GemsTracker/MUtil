@@ -285,7 +285,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
 
     /**
      *
-     * @var boolean $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
+     * @var bool $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
      */
     public $includeNumericFilters = false;
 
@@ -447,7 +447,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
      * Apply this source to the target.
      *
      * @param \MUtil\Registry\TargetInterface $target
-     * @return boolean True if $target is OK with loaded requests
+     * @return bool True if $target is OK with loaded requests
      */
     public function applySource(\MUtil\Registry\TargetInterface $target)
     {
@@ -504,7 +504,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
      * parameter was added, because the most common use of action is a split between detailed
      * and summarized actions.
      *
-     * @param boolean $detailed True when the current action is not in $summarizedActions.
+     * @param bool $detailed True when the current action is not in $summarizedActions.
      * @param string $action The current action.
      * @return \MUtil\Model\ModelAbstract
      */
@@ -549,7 +549,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
     /**
      *
      * @param string $action The current action.
-     * @return boolean True when this actions uses a form
+     * @return bool True when this actions uses a form
      */
     public function forForm($action)
     {
@@ -603,7 +603,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
 
     /**
      *
-     * @return boolean $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
+     * @return bool $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
      */
     public function getIncludeNumericFilters()
     {
@@ -671,7 +671,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
      *
      * @see getSearchFilter()
      *
-     * @param boolean $useRequest Use the request as source (when false, the session is used)
+     * @param bool $useRequest Use the request as source (when false, the session is used)
      * @return array
      */
     public function getSearchData($useRequest = true)
@@ -765,7 +765,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
     /**
      * Get the filter to use with the model for searching including model sorts, etc..
      *
-     * @param boolean $useRequest Use the request as source (when false, the session is used)
+     * @param bool $useRequest Use the request as source (when false, the session is used)
      * @return array or false
      */
     public function getSearchFilter($useRequest = true)
@@ -827,7 +827,7 @@ abstract class ModelSnippetActionAbstract extends \MUtil\Controller\Action
     /**
      *
      * @param string $action The current action.
-     * @return boolean True when this actions uses only summary data
+     * @return bool True when this actions uses only summary data
      */
     public function isSummarized($action)
     {

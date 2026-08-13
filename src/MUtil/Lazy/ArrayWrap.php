@@ -28,17 +28,17 @@ class ArrayWrap extends \MUtil\Lazy\ObjectWrap
         parent::__construct(new \ArrayObject($array));
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->_object->offsetExists($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->_object->offsetSet($offset, $value);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->_object->offsetUnset($offset);
     }

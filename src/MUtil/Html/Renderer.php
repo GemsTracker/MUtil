@@ -59,7 +59,7 @@ class Renderer
      * Create the renderer
      *
      * @param mixed $classRenderFunctions Array of classname => renderFunction or \MUtil\Util\ClassList
-     * @param boolean $append Replace when false, append to default definitions otherwise
+     * @param bool $append Replace when false, append to default definitions otherwise
      */
     public function __construct($classRenderFunctions = null, $append = true)
     {
@@ -70,7 +70,7 @@ class Renderer
      * Check if the value can be rendered by this object
      *
      * @param mixed $value
-     * @return boolean True when the object can be rendered
+     * @return bool True when the object can be rendered
      */
     public function canRender($value)
     {
@@ -313,7 +313,7 @@ class Renderer
      * Change the list of non-builtin objects that can be rendered by this renderer.
      *
      * @param mixed $classRenderFunctions Array of classname => renderFunction or \MUtil\Util\ClassList
-     * @param boolean $append Replace when false, append otherwise
+     * @param bool $append Replace when false, append otherwise
      * @return \MUtil\Html\Renderer (continuation pattern)
      */
     public function setClassRenderList($classRenderFunctions = null, $append = false)

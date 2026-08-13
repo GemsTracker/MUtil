@@ -44,7 +44,7 @@ class OnOffElementsDependency extends DependencyAbstract
     /**
      * Should we just submit on click or use jQuery
      *
-     * @var boolean
+     * @var bool
      */
     protected $submit = false;
 
@@ -94,7 +94,7 @@ class OnOffElementsDependency extends DependencyAbstract
      * When a 'model' setting is set, the workings cascade.
      *
      * @param array $context The current data this object is dependent on
-     * @param boolean $new True when the item is a new record not yet saved
+     * @param bool $new True when the item is a new record not yet saved
      * @return array name => array(setting => value)
      */
     public function getChanges(array $context, bool $new = false): array

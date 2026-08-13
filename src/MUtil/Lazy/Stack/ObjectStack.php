@@ -33,7 +33,7 @@ class ObjectStack implements \MUtil\Lazy\StackInterface
     /**
      * Should we throw an exception on a missing value?
      *
-     * @var boolean
+     * @var bool
      */
     private $_throwOnMiss = false;
 
@@ -71,13 +71,13 @@ class ObjectStack implements \MUtil\Lazy\StackInterface
     /**
      * Should we throw an exception on a missing value?
      *
-     * @var boolean
+     * @var bool
      */
 
     /**
      * Set this stack to throw an exception
      *
-     * @param mixed $throw boolean
+     * @param mixed $throw bool
      * @return \MUtil_ArrayStack (continuation pattern_
      */
     public function setThrowOnMiss($throw = true)

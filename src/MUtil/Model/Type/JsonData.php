@@ -67,7 +67,7 @@ class JsonData
      *
      * @param \MUtil\Model\ModelAbstract $model
      * @param string $name The field to set the seperator character
-     * @param boolean $detailed When true show detailed information
+     * @param bool $detailed When true show detailed information
      */
     public function apply(ModelAbstract $model, string $name, bool $detailed): void
     {
@@ -139,10 +139,10 @@ class JsonData
      * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
-     * @param boolean $isNew True when a new item is being saved
+     * @param bool $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
-     * @param boolean $isPost True when passing on post data
+     * @param bool $isPost True when passing on post data
      * @return array Of the values
      */
     public function loadValue(mixed $value, bool $isNew = false, ?string $name = null, array $context = [], bool $isPost = false): ?array
@@ -167,7 +167,7 @@ class JsonData
      * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
-     * @param boolean $isNew True when a new item is being saved
+     * @param bool $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
      * @return string Of the values concatenated

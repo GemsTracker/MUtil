@@ -94,7 +94,7 @@ class XmlRaDocument extends \DOMDocument
      *
      * @param string $prefix
      * @param string $namespaceUri
-     * @return boolean True if succesfull, false e.g. when namespace exists already
+     * @return bool True if succesfull, false e.g. when namespace exists already
      */
     public function registerNamespace($prefix, $namespaceUri)
     {

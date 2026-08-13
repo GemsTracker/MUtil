@@ -246,7 +246,7 @@ class ArrayAttribute extends \MUtil\Html\AttributeAbstract
      * Does the item exist in this object
      *
      * @param scalar $offset
-     * @return boolean
+     * @return bool
      */
     public function offsetExists(mixed $offset): bool
     {

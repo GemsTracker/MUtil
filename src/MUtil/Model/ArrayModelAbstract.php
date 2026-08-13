@@ -33,7 +33,7 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
      * When set to true in a subclass, then the model should be able to
      * save itself.
      *
-     * @var boolean
+     * @var bool
      */
     protected $_saveable = false;
 
@@ -49,8 +49,8 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
      *
      * @param array $row A row of data
      * @param array $filters An array of filter statements
-     * @param boolean $logicalAnd When true this is an AND filter, otherwise OR (switches at each array nesting level)
-     * @return boolean
+     * @param bool $logicalAnd When true this is an AND filter, otherwise OR (switches at each array nesting level)
+     * @return bool
      */
     protected function _applyFiltersToRow(array $row, array $filters, $logicalAnd)
     {
@@ -314,7 +314,7 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
      *
      * @param array $row A row of data
      * @param array $filters An array of filter statements
-     * @return boolean
+     * @return bool
      */
     public function applyFiltersToRow(array $row, array $filters)
     {
@@ -330,7 +330,7 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
     public function delete($filter = null): int
     {
         if ($this->_saveable) {
-            // TODO: implement
+            return 0;
         } else {
             throw new \MUtil\Model\ModelException(sprintf('Delete not implemented for model "%s".', $this->getName()));
         }
@@ -402,7 +402,7 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
     /**
      * True if this model allows the creation of new model items.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasNew(): bool
     {
@@ -416,7 +416,7 @@ abstract class ArrayModelAbstract extends \MUtil\Model\ModelAbstract
      *
      * This must be implemented by each sub model on it's own.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasTextSearchFilter(): bool
     {

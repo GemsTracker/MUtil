@@ -61,7 +61,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
 
     /**
      *
-     * @var boolean When true the item key fields are added to the after save route url
+     * @var bool When true the item key fields are added to the after save route url
      */
     protected $afterSaveRouteKeys = true;
 
@@ -94,7 +94,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
     /**
      * True when the form should edit a new model item.
      *
-     * @var boolean
+     * @var bool
      */
     protected $createData = false;
 
@@ -124,7 +124,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
      * However, this also disables the translation of validation messages, which we
      * cannot set translated. The \MUtil form is extended so it can make this switch.
      *
-     * @var boolean True
+     * @var bool True
      */
     protected $disableValidatorTranslation = false;
 
@@ -147,7 +147,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
      * when true those are left out, unless they happend to be a key field or
      * needed for a dependency.
      *
-     * @var boolean
+     * @var bool
      */
     protected $onlyUsedElements = false;
 
@@ -177,7 +177,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
     /**
      * Use csrf token on form for protection against Cross Site Request Forgery
      *
-     * @var boolean
+     * @var bool
      */
     public $useCsrf = true;
 
@@ -463,13 +463,15 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
      * checkRegistryRequestsAnswers() function from the
      * {@see \MUtil\Registry\TargetInterface}.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasHtmlOutput(): bool
     {
         if (parent::hasHtmlOutput()) {
             return $this->processForm();
         }
+
+        return false;
     }
 
     /**
@@ -564,7 +566,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
      * Returns false when $this->afterSaveRouteUrl is set during the
      * processing, which happens by default when the data is saved.
      *
-     * @return boolean True when the form should be displayed
+     * @return bool True when the form should be displayed
      */
     protected function processForm()
     {
@@ -667,7 +669,7 @@ abstract class ModelFormSnippetAbstract extends \MUtil\Snippets\ModelSnippetAbst
     /**
      * Performs the validation.
      *
-     * @return boolean True if validation was OK and data should be saved.
+     * @return bool True if validation was OK and data should be saved.
      */
     protected function validateForm()
     {

@@ -63,7 +63,7 @@ abstract class TaskAbstract extends \MUtil\Translate\TranslateableAbstract
     /**
      * Return true when the task has finished.
      *
-     * @return boolean
+     * @return bool
      */
     public function isFinished()
     {

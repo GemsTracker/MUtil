@@ -44,14 +44,14 @@ class FolderModel extends \MUtil\Model\ArrayModelAbstract
     /**
      * When true searches directories recursively
      *
-     * @var boolean
+     * @var bool
      */
     protected $recursive;
 
     /**
      * When true also follows symlinks. Only works when recursive is true
      *
-     * @var boolean
+     * @var bool
      */
     protected $followSymlinks;
 
@@ -59,8 +59,8 @@ class FolderModel extends \MUtil\Model\ArrayModelAbstract
      *
      * @param string  $dir The (start) directory
      * @param mixed   $extensionsOrMask An optional array of extensions or a regex file mask, use of / for directory separator required
-     * @param boolean $recursive When true the directory is searched recursively
-     * @param boolean $followSymlinks When true symlinks are folloed
+     * @param bool $recursive When true the directory is searched recursively
+     * @param bool $followSymlinks When true symlinks are folloed
      */
     public function __construct($dir, $extensionsOrMask = null, $recursive = false, $followSymlinks = false)
     {

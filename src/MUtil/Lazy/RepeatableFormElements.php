@@ -42,14 +42,14 @@ class RepeatableFormElements extends \MUtil\Lazy\Repeatable
     /**
      * Flatten all sub forms into the main form
      *
-     * @var boolean
+     * @var bool
      */
     public $flattenSubs = false;
 
     /**
      * Output the hidden fields to a separate location
      *
-     * @var boolean
+     * @var bool
      */
     public $splitHidden = false;
 
@@ -196,7 +196,7 @@ class RepeatableFormElements extends \MUtil\Lazy\Repeatable
     /**
      * Are the sub forms split off?
      *
-     * @return boolean
+     * @return bool
      */
     public function getFlattenSubs()
     {
@@ -224,7 +224,7 @@ class RepeatableFormElements extends \MUtil\Lazy\Repeatable
     /**
      * Are the hidden fields split off?
      *
-     * @return boolean
+     * @return bool
      */
     public function getSplitHidden()
     {
@@ -234,7 +234,7 @@ class RepeatableFormElements extends \MUtil\Lazy\Repeatable
     /**
      * Should the sub forms be split off?
      *
-     * @param boolean $value
+     * @param bool $value
      * @return \MUtil\Lazy\RepeatableFormElements (continuation pattern)
      */
     public function setFlattenSubs($value = true)
@@ -246,7 +246,7 @@ class RepeatableFormElements extends \MUtil\Lazy\Repeatable
     /**
      * Should the hidden fields be split off?
      *
-     * @param boolean $value
+     * @param bool $value
      * @return \MUtil\Lazy\RepeatableFormElements (continuation pattern)
      */
     public function setSplitHidden($value = true)

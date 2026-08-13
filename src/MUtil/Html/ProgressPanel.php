@@ -34,7 +34,7 @@ class ProgressPanel extends \MUtil\Html\HtmlElement
      * @see $_allowedChildTags
      * @see $_lastChild
      *
-     * @var boolean When true new content not having a $_allowedChildTags is added to $_lastChild.
+     * @var bool When true new content not having a $_allowedChildTags is added to $_lastChild.
      */
     protected $_addtoLastChild = true;
 

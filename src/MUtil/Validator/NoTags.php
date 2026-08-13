@@ -47,7 +47,7 @@ class NoTags extends Regexclude
      * Returns true if and only if $value matches against the pattern option
      *
      * @param  string $value
-     * @return boolean
+     * @return bool
      */
     public function isValid($value): bool
     {

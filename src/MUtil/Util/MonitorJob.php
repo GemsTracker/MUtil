@@ -331,7 +331,7 @@ This messages was send automatically.";
     /**
      * Check: is this job overdue?
      *
-     * @return boolean
+     * @return bool
      */
     public function isOverdue()
     {
@@ -344,7 +344,7 @@ This messages was send automatically.";
      * @see getMailVariables()
      * @param string $subject
      * @param string $bbMessage BB message string
-     * @return boolean True when object has changed
+     * @return bool True when object has changed
      */
     public function sendOtherMail($subject, $bbMessage)
     {
@@ -356,7 +356,7 @@ This messages was send automatically.";
     /**
      * Send the mail for an overdue job
      *
-     * @return boolean True when object has changed
+     * @return bool True when object has changed
      */
     public function sendOverdueMail()
     {
@@ -463,7 +463,7 @@ This messages was send automatically.";
     /**
      * Start monitoring
      *
-     * @return boolean True when job started
+     * @return bool True when job started
      */
     public function start()
     {
@@ -474,7 +474,7 @@ This messages was send automatically.";
      * Start monitoring
      *
      * @param MonitorJob $job
-     * @return boolean True when job started
+     * @return bool True when job started
      */
     public static function startJob(MonitorJob $job)
     {

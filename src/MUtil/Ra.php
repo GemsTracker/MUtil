@@ -193,7 +193,7 @@ class Ra
      * OTHER TYPE OPTIONS
      *
      * Apart from class names you can also use is_*() functions to test for a type. E.g. is_string() or
-     * is_boolean(). You can also write your own is_whatever() function.
+     * is_bool(). You can also write your own is_whatever() function.
      *
      * You can assign multiple types as an array. The array will search all the arguments first for the
      * first type, then the second, etc..
@@ -225,7 +225,7 @@ class Ra
      * @param mixed $skipOrName If numeric the number of arguments in $args to leave alone, otherwise the names of numbered
      *                          elements. Class names can also be specified.
      * @param array $defaults   An array of argument name => default_value pairs.
-     * @param boolean $mode     The $skipOrName types are only used as hints or must be strictly adhered to.
+     * @param bool $mode     The $skipOrName types are only used as hints or must be strictly adhered to.
      * @return array Flattened array containing the arguments.
      */
     public static function args(array $args, $skipOrName = 0, $defaults = array(), $mode = self::RELAXED)
@@ -579,7 +579,7 @@ class Ra
      * Returns true if the $object either is an array or can be converted to an array.
      *
      * @param mixed $object
-     * @return boolean
+     * @return bool
      */
     public static function is($object)
     {
@@ -610,7 +610,7 @@ class Ra
      * scalars or scalar arrays.
      *
      * @param mixed $value
-     * @return boolean
+     * @return bool
      */
     public static function isScalar($value)
     {
@@ -663,7 +663,7 @@ class Ra
      *
      * @param array $sourceArray The array the replace the key names in
      * @param array $mapArray array containing current name => new name
-     * @param boolean $recursive When true sub arrays are also mapped
+     * @param bool $recursive When true sub arrays are also mapped
      * @return array
      */
     public static function map(array $sourceArray, array $mapArray, $recursive = false)

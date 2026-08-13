@@ -85,7 +85,7 @@ name=value (string)  Zero or more name=value parameter pairs, without the
      *
      * @param  \Zend_Controller_Request_Abstract
      * @throws \Zend_Controller_Router_Exception
-     * @return \Zend_Controller_Request_Abstract|boolean
+     * @return \Zend_Controller_Request_Abstract|bool
      */
     public function route(\Zend_Controller_Request_Abstract $request)
     {

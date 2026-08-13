@@ -56,8 +56,8 @@ class MezzioResponseWrapper
     /**
      * Can we send headers?
      *
-     * @param boolean $throw Whether or not to throw an exception if headers have been sent; defaults to false
-     * @return boolean
+     * @param bool $throw Whether or not to throw an exception if headers have been sent; defaults to false
+     * @return bool
      * @throws \Zend_Controller_Response_Exception
      */
     public function canSendHeaders($throw = false)

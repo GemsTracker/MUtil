@@ -37,7 +37,7 @@ class CachedLoader implements \Zend_Loader_Autoloader_Interface
 
     /**
      *
-     * @var boolean
+     * @var bool
      */
     private $_cacheChanged = false;
 
@@ -117,7 +117,7 @@ class CachedLoader implements \Zend_Loader_Autoloader_Interface
      * Check for file existence and append status to the cache
      *
      * @param mixed $file String path to file or false if does not exist
-     * @return boolean True if the file exists
+     * @return bool True if the file exists
      */
     protected function _checkFile($file)
     {
@@ -265,7 +265,7 @@ class CachedLoader implements \Zend_Loader_Autoloader_Interface
      *
      * @param string $className The name of the class
      * @param array $arguments Class initialization arguments.
-     * @return boolean True if the class exists.
+     * @return bool True if the class exists.
      */
     public function createClass($className, array $arguments)
     {
@@ -379,7 +379,7 @@ class CachedLoader implements \Zend_Loader_Autoloader_Interface
      *
      * @param string $className The name of the class
      * @param string $file The full path to the file
-     * @return boolean True if the class exists.
+     * @return bool True if the class exists.
      */
     public function loadClass($className, $file)
     {

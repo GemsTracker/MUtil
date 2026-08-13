@@ -121,13 +121,13 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
 
     /**
      *
-     * @var boolean
+     * @var bool
      */
     private bool $_messageLogWhenAdding = false;
 
     /**
      *
-     * @var boolean
+     * @var bool
      */
     private bool $_messageLogWhenSetting = false;
 
@@ -136,7 +136,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     /**
      * When true the progressbar should start immediately. When false the user has to perform an action.
      *
-     * @var boolean
+     * @var bool
      */
     public bool $autoStart = false;
 
@@ -286,7 +286,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     /**
      * Check if the aplication should report back to the user
      *
-     * @return boolean True when application should report to the user
+     * @return bool True when application should report to the user
      */
     private function _checkReport(): bool
     {
@@ -580,7 +580,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      * Do not forget to reset() the batch if you're done with it after
      * displaying the report.
      *
-     * @param boolean $reset When true the batch is reset afterwards
+     * @param bool $reset When true the batch is reset afterwards
      * @return array
      */
     public function getMessages(bool $reset = false): array
@@ -731,7 +731,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      * Return whether a session variable exists in the session store.
      *
      * @param string $name Name of the variable
-     * @return boolean
+     * @return bool
      */
     public function hasSessionVariable(string $name): bool
     {
@@ -743,7 +743,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      * Return whether a variable exists the general store or in the session store.
      *
      * @param string $name Name of the variable
-     * @return boolean
+     * @return bool
      */
     public function hasVariable(string $name): bool
     {
@@ -753,7 +753,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     /**
      * Return true after commands all have been ran.
      *
-     * @return boolean
+     * @return bool
      */
     public function isFinished(): bool
     {
@@ -763,7 +763,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     /**
      * Return true when at least one command has been loaded.
      *
-     * @return boolean
+     * @return bool
      */
     public function isLoaded(): bool
     {
@@ -851,7 +851,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
      * page should not be displayed.
      *
      * @param array Request query params
-     * @return boolean True when something ran
+     * @return bool True when something ran
      */
     public function run(array $requestQueryParams): bool
     {
@@ -909,7 +909,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     /**
      * Run the whole batch at once, while still communicating with a progress bar.
      *
-     * @return boolean True when something ran
+     * @return bool True when something ran
      */
     public function runContinuous(): bool
     {
@@ -998,8 +998,8 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     /**
      *
      * @param string $filename Filename to log to
-     * @param boolean $logSet Log setMessage calls
-     * @param boolean $logAdd Log addMessage calls
+     * @param bool $logSet Log setMessage calls
+     * @param bool $logAdd Log addMessage calls
      * @return $this
      */
     public function setMessageLogFile(string $filename, bool $logSet = true, bool $logAdd = true): self
@@ -1115,7 +1115,7 @@ abstract class BatchAbstract extends TargetAbstract implements Countable
     /**
      * Progress a single step on the command stack
      *
-     * @return boolean
+     * @return bool
      */
     protected function step(): bool
     {

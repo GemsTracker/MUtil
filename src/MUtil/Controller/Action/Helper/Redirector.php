@@ -53,8 +53,8 @@ class Redirector extends \Zend_Controller_Action_Helper_Redirector
      *
      * @param  array   $urlOptions
      * @param  string  $name Route name
-     * @param  boolean $reset
-     * @param  boolean $encode
+     * @param  bool $reset
+     * @param  bool $encode
      * @return void
      */
     public function setGotoRoute(array $urlOptions = array(), $name = null, $reset = false, $encode = true)

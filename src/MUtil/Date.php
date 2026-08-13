@@ -506,7 +506,7 @@ class Date extends \Zend_Date
      * @param  string|integer|array|\Zend_Date  $date    Date or datepart to compare with
      * @param  string                          $part    OPTIONAL Part of the date to compare, if null the timestamp is used
      * @param  string|\Zend_Locale              $locale  OPTIONAL Locale for parsing input
-     * @return boolean
+     * @return bool
      * @throws \Zend_Date_Exception
      */
     public function isEarlierOrEqual($date, $part = null, $locale = null)
@@ -525,7 +525,7 @@ class Date extends \Zend_Date
      * @param  string|integer|array|\Zend_Date  $date    Date or datepart to compare with
      * @param  string                          $part    OPTIONAL Part of the date to compare, if null the timestamp is used
      * @param  string|\Zend_Locale              $locale  OPTIONAL Locale for parsing input
-     * @return boolean
+     * @return bool
      * @throws \Zend_Date_Exception
      */
     public function isLaterOrEqual($date, $part = null, $locale = null)

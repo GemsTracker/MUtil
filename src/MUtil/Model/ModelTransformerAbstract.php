@@ -178,8 +178,8 @@ abstract class ModelTransformerAbstract implements \MUtil\Model\ModelTransformer
      *
      * @param \MUtil\Model\ModelAbstract $model The parent model
      * @param array $data Nested array
-     * @param boolean $new True when loading a new item
-     * @param boolean $isPostData With post data, unselected multiOptions values are not set so should be added
+     * @param bool $new True when loading a new item
+     * @param bool $isPostData With post data, unselected multiOptions values are not set so should be added
      * @return array Nested array containing (optionally) transformed data
      */
     public function transformLoad(MetaModelInterface $model, array $data, $new = false, $isPostData = false)
@@ -219,7 +219,7 @@ abstract class ModelTransformerAbstract implements \MUtil\Model\ModelTransformer
     /**
      * When true, the on save functions are triggered before passing the data on
      *
-     * @return boolean
+     * @return bool
      */
     public function triggerOnSaves()
     {

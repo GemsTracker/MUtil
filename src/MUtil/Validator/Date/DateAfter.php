@@ -62,7 +62,7 @@ class DateAfter extends DateAbstract
      * validation failed.
      *
      * @param  mixed $value
-     * @return boolean
+     * @return bool
      */
     public function isValid($value, $context = null)
     {

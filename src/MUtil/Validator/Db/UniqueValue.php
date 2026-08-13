@@ -87,7 +87,7 @@ class UniqueValue extends NoRecordExists
      *
      * @param  mixed $value
      * @param  array $context
-     * @return boolean
+     * @return bool
      * @throws \Zend_Validate_Exception If validation of $value is impossible
      */
     public function isValid($value, $context = array())

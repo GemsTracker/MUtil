@@ -26,7 +26,7 @@ class ImportCheckTask extends \MUtil\Task\IteratorTaskAbstract
     /**
      * When false, the task is not added (for when just checking)
      *
-     * @var boolean
+     * @var bool
      */
     protected $addImport = true;
 
@@ -53,7 +53,7 @@ class ImportCheckTask extends \MUtil\Task\IteratorTaskAbstract
      * Should be called after answering the request to allow the Target
      * to check if all required registry values have been set correctly.
      *
-     * @return boolean False if required values are missing.
+     * @return bool False if required values are missing.
      */
     public function checkRegistryRequestsAnswers()
     {
@@ -119,7 +119,7 @@ class ImportCheckTask extends \MUtil\Task\IteratorTaskAbstract
     /**
      * Return true when the task has finished.
      *
-     * @return boolean
+     * @return bool
      */
     public function isFinished()
     {

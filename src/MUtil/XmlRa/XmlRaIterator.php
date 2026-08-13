@@ -42,7 +42,7 @@ class XmlRaIterator implements \Iterator
      * Function for filtering the output results.
      *
      * Signature must be: function(mixed $value) where $value is
-     * a \MUtil\XmlRa::_returnValue output and returns a boolean.
+     * a \MUtil\XmlRa::_returnValue output and returns a bool.
      *
      * @var callable|null
      */
@@ -151,7 +151,7 @@ class XmlRaIterator implements \Iterator
      * Set function for filtering the output results.
      *
      * Signature must be: function(mixed $value) where $value is
-     * a \MUtil\XmlRa::_returnValue output and returns a boolean.
+     * a \MUtil\XmlRa::_returnValue output and returns a bool.
      *
      *
      * @param callable $function function()

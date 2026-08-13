@@ -52,7 +52,7 @@ class Html
      *     \MUtil\Html::$verbose = true;
      * to enable.
      *
-     * @var boolean $verbose If true echo retrieval statements.
+     * @var bool $verbose If true echo retrieval statements.
      */
     public static $verbose = false;
 
@@ -100,7 +100,7 @@ class Html
      * Check if the value can be rendered by the default renderer
      *
      * @param mixed $value
-     * @return boolean True when the object can be rendered
+     * @return bool True when the object can be rendered
      */
     public static function canRender($value)
     {

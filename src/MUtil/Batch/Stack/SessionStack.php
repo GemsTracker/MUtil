@@ -45,7 +45,7 @@ class SessionStack extends StackAbstract
      *
      * @param array $command
      * @param string|null $id Optional id to repeat double execution
-     * @return boolean When true, increment the number of commands, otherwise the command existed
+     * @return bool When true, increment the number of commands, otherwise the command existed
      */
     protected function _addCommand(array $command, ?string $id = null): bool
     {
@@ -93,7 +93,7 @@ class SessionStack extends StackAbstract
     /**
      * Return true when there still exist unexecuted commands
      *
-     * @return boolean
+     * @return bool
      */
     public function hasNext(): bool
     {

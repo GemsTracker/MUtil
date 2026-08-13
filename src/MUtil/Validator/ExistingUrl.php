@@ -53,7 +53,7 @@ class ExistingUrl extends AbstractValidator
      * validation failed.
      *
      * @param  mixed $value
-     * @return boolean
+     * @return bool
      */
     public function isValid($value): bool
     {
@@ -136,5 +136,7 @@ class ExistingUrl extends AbstractValidator
                 return false;
             }
         }
+
+        return false;
     }
 }

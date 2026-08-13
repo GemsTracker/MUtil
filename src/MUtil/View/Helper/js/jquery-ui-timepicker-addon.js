@@ -1418,7 +1418,7 @@
 			return;
 		}
 
-		if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
+		if (typeof(inst.stay_open) !== 'bool' || inst.stay_open === false) {
 
 			this._base_updateDatepicker(inst);
 
@@ -1872,7 +1872,7 @@
 
 	/*
 	* Determine by the time format which units are supported
-	* Returns an object of booleans for each unit
+	* Returns an object of bools for each unit
 	*/
 	var detectSupport = function (timeFormat) {
 		var tf = timeFormat.replace(/'.*?'/g, '').toLowerCase(), // removes literals
@@ -1987,7 +1987,7 @@
 	/**
 	 * Get the timezone offset as string from a date object (eg '+0530' for UTC+5.5)
 	 * @param {number} tzMinutes if not a number, less than -720 (-1200), or greater than 840 (+1400) this value is returned
-	 * @param {boolean} iso8601 if true formats in accordance to iso8601 "+12:45"
+	 * @param {bool} iso8601 if true formats in accordance to iso8601 "+12:45"
 	 * @return {string}
 	 */
 	$.timepicker.timezoneOffsetString = function (tzMinutes, iso8601) {
@@ -2061,7 +2061,7 @@
 	 * @param  {Element} startTime
 	 * @param  {Element} endTime
 	 * @param  {Object} options Options for the `timepicker()` call. Also supports `reformat`,
-	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
+	 *   a bool value that can be used to reformat the input values to the `dateFormat`.
 	 * @param  {string} method Can be used to specify the type of picker to be added
 	 * @return {jQuery}
 	 */
@@ -2075,7 +2075,7 @@
 	 * @param  {Element} startTime
 	 * @param  {Element} endTime
 	 * @param  {Object} options Options for the `timepicker()` call. Also supports `reformat`,
-	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
+	 *   a bool value that can be used to reformat the input values to the `dateFormat`.
 	 * @return {jQuery}
 	 */
 	$.timepicker.dateRange = function (startTime, endTime, options) {
@@ -2089,7 +2089,7 @@
 	 * @param  {Element} startTime
 	 * @param  {Element} endTime
 	 * @param  {Object} options Options for the `timepicker()` call. Also supports `reformat`,
-	 *   a boolean value that can be used to reformat the input values to the `dateFormat`.
+	 *   a bool value that can be used to reformat the input values to the `dateFormat`.
 	 * @return {jQuery}
 	 */
 	$.timepicker.handleRange = function (method, startTime, endTime, options) {

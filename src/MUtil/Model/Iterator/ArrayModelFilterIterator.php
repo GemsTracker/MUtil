@@ -51,9 +51,9 @@ class ArrayModelFilterIterator extends \FilterIterator
 
     /**
      *
-     * @return boolean
+     * @return bool
      */
-    public function accept()
+    public function accept(): bool
     {
         return $this->_model->applyFiltersToRow($this->current(), $this->_filter);
     }

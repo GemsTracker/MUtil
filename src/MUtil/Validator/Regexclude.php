@@ -101,7 +101,7 @@ class Regexclude extends AbstractValidator
      * Returns true if and only if $value matches against the pattern option
      *
      * @param  mixed $value
-     * @return boolean
+     * @return bool
      */
     public function isValid(mixed $value): bool
     {

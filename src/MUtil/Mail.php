@@ -45,7 +45,7 @@ class Mail extends \Zend_Mail implements \MUtil\Registry\TargetInterface
      *
      * @param string $name Name of resource to set
      * @param mixed $resource The resource.
-     * @return boolean True if $resource was OK
+     * @return bool True if $resource was OK
      */
     public function answerRegistryRequest($name, $resource)
     {
@@ -63,7 +63,7 @@ class Mail extends \Zend_Mail implements \MUtil\Registry\TargetInterface
      * Should be called after answering the request to allow the Target
      * to check if all required registry values have been set correctly.
      *
-     * @return boolean False if required values are missing.
+     * @return bool False if required values are missing.
      */
     public function checkRegistryRequestsAnswers()
     {
@@ -76,7 +76,7 @@ class Mail extends \Zend_Mail implements \MUtil\Registry\TargetInterface
      * Can be overriden.
      *
      * @param string $name
-     * @return boolean
+     * @return bool
      */
     protected function filterRequestNames($name)
     {

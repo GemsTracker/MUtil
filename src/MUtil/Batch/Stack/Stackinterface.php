@@ -28,14 +28,14 @@ interface Stackinterface
      *
      * @param string $method Name of a method of this object
      * @param array  $params Array with scalars, as many parameters as needed allowed
-     * @return boolean When true, increment the number of commands, otherwise the command existed
+     * @return bool When true, increment the number of commands, otherwise the command existed
      */
     public function addStep(string $method, array $params): bool;
 
     /**
      * Return true when there still exist unexecuted commands
      *
-     * @return boolean
+     * @return bool
      */
     public function hasNext(): bool;
 
@@ -74,7 +74,7 @@ interface Stackinterface
      * @param string $method Name of a method of the batch object
      * @param mixed $id A unique id to prevent double adding of something to do
      * @param array  $params Array with scalars, as many parameters as needed allowed
-     * @return boolean When true, increment the number of commands, otherwise the command existed
+     * @return bool When true, increment the number of commands, otherwise the command existed
      */
     public function setStep(string $method, ?string $id, array $params): bool;
 }

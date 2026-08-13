@@ -28,7 +28,7 @@ class JavaScript extends \MUtil\Html\Code\DynamicAbstract
      * When true the output should be displayed in the result HEAD,
      * otherwise in the BODY.
      *
-     * @return boolean
+     * @return bool
      */
     public function getInHeader()
     {
@@ -67,7 +67,7 @@ class JavaScript extends \MUtil\Html\Code\DynamicAbstract
      * When true the result is displayed in the result HEAD,
      * otherwise in the BODY.
      *
-     * @param boolean $value
+     * @param bool $value
      * @return \MUtil\Html\Code\JavaScript (continuation pattern)
      */
     public function setInHeader($value = true)

@@ -139,7 +139,7 @@ class ParallelRepeater implements \MUtil\Lazy\RepeatableInterface
         return $repeater;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         foreach ($this->repeatables as $repeater) {
             if ($repeater->offsetExists($offset)) {
@@ -150,7 +150,7 @@ class ParallelRepeater implements \MUtil\Lazy\RepeatableInterface
         return false;
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         $results = array();
         foreach ($this->repeatables as $id => $repeater) {
@@ -161,12 +161,12 @@ class ParallelRepeater implements \MUtil\Lazy\RepeatableInterface
         return $results;
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \MUtil\Lazy\LazyException('You cannot set a Lazy object.');
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \MUtil\Lazy\LazyException('You cannot unset a Lazy object.');
     }

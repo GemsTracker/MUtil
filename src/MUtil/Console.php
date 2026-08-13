@@ -26,7 +26,7 @@ class Console
     /**
      * True when php is running in command line mode
      *
-     * @return boolean
+     * @return bool
      */
     public static function isConsole()
     {

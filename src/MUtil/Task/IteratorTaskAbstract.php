@@ -33,7 +33,7 @@ abstract class IteratorTaskAbstract extends \MUtil\Task\TaskAbstract
      * Should be called after answering the request to allow the Target
      * to check if all required registry values have been set correctly.
      *
-     * @return boolean False if required values are missing.
+     * @return bool False if required values are missing.
      */
     public function checkRegistryRequestsAnswers()
     {
@@ -71,7 +71,7 @@ abstract class IteratorTaskAbstract extends \MUtil\Task\TaskAbstract
     /**
      * Return true when the task has finished.
      *
-     * @return boolean
+     * @return bool
      */
     public function isFinished()
     {

@@ -324,7 +324,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
 
     /**
      *
-     * @var boolean $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
+     * @var bool $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
      */
     public bool $includeNumericFilters = false;
 
@@ -438,7 +438,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
 
     /**
      *
-     * @var boolean $useHtmlView true
+     * @var bool $useHtmlView true
      */
     public bool $useHtmlView = true;  // Overrule parent
 
@@ -574,7 +574,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      * parameter was added, because the most common use of action is a split between detailed
      * and summarized actions.
      *
-     * @param boolean $detailed True when the current action is not in $summarizedActions.
+     * @param bool $detailed True when the current action is not in $summarizedActions.
      * @param string $action The current action.
      * @return DataReaderInterface
      */
@@ -619,7 +619,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      *
      * @param string $action The current action.
-     * @return boolean True when this actions uses a form
+     * @return bool True when this actions uses a form
      */
     public function forForm(string $action): bool
     {
@@ -685,7 +685,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
 
     /**
      *
-     * @return boolean $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
+     * @return bool $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
      */
     public function getIncludeNumericFilters(): bool
     {
@@ -703,7 +703,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      */
     protected function getModel(): DataReaderInterface
     {
-        $action = strtolower($this->requestInfo->getCurrentAction());
+        $action = strtolower($this->requestInfo->getCurrentAction() ?? '');
 
         // Only get new model if there is no model or the model was for a different action
         if (! ($this->_model && $this->_model->getMetaModel()->isMeta('action', $action))) {
@@ -745,7 +745,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
      *
      * @see getSearchFilter()
      *
-     * @param boolean $useRequest Use the request as source (when false, the session is used)
+     * @param bool $useRequest Use the request as source (when false, the session is used)
      * @return array
      */
     public function getSearchData(bool $useRequest = true): array
@@ -837,7 +837,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      * Get the filter to use with the model for searching including model sorts, etc..
      *
-     * @param boolean $useRequest Use the request as source (when false, the session is used)
+     * @param bool $useRequest Use the request as source (when false, the session is used)
      * @return array or false
      */
     public function getSearchFilter(bool $useRequest = true): array
@@ -933,7 +933,7 @@ abstract class ModelSnippetLegacyHandlerAbstract implements RequestHandlerInterf
     /**
      *
      * @param string $action The current action.
-     * @return boolean True when this actions uses only summary data
+     * @return bool True when this actions uses only summary data
      */
     public function isSummarized(string $action): bool
     {

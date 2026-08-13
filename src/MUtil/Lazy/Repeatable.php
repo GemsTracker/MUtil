@@ -27,7 +27,7 @@ class Repeatable implements \MUtil\Lazy\RepeatableInterface
     /**
      * When true array, otherwise interator
      *
-     * @var boolean
+     * @var bool
      */
     protected $_arrayMode;
 

@@ -77,7 +77,7 @@ class TextFileIterator implements \Countable, \Iterator
 
     /**
      *
-     * @var boolean
+     * @var bool
      */
     protected $_valid = true;
 
@@ -99,7 +99,7 @@ class TextFileIterator implements \Countable, \Iterator
 
     /**
      *
-     * @return boolean
+     * @return bool
      */
     private function _accept()
     {
@@ -216,7 +216,7 @@ class TextFileIterator implements \Countable, \Iterator
      *
      * This line can then be used to determined the mapping used by the mapping function.
      *
-     * @return string Or boolean if file does not exist
+     * @return string Or bool if file does not exist
      */
     public function getFieldMap()
     {
@@ -326,7 +326,7 @@ class TextFileIterator implements \Countable, \Iterator
     /**
      * True if not EOF
      *
-     * @return boolean
+     * @return bool
      */
     public function valid(): bool
     {

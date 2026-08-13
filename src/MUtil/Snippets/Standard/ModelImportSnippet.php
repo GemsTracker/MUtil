@@ -72,7 +72,7 @@ class ModelImportSnippet extends \MUtil\Snippets\WizardFormSnippetAbstract
     /**
      * True when content is supplied from a file
      *
-     * @var boolean
+     * @var bool
      */
     protected $fileMode = true;
 
@@ -156,7 +156,7 @@ class ModelImportSnippet extends \MUtil\Snippets\WizardFormSnippetAbstract
     /**
      * Use csrf token on form for protection against Cross Site Request Forgery
      *
-     * @var boolean
+     * @var bool
      */
     public $useCsrf = false;
 
@@ -900,7 +900,7 @@ class ModelImportSnippet extends \MUtil\Snippets\WizardFormSnippetAbstract
      * checkRegistryRequestsAnswers() function from the
      * {@see \MUtil\Registry\TargetInterface}.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasHtmlOutput(): bool
     {
@@ -967,7 +967,7 @@ class ModelImportSnippet extends \MUtil\Snippets\WizardFormSnippetAbstract
     /**
      * (Try to) load the source model
      *
-     * @return boolean True if successful
+     * @return bool True if successful
      */
     protected function loadSourceModel()
     {

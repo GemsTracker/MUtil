@@ -71,7 +71,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * Cache of searchNext(), false when last item was reached
      *
-     * @var boolean
+     * @var bool
      */
     private $_searchGoing = true;
 
@@ -197,7 +197,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * the xpath result set is not empty.
      *
      * @param string $name
-     * @return boolean
+     * @return bool
      */
     public function __isset($name)
     {
@@ -352,7 +352,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * When a rootNode exists and the nextName is XMLRA_ANY then
      * this XmlRa object loops over all children of the root element.
      *
-     * @return boolean
+     * @return bool
      */
     private function _isForChildren()
     {
@@ -364,7 +364,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * this XmlRa object consists of all children with the same element
      * name, asked for through $this->name.
      *
-     * @return boolean
+     * @return bool
      */
     private function _isForName()
     {
@@ -376,7 +376,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * object loops through a list of Dom object passed
      * to it at initiation.
      *
-     * @return boolean
+     * @return bool
      */
     private function _isForNodelist()
     {
@@ -479,7 +479,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @return int
      */
-    public function count()
+    public function count():int
     {
         $this->searchLast();
 
@@ -586,7 +586,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @return \MUtil\XmlRa\XmlRaIterator
      */
-    public function getIterator()
+    public function getIterator(): \MUtil\XmlRa\XmlRaIterator
     {
         return new \MUtil\XmlRa\XmlRaIterator($this);
     }
@@ -597,7 +597,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * query otherwise.
      *
      * @param mixed $index
-     * @param boolean $create
+     * @param bool $create
      * @return \DOMNode|null
      */
     private function getNode($index, $create)
@@ -689,7 +689,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * Return true if the passed value is a \DOMElemennt
      *
      * @param mixed $value
-     * @return boolean
+     * @return bool
      */
     public static function isElement($value)
     {
@@ -703,7 +703,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * one of the official XML FALSE values.
      *
      * @param mixed $index
-     * @return boolean
+     * @return bool
      */
     public function isFalse($index = null)
     {
@@ -722,7 +722,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @param \DOMNode $n1
      * @param \DOMNode $n2
-     * @return boolean
+     * @return bool
      */
     public static function isSameDocument(\DOMNode $n1, \DOMNode $n2)
     {
@@ -734,7 +734,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * one of the official XML true values.
      *
      * @param mixed $index
-     * @return boolean
+     * @return bool
      */
     public function isTrue($index = null)
     {
@@ -753,7 +753,7 @@ class XmlRa implements \IteratorAggregate, \ArrayAccess, \Countable
      * string or 'just' an element name.
      *
      * @param string $path
-     * @return boolean
+     * @return bool
      */
     public static function isXPath($path)
     {

@@ -437,7 +437,7 @@ abstract class WizardFormSnippetAbstract extends \MUtil\Snippets\ModelFormSnippe
     /**
      * True when the user clicked the finished button
      *
-     * @return boolean
+     * @return bool
      */
     public function isFinishedClicked()
     {
@@ -454,7 +454,7 @@ abstract class WizardFormSnippetAbstract extends \MUtil\Snippets\ModelFormSnippe
     /**
      * True when the user clicked the next button
      *
-     * @return boolean
+     * @return bool
      */
     public function isNextClicked()
     {
@@ -471,7 +471,7 @@ abstract class WizardFormSnippetAbstract extends \MUtil\Snippets\ModelFormSnippe
     /**
      * True when the user clicked the previous button
      *
-     * @return boolean
+     * @return bool
      */
     public function isPreviousClicked()
     {
@@ -517,7 +517,7 @@ abstract class WizardFormSnippetAbstract extends \MUtil\Snippets\ModelFormSnippe
 
     /**
      * True when we are on the orginal step where the user posted the data
-     * @return boolean
+     * @return bool
      */
     public function onStartStep()
     {
@@ -530,7 +530,7 @@ abstract class WizardFormSnippetAbstract extends \MUtil\Snippets\ModelFormSnippe
      * Returns false when $this->afterSaveRouteUrl is set during the
      * processing, which happens by default when the data is saved.
      *
-     * @return boolean True when the form should be displayed
+     * @return bool True when the form should be displayed
      */
     protected function processForm()
     {

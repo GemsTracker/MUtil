@@ -117,7 +117,7 @@ class ItemCallbackIterator implements \OuterIterator, \Countable
     /**
      * Checks if current position is valid
      *
-     * @return boolean
+     * @return bool
      */
     public function valid(): bool
     {

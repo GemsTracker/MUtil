@@ -27,7 +27,7 @@ class SelectModel extends \MUtil\Model\DatabaseModelAbstract
      * but the data model or specific circumstances may require a specific
      * instance of that class to deviate from the default.
      *
-     * @var boolean $canCreate True if the model can create new rows.
+     * @var bool $canCreate True if the model can create new rows.
      */
     public $canCreate = false;
 

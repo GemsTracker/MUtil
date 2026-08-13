@@ -86,7 +86,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * but the data model or specific circumstances may require a specific
      * instance of that class to deviate from the default.
      *
-     * @var boolean $canCreate True if the model can create new rows.
+     * @var bool $canCreate True if the model can create new rows.
      */
     public $canCreate = true;
 
@@ -109,7 +109,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * Should the paginator prefetch all data? E.g. when multiple data loads occur on the same page
      * or model dependencies trigger other queries.
      *
-     * @var boolean
+     * @var bool
      */
     public $prefetchIterator = false;
 
@@ -219,7 +219,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      *
      * @param array $filter The filter statements
      * @param \Zend_Db_Adapter_Abstract $adapter
-     * @param boolean $and Parts joined by AND or OR
+     * @param bool $and Parts joined by AND or OR
      * @return string SQL Where statement or null
      */
     protected function _createWhere($filter, \Zend_Db_Adapter_Abstract $adapter, $and = true)
@@ -330,7 +330,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      *
      * @param string $tableName The current table
      * @param array $data All the data, including those for other tables
-     * @param boolean $isNew True when creating
+     * @param bool $isNew True when creating
      * @return array An array containting the values that should be saved for this table.
      */
     protected function _filterDataFor($tableName, array $data, $isNew)
@@ -751,7 +751,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * stored elsewhere (e.g. in a parameter). The save function using this value to
      * perform an update instead of an insert on a changed key.
      *
-     * @param boolean $reset True if the key list should be rebuilt.
+     * @param bool $reset True if the key list should be rebuilt.
      * return \MUtil\Model\DatabaseModelAbstract $this
      */
     public function copyKeys($reset = false)
@@ -828,10 +828,10 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
-     * @param boolean $isNew True when a new item is being saved
+     * @param bool $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
-     * @param boolean $isPost True when passing on post data
+     * @param bool $isPost True when passing on post data
      * @return \DateTimeImmutable|\Zend_Db_Expr|null
      */
     public function formatLoadDate($value, $isNew = false, $name = null, array $context = array(), $isPost = false)
@@ -885,7 +885,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
      * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
-     * @param boolean $isNew True when a new item is being saved
+     * @param bool $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
      * @return \DateTimeImmutable|\Zend_Db_Expr|null
@@ -1187,7 +1187,7 @@ abstract class DatabaseModelAbstract extends \MUtil\Model\ModelAbstract
     /**
      * Function to turn database insertion on or off for this model.
      *
-     * @param boolean $value
+     * @param bool $value
      * @return \MUtil\Model\DatabaseModelAbstract (continuation pattern)
      */
     public function setCreate($value = true)

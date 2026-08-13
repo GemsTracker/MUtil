@@ -40,7 +40,7 @@ interface SourceInterface
      * Apply this source to the target.
      *
      * @param \MUtil\Registry\TargetInterface $target
-     * @return boolean True if $target is OK with loaded requests
+     * @return bool True if $target is OK with loaded requests
      */
     public function applySource(\MUtil\Registry\TargetInterface $target);
 

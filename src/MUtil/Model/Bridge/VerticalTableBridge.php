@@ -27,7 +27,7 @@ class VerticalTableBridge extends \MUtil\Model\Bridge\TableBridgeAbstract
 
     /**
      *
-     * @var boolean True if th's should be used for label class.
+     * @var bool True if th's should be used for label class.
      */
     protected $labelTh = true;
 

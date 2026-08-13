@@ -45,7 +45,9 @@ abstract class EmptySnippetAbstract extends \MUtil\Registry\TargetAbstract
      * @return mixed Nothing or either an array or a string that is acceptable for Redector->gotoRoute()
      */
     public function getRedirectRoute(): ?string
-    { }
+    {
+        return null;
+    }
 
     /**
      * The place to check if the data set in the snippet is valid
@@ -56,7 +58,7 @@ abstract class EmptySnippetAbstract extends \MUtil\Registry\TargetAbstract
      * checkRegistryRequestsAnswers() function from the
      * {@see \MUtil\Registry\TargetInterface}.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasHtmlOutput(): bool
     {
@@ -78,9 +80,11 @@ abstract class EmptySnippetAbstract extends \MUtil\Registry\TargetAbstract
      *
      * The $view is used to correctly encode and escape the output
      *
-     * @param \Zend_View_Abstract $view
+     * @param null|\Zend_View_Abstract $view
      * @return string Correctly encoded and escaped html output
      */
-    public function render(\Zend_View_Abstract $view)
-    { }
+    public function render(?\Zend_View_Abstract $view = null)
+    {
+        return '';
+    }
 }

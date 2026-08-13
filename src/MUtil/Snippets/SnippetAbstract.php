@@ -63,7 +63,7 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      * Variable to either keep or throw away the request data
      * not specified in the route.
      *
-     * @var boolean True then the route is reset
+     * @var bool True then the route is reset
      */
     public $resetRoute = false;
 
@@ -172,7 +172,7 @@ abstract class SnippetAbstract extends \MUtil\Translate\TranslateableAbstract
      * checkRegistryRequestsAnswers() function from the
      * {@see \MUtil\Registry\TargetInterface}.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasHtmlOutput(): bool
     {

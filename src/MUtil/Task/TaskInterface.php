@@ -36,7 +36,7 @@ interface TaskInterface
     /**
      * Return true when the task has finished.
      *
-     * @return boolean
+     * @return bool
      */
     public function isFinished();
 

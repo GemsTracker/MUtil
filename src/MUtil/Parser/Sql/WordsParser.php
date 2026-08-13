@@ -250,7 +250,7 @@ class WordsParser
     /**
      * Split the next statement into word parts
      *
-     * @param boolean $keepComments When false comment statements are removed from the output
+     * @param bool $keepComments When false comment statements are removed from the output
      * @return array Of sql 'words'
      */
     public function splitStatement($keepComments = true)
@@ -338,8 +338,8 @@ class WordsParser
      * Split the whole input into statements
      *
      * @param string $statements One or more SQL statements separated by ';' semicolumns
-     * @param boolean $keepComments When false comment statements are removed from the output
-     * @param boolean $makeStrings Return the individual statements as (trimmed) strings instead of arrays
+     * @param bool $keepComments When false comment statements are removed from the output
+     * @param bool $makeStrings Return the individual statements as (trimmed) strings instead of arrays
      * @param callable $makeWordFunction A function with the parameters:
      *                      function($word, $is_word, $start_line, $start_char)
      * @return array Of statements

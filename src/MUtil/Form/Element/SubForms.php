@@ -120,7 +120,7 @@ class SubForms extends \Zend_Form_Element_Xhtml implements \MUtil\Form\Element\S
      *
      * @param  mixed $value
      * @param  mixed $context
-     * @return boolean
+     * @return bool
      */
     public function isValid($value, $context = null)
     {

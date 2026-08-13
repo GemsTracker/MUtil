@@ -166,7 +166,7 @@ class MUtil_Echo
     /**
      * Returns true if there is information to output.
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasOutput()
     {

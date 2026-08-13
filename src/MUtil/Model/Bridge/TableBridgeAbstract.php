@@ -211,7 +211,7 @@ abstract class TableBridgeAbstract extends \MUtil\Model\Bridge\BridgeAbstract
     /**
      * is there a repeater source for the lazy data
      *
-     * @return boolean
+     * @return bool
      */
     public function hasRepeater(): bool
     {

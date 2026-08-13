@@ -203,7 +203,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      * @see $_allowedChildTags
      * @see $_lastChild
      *
-     * @var boolean When true new content not having a $_allowedChildTags is added to $_lastChild.
+     * @var bool When true new content not having a $_allowedChildTags is added to $_lastChild.
      */
     protected $_addtoLastChild = false;
 
@@ -264,7 +264,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      *
      * E.g. in the ImgElement all content is added to the 'alt' attribute.
      *
-     * @var boolean|string When not false, content is not used as element content, but added to the attribute
+     * @var bool|string When not false, content is not used as element content, but added to the attribute
      */
     protected $_contentToTag = false;
 
@@ -442,7 +442,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      *
      * @see $_repeater
      *
-     * @var boolean The repeatTags switch, default false.
+     * @var bool The repeatTags switch, default false.
      */
     protected $_repeatTags = false;
 
@@ -479,7 +479,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      *
      * @see $renderWithoutContent
      *
-     * @var boolean The element is always rendered with a closing tag.
+     * @var bool The element is always rendered with a closing tag.
      */
     public $renderClosingTag = false;
 
@@ -498,7 +498,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      *
      * @see $_repeater
      *
-     * @var boolean The element is rendered even without content when true.
+     * @var bool The element is rendered even without content when true.
      */
     public $renderWithoutContent = true;
 
@@ -592,7 +592,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      * Does this attribute exist
      *
      * @param string $name
-     * @return boolean
+     * @return bool
      */
     public function __isset ($name)
     {
@@ -677,7 +677,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      * Returns true if this element is not allowed as a child element.
      *
      * @param mixed $element
-     * @return boolean
+     * @return bool
      */
     private function _notAllowedChild($element)
     {
@@ -813,7 +813,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      *
      * @param mixed $child
      * @param array $guards
-     * @return boolean
+     * @return bool
      */
     public static function alreadyIsA($child, array $guards)
     {
@@ -963,7 +963,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
     /**
      * Get the first child element.
      *
-     * @param boolean $create A default child tag is created if the element does not exist and has a default child tag
+     * @param bool $create A default child tag is created if the element does not exist and has a default child tag
      * @return \MUtil\Html\HtmlElement or another \MUtil\Html\HtmlInterface element
      */
     public function getFirst($create = false)
@@ -989,7 +989,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
     /**
      * Get the last child element.
      *
-     * @param boolean $create A default child tag is created if the element does not exist
+     * @param bool $create A default child tag is created if the element does not exist
      * @return \MUtil\Html\HtmlElement or another \MUtil\Html\HtmlInterface element
      */
     public function getLast($create = false)
@@ -1037,7 +1037,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      * not the element tags. When repeatTags is true the both the tags and the
      * content are repeated.
      *
-     * @return boolean The repeatTags switch.
+     * @return bool The repeatTags switch.
      */
     public function getRepeatTags()
     {
@@ -1058,7 +1058,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      * Does a specific item exist in the content
      *
      * @param scalar $offset
-     * @return boolean
+     * @return bool
      */
     public function offsetExists(mixed $offset): bool
     {
@@ -1077,6 +1077,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
             return $this->_content[$offset];
         }
         error_log(sprintf("Non existing HtmlElement ofhset %s requested for tag %s using url %s.", $offset, $this->tagName, $_SERVER['REQUEST_URI']));
+        return null;
     }
 
     /**
@@ -1317,7 +1318,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      *
      * @param mixed $repeater \MUtil\Lazy\RepeatableInterface or something that can be made into one.
      * @param mixed $onEmptyContent Optional. When not null the content to display when the repeater does not result in data is set.
-     * @param boolean $repeatTags Optional when not null the repeatTags switch is set.
+     * @param bool $repeatTags Optional when not null the repeatTags switch is set.
      * @return \MUtil\Html\HtmlElement (continuation pattern)
      */
     public function setRepeater($repeater, $onEmptyContent = null, $repeatTags = null)
@@ -1344,7 +1345,7 @@ class HtmlElement extends \Zend_View_Helper_HtmlElement
      * not the element tags. When repeatTags is true the both the tags and the
      * content are repeated.
      *
-     * @param boolean $repeatTags Set the repeatTags switch.
+     * @param bool $repeatTags Set the repeatTags switch.
      * @return \MUtil\Html\HtmlElement (continuation pattern)
      */
     public function setRepeatTags($repeatTags)

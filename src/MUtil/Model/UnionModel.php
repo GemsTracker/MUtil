@@ -189,8 +189,8 @@ class UnionModel extends \MUtil\Model\ModelAbstract
      *
      * @param array $row The row of values to map
      * @param string $name Union sub model name
-     * @param boolean $from When true map from the fields names in the sub model to the fields names of this model
-     * @param boolean $recursive When true sub arrays are mapped as well (only used for filter renaming)
+     * @param bool $from When true map from the fields names in the sub model to the fields names of this model
+     * @param bool $recursive When true sub arrays are mapped as well (only used for filter renaming)
      * @return array
      */
     protected function _map(array $row, $name, $from = true, $recursive = false)
@@ -444,7 +444,7 @@ class UnionModel extends \MUtil\Model\ModelAbstract
     /**
      * True if this model allows the creation of new model items.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasNew(): bool
     {
@@ -464,7 +464,7 @@ class UnionModel extends \MUtil\Model\ModelAbstract
      *
      * This must be implemented by each sub model on it's own.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasTextSearchFilter(): bool
     {

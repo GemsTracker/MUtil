@@ -70,14 +70,14 @@ abstract class ModelSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
 
     /**
      *
-     * @var boolean $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
+     * @var bool $includeNumericFilters When true numeric filter keys (0, 1, 2...) are added to the filter as well
      */
     public $includeNumericFilters = false;
 
     /**
      * When true the post parameters are removed from the request while filtering
      *
-     * @var boolean Should post variables be removed from the request?
+     * @var bool Should post variables be removed from the request?
      */
     public $removePost = true;
 
@@ -142,7 +142,7 @@ abstract class ModelSnippetAbstract extends \MUtil\Snippets\SnippetAbstract
      * checkRegistryRequestsAnswers() function from the
      * {@see \MUtil\Registry\TargetInterface}.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasHtmlOutput(): bool
     {

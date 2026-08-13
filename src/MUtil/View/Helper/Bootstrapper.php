@@ -32,7 +32,7 @@ class Bootstrapper
     /**
      * Load CDN Path from SSL or Non-SSL?
      *
-     * @var boolean
+     * @var bool
      */
     protected $_loadSslCdnPath = false;
 

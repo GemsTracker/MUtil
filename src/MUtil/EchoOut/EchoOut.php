@@ -170,7 +170,7 @@ class EchoOut
     /**
      * Returns true if there is information to output.
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasOutput()
     {

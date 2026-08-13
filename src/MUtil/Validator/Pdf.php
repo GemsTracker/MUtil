@@ -44,7 +44,7 @@ class Pdf extends AbstractValidator
      * validation failed.
      *
      * @param  mixed $value
-     * @return boolean
+     * @return bool
      * @throws \Zend_Pdf_Exception If validation of $value is impossible
      */
     public function isValid($value, $context = array())

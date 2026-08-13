@@ -49,7 +49,7 @@ class ConcatenatedRow
      *
      * Makes it easier to filter.
      *
-     * @var boolean
+     * @var bool
      */
     protected $valuePad = true;
 
@@ -58,7 +58,7 @@ class ConcatenatedRow
      *
      * @param string $seperatorChar
      * @param string $displaySeperator
-     * @param boolean $valuePad
+     * @param bool $valuePad
      */
     public function __construct($seperatorChar = ' ', $displaySeperator = ' ', $valuePad = true)
     {
@@ -67,7 +67,7 @@ class ConcatenatedRow
                 array(
                     'seperatorChar' => 'is_string',
                     'displaySeperator' => array('\\MUtil\\Html\\HtmlInterface', 'is_string'),
-                    'valuePad' => 'is_boolean',
+                    'valuePad' => 'is_bool',
                     ),
                 array('seperatorChar' => ' ', 'displaySeperator' => ' ', 'valuePad' => true)
                 );
@@ -155,10 +155,10 @@ class ConcatenatedRow
      * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
-     * @param boolean $isNew True when a new item is being saved
+     * @param bool $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
-     * @param boolean $isPost True when passing on post data
+     * @param bool $isPost True when passing on post data
      * @return array Of the values
      */
     public function loadValue($value, $isNew = false, $name = null, array $context = array(), $isPost = false)
@@ -186,7 +186,7 @@ class ConcatenatedRow
      * @see \MUtil\Model\ModelAbstract
      *
      * @param mixed $value The value being saved
-     * @param boolean $isNew True when a new item is being saved
+     * @param bool $isNew True when a new item is being saved
      * @param string $name The name of the current field
      * @param array $context Optional, the other values being saved
      * @return string Of the values concatenated
